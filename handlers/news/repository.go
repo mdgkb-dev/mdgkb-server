@@ -9,7 +9,7 @@ import (
 
 type Repository interface {
 	create(*gin.Context, *models.News) error
-	getAll(*gin.Context) ([]models.News, error)
+	getAll(*gin.Context, *newsParams) ([]models.News, error)
 	updateStatus(*gin.Context, *models.News) error
 	delete(*gin.Context, string) error
 }
@@ -27,13 +27,13 @@ func (r *SRepository) create(ctx *gin.Context, news *models.News) (err error) {
 	return err
 }
 
-func (r *SRepository) getAll(ctx *gin.Context) (news []models.News, err error) {
-	err = r.db.NewSelect().Model(&news).
-		Relation("Categories").
-		Relation("Tags").
-		Relation("PreviewThumbnailFile").
-		Relation("NewsLikes").
-		Scan(ctx)
+func (r *SRepository) getAll(ctx *gin.Context, newsParams *newsParams) (news []models.News, err error) {
+	query := r.db.NewSelect().Model(&news).Relation("Categories").Relation("Tags").Relation("PreviewThumbnailFile").Relation("NewsLikes")
+	query = query.Order("published_on DESC").Limit(8)
+	if newsParams.PublishedOn != nil {
+		query = query.Where("published_on < ?", newsParams.PublishedOn)
+	}
+	err = query.Scan(ctx)
 	return news, err
 }
 

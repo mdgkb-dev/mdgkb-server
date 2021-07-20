@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
+	"time"
 )
 
 type Handler interface {
@@ -42,11 +43,22 @@ func (h *AHandler) Create(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
+type newsParams struct {
+	PublishedOn *time.Time `form:"publishedOn"`
+}
+
 func (h *AHandler) GetAll(c *gin.Context) {
-	news, err := h.repository.getAll(c)
+	var newsParams newsParams
+	err := c.BindQuery(&newsParams)
 	if err != nil {
 		c.JSON(500, err)
 	}
+
+	news, err := h.repository.getAll(c, &newsParams)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
 	c.JSON(200, news)
 }
 
