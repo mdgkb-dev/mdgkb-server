@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+  mdgkb_server:
+    container_name: mdgkb-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    privileged: true
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    restart: always
+    volumes:
+      - ./:/go/src/mdgkb-server
+    environment:
+      - DB_DB=${DB_DB}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+    depends_on:
+      - db
+    links:
+      - db
+  mdgkb_redis:
+    image: "redis:alpine"
+    container_name: 'mdgkb_redis'
+    restart: 'always'
+    ports:
+      - "${HOST_MACHINE_REDIS_PORT}:6379"
+  db:
+    container_name: db
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_HOST=${DB_HOST}
+      - POSTGRES_PORT=${DB_PORT}
+      - DB_EXTENSION=uuid-ossp
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./data:/var/lib/postgresql/data
+#    command: >
+#      sh -c 'psql -U -c "CREATE EXTENSION IF NOT EXISTS 'uuid-ossp'";'
