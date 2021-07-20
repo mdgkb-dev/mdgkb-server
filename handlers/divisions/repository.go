@@ -7,42 +7,43 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-type Repository interface {
+type IRepository interface {
 	create(*gin.Context, *models.Division) error
 	getAll(*gin.Context) ([]models.Division, error)
+	get(*gin.Context, string) (models.Division, error)
 	updateStatus(*gin.Context, *models.Division) error
 	delete(*gin.Context, string) error
 }
 
-type BRepository struct {
+type Repository struct {
 	db *bun.DB
 }
 
-func NewRepository(db *bun.DB) *BRepository {
-	return &BRepository{db}
+func NewRepository(db *bun.DB) *Repository {
+	return &Repository{db}
 }
 
-func (r *BRepository) create(ctx *gin.Context, building *models.Division) (err error) {
-	_, err = r.db.NewInsert().Model(building).Exec(ctx)
+func (r *Repository) create(ctx *gin.Context, item *models.Division) (err error) {
+	_, err = r.db.NewInsert().Model(item).Exec(ctx)
 	return err
 }
 
-func (r *BRepository) getAll(ctx *gin.Context) ([]models.Division, error) {
-	buildings := make([]models.Division, 0)
-
-	err := r.db.NewSelect().Model(&buildings).
-		Relation("Floors").
-		//Relation("Floors.Divisions").
-		Scan(ctx)
-	return buildings, err
+func (r *Repository) getAll(ctx *gin.Context) (items []models.Division, err error) {
+	err = r.db.NewSelect().Model(&items).Scan(ctx)
+	return items, err
 }
 
-func (r *BRepository) updateStatus(ctx *gin.Context, building *models.Division) (err error) {
-	_, err = r.db.NewUpdate().Model(building).Exec(ctx)
+func (r *Repository) get(ctx *gin.Context, id string) (item models.Division, err error) {
+	err = r.db.NewSelect().Model(&item).Where("id = ?", id).Scan(ctx)
+	return item, err
+}
+
+func (r *Repository) updateStatus(ctx *gin.Context, item *models.Division) (err error) {
+	_, err = r.db.NewUpdate().Model(item).Exec(ctx)
 	return err
 }
 
-func (r *BRepository) delete(ctx *gin.Context, id string) (err error) {
+func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 	_, err = r.db.NewDelete().Model(&models.Division{}).Where("id = ?", id).Exec(ctx)
 	return err
 }

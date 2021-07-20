@@ -27,12 +27,10 @@ func (r *BRepository) create(ctx *gin.Context, building *models.Building) (err e
 	return err
 }
 
-func (r *BRepository) getAll(ctx *gin.Context) ([]models.Building, error) {
-	buildings := make([]models.Building, 0)
-
-	err := r.db.NewSelect().Model(&buildings).
+func (r *BRepository) getAll(ctx *gin.Context) (buildings []models.Building, err error) {
+	err = r.db.NewSelect().Model(&buildings).
 		Relation("Floors").
-		//Relation("Floors.Divisions").
+		Relation("Floors.Divisions").
 		Scan(ctx)
 	return buildings, err
 }

@@ -1,10 +1,9 @@
 CREATE TABLE divisions
 (
     id             uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
-    number INTEGER,
     name VARCHAR,
-    status VARCHAR,
     phone VARCHAR,
+    info TEXT,
     email VARCHAR,
     address VARCHAR,
     slug VARCHAR,
