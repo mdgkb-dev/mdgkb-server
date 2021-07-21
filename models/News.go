@@ -9,8 +9,8 @@ type News struct {
 	ID                     uuid.UUID             `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Status                 string                `json:"status"`
 	Title                  string                `json:"title"`
-	PreviewText            string                `json:"name"`
-	Content                string                `json:"name"`
+	PreviewText            string                `json:"preview_text"`
+	Content                string                `json:"content"`
 	Slug                   string                `json:"slug"`
 	PublishedOn            time.Time             `json:"publishedOn"`
 	Description            string                `json:"description"`
@@ -18,7 +18,7 @@ type News struct {
 	Tags                   []Tag                 `bun:"m2m:news_to_tags" json:"tags"`
 	NewsLikes              []*NewsLike           `bun:"rel:has-many" json:"newsLikes"`
 	PreviewThumbnailFile   *PreviewThumbnailFile `bun:"rel:belongs-to" json:"previewThumbnailFile"`
-	PreviewThumbnailFileId uuid.UUID             `bun:"type:uuid"`
+	PreviewThumbnailFileId uuid.UUID             `bun:"type:uuid" json:"previewThumbnailFileId"`
 }
 
 type NewsToCategory struct {
