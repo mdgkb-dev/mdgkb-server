@@ -16,7 +16,9 @@ func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
 	r.GET("/:slug", h.GetBySLug)
 	r.POST("/", h.Create)
 	r.POST("/like", h.CreateLike)
+	r.POST("/comment", h.CreateComment)
 	r.DELETE("/:id", h.Delete)
 	r.DELETE("/like/:id", h.DeleteLike)
+	r.DELETE("/comment/:id", h.DeleteComment)
 	r.PUT("/:id/status", h.UpdateStatus)
 }

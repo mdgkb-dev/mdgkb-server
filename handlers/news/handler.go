@@ -13,8 +13,10 @@ type IHandler interface {
 	GetBySLug(c *gin.Context) error
 	Create(c *gin.Context) error
 	CreateLike(c *gin.Context) error
+	CreateComment(c *gin.Context) error
 	Delete(c *gin.Context) error
 	DeleteLike(c *gin.Context) error
+	DeleteComment(c *gin.Context) error
 	UpdateStatus(c *gin.Context) error
 }
 
@@ -54,6 +56,21 @@ func (h *Handler) CreateLike(c *gin.Context) {
 	}
 
 	err = h.repository.createLike(c, &item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	c.JSON(200, item)
+}
+
+func (h *Handler) CreateComment(c *gin.Context) {
+	var item models.NewsComment
+	err := c.ShouldBind(&item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	err = h.repository.createComment(c, &item)
 	if err != nil {
 		c.JSON(500, err)
 	}
@@ -103,6 +120,14 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) DeleteLike(c *gin.Context) {
 	err := h.repository.deleteLike(c, c.Param("id"))
+	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
+}
+
+func (h *Handler) DeleteComment(c *gin.Context) {
+	err := h.repository.deleteComment(c, c.Param("id"))
 	if err != nil {
 		c.JSON(500, err)
 	}

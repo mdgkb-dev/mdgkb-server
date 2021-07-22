@@ -11,6 +11,7 @@ import (
 	"mdgkb/mdgkb-server/routing/buildings"
 	"mdgkb/mdgkb-server/routing/divisions"
 	"mdgkb/mdgkb-server/routing/news"
+	"mdgkb/mdgkb-server/routing/users"
 )
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Config) {
@@ -21,4 +22,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	news.Init(api.Group("/news"), db, localUploader)
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	divisions.Init(api.Group("/divisions"), db, localUploader)
+	users.Init(api.Group("/users"), db, localUploader)
 }

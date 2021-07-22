@@ -10,10 +10,12 @@ import (
 type IRepository interface {
 	create(*gin.Context, *models.News) error
 	createLike(*gin.Context, *models.NewsLike) error
+	createComment(*gin.Context, *models.NewsComment) error
 	getAll(*gin.Context, *newsParams) ([]models.News, error)
 	updateStatus(*gin.Context, *models.News) error
 	delete(*gin.Context, string) error
 	deleteLike(*gin.Context, string) error
+	deleteComment(*gin.Context, string) error
 	getBySlug(*gin.Context, string) (models.News, error)
 }
 
@@ -35,8 +37,16 @@ func (r *Repository) createLike(ctx *gin.Context, item *models.NewsLike) error {
 	return err
 }
 
+func (r *Repository) createComment(ctx *gin.Context, item *models.NewsComment) error {
+	_, err := r.db.NewInsert().Model(item).Exec(ctx)
+	return err
+}
+
 func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []models.News, err error) {
-	query := r.db.NewSelect().Model(&news).Relation("Categories").Relation("Tags").Relation("PreviewThumbnailFile").Relation("NewsLikes")
+	query := r.db.NewSelect().Model(&news).
+		Relation("Categories").
+		Relation("Tags").
+		Relation("PreviewThumbnailFile")
 	query = query.Order("published_on DESC").Limit(6)
 	if newsParams.PublishedOn != nil {
 		query = query.Where("published_on < ?", newsParams.PublishedOn)
@@ -46,7 +56,12 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 }
 
 func (r *Repository) getBySlug(ctx *gin.Context, slug string) (item models.News, err error) {
-	err = r.db.NewSelect().Model(&item).Where("slug = ?", slug).Scan(ctx)
+	err = r.db.NewSelect().Model(&item).
+		Relation("Categories").
+		Relation("Tags").
+		Relation("PreviewThumbnailFile").
+		Relation("NewsComments.User").
+		Where("slug = ?", slug).Scan(ctx)
 	return item, err
 }
 
@@ -62,5 +77,10 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 
 func (r *Repository) deleteLike(ctx *gin.Context, id string) (err error) {
 	_, err = r.db.NewDelete().Model(&models.NewsLike{}).Where("id = ?", id).Exec(ctx)
+	return err
+}
+
+func (r *Repository) deleteComment(ctx *gin.Context, id string) (err error) {
+	_, err = r.db.NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(ctx)
 	return err
 }

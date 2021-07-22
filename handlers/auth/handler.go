@@ -42,13 +42,26 @@ func (h *AHandler) Register(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
-	c.JSON(200, gin.H{})
+
+	ts, err := helpers.CreateToken(user.ID.String())
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, err.Error())
+		return
+	}
+
+	type TokensWithUser struct {
+		Token *helpers.TokenDetails `json:"token"`
+		User  models.User           `json:"user"`
+	}
+	res := TokensWithUser{ts, *user}
+
+	c.JSON(200, res)
 }
 
 func (h *AHandler) Login(c *gin.Context) {
 	var user models.User
 	err := c.Bind(&user)
-	findedUser, err := h.repository.getByLogin(c, &user.Email)
+	findedUser, err := h.repository.getByEmail(c, user.Email)
 	if err != nil {
 		c.JSON(500, err)
 	}
@@ -66,11 +79,12 @@ func (h *AHandler) Login(c *gin.Context) {
 	if saveErr != nil {
 		c.JSON(http.StatusUnprocessableEntity, saveErr.Error())
 	}
-	tokens := map[string]string{
-		"access_token":  ts.AccessToken,
-		"refresh_token": ts.RefreshToken,
+	type TokensWithUser struct {
+		Token *helpers.TokenDetails `json:"token"`
+		User  models.User           `json:"user"`
 	}
-	c.JSON(http.StatusOK, tokens)
+	res := TokensWithUser{ts, findedUser}
+	c.JSON(http.StatusOK, res)
 }
 
 func (h *AHandler) Logout(c *gin.Context) {

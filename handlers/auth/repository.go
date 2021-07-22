@@ -8,7 +8,7 @@ import (
 )
 
 type Repository interface {
-	getByLogin(*gin.Context, *string) (*models.User, error)
+	getByEmail(*gin.Context, string) (models.User, error)
 	create(*gin.Context, *models.User) error
 }
 
@@ -20,9 +20,9 @@ func NewRepository(db *bun.DB) *ARepository {
 	return &ARepository{db}
 }
 
-func (r *ARepository) getByLogin(ctx *gin.Context, email *string) (user *models.User, err error) {
+func (r *ARepository) getByEmail(ctx *gin.Context, email string) (user models.User, err error) {
 	err = r.db.NewSelect().Model(&user).
-		Where("email = ?", *email).
+		Where("email = ?", email).
 		Scan(ctx)
 	return user, err
 }

@@ -18,8 +18,8 @@ type AccessDetails struct {
 }
 
 type TokenDetails struct {
-	AccessToken  string
-	RefreshToken string
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
 	AccessUuid   string
 	RefreshUuid  string
 	AtExpires    int64
