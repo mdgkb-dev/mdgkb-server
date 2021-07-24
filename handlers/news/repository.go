@@ -47,7 +47,10 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 		Relation("Categories").
 		Relation("Tags").
 		Relation("PreviewThumbnailFile")
-	query = query.Order("published_on DESC").Limit(6)
+
+	if newsParams.Limit != 0 {
+		query = query.Order("published_on DESC").Limit(newsParams.Limit)
+	}
 	if newsParams.PublishedOn != nil {
 		query = query.Where("published_on < ?", newsParams.PublishedOn)
 	}

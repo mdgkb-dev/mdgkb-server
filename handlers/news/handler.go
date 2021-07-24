@@ -80,6 +80,7 @@ func (h *Handler) CreateComment(c *gin.Context) {
 
 type newsParams struct {
 	PublishedOn *time.Time `form:"publishedOn"`
+	Limit       int        `form:"limit"`
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
