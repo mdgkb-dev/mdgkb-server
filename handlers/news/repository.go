@@ -11,6 +11,8 @@ type IRepository interface {
 	create(*gin.Context, *models.News) error
 	update(*gin.Context, *models.News) error
 	createLike(*gin.Context, *models.NewsLike) error
+	addTag(*gin.Context, *models.NewsToTag) error
+	removeTag(*gin.Context, *models.NewsToTag) error
 	createComment(*gin.Context, *models.NewsComment) error
 	getAll(*gin.Context, *newsParams) ([]models.News, error)
 	updateStatus(*gin.Context, *models.News) error
@@ -29,8 +31,8 @@ func NewRepository(db *bun.DB) *Repository {
 }
 
 func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
-	_, err = r.db.NewInsert().Model(news.PreviewThumbnailFile).Exec(ctx)
-	news.PreviewThumbnailFileId = news.PreviewThumbnailFile.ID
+	_, err = r.db.NewInsert().Model(news.FileInfo).Exec(ctx)
+	news.FileInfoId = news.FileInfo.ID
 	_, err = r.db.NewInsert().Model(news).Exec(ctx)
 	return err
 }
@@ -45,6 +47,16 @@ func (r *Repository) createLike(ctx *gin.Context, item *models.NewsLike) error {
 	return err
 }
 
+func (r *Repository) addTag(ctx *gin.Context, item *models.NewsToTag) error {
+	_, err := r.db.NewInsert().Model(item).Exec(ctx)
+	return err
+}
+
+func (r *Repository) removeTag(ctx *gin.Context, item *models.NewsToTag) error {
+	_, err := r.db.NewDelete().Model(&models.NewsToTag{}).Where("news_id = ? AND tag_id = ?", item.NewsId, item.TagId).Exec(ctx)
+	return err
+}
+
 func (r *Repository) createComment(ctx *gin.Context, item *models.NewsComment) error {
 	_, err := r.db.NewInsert().Model(item).Exec(ctx)
 	return err
@@ -54,7 +66,8 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 	query := r.db.NewSelect().Model(&news).
 		Relation("Categories").
 		Relation("Tags").
-		Relation("PreviewThumbnailFile")
+		Relation("FileInfo").
+		Relation("NewsLikes")
 
 	if newsParams.Limit != 0 {
 		query = query.Order("published_on DESC").Limit(newsParams.Limit)
@@ -70,7 +83,7 @@ func (r *Repository) getBySlug(ctx *gin.Context, slug string) (item models.News,
 	err = r.db.NewSelect().Model(&item).
 		Relation("Categories").
 		Relation("Tags").
-		Relation("PreviewThumbnailFile").
+		Relation("FileInfo").
 		Relation("NewsComments.User").
 		Where("slug = ?", slug).Scan(ctx)
 	return item, err

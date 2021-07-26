@@ -9,6 +9,7 @@ import (
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/buildings"
+	"mdgkb/mdgkb-server/routing/carousels"
 	"mdgkb/mdgkb-server/routing/divisions"
 	"mdgkb/mdgkb-server/routing/news"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
@@ -28,4 +29,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	divisions.Init(api.Group("/divisions"), db, localUploader)
 	users.Init(api.Group("/users"), db, localUploader)
 	sideOrganizations.Init(api.Group("/side-organizations"), db, localUploader)
+	carousels.Init(api.Group("/carousels"), db, localUploader)
 }

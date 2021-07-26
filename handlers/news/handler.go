@@ -15,6 +15,8 @@ type IHandler interface {
 	Create(c *gin.Context) error
 	Update(c *gin.Context) error
 	CreateLike(c *gin.Context) error
+	AddTag(c *gin.Context) error
+	RemoveTag(c *gin.Context) error
 	CreateComment(c *gin.Context) error
 	Delete(c *gin.Context) error
 	DeleteLike(c *gin.Context) error
@@ -43,14 +45,40 @@ func (h *Handler) Create(c *gin.Context) {
 		c.JSON(500, err)
 	}
 
-	err = h.uploader.Upload(c, form.File["files"][0], item.PreviewThumbnailFile.OriginalName)
+	err = h.uploader.Upload(c, form.File["files"][0], item.FileInfo.OriginalName)
 	if err != nil {
 		c.JSON(500, err)
 	}
-	item.PreviewThumbnailFile.FilenameDisk = item.PreviewThumbnailFile.OriginalName
+	item.FileInfo.FilenameDisk = item.FileInfo.OriginalName
 	err = h.repository.create(c, &item)
 
 	c.JSON(200, gin.H{})
+}
+
+func (h *Handler) RemoveTag(c *gin.Context) {
+	var item models.NewsToTag
+	err := c.ShouldBind(&item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	err = h.repository.removeTag(c, &item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, item)
+}
+
+func (h *Handler) AddTag(c *gin.Context) {
+	var item models.NewsToTag
+	err := c.ShouldBind(&item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	err = h.repository.addTag(c, &item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, item)
 }
 
 func (h *Handler) CreateLike(c *gin.Context) {
@@ -156,6 +184,7 @@ func (h *Handler) DeleteComment(c *gin.Context) {
 
 func (h *Handler) GetBySLug(c *gin.Context) {
 	item, err := h.repository.getBySlug(c, c.Param("slug"))
+	fmt.Println(err)
 	if err != nil {
 		c.JSON(500, err)
 	}
