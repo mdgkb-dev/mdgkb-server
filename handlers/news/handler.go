@@ -133,10 +133,18 @@ func (h *Handler) GetAll(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.News
-	err := c.Bind(&item)
+	form, _ := c.MultipartForm()
+	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
 		c.JSON(500, err)
 	}
+
+	err = h.uploader.Upload(c, form.File["files"][0], item.FileInfo.OriginalName)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	item.FileInfo.FilenameDisk = item.FileInfo.OriginalName
+
 	err = h.repository.update(c, &item)
 	if err != nil {
 		fmt.Println(err)
@@ -166,16 +174,16 @@ func (h *Handler) Delete(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (h *Handler) DeleteLike(c *gin.Context) {
-	err := h.repository.deleteLike(c, c.Param("id"))
+func (h *Handler) RemoveComment(c *gin.Context) {
+	err := h.repository.removeComment(c, c.Param("id"))
 	if err != nil {
 		c.JSON(500, err)
 	}
 	c.JSON(200, gin.H{})
 }
 
-func (h *Handler) DeleteComment(c *gin.Context) {
-	err := h.repository.deleteComment(c, c.Param("id"))
+func (h *Handler) DeleteLike(c *gin.Context) {
+	err := h.repository.deleteLike(c, c.Param("id"))
 	if err != nil {
 		c.JSON(500, err)
 	}

@@ -13,12 +13,12 @@ type IRepository interface {
 	createLike(*gin.Context, *models.NewsLike) error
 	addTag(*gin.Context, *models.NewsToTag) error
 	removeTag(*gin.Context, *models.NewsToTag) error
+	removeComment(*gin.Context, string) error
 	createComment(*gin.Context, *models.NewsComment) error
 	getAll(*gin.Context, *newsParams) ([]models.News, error)
 	updateStatus(*gin.Context, *models.News) error
 	delete(*gin.Context, string) error
 	deleteLike(*gin.Context, string) error
-	deleteComment(*gin.Context, string) error
 	getBySlug(*gin.Context, string) (models.News, error)
 }
 
@@ -38,6 +38,10 @@ func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
 }
 
 func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
+	if &news.FileInfo.ID != nil {
+		_, err = r.db.NewUpdate().Model(news.FileInfo).Where("id = ?", news.FileInfo.ID).Exec(ctx)
+	}
+	news.FileInfoId = news.FileInfo.ID
 	_, err = r.db.NewUpdate().Model(news).Where("id = ?", news.ID).Exec(ctx)
 	return err
 }
@@ -54,6 +58,11 @@ func (r *Repository) addTag(ctx *gin.Context, item *models.NewsToTag) error {
 
 func (r *Repository) removeTag(ctx *gin.Context, item *models.NewsToTag) error {
 	_, err := r.db.NewDelete().Model(&models.NewsToTag{}).Where("news_id = ? AND tag_id = ?", item.NewsId, item.TagId).Exec(ctx)
+	return err
+}
+
+func (r *Repository) removeComment(ctx *gin.Context, id string) error {
+	_, err := r.db.NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(ctx)
 	return err
 }
 
@@ -101,10 +110,5 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 
 func (r *Repository) deleteLike(ctx *gin.Context, id string) (err error) {
 	_, err = r.db.NewDelete().Model(&models.NewsLike{}).Where("id = ?", id).Exec(ctx)
-	return err
-}
-
-func (r *Repository) deleteComment(ctx *gin.Context, id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(ctx)
 	return err
 }
