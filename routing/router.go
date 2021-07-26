@@ -12,6 +12,7 @@ import (
 	"mdgkb/mdgkb-server/routing/divisions"
 	"mdgkb/mdgkb-server/routing/news"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
+	"mdgkb/mdgkb-server/routing/tags"
 	"mdgkb/mdgkb-server/routing/users"
 )
 
@@ -19,6 +20,8 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	localUploader := helpers.NewLocalUploader(&config.UploadPath)
 	r.Static("/static", "./static")
 	api := r.Group("/api/v1")
+
+	tags.Init(api.Group("/tags"), db, localUploader)
 	auth.Init(api.Group("/auth"), db, redisClient)
 	news.Init(api.Group("/news"), db, localUploader)
 	buildings.Init(api.Group("/buildings"), db, localUploader)

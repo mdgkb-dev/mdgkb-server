@@ -1,8 +1,9 @@
 package news
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 	"time"
@@ -12,6 +13,7 @@ type IHandler interface {
 	GetAll(c *gin.Context) error
 	GetBySLug(c *gin.Context) error
 	Create(c *gin.Context) error
+	Update(c *gin.Context) error
 	CreateLike(c *gin.Context) error
 	CreateComment(c *gin.Context) error
 	Delete(c *gin.Context) error
@@ -35,15 +37,18 @@ func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.News
-	err := c.ShouldBindWith(&item, binding.FormMultipart)
+	form, _ := c.MultipartForm()
+	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
 		c.JSON(500, err)
 	}
 
-	err = h.repository.create(c, &item)
+	err = h.uploader.Upload(c, form.File["files"][0], item.PreviewThumbnailFile.OriginalName)
 	if err != nil {
 		c.JSON(500, err)
 	}
+	item.PreviewThumbnailFile.FilenameDisk = item.PreviewThumbnailFile.OriginalName
+	err = h.repository.create(c, &item)
 
 	c.JSON(200, gin.H{})
 }
@@ -96,6 +101,20 @@ func (h *Handler) GetAll(c *gin.Context) {
 	}
 
 	c.JSON(200, news)
+}
+
+func (h *Handler) Update(c *gin.Context) {
+	var item models.News
+	err := c.Bind(&item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	err = h.repository.update(c, &item)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
 }
 
 func (h *Handler) UpdateStatus(c *gin.Context) {

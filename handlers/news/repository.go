@@ -9,6 +9,7 @@ import (
 
 type IRepository interface {
 	create(*gin.Context, *models.News) error
+	update(*gin.Context, *models.News) error
 	createLike(*gin.Context, *models.NewsLike) error
 	createComment(*gin.Context, *models.NewsComment) error
 	getAll(*gin.Context, *newsParams) ([]models.News, error)
@@ -28,7 +29,14 @@ func NewRepository(db *bun.DB) *Repository {
 }
 
 func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
+	_, err = r.db.NewInsert().Model(news.PreviewThumbnailFile).Exec(ctx)
+	news.PreviewThumbnailFileId = news.PreviewThumbnailFile.ID
 	_, err = r.db.NewInsert().Model(news).Exec(ctx)
+	return err
+}
+
+func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
+	_, err = r.db.NewUpdate().Model(news).Where("id = ?", news.ID).Exec(ctx)
 	return err
 }
 

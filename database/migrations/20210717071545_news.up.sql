@@ -1,7 +1,8 @@
 CREATE TABLE preview_thumbnail_files
 (
     id             uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
-    filename_disk VARCHAR
+    filename_disk VARCHAR,
+    original_name varchar
 );
 
 
