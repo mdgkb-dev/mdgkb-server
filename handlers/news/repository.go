@@ -105,6 +105,7 @@ func (r *Repository) getBySlug(ctx *gin.Context, slug string) (item models.News,
 		Relation("Categories").
 		Relation("Tags").
 		Relation("FileInfo").
+		Relation("NewsLikes").
 		Relation("NewsComments.User").
 		Where("slug = ?", slug).Scan(ctx)
 	return item, err

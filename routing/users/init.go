@@ -14,4 +14,5 @@ func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
 	var h = handler.NewHandler(handler.NewRepository(db), uploader)
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
+	r.GET("/get-by-email/:email", h.GetByEmail)
 }

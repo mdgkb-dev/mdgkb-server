@@ -10,6 +10,7 @@ import (
 type IRepository interface {
 	getAll(*gin.Context) ([]models.User, error)
 	get(*gin.Context, string) (models.User, error)
+	getByEmail(*gin.Context, string) (models.User, error)
 }
 
 type Repository struct {
@@ -27,5 +28,10 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.User, err error) {
 
 func (r *Repository) get(ctx *gin.Context, id string) (item models.User, err error) {
 	err = r.db.NewSelect().Model(&item).Where("id = ?", id).Scan(ctx)
+	return item, err
+}
+
+func (r *Repository) getByEmail(ctx *gin.Context, id string) (item models.User, err error) {
+	err = r.db.NewSelect().Model(&item).Where("email = ?", id).Scan(ctx)
 	return item, err
 }

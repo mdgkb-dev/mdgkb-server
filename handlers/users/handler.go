@@ -8,6 +8,7 @@ import (
 type IHandler interface {
 	GetAll(c *gin.Context) error
 	Get(c *gin.Context) error
+	GetByEmail(c *gin.Context) error
 }
 
 type Handler struct {
@@ -37,4 +38,14 @@ func (h *Handler) Get(c *gin.Context) {
 		c.JSON(500, err)
 	}
 	c.JSON(200, item)
+}
+
+func (h *Handler) GetByEmail(c *gin.Context) {
+	item, err := h.repository.getByEmail(c, c.Param("email"))
+	if err != nil || &item.Email == nil {
+		c.JSON(200, nil)
+	}
+	if &item != nil && len(item.Email) > 0 {
+		c.JSON(200, item.Email)
+	}
 }
