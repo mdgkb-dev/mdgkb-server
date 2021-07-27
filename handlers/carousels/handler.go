@@ -3,9 +3,10 @@ package carousels
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 type IHandler interface {
@@ -38,7 +39,7 @@ func (h *Handler) Create(c *gin.Context) {
 	}
 
 	for i, slide := range item.CarouselSlides {
-		item.CarouselSlides[i].FileInfo.FilenameDisk = slide.FileInfo.OriginalName
+		item.CarouselSlides[i].FileInfo.FileSystemPath = slide.FileInfo.OriginalName
 		err = h.uploader.Upload(c, form.File["files"][0], slide.FileInfo.OriginalName)
 		if err != nil {
 			c.JSON(500, err)
