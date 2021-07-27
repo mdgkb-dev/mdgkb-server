@@ -138,12 +138,13 @@ func (h *Handler) Update(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
-
-	err = h.uploader.Upload(c, form.File["files"][0], item.FileInfo.OriginalName)
-	if err != nil {
-		c.JSON(500, err)
+	if len(form.File["files"]) > 0 {
+		err = h.uploader.Upload(c, form.File["files"][0], item.FileInfo.OriginalName)
+		if err != nil {
+			c.JSON(500, err)
+		}
+		item.FileInfo.FilenameDisk = item.FileInfo.OriginalName
 	}
-	item.FileInfo.FilenameDisk = item.FileInfo.OriginalName
 
 	err = h.repository.update(c, &item)
 	if err != nil {
