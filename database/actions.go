@@ -8,11 +8,11 @@ import (
 )
 
 func createMigrationSql(migrator *migrate.Migrator, name *string) {
-	mf, err := migrator.CreateSQL(context.TODO(), *name)
+	_, err := migrator.CreateSQLMigrations(context.TODO(), *name)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("created migration %s (%s)\n", mf.FileName, mf.FilePath)
+	//fmt.Printf("created migration %s (%s)\n", mf.FileName, mf.FilePath)
 }
 
 func initMigration(migrator *migrate.Migrator) {
