@@ -1,8 +1,8 @@
-CREATE TABLE file_infos
+create table file_infos
 (
-    id             uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
-    filename_disk VARCHAR,
-    original_name varchar
+    id uuid default uuid_generate_v4() not null primary key,
+    original_name varchar,
+    file_system_path varchar
 );
 
 

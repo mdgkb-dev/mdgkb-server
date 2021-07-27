@@ -3,10 +3,11 @@ package news
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type IHandler interface {
@@ -49,7 +50,7 @@ func (h *Handler) Create(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
-	item.FileInfo.FilenameDisk = item.FileInfo.OriginalName
+	item.FileInfo.FileSystemPath = item.FileInfo.OriginalName
 	err = h.repository.create(c, &item)
 
 	c.JSON(200, gin.H{})
@@ -143,7 +144,7 @@ func (h *Handler) Update(c *gin.Context) {
 		if err != nil {
 			c.JSON(500, err)
 		}
-		item.FileInfo.FilenameDisk = item.FileInfo.OriginalName
+		item.FileInfo.FileSystemPath = item.FileInfo.OriginalName
 	}
 
 	err = h.repository.update(c, &item)
