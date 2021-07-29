@@ -13,6 +13,9 @@ import (
 func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
 	var h = handler.NewHandler(handler.NewRepository(db), uploader)
 	r.GET("/", h.GetAll)
+	r.GET("/floor/:id", h.GetByFloorId)
+	r.GET("/:id", h.GetById)
+	r.PUT("/:id", h.Update)
 	r.POST("/", h.Create)
 	r.DELETE("/:id", h.Delete)
 	r.PUT("/:id/status", h.UpdateStatus)

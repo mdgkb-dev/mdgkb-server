@@ -10,9 +10,12 @@ import (
 
 type Handler interface {
 	GetAll(c *gin.Context) error
+	GetByFloorId(c *gin.Context) error
+	GetById(c *gin.Context) error
 	Create(c *gin.Context) error
 	Delete(c *gin.Context) error
 	UpdateStatus(c *gin.Context) error
+	Update(c *gin.Context) error
 }
 
 type AHandler struct {
@@ -52,6 +55,24 @@ func (h *AHandler) GetAll(c *gin.Context) {
 	c.JSON(200, buildings)
 }
 
+func (h *AHandler) GetByFloorId(c *gin.Context) {
+	item, err := h.repository.getByFloorId(c, c.Param("id"))
+	fmt.Println(err)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, item)
+}
+
+func (h *AHandler) GetById(c *gin.Context) {
+	item, err := h.repository.getById(c, c.Param("id"))
+	fmt.Println(err)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, item)
+}
+
 func (h *AHandler) UpdateStatus(c *gin.Context) {
 	var item models.Building
 	err := c.Bind(&item)
@@ -67,6 +88,19 @@ func (h *AHandler) UpdateStatus(c *gin.Context) {
 
 func (h *AHandler) Delete(c *gin.Context) {
 	err := h.repository.delete(c, c.Param("id"))
+	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
+}
+
+func (h *AHandler) Update(c *gin.Context) {
+	var building models.Building
+	err := c.Bind(&building)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	err = h.repository.update(c, &building)
 	if err != nil {
 		c.JSON(500, err)
 	}
