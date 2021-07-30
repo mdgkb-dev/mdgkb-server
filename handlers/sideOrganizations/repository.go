@@ -13,6 +13,7 @@ type IRepository interface {
 	get(*gin.Context, string) (models.SideOrganization, error)
 	updateStatus(*gin.Context, *models.SideOrganization) error
 	delete(*gin.Context, string) error
+	update(*gin.Context, *models.SideOrganization) error
 }
 
 type Repository struct {
@@ -45,5 +46,10 @@ func (r *Repository) updateStatus(ctx *gin.Context, item *models.SideOrganizatio
 
 func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 	_, err = r.db.NewDelete().Model(&models.SideOrganization{}).Where("id = ?", id).Exec(ctx)
+	return err
+}
+
+func (r *Repository) update(ctx *gin.Context, item *models.SideOrganization) (err error) {
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
 	return err
 }

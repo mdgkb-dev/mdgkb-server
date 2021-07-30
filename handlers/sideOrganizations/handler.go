@@ -2,7 +2,6 @@ package sideOrganizations
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 )
@@ -13,6 +12,7 @@ type IHandler interface {
 	Create(c *gin.Context) error
 	Delete(c *gin.Context) error
 	UpdateStatus(c *gin.Context) error
+	Update(c *gin.Context) error
 }
 
 type Handler struct {
@@ -30,7 +30,7 @@ func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.SideOrganization
-	err := c.ShouldBindWith(&item, binding.FormMultipart)
+	err := c.Bind(&item)
 	if err != nil {
 		c.JSON(500, err)
 	}
@@ -74,6 +74,19 @@ func (h *Handler) UpdateStatus(c *gin.Context) {
 
 func (h *Handler) Delete(c *gin.Context) {
 	err := h.repository.delete(c, c.Param("id"))
+	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
+}
+
+func (h *Handler) Update(c *gin.Context) {
+	var item models.SideOrganization
+	err := c.Bind(&item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	err = h.repository.update(c, &item)
 	if err != nil {
 		c.JSON(500, err)
 	}

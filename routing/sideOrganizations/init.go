@@ -15,5 +15,6 @@ func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
 	r.POST("/", h.Create)
+	r.PUT("/:id", h.Update)
 	r.DELETE("/:id", h.Delete)
 }
