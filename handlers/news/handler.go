@@ -43,15 +43,21 @@ func (h *Handler) Create(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 
 	err = h.uploader.Upload(c, form.File["files"][0], item.FileInfo.OriginalName)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	item.FileInfo.FileSystemPath = item.FileInfo.OriginalName
 	err = h.repository.create(c, &item)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(500, err)
+	}
 
 	c.JSON(200, gin.H{})
 }
