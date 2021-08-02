@@ -1,7 +1,7 @@
-package normativeDocumentTypes
+package normativeDocuments
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/normativeDocumentTypes"
+	handler "mdgkb/mdgkb-server/handlers/normativeDocuments"
 	"mdgkb/mdgkb-server/helpers"
 
 	"github.com/gin-gonic/gin"

@@ -1,4 +1,4 @@
-package normativeDocumentTypes
+package normativeDocuments
 
 import (
 	"mdgkb/mdgkb-server/helpers"
@@ -28,14 +28,14 @@ func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
 }
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.NormativeDocumentType
-	err := c.Bind(&item)
+	var document models.NormativeDocument
+	err := c.Bind(&document)
 
 	if err != nil {
 		c.JSON(500, err)
 	}
 
-	err = h.repository.create(c, &item)
+	err = h.repository.create(c, &document)
 
 	if err != nil {
 		c.JSON(500, err)
@@ -65,7 +65,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.NormativeDocumentType
+	var item models.NormativeDocument
 	err := c.Bind(&item)
 
 	if err != nil {
