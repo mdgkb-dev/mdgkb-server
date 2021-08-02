@@ -8,7 +8,6 @@ import (
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
 
-	// "github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
 
@@ -55,7 +54,7 @@ func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
 	news.FileInfoId = news.FileInfo.ID
 	_, err = r.db.NewUpdate().Model(news).Where("id = ?", news.ID).Exec(ctx)
 
-	// ! TODO Стас, посмотри, плз
+	// TODO Стас, посмотри, плз
 	newsTags := new([]models.NewsToTag)
 	r.db.NewSelect().Model(newsTags).Where("news_id = ?", news.ID).Scan(ctx)
 	for j := 0; j < len(*newsTags); j++ {
@@ -73,11 +72,9 @@ func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
 	for _, tag := range news.Tags {
 		newsTag := new(models.NewsToTag)
 		r.db.NewSelect().Model(newsTag).Where("tag_id = ?", tag.ID).Scan(ctx)
-		fmt.Println("newsTag ===>", newsTag.ID == uuid.Nil, "tagid== ", tag.ID)
-		if newsTag.ID == uuid.Nil {
-			newsTags := models.NewsToTag{TagId: tag.ID, NewsId: news.ID}
-			_, err = r.db.NewInsert().Model(&newsTags).Exec(ctx)
-		}
+		fmt.Println("newsTag ===>", newsTag.ID == uuid.Nil,"newsTag.ID = ", newsTag.ID, "tagid== ", tag.ID)
+		newsTags := models.NewsToTag{TagId: tag.ID, NewsId: news.ID}
+		_, err = r.db.NewInsert().Model(&newsTags).Exec(ctx)
 	}
 
 	return err
