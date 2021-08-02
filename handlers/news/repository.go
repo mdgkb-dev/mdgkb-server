@@ -1,10 +1,15 @@
 package news
 
 import (
+	"fmt"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/google/uuid"
+
+	// "github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 type IRepository interface {
@@ -44,15 +49,35 @@ func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
 }
 
 func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
-	if &news.FileInfo.ID != nil {
+	if news.FileInfo.ID != uuid.Nil {
 		_, err = r.db.NewUpdate().Model(news.FileInfo).Where("id = ?", news.FileInfo.ID).Exec(ctx)
 	}
 	news.FileInfoId = news.FileInfo.ID
 	_, err = r.db.NewUpdate().Model(news).Where("id = ?", news.ID).Exec(ctx)
 
+	// ! TODO Стас, посмотри, плз
+	newsTags := new([]models.NewsToTag)
+	r.db.NewSelect().Model(newsTags).Where("news_id = ?", news.ID).Scan(ctx)
+	for j := 0; j < len(*newsTags); j++ {
+		found := false
+		for i := 0; i < len(news.Tags); i++ {
+			if news.Tags[i].ID == (*newsTags)[j].ID {
+				found = true
+			}
+		}
+		if !found {
+			_, err = r.db.NewDelete().Model(newsTags).Where("id = ?", (*newsTags)[j].ID).Exec(ctx)
+		}
+	}
+
 	for _, tag := range news.Tags {
-		newsTags := models.NewsToTag{TagId: tag.ID, NewsId: news.ID}
-		_, err = r.db.NewInsert().Model(&newsTags).Exec(ctx)
+		newsTag := new(models.NewsToTag)
+		r.db.NewSelect().Model(newsTag).Where("tag_id = ?", tag.ID).Scan(ctx)
+		fmt.Println("newsTag ===>", newsTag.ID == uuid.Nil, "tagid== ", tag.ID)
+		if newsTag.ID == uuid.Nil {
+			newsTags := models.NewsToTag{TagId: tag.ID, NewsId: news.ID}
+			_, err = r.db.NewInsert().Model(&newsTags).Exec(ctx)
+		}
 	}
 
 	return err
