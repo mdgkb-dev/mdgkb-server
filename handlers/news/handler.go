@@ -13,6 +13,7 @@ import (
 type IHandler interface {
 	GetAll(c *gin.Context) error
 	GetBySLug(c *gin.Context) error
+	GetByMonth(c *gin.Context) error
 	Create(c *gin.Context) error
 	Update(c *gin.Context) error
 	CreateLike(c *gin.Context) error
@@ -23,6 +24,7 @@ type IHandler interface {
 	DeleteLike(c *gin.Context) error
 	DeleteComment(c *gin.Context) error
 	UpdateStatus(c *gin.Context) error
+	UpdateComment(c *gin.Context) error
 }
 
 type Handler struct {
@@ -103,24 +105,10 @@ func (h *Handler) CreateLike(c *gin.Context) {
 	c.JSON(200, item)
 }
 
-func (h *Handler) CreateComment(c *gin.Context) {
-	var item models.NewsComment
-	err := c.ShouldBind(&item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-
-	err = h.repository.createComment(c, &item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-
-	c.JSON(200, item)
-}
-
 type newsParams struct {
 	PublishedOn *time.Time `form:"publishedOn"`
 	Limit       int        `form:"limit"`
+	FilterTags	string	 `form:"filterTags"`
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -190,6 +178,32 @@ func (h *Handler) RemoveComment(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
+func (h *Handler) CreateComment(c *gin.Context) {
+	var item models.NewsComment
+	err := c.ShouldBind(&item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	err = h.repository.createComment(c, &item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	c.JSON(200, item)
+}
+
+func (h *Handler) UpdateComment(c *gin.Context) {
+	var item models.NewsComment
+	err := c.Bind(&item)
+	err = h.repository.updateComment(c, &item)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
+}
+
 func (h *Handler) DeleteLike(c *gin.Context) {
 	err := h.repository.deleteLike(c, c.Param("id"))
 	if err != nil {
@@ -205,4 +219,23 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 		c.JSON(500, err)
 	}
 	c.JSON(200, item)
+}
+
+type monthParams struct {
+	Month       int        `form:"month"`
+	Year       int        `form:"year"`
+}
+func (h *Handler) GetByMonth(c *gin.Context) {
+	var monthParams monthParams
+	err := c.BindQuery(&monthParams)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	news, err := h.repository.getByMonth(c, &monthParams)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	c.JSON(200, news)
 }
