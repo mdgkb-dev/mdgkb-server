@@ -24,6 +24,7 @@ type IHandler interface {
 	DeleteLike(c *gin.Context) error
 	DeleteComment(c *gin.Context) error
 	UpdateStatus(c *gin.Context) error
+	UpdateComment(c *gin.Context) error
 }
 
 type Handler struct {
@@ -104,21 +105,6 @@ func (h *Handler) CreateLike(c *gin.Context) {
 	c.JSON(200, item)
 }
 
-func (h *Handler) CreateComment(c *gin.Context) {
-	var item models.NewsComment
-	err := c.ShouldBind(&item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-
-	err = h.repository.createComment(c, &item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-
-	c.JSON(200, item)
-}
-
 type newsParams struct {
 	PublishedOn *time.Time `form:"publishedOn"`
 	Limit       int        `form:"limit"`
@@ -187,6 +173,32 @@ func (h *Handler) Delete(c *gin.Context) {
 func (h *Handler) RemoveComment(c *gin.Context) {
 	err := h.repository.removeComment(c, c.Param("id"))
 	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
+}
+
+func (h *Handler) CreateComment(c *gin.Context) {
+	var item models.NewsComment
+	err := c.ShouldBind(&item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	err = h.repository.createComment(c, &item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	c.JSON(200, item)
+}
+
+func (h *Handler) UpdateComment(c *gin.Context) {
+	var item models.NewsComment
+	err := c.Bind(&item)
+	err = h.repository.updateComment(c, &item)
+	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	c.JSON(200, gin.H{})

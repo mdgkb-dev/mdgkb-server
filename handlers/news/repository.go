@@ -20,6 +20,7 @@ type IRepository interface {
 	removeTag(*gin.Context, *models.NewsToTag) error
 	removeComment(*gin.Context, string) error
 	createComment(*gin.Context, *models.NewsComment) error
+	updateComment(*gin.Context, *models.NewsComment) error
 	getAll(*gin.Context, *newsParams) ([]models.News, error)
 	updateStatus(*gin.Context, *models.News) error
 	delete(*gin.Context, string) error
@@ -104,6 +105,11 @@ func (r *Repository) removeComment(ctx *gin.Context, id string) error {
 
 func (r *Repository) createComment(ctx *gin.Context, item *models.NewsComment) error {
 	_, err := r.db.NewInsert().Model(item).Exec(ctx)
+	return err
+}
+
+func (r *Repository) updateComment(ctx *gin.Context, item *models.NewsComment) error {
+	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
 	return err
 }
 
