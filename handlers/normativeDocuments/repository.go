@@ -25,8 +25,6 @@ func NewRepository(db *bun.DB) *Repository {
 }
 
 func (r *Repository) create(ctx *gin.Context, document *models.NormativeDocument) (err error) {
-	document.NormativeDocumentTypeId = document.NormativeDocumentType.ID
-
 	if document.FileInfo != nil {
 		_, err = r.db.NewInsert().Model(document.FileInfo).Exec(ctx)
 
@@ -61,18 +59,12 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.NormativeDocument,
 }
 
 func (r *Repository) update(ctx *gin.Context, document *models.NormativeDocument) (err error) {
-	document.NormativeDocumentTypeId = document.NormativeDocumentType.ID
-
-	if document.FileInfo == nil {
-		_, err = r.db.NewUpdate().Model(document).
-			Column("id", "normative_document_type_id", "name").
-			Where("id = ?", document.ID).
+	if document.FileInfo != nil {
+		_, err = r.db.NewInsert().Model(document.FileInfo).
+			On("conflict (id) do update").
+			Set("original_name = ?", document.FileInfo.OriginalName).
+			Set("file_system_path = ?", document.FileInfo.FileSystemPath).
 			Exec(ctx)
-		return err
-	}
-
-	if document.FileInfo != nil && document.FileInfo.ID == uuid.Nil {
-		_, err = r.db.NewInsert().Model(document.FileInfo).Exec(ctx)
 
 		if err != nil {
 			return err
@@ -86,6 +78,32 @@ func (r *Repository) update(ctx *gin.Context, document *models.NormativeDocument
 }
 
 func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
+	var document models.NormativeDocument
+	err = r.db.NewSelect().Model(&document).Where("id = ?", id).Scan(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	var info models.FileInfo
+
+	if document.FileInfoId != uuid.Nil {
+		err = r.db.NewSelect().Model(&info).Where("id = ?", document.FileInfoId).Scan(ctx)
+
+		if err != nil {
+			return err
+		}
+	}
+
 	_, err = r.db.NewDelete().Model(&models.NormativeDocument{}).Where("id = ?", id).Exec(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	if document.FileInfoId != uuid.Nil {
+		_, err = r.db.NewDelete().Model(&models.FileInfo{}).Where("id = ?", info.ID).Exec(ctx)
+	}
+
 	return err
 }

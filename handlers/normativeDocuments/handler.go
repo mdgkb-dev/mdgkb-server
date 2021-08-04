@@ -1,10 +1,13 @@
 package normativeDocuments
 
 import (
+	"encoding/json"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"github.com/kennygrant/sanitize"
 )
 
 type IHandler interface {
@@ -29,16 +32,33 @@ func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
 
 func (h *Handler) Create(c *gin.Context) {
 	var document models.NormativeDocument
-	err := c.Bind(&document)
+	form, _ := c.MultipartForm()
+	err := json.Unmarshal([]byte(form.Value["form"][0]), &document)
 
 	if err != nil {
 		c.JSON(500, err)
+		return
+	}
+
+	document.NormativeDocumentTypeId = document.NormativeDocumentType.ID
+
+	if document.FileInfo != nil {
+		document.FileInfo.ID = uuid.New()
+		document.FileInfo.FileSystemPath = "normative-documents" + "/" + document.FileInfo.ID.String() + ".pdf"
+		document.FileInfo.OriginalName = sanitize.BaseName(document.FileInfo.OriginalName)
+		err = h.uploader.Upload(c, form.File["files"][0], document.FileInfo.FileSystemPath)
+
+		if err != nil {
+			c.JSON(500, err)
+			return
+		}
 	}
 
 	err = h.repository.create(c, &document)
 
 	if err != nil {
 		c.JSON(500, err)
+		return
 	}
 
 	c.JSON(200, gin.H{})
@@ -65,27 +85,51 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.NormativeDocument
-	err := c.Bind(&item)
+	var document models.NormativeDocument
+	form, _ := c.MultipartForm()
+	err := json.Unmarshal([]byte(form.Value["form"][0]), &document)
 
 	if err != nil {
 		c.JSON(500, err)
+		return
 	}
 
-	err = h.repository.update(c, &item)
+	document.NormativeDocumentTypeId = document.NormativeDocumentType.ID
+
+	if len(form.File["files"]) > 0 {
+		// TODO: Переделать на замену файла, вместо создания нового.
+
+		if document.FileInfo.ID == uuid.Nil {
+			document.FileInfo.ID = uuid.New()
+		}
+
+		document.FileInfo.FileSystemPath = "normative-documents" + "/" + document.FileInfo.ID.String() + ".pdf"
+		document.FileInfo.OriginalName = sanitize.BaseName(document.FileInfo.OriginalName)
+		err = h.uploader.Upload(c, form.File["files"][0], document.FileInfo.FileSystemPath)
+
+		if err != nil {
+			c.JSON(500, err)
+			return
+		}
+	}
+
+	err = h.repository.update(c, &document)
 
 	if err != nil {
 		c.JSON(500, err)
+		return
 	}
 
 	c.JSON(200, gin.H{})
 }
 
 func (h *Handler) Delete(c *gin.Context) {
+	// TODO: Добавить возможность удаления файла.
 	err := h.repository.delete(c, c.Param("id"))
 
 	if err != nil {
 		c.JSON(500, err)
+		return
 	}
 
 	c.JSON(200, gin.H{})
