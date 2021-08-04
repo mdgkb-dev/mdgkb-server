@@ -14,6 +14,7 @@ func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
 	var h = handler.NewHandler(handler.NewRepository(db), uploader)
 	r.GET("/", h.GetAll)
 	r.GET("/:slug", h.GetBySLug)
+	r.GET("/month", h.GetByMonth)
 	r.POST("", h.Create)
 	r.PUT("/:id", h.Update)
 	r.POST("/like", h.CreateLike)

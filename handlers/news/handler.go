@@ -13,6 +13,7 @@ import (
 type IHandler interface {
 	GetAll(c *gin.Context) error
 	GetBySLug(c *gin.Context) error
+	GetByMonth(c *gin.Context) error
 	Create(c *gin.Context) error
 	Update(c *gin.Context) error
 	CreateLike(c *gin.Context) error
@@ -121,6 +122,7 @@ func (h *Handler) CreateComment(c *gin.Context) {
 type newsParams struct {
 	PublishedOn *time.Time `form:"publishedOn"`
 	Limit       int        `form:"limit"`
+	FilterTags	string	 `form:"filterTags"`
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -205,4 +207,23 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 		c.JSON(500, err)
 	}
 	c.JSON(200, item)
+}
+
+type monthParams struct {
+	Month       int        `form:"month"`
+	Year       int        `form:"year"`
+}
+func (h *Handler) GetByMonth(c *gin.Context) {
+	var monthParams monthParams
+	err := c.BindQuery(&monthParams)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	news, err := h.repository.getByMonth(c, &monthParams)
+	if err != nil {
+		c.JSON(500, err)
+	}
+
+	c.JSON(200, news)
 }

@@ -3,6 +3,7 @@ package news
 import (
 	"fmt"
 	"mdgkb/mdgkb-server/models"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -24,6 +25,7 @@ type IRepository interface {
 	delete(*gin.Context, string) error
 	deleteLike(*gin.Context, string) error
 	getBySlug(*gin.Context, string) (models.News, error)
+	getByMonth(*gin.Context, *monthParams) ([]models.News, error)
 }
 
 type Repository struct {
@@ -118,6 +120,11 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 	if newsParams.PublishedOn != nil {
 		query = query.Where("published_on < ?", newsParams.PublishedOn)
 	}
+	if newsParams.FilterTags != "" {
+		for _, tagId := range strings.Split(newsParams.FilterTags, ",") {
+			query = query.Where("exists (select * from news_to_tags as ntt where ntt.news_id = news.id and ntt.tag_id = ?)", tagId)
+		}	
+	}
 	err = query.Scan(ctx)
 	return news, err
 }
@@ -146,4 +153,12 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 func (r *Repository) deleteLike(ctx *gin.Context, id string) (err error) {
 	_, err = r.db.NewDelete().Model(&models.NewsLike{}).Where("id = ?", id).Exec(ctx)
 	return err
+}
+
+func (r *Repository) getByMonth(ctx *gin.Context, monthParams *monthParams) (news []models.News, err error) {
+	query := r.db.NewSelect().Model(&news)
+	query = query.Where("extract(year from news.published_on) = ?", monthParams.Year).Where("extract(month from news.published_on) = ?", monthParams.Month)
+	err = query.Scan(ctx)
+	fmt.Println("=====>", news)
+	return news, err
 }
