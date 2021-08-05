@@ -49,19 +49,31 @@ func (h *Handler) Create(c *gin.Context) {
 		c.JSON(500, err)
 	}
 
-	err = h.uploader.Upload(c, form.File["files"][0], item.FileInfo.OriginalName)
+	err = h.uploader.Upload(c, form.File["previewFile"][0], item.FileInfo.OriginalName)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	item.FileInfo.FileSystemPath = item.FileInfo.OriginalName
+
+	for i, file := range form.File["gallery"] {
+		//fmt.Println(form.File["gallery"][i])
+		err = h.uploader.Upload(c, file, item.NewsImages[i].FileInfo.OriginalName)
+		fmt.Println(item.NewsImages[i].FileInfo.OriginalName)
+		item.NewsImages[i].FileInfo.FileSystemPath = item.NewsImages[i].FileInfo.OriginalName
+		if err != nil {
+			fmt.Println(err)
+			c.JSON(500, err)
+		}
+	}
+
 	err = h.repository.create(c, &item)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(500, err)
 	}
 
-	c.JSON(200, gin.H{})
+	c.JSON(401, gin.H{})
 }
 
 func (h *Handler) RemoveTag(c *gin.Context) {
@@ -108,7 +120,7 @@ func (h *Handler) CreateLike(c *gin.Context) {
 type newsParams struct {
 	PublishedOn *time.Time `form:"publishedOn"`
 	Limit       int        `form:"limit"`
-	FilterTags	string	 `form:"filterTags"`
+	FilterTags  string     `form:"filterTags"`
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -214,7 +226,6 @@ func (h *Handler) DeleteLike(c *gin.Context) {
 
 func (h *Handler) GetBySLug(c *gin.Context) {
 	item, err := h.repository.getBySlug(c, c.Param("slug"))
-	fmt.Println(err)
 	if err != nil {
 		c.JSON(500, err)
 	}
@@ -222,9 +233,10 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 }
 
 type monthParams struct {
-	Month       int        `form:"month"`
-	Year       int        `form:"year"`
+	Month int `form:"month"`
+	Year  int `form:"year"`
 }
+
 func (h *Handler) GetByMonth(c *gin.Context) {
 	var monthParams monthParams
 	err := c.BindQuery(&monthParams)

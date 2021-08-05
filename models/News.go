@@ -18,6 +18,7 @@ type News struct {
 	Tags         []Tag          `bun:"m2m:news_to_tags" json:"tags"`
 	NewsLikes    []*NewsLike    `bun:"rel:has-many" json:"newsLikes"`
 	NewsComments []*NewsComment `bun:"rel:has-many" json:"newsComments"`
+	NewsImages   []*NewsImage   `bun:"rel:has-many" json:"newsImages"`
 	FileInfo     *FileInfo      `bun:"rel:belongs-to" json:"fileInfo"`
 	FileInfoId   uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
 }

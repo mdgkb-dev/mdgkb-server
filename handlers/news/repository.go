@@ -1,7 +1,6 @@
 package news
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"strings"
 
@@ -75,7 +74,6 @@ func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
 	for _, tag := range news.Tags {
 		newsTag := new(models.NewsToTag)
 		r.db.NewSelect().Model(newsTag).Where("tag_id = ?", tag.ID).Scan(ctx)
-		fmt.Println("newsTag ===>", newsTag.ID == uuid.Nil,"newsTag.ID = ", newsTag.ID, "tagid== ", tag.ID)
 		newsTags := models.NewsToTag{TagId: tag.ID, NewsId: news.ID}
 		_, err = r.db.NewInsert().Model(&newsTags).Exec(ctx)
 	}
@@ -129,7 +127,7 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 	if newsParams.FilterTags != "" {
 		for _, tagId := range strings.Split(newsParams.FilterTags, ",") {
 			query = query.Where("exists (select * from news_to_tags as ntt where ntt.news_id = news.id and ntt.tag_id = ?)", tagId)
-		}	
+		}
 	}
 	err = query.Scan(ctx)
 	return news, err
@@ -142,6 +140,7 @@ func (r *Repository) getBySlug(ctx *gin.Context, slug string) (item models.News,
 		Relation("FileInfo").
 		Relation("NewsLikes").
 		Relation("NewsComments.User").
+		Relation("NewsImages.FileInfo").
 		Where("slug = ?", slug).Scan(ctx)
 	return item, err
 }
@@ -165,6 +164,5 @@ func (r *Repository) getByMonth(ctx *gin.Context, monthParams *monthParams) (new
 	query := r.db.NewSelect().Model(&news)
 	query = query.Where("extract(year from news.published_on) = ?", monthParams.Year).Where("extract(month from news.published_on) = ?", monthParams.Month)
 	err = query.Scan(ctx)
-	fmt.Println("=====>", news)
 	return news, err
 }
