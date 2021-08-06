@@ -1,14 +1,12 @@
 package news
 
 import (
-	"fmt"
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
-	"github.com/google/uuid"
-
 	"github.com/uptrace/bun"
 )
 
@@ -40,11 +38,21 @@ func NewRepository(db *bun.DB) *Repository {
 func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
 	_, err = r.db.NewInsert().Model(news.FileInfo).Exec(ctx)
 	news.FileInfoId = news.FileInfo.ID
+	_, err = r.db.NewInsert().Model(news.MainImage).Exec(ctx)
+	news.MainImageID = news.MainImage.ID
+
 	_, err = r.db.NewInsert().Model(news).Exec(ctx)
 
 	for _, tag := range news.Tags {
 		newsTags := models.NewsToTag{TagId: tag.ID, NewsId: news.ID}
 		_, err = r.db.NewInsert().Model(newsTags).Exec(ctx)
+	}
+
+	for _, newsImage := range news.NewsImages {
+		_, err = r.db.NewInsert().Model(newsImage.FileInfo).Exec(ctx)
+		newsImage.FileInfoId = newsImage.FileInfo.ID
+		newsImage.NewsId = news.ID
+		_, err = r.db.NewInsert().Model(newsImage).Exec(ctx)
 	}
 
 	return err
@@ -55,6 +63,11 @@ func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
 		_, err = r.db.NewUpdate().Model(news.FileInfo).Where("id = ?", news.FileInfo.ID).Exec(ctx)
 	}
 	news.FileInfoId = news.FileInfo.ID
+	if news.MainImage.ID != uuid.Nil {
+		_, err = r.db.NewUpdate().Model(news.MainImage).Where("id = ?", news.MainImage.ID).Exec(ctx)
+	}
+	news.MainImageID = news.MainImage.ID
+
 	_, err = r.db.NewUpdate().Model(news).Where("id = ?", news.ID).Exec(ctx)
 
 	// TODO Стас, посмотри, плз
@@ -75,10 +88,36 @@ func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
 	for _, tag := range news.Tags {
 		newsTag := new(models.NewsToTag)
 		r.db.NewSelect().Model(newsTag).Where("tag_id = ?", tag.ID).Scan(ctx)
-		fmt.Println("newsTag ===>", newsTag.ID == uuid.Nil,"newsTag.ID = ", newsTag.ID, "tagid== ", tag.ID)
 		newsTags := models.NewsToTag{TagId: tag.ID, NewsId: news.ID}
 		_, err = r.db.NewInsert().Model(&newsTags).Exec(ctx)
 	}
+
+	if len(news.NewsImagesForDelete) > 0 {
+		_, err = r.db.NewDelete().Model((*models.NewsImage)(nil)).Where("id IN (?)", bun.In(news.NewsImagesForDelete)).Exec(ctx)
+	}
+	if len(news.NewsImages) == 0 {
+		return err
+	}
+	var fileInfos []models.FileInfo
+	for _, newsImage := range news.NewsImages {
+		fileInfos = append(fileInfos, *newsImage.FileInfo)
+	}
+
+	_, err = r.db.NewInsert().Model(&fileInfos).
+		On("CONFLICT (id) DO UPDATE").
+		Set("original_name = EXCLUDED.original_name").
+		Set("file_system_path = EXCLUDED.file_system_path").
+		Exec(ctx)
+
+	for i, newsImage := range news.NewsImages {
+		newsImage.FileInfoId = fileInfos[i].ID
+		newsImage.NewsId = news.ID
+	}
+
+	_, err = r.db.NewInsert().Model(&news.NewsImages).On("CONFLICT (id) DO UPDATE").
+		Set("description = EXCLUDED.description").
+		Set("file_info_id = EXCLUDED.file_info_id").
+		Exec(ctx)
 
 	return err
 }
@@ -129,7 +168,7 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 	if newsParams.FilterTags != "" {
 		for _, tagId := range strings.Split(newsParams.FilterTags, ",") {
 			query = query.Where("exists (select * from news_to_tags as ntt where ntt.news_id = news.id and ntt.tag_id = ?)", tagId)
-		}	
+		}
 	}
 	err = query.Scan(ctx)
 	return news, err
@@ -140,8 +179,10 @@ func (r *Repository) getBySlug(ctx *gin.Context, slug string) (item models.News,
 		Relation("Categories").
 		Relation("Tags").
 		Relation("FileInfo").
+		Relation("MainImage").
 		Relation("NewsLikes").
 		Relation("NewsComments.User").
+		Relation("NewsImages.FileInfo").
 		Where("slug = ?", slug).Scan(ctx)
 	return item, err
 }
@@ -165,6 +206,5 @@ func (r *Repository) getByMonth(ctx *gin.Context, monthParams *monthParams) (new
 	query := r.db.NewSelect().Model(&news)
 	query = query.Where("extract(year from news.published_on) = ?", monthParams.Year).Where("extract(month from news.published_on) = ?", monthParams.Month)
 	err = query.Scan(ctx)
-	fmt.Println("=====>", news)
 	return news, err
 }
