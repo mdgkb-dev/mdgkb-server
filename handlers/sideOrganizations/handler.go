@@ -1,9 +1,10 @@
 package sideOrganizations
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 type IHandler interface {
@@ -33,11 +34,13 @@ func (h *Handler) Create(c *gin.Context) {
 	err := c.Bind(&item)
 	if err != nil {
 		c.JSON(500, err)
+		return
 	}
 
 	err = h.repository.create(c, &item)
 	if err != nil {
 		c.JSON(500, err)
+		return
 	}
 
 	c.JSON(200, gin.H{})
