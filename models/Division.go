@@ -10,5 +10,6 @@ type Division struct {
 	Email   string    `json:"email"`
 	Address string    `json:"address"`
 	Slug    string    `json:"slug"`
+	Doctors  []*Doctor `bun:"rel:has-many" json:"doctors"`
 	FloorId uuid.UUID `bun:"type:uuid" json:"floorId"`
 }
