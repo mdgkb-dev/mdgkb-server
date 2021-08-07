@@ -1,0 +1,9 @@
+CREATE TABLE doctors
+(
+    id             uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
+    human_id uuid  REFERENCES humen (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    division_id uuid  REFERENCES divisions (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
+    education         VARCHAR,
+    schedule          VARCHAR,
+    tags              VARCHAR
+);

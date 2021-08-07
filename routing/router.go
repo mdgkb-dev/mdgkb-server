@@ -6,6 +6,7 @@ import (
 	"mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/buildings"
 	"mdgkb/mdgkb-server/routing/carousels"
+	"mdgkb/mdgkb-server/routing/doctors"
 	"mdgkb/mdgkb-server/routing/divisions"
 	"mdgkb/mdgkb-server/routing/news"
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
@@ -28,6 +29,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	auth.Init(api.Group("/auth"), db, redisClient)
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	carousels.Init(api.Group("/carousels"), db, localUploader)
+	doctors.Init(api.Group("/doctors"), db, localUploader)
 	divisions.Init(api.Group("/divisions"), db, localUploader)
 	news.Init(api.Group("/news"), db, localUploader)
 	normativeDocumentTypes.Init(api.Group("/normative-document-types"), db, localUploader)
