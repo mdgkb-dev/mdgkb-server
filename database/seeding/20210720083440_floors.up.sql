@@ -2,6 +2,7 @@ INSERT INTO public.floors (id, number, building_id)
 VALUES  ('0ba8fc80-90c0-42a4-b4e9-279b3acb68fc', 1, 'f46e50db-e079-4ce9-99de-1c482f8a37a5'),
         ('bbd8cc70-1a20-42ee-af2a-0c74e0e39b73', 1, 'adaf2049-1e32-48fe-87e3-11818dc21aa1'),
         ('aa81022d-b3b8-4031-b940-8651d6705cba', 1, '2a5c5df0-65a1-4a6b-ad59-b558ac5964a6'),
+        ('96f779a5-4f59-4e2b-bace-1bf3ec3c571f', 1, '3a2b52ca-be9a-429e-98fb-31177b83e261'),
         ('6630affd-37c2-406a-abb0-70c0ccc8f18b', 1, '81299614-b64f-4ba7-9cfa-3210569a1908'),
         ('f3e88720-3e58-4c20-9925-5c7e6c6f7fce', 1, '0ec3712e-d067-48f2-b77c-8e2d995ee9f0'),
         ('d5e8342f-3220-457c-9543-b3e9d0735844', 1, '490f2ea7-fca1-4264-9caa-00a0e1759590'),
@@ -17,3 +18,4 @@ VALUES  ('0ba8fc80-90c0-42a4-b4e9-279b3acb68fc', 1, 'f46e50db-e079-4ce9-99de-1c4
         ('359821a3-0050-4dd4-9088-7819c39770d2', 1, 'ed60bd07-e091-4b48-8666-320815de3bdc'),
         ('37c8c5e2-3928-44a7-8479-f3ab888ee68b', 1, '41a2e572-8dde-4255-8d7d-f205ebdd91a5'),
         ('0c9ce85c-f329-45ef-acd2-5ddd015e9a4c', 1, 'eb1dc953-cd3d-4fed-bded-70c7598aa327');
+
