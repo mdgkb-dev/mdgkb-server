@@ -46,7 +46,7 @@ func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
 
 	for _, tag := range news.Tags {
 		newsTags := models.NewsToTag{TagId: tag.ID, NewsId: news.ID}
-		_, err = r.db.NewInsert().Model(newsTags).Exec(ctx)
+		_, err = r.db.NewInsert().Model(&newsTags).Exec(ctx)
 	}
 
 	for _, newsImage := range news.NewsImages {

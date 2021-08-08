@@ -40,7 +40,7 @@ func (h *Handler) Create(c *gin.Context) {
 		c.JSON(500, err)
 	}
 	fmt.Println(item)
-	c.JSON(200, gin.H{})
+	c.JSON(200, item)
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
