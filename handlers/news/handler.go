@@ -152,28 +152,23 @@ func (h *Handler) Update(c *gin.Context) {
 	}
 
 	if len(form.File["mainImage"]) > 0 {
-		err = h.uploader.Upload(c, form.File["mainImage"][0], item.MainImage.OriginalName)
+		err = h.uploader.Upload(c, form.File["mainImage"][0], item.MainImage.FileSystemPath)
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(500, err)
 		}
-		item.MainImage.FileSystemPath = item.MainImage.OriginalName
 	}
 
 	if len(form.File["previewFile"]) > 0 {
-		err = h.uploader.Upload(c, form.File["previewFile"][0], item.FileInfo.OriginalName)
+		err = h.uploader.Upload(c, form.File["previewFile"][0], item.FileInfo.FileSystemPath)
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(500, err)
 		}
-		item.FileInfo.FileSystemPath = item.FileInfo.OriginalName
 	}
 
 	for i, file := range form.File["gallery"] {
 		err = h.uploader.Upload(c, file, item.NewsImagesNames[i])
-		//err = h.uploader.Upload(c, file, item.NewsImages[i].FileInfo.OriginalName)
-		fmt.Println(item.NewsImages[i].FileInfo.OriginalName)
-		item.NewsImages[i].FileInfo.FileSystemPath = item.NewsImages[i].FileInfo.OriginalName
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(500, err)
