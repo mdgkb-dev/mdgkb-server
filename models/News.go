@@ -25,6 +25,8 @@ type News struct {
 	FileInfoId          uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
 	MainImage           *FileInfo      `bun:"rel:belongs-to" json:"mainImage"`
 	MainImageID         uuid.UUID      `bun:"type:uuid" json:"mainImageId"`
+	NewsViews           []*NewsViews   `bun:"rel:has-many" json:"newsViews"`
+	ViewsCount          int            `bun:"-" json:"viewsCount"`
 }
 
 type NewsToCategory struct {

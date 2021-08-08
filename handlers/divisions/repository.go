@@ -2,10 +2,11 @@ package divisions
 
 import (
 	"fmt"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 type IRepository interface {
@@ -53,5 +54,9 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 
 func (r *Repository) update(ctx *gin.Context, item *models.Division) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
-	return err
+
+	for _, doctor := range item.Doctors {
+		r.db.NewUpdate().Model(doctor).Where("id =?", doctor.ID).Exec(ctx)
+	}
+return err
 }
