@@ -6,8 +6,8 @@ import (
 	"mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/buildings"
 	"mdgkb/mdgkb-server/routing/carousels"
-	"mdgkb/mdgkb-server/routing/doctors"
 	"mdgkb/mdgkb-server/routing/divisions"
+	"mdgkb/mdgkb-server/routing/doctors"
 	"mdgkb/mdgkb-server/routing/news"
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
@@ -23,7 +23,7 @@ import (
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Config) {
 	localUploader := helpers.NewLocalUploader(&config.UploadPath)
-	r.Static("/static", "./static")
+	r.Static("/static", "./static/")
 	api := r.Group("/api/v1")
 
 	auth.Init(api.Group("/auth"), db, redisClient)
