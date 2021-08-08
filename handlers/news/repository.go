@@ -23,8 +23,9 @@ type IRepository interface {
 	updateStatus(*gin.Context, *models.News) error
 	delete(*gin.Context, string) error
 	deleteLike(*gin.Context, string) error
-	getBySlug(*gin.Context, string) (models.News, error)
+	getBySlug(*gin.Context, string) (*models.News, error)
 	getByMonth(*gin.Context, *monthParams) ([]models.News, error)
+	createViewOfNews(*gin.Context, *models.NewsViews) error
 }
 
 type Repository struct {
@@ -157,7 +158,8 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 		Relation("Categories").
 		Relation("Tags").
 		Relation("FileInfo").
-		Relation("NewsLikes")
+		Relation("NewsLikes").
+		Relation("NewsViews")
 
 	if newsParams.Limit != 0 {
 		query = query.Order("published_on DESC").Limit(newsParams.Limit)
@@ -174,16 +176,19 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 	return news, err
 }
 
-func (r *Repository) getBySlug(ctx *gin.Context, slug string) (item models.News, err error) {
-	err = r.db.NewSelect().Model(&item).
+func (r *Repository) getBySlug(ctx *gin.Context, slug string) (*models.News, error) {
+	item := new(models.News)
+	err := r.db.NewSelect().Model(item).
 		Relation("Categories").
 		Relation("Tags").
 		Relation("FileInfo").
 		Relation("MainImage").
 		Relation("NewsLikes").
+		Relation("NewsViews").
 		Relation("NewsComments.User").
 		Relation("NewsImages.FileInfo").
-		Where("slug = ?", slug).Scan(ctx)
+		Where("news.slug = ?", slug).Scan(ctx)
+
 	return item, err
 }
 
@@ -207,4 +212,9 @@ func (r *Repository) getByMonth(ctx *gin.Context, monthParams *monthParams) (new
 	query = query.Where("extract(year from news.published_on) = ?", monthParams.Year).Where("extract(month from news.published_on) = ?", monthParams.Month)
 	err = query.Scan(ctx)
 	return news, err
+}
+
+func (r *Repository) createViewOfNews(ctx *gin.Context, newsViews *models.NewsViews) (err error) {
+	_, err = r.db.NewInsert().Model(newsViews).On("CONFLICT (ip_address, news_id) DO NOTHING").Exec(ctx)
+	return err
 }

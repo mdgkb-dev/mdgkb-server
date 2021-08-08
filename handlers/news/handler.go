@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"mdgkb/mdgkb-server/models"
 	"time"
 
@@ -136,7 +137,9 @@ func (h *Handler) GetAll(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
-
+	for i := range news {
+		news[i].ViewsCount = len(news[i].NewsViews)
+	}
 	c.JSON(200, news)
 }
 
@@ -253,6 +256,11 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
+	item.ViewsCount = len(item.NewsViews)
+	ip, err := httpHelper.GetClientIPHelper(c.Request)
+	newsView := models.NewsViews{IPAddress: ip, NewsID: item.ID}
+	err = h.repository.createViewOfNews(c, &newsView)
+
 	c.JSON(200, item)
 }
 
