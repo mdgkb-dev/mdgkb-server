@@ -1,6 +1,7 @@
 package doctors
 
 import (
+	"encoding/json"
 	"fmt"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
@@ -33,11 +34,20 @@ func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Doctor
-	err := c.Bind(&item)
+	form, _ := c.MultipartForm()
+	fmt.Println(form)
+	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(500, err)
 	}
+
+	err = h.uploader.Upload(c, form.File["previewFile"][0], item.FileInfo.FileSystemPath)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(500, err)
+	}
+
 	err = h.repository.create(c, &item)
 	if err != nil {
 		fmt.Println(err)
@@ -59,6 +69,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 func (h *Handler) Get(c *gin.Context) {
 	item, err := h.repository.get(c, c.Param("id"))
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	c.JSON(200, item)
@@ -67,6 +78,7 @@ func (h *Handler) Get(c *gin.Context) {
 func (h *Handler) GetByDivisionId(c *gin.Context) {
 	item, err := h.repository.getByDivisionId(c, c.Param("divisionId"))
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	c.JSON(200, item)
@@ -76,10 +88,12 @@ func (h *Handler) UpdateStatus(c *gin.Context) {
 	var item models.Doctor
 	err := c.Bind(&item)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	err = h.repository.updateStatus(c, &item)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	c.JSON(200, gin.H{})
@@ -88,6 +102,7 @@ func (h *Handler) UpdateStatus(c *gin.Context) {
 func (h *Handler) Delete(c *gin.Context) {
 	err := h.repository.delete(c, c.Param("id"))
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	c.JSON(200, gin.H{})
@@ -95,12 +110,25 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Doctor
-	err := c.Bind(&item)
+	form, _ := c.MultipartForm()
+	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
+
+	if len(form.File["previewFile"]) > 0 {
+		err = h.uploader.Upload(c, form.File["previewFile"][0], item.FileInfo.OriginalName)
+		if err != nil {
+			fmt.Println(err)
+			c.JSON(500, err)
+		}
+		item.FileInfo.FileSystemPath = item.FileInfo.OriginalName
+	}
+
 	err = h.repository.update(c, &item)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	c.JSON(200, gin.H{})

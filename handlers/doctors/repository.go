@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
 
@@ -28,10 +29,12 @@ func NewRepository(db *bun.DB) *Repository {
 }
 
 func (r *Repository) create(ctx *gin.Context, item *models.Doctor) (err error) {
-	fmt.Println(item.DivisionId)
-	r.db.NewInsert().Model(item.Human).Exec(ctx)
+	_, err = r.db.NewInsert().Model(item.FileInfo).Exec(ctx)
+	item.FileInfoId = item.FileInfo.ID
+	_, err = r.db.NewInsert().Model(item.Human).Exec(ctx)
 	item.HumanId = item.Human.ID
 	_, err = r.db.NewInsert().Model(item).Exec(ctx)
+	fmt.Println(err)
 	return err
 }
 
@@ -47,6 +50,7 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.Doctor, err error)
 func (r *Repository) get(ctx *gin.Context, id string) (item models.Doctor, err error) {
 	err = r.db.NewSelect().Model(&item).Where("doctor.id = ?", id).
 	Relation("Human").
+	Relation("FileInfo").
 	Scan(ctx)
 	return item, err
 }
@@ -69,6 +73,10 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 }
 
 func (r *Repository) update(ctx *gin.Context, item *models.Doctor) (err error) {
+	if item.FileInfo.ID != uuid.Nil {
+		_, err = r.db.NewUpdate().Model(item.FileInfo).Where("id = ?", item.FileInfo.ID).Exec(ctx)
+	}
+	item.FileInfoId = item.FileInfo.ID
 	r.db.NewUpdate().Model(item.Human).Where("id = ?", item.Human.ID).Exec(ctx)
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
 	return err

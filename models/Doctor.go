@@ -10,5 +10,8 @@ type Doctor struct {
 	HumanId    uuid.UUID `bun:"type:uuid" json:"humanId"`
 	Education  string    `json:"education"`
 	Schedule   string    `json:"schedule"`
+	Position   string    `json:"position"`
 	Tags       string    `json:"tags"`
+	FileInfo   *FileInfo `bun:"rel:belongs-to" json:"fileInfo"`
+	FileInfoId uuid.UUID `bun:"type:uuid" json:"fileInfoId"`
 }

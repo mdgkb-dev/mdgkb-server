@@ -1,7 +1,6 @@
 package divisions
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +26,6 @@ func NewRepository(db *bun.DB) *Repository {
 }
 
 func (r *Repository) create(ctx *gin.Context, item *models.Division) (err error) {
-	fmt.Println("===>", item)
 	_, err = r.db.NewInsert().Model(item).Exec(ctx)
 	return err
 }
@@ -39,6 +37,10 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.Division, err erro
 
 func (r *Repository) get(ctx *gin.Context, id string) (item models.Division, err error) {
 	err = r.db.NewSelect().Model(&item).Where("id = ?", id).Scan(ctx)
+	err = r.db.NewSelect().Model(&item.Doctors).Where("division_id = ?", id).
+		Relation("FileInfo").
+		Relation("Human").
+		Scan(ctx)
 	return item, err
 }
 
@@ -58,5 +60,5 @@ func (r *Repository) update(ctx *gin.Context, item *models.Division) (err error)
 	for _, doctor := range item.Doctors {
 		r.db.NewUpdate().Model(doctor).Where("id =?", doctor.ID).Exec(ctx)
 	}
-return err
+	return err
 }

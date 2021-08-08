@@ -5,5 +5,7 @@ CREATE TABLE doctors
     division_id uuid  REFERENCES divisions (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
     education         VARCHAR,
     schedule          VARCHAR,
-    tags              VARCHAR
+    position          VARCHAR,
+    tags              VARCHAR,
+    file_info_id uuid  REFERENCES file_infos(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
