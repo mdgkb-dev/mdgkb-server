@@ -94,6 +94,7 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.SideOrganization, 
 		Relation("ContactInfo.PostAddresses").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Websites").
+		Order("side_organization.name").
 		Scan(ctx)
 
 	return items, err
