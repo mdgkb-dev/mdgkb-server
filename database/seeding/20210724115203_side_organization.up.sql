@@ -72,7 +72,7 @@ begin
          ('129626, г. Москва, Графский переулок, д.4/9', null, contact_info_id_15),
          ('127994, ГСП-4, г. Москва, Рахмановский пер, д.3', null, contact_info_id_16),
          ('125040, г. Москва, Ленинградский пр-т, д. 13, стр. 1', null, contact_info_id_17),
-         ('000000, г. Москва, 2-й Автозаводский проезд, дом 3', null, contact_info_id_18);
+         ('115280, г. Москва, 2-й Автозаводский проезд, дом 3', null, contact_info_id_18);
 
       insert into
          public.telephone_numbers (number, description, contact_info_id)
@@ -114,20 +114,20 @@ begin
          ('+7 (495) 318-47-71', null, contact_info_id_15),
          ('+7 (495) 687-40-35', null, contact_info_id_15),
          ('+7 (495) 616-65-69', '(факс)', contact_info_id_15),
-         ('+7 (495) 628-44-53', 'справочная служба', contact_info_id_16),
-         ('+7 (495) 627-29-44', 'справочная служба', contact_info_id_16),
-         ('+7 (495) 627-24-00', 'многоканальный телефон', contact_info_id_16),
-         ('+7 (495) 916-03-09', 'горячая линия', contact_info_id_17),
+         ('+7 (495) 628-44-53', 'Справочная служба', contact_info_id_16),
+         ('+7 (495) 627-29-44', 'Справочная служба', contact_info_id_16),
+         ('+7 (495) 627-24-00', 'Многоканальный телефон', contact_info_id_16),
+         ('+7 (495) 916-03-09', 'Горячая линия', contact_info_id_17),
          ('+7 (495) 318-00-11', null, contact_info_id_18);
 
       insert into
          public.websites (address, description, contact_info_id)
       values
-         ('mosgorzdrav.ru', 'официальный сайт в сети интернет', contact_info_id_05),
-         ('mgfoms.ru', 'официальный сайт в сети интернет', contact_info_id_12),
-         ('77reg.roszdravnadzor.ru', 'официальный сайт в сети интернет', contact_info_id_14),
-         ('77reg.roszdravnadzor.ru', 'официальный сайт в сети интернет', contact_info_id_15),
-         ('rosminzdrav.ru', 'официальный сайт в сети интернет', contact_info_id_16),
-         ('gbmsem.ru', 'официальный сайт в сети интернет', contact_info_id_17),
-         ('dkdmozdrav.ru', 'официальный сайт в сети интернет', contact_info_id_18);
+         ('mosgorzdrav.ru', 'Официальный сайт в сети интернет', contact_info_id_05),
+         ('mgfoms.ru', 'Официальный сайт в сети интернет', contact_info_id_12),
+         ('77reg.roszdravnadzor.ru', 'Официальный сайт в сети интернет', contact_info_id_14),
+         ('77reg.roszdravnadzor.ru', 'Официальный сайт в сети интернет', contact_info_id_15),
+         ('rosminzdrav.ru', 'Официальный сайт в сети интернет', contact_info_id_16),
+         ('gbmsem.ru', 'Официальный сайт в сети интернет', contact_info_id_17),
+         ('dkdmozdrav.ru', 'Официальный сайт в сети интернет', contact_info_id_18);
 end $$;
