@@ -113,7 +113,13 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.SideOrganizat
 }
 
 func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganization) (err error) {
+	organization.ContactInfoId = organization.ContactInfo.ID
+
 	if organization.ContactInfo.Emails != nil {
+		for _, mail := range organization.ContactInfo.Emails {
+			mail.ContactInfoId = organization.ContactInfo.ID
+		}
+
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Emails).
 			On("conflict (id) do update").
 			Set("address = EXCLUDED.address").
@@ -126,6 +132,10 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 	}
 
 	if organization.ContactInfo.PostAddresses != nil {
+		for _, address := range organization.ContactInfo.PostAddresses {
+			address.ContactInfoId = organization.ContactInfo.ID
+		}
+
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.PostAddresses).
 			On("conflict (id) do update").
 			Set("address = EXCLUDED.address").
@@ -138,6 +148,10 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 	}
 
 	if organization.ContactInfo.TelephoneNumbers != nil {
+		for _, phone := range organization.ContactInfo.TelephoneNumbers {
+			phone.ContactInfoId = organization.ContactInfo.ID
+		}
+
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.TelephoneNumbers).
 			On("conflict (id) do update").
 			Set("number = EXCLUDED.number").
@@ -150,6 +164,10 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 	}
 
 	if organization.ContactInfo.Websites != nil {
+		for _, site := range organization.ContactInfo.Websites {
+			site.ContactInfoId = organization.ContactInfo.ID
+		}
+
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Websites).
 			On("conflict (id) do update").
 			Set("address = EXCLUDED.address").
