@@ -1,6 +1,7 @@
 package sideOrganizations
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 
@@ -33,12 +34,14 @@ func (h *Handler) Create(c *gin.Context) {
 	var item models.SideOrganization
 	err := c.Bind(&item)
 	if err != nil {
+		fmt.Println("bind ===>", err)
 		c.JSON(500, err)
 		return
 	}
 
 	err = h.repository.create(c, &item)
 	if err != nil {
+		fmt.Println("create ===>", err)
 		c.JSON(500, err)
 		return
 	}

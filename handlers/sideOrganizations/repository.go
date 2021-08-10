@@ -28,14 +28,13 @@ func NewRepository(db *bun.DB) *Repository {
 func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganization) (err error) {
 	var contactInfo models.ContactInfo
 	_, err = r.db.NewInsert().Model(&contactInfo).Exec(ctx)
-
 	if err != nil {
 		return err
 	}
 
 	organization.ContactInfoId = contactInfo.ID
 
-	if organization.ContactInfo.Emails != nil {
+	if len(organization.ContactInfo.Emails) > 0 {
 		for _, mail := range organization.ContactInfo.Emails {
 			mail.ContactInfoId = contactInfo.ID
 		}
@@ -43,11 +42,11 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Emails).Exec(ctx)
 
 		if err != nil {
-			return err
+		return err
 		}
 	}
 
-	if organization.ContactInfo.PostAddresses != nil {
+	if len(organization.ContactInfo.PostAddresses) > 0 {
 		for _, address := range organization.ContactInfo.PostAddresses {
 			address.ContactInfoId = contactInfo.ID
 		}
@@ -55,11 +54,11 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.PostAddresses).Exec(ctx)
 
 		if err != nil {
-			return err
+		return err
 		}
 	}
 
-	if organization.ContactInfo.TelephoneNumbers != nil {
+	if len(organization.ContactInfo.TelephoneNumbers) > 0 {
 		for _, phone := range organization.ContactInfo.TelephoneNumbers {
 			phone.ContactInfoId = contactInfo.ID
 		}
@@ -67,11 +66,11 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.TelephoneNumbers).Exec(ctx)
 
 		if err != nil {
-			return err
+		return err
 		}
 	}
 
-	if organization.ContactInfo.Websites != nil {
+	if len(organization.ContactInfo.Websites) > 0 {
 		for _, site := range organization.ContactInfo.Websites {
 			site.ContactInfoId = contactInfo.ID
 		}
@@ -79,7 +78,7 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Websites).Exec(ctx)
 
 		if err != nil {
-			return err
+		return err
 		}
 	}
 
@@ -115,7 +114,7 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.SideOrganizat
 func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganization) (err error) {
 	organization.ContactInfoId = organization.ContactInfo.ID
 
-	if organization.ContactInfo.Emails != nil {
+	if len(organization.ContactInfo.Emails) > 0 {
 		for _, mail := range organization.ContactInfo.Emails {
 			mail.ContactInfoId = organization.ContactInfo.ID
 		}
@@ -131,7 +130,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 		}
 	}
 
-	if organization.ContactInfo.PostAddresses != nil {
+	if len(organization.ContactInfo.PostAddresses) > 0 {
 		for _, address := range organization.ContactInfo.PostAddresses {
 			address.ContactInfoId = organization.ContactInfo.ID
 		}
@@ -147,7 +146,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 		}
 	}
 
-	if organization.ContactInfo.TelephoneNumbers != nil {
+	if len(organization.ContactInfo.TelephoneNumbers) > 0 {
 		for _, phone := range organization.ContactInfo.TelephoneNumbers {
 			phone.ContactInfoId = organization.ContactInfo.ID
 		}
@@ -163,7 +162,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 		}
 	}
 
-	if organization.ContactInfo.Websites != nil {
+	if len(organization.ContactInfo.Websites) > 0 {
 		for _, site := range organization.ContactInfo.Websites {
 			site.ContactInfoId = organization.ContactInfo.ID
 		}
