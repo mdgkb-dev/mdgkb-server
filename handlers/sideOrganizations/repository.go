@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
 
@@ -42,7 +43,7 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Emails).Exec(ctx)
 
 		if err != nil {
-		return err
+			return err
 		}
 	}
 
@@ -54,7 +55,7 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.PostAddresses).Exec(ctx)
 
 		if err != nil {
-		return err
+			return err
 		}
 	}
 
@@ -66,7 +67,7 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.TelephoneNumbers).Exec(ctx)
 
 		if err != nil {
-		return err
+			return err
 		}
 	}
 
@@ -78,7 +79,7 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Websites).Exec(ctx)
 
 		if err != nil {
-		return err
+			return err
 		}
 	}
 
@@ -113,10 +114,37 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.SideOrganizat
 
 func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganization) (err error) {
 	organization.ContactInfoId = organization.ContactInfo.ID
+	var existingOrg models.SideOrganization
+
+	_ = r.db.NewSelect().Model(&existingOrg).
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.PostAddresses").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactInfo.Websites").
+		Where("side_organization.id = ?", organization.ID).
+		Scan(ctx)
 
 	if len(organization.ContactInfo.Emails) > 0 {
+		incomingSet := map[uuid.UUID]bool{}
+
 		for _, mail := range organization.ContactInfo.Emails {
 			mail.ContactInfoId = organization.ContactInfo.ID
+			incomingSet[mail.ID] = true
+		}
+
+		deleteQuery := r.db.NewDelete().Model(&models.Email{}).Where("1 = 0")
+
+		for _, mail := range existingOrg.ContactInfo.Emails {
+			if !incomingSet[mail.ID] {
+				deleteQuery = deleteQuery.WhereOr("id = ?", mail.ID)
+			}
+		}
+
+		_, err = deleteQuery.Exec(ctx)
+
+		if err != nil {
+			return err
 		}
 
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Emails).
@@ -131,8 +159,25 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 	}
 
 	if len(organization.ContactInfo.PostAddresses) > 0 {
+		incomingSet := map[uuid.UUID]bool{}
+
 		for _, address := range organization.ContactInfo.PostAddresses {
 			address.ContactInfoId = organization.ContactInfo.ID
+			incomingSet[address.ID] = true
+		}
+
+		deleteQuery := r.db.NewDelete().Model(&models.PostAddress{}).Where("1 = 0")
+
+		for _, address := range existingOrg.ContactInfo.PostAddresses {
+			if !incomingSet[address.ID] {
+				deleteQuery = deleteQuery.WhereOr("id = ?", address.ID)
+			}
+		}
+
+		_, err = deleteQuery.Exec(ctx)
+
+		if err != nil {
+			return err
 		}
 
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.PostAddresses).
@@ -147,8 +192,25 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 	}
 
 	if len(organization.ContactInfo.TelephoneNumbers) > 0 {
+		incomingSet := map[uuid.UUID]bool{}
+
 		for _, phone := range organization.ContactInfo.TelephoneNumbers {
 			phone.ContactInfoId = organization.ContactInfo.ID
+			incomingSet[phone.ID] = true
+		}
+
+		deleteQuery := r.db.NewDelete().Model(&models.TelephoneNumber{}).Where("1 = 0")
+
+		for _, phone := range existingOrg.ContactInfo.TelephoneNumbers {
+			if !incomingSet[phone.ID] {
+				deleteQuery = deleteQuery.WhereOr("id = ?", phone.ID)
+			}
+		}
+
+		_, err = deleteQuery.Exec(ctx)
+
+		if err != nil {
+			return err
 		}
 
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.TelephoneNumbers).
@@ -163,8 +225,25 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 	}
 
 	if len(organization.ContactInfo.Websites) > 0 {
+		incomingSet := map[uuid.UUID]bool{}
+
 		for _, site := range organization.ContactInfo.Websites {
 			site.ContactInfoId = organization.ContactInfo.ID
+			incomingSet[site.ID] = true
+		}
+
+		deleteQuery := r.db.NewDelete().Model(&models.Website{}).Where("1 = 0")
+
+		for _, site := range existingOrg.ContactInfo.Websites {
+			if !incomingSet[site.ID] {
+				deleteQuery = deleteQuery.WhereOr("id = ?", site.ID)
+			}
+		}
+
+		_, err = deleteQuery.Exec(ctx)
+
+		if err != nil {
+			return err
 		}
 
 		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Websites).

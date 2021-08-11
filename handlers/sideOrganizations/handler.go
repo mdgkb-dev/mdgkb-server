@@ -1,7 +1,6 @@
 package sideOrganizations
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 
@@ -9,12 +8,12 @@ import (
 )
 
 type IHandler interface {
+	Create(c *gin.Context) error
 	GetAll(c *gin.Context) error
 	Get(c *gin.Context) error
-	Create(c *gin.Context) error
-	Delete(c *gin.Context) error
-	UpdateStatus(c *gin.Context) error
 	Update(c *gin.Context) error
+	UpdateStatus(c *gin.Context) error
+	Delete(c *gin.Context) error
 }
 
 type Handler struct {
@@ -34,14 +33,12 @@ func (h *Handler) Create(c *gin.Context) {
 	var item models.SideOrganization
 	err := c.Bind(&item)
 	if err != nil {
-		fmt.Println("bind ===>", err)
 		c.JSON(500, err)
 		return
 	}
 
 	err = h.repository.create(c, &item)
 	if err != nil {
-		fmt.Println("create ===>", err)
 		c.JSON(500, err)
 		return
 	}
@@ -65,6 +62,19 @@ func (h *Handler) Get(c *gin.Context) {
 	c.JSON(200, item)
 }
 
+func (h *Handler) Update(c *gin.Context) {
+	var item models.SideOrganization
+	err := c.Bind(&item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	err = h.repository.update(c, &item)
+	if err != nil {
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
+}
+
 func (h *Handler) UpdateStatus(c *gin.Context) {
 	var item models.SideOrganization
 	err := c.Bind(&item)
@@ -80,19 +90,6 @@ func (h *Handler) UpdateStatus(c *gin.Context) {
 
 func (h *Handler) Delete(c *gin.Context) {
 	err := h.repository.delete(c, c.Param("id"))
-	if err != nil {
-		c.JSON(500, err)
-	}
-	c.JSON(200, gin.H{})
-}
-
-func (h *Handler) Update(c *gin.Context) {
-	var item models.SideOrganization
-	err := c.Bind(&item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-	err = h.repository.update(c, &item)
 	if err != nil {
 		c.JSON(500, err)
 	}
