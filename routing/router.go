@@ -13,6 +13,7 @@ import (
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
 	"mdgkb/mdgkb-server/routing/tags"
+	"mdgkb/mdgkb-server/routing/timetables"
 	"mdgkb/mdgkb-server/routing/users"
 
 	"github.com/gin-gonic/gin"
@@ -37,4 +38,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	sideOrganizations.Init(api.Group("/side-organizations"), db, localUploader)
 	tags.Init(api.Group("/tags"), db, localUploader)
 	users.Init(api.Group("/users"), db, localUploader)
+	timetables.Init(api.Group("/timetables"), db, localUploader)
 }

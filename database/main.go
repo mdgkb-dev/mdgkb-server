@@ -34,6 +34,8 @@ func doAction(migrator *migrate.Migrator, action *string, name *string) {
 	switch *action {
 	case "init":
 		initMigration(migrator)
+	case "dropDatabase":
+		dropDatabase(migrator)
 	case "create":
 		createMigrationSql(migrator, name)
 	case "migrate":
