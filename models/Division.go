@@ -14,4 +14,6 @@ type Division struct {
 	FloorId     uuid.UUID  `bun:"type:uuid" json:"floorId"`
 	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
 	TimetableId uuid.UUID  `bun:"type:uuid" json:"timetableId"`
+	Schedule    *Schedule  `bun:"rel:belongs-to" json:"schedule"`
+	ScheduleId  uuid.UUID  `bun:"type:uuid" json:"scheduleId"`
 }

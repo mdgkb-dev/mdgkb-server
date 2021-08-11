@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 )
 
@@ -13,8 +12,10 @@ type Timetable struct {
 }
 
 func (timetable *Timetable) SetIdForChildren() {
+	if len(timetable.TimetableDays) < 0 {
+		return
+	}
 	for i := range timetable.TimetableDays {
 		timetable.TimetableDays[i].TimetableID = timetable.ID
 	}
-	fmt.Println(timetable.TimetableDays[0])
 }
