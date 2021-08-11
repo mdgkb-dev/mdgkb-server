@@ -1,7 +1,7 @@
 run:
 	reflex -r '\.go' -s -- sh -c "go run cmd/server/main.go"
 
-full_migrate: migrate_init migrate seed
+full_migrate: drop_database migrate_init migrate seed
 
 migrate_init:
 	go run database/*.go -action=init
@@ -21,5 +21,7 @@ seed_create:
 migrate_rollback:
 	go run database/migrations/*.go rollback
 
+drop_database:
+	go run database/*.go -action=dropDatabase
 
 

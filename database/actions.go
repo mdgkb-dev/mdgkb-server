@@ -15,6 +15,20 @@ func createMigrationSql(migrator *migrate.Migrator, name *string) {
 	//fmt.Printf("created migration %s (%s)\n", mf.FileName, mf.FilePath)
 }
 
+func dropDatabase(migrator *migrate.Migrator) {
+	_, err := migrator.DB().Exec(
+		`DO $$ DECLARE
+    r RECORD;
+BEGIN
+    FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema()) LOOP
+        EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
+    END LOOP;
+END $$;`)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func initMigration(migrator *migrate.Migrator) {
 	err := migrator.Init(context.TODO())
 	if err != nil {
