@@ -395,3 +395,10 @@ INSERT INTO public.file_infos (id, file_system_path) VALUES ('e3717d07-09b2-4026
 INSERT INTO public.file_infos (id, file_system_path) VALUES ('2d88a04e-802f-4c2d-bd5e-6a1a2ada1f57', 'e0fab88a-39c0-4b25-a24f-75dea8323db4.jpeg');
 INSERT INTO public.file_infos (id, file_system_path) VALUES ('32bf97ca-5c8c-4b57-873b-b8dbf0006805', 'f70ec62a-590b-4896-9bbf-7c689b515839.jpeg');
 INSERT INTO public.file_infos (id, file_system_path) VALUES ('58a76e4e-576e-493b-b71b-f142369960f7', 'd1deff72-3ecb-4c46-8a4d-161cfa920b71.jpeg');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('f5f87592-8a60-49c6-aaa7-1f4c0f28402d','rayon.png','987d1ba4-403e-42f5-934f-869681e477d7');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('06892665-f17f-4b15-86a1-39dfe684565a','dolgolet.png','65f72e95-00d3-426e-a057-d5cf0018eedf');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('d1ba3657-cc66-4c9a-a3df-9d22a4d20f8d','zdrav_mos.png','e9fc5b64-8087-4291-bdff-c0a3f1e7ec86');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('3398f001-fef9-45f4-8cb8-26722b04f1d8','Исследования_Covid.jpg','9e908180-d86a-4bd3-8f42-d91ae6e9b8ad');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('ba958b87-2e3a-432c-8877-2db247f8116b','баннер_донор-300x225.jpg','c968913c-ac2e-47ff-8e99-167c570df18d');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('dcc0d9d3-30ea-4e35-a1cd-8ed445a6d63e','CIK_banners.png','39293f38-d04b-4ee8-bac0-a5198b8acd85');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('c1c78f02-e706-4550-a48e-9ad98715eecd','mos.png','mos.png');

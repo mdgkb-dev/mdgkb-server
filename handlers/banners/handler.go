@@ -15,6 +15,7 @@ type IHandler interface {
 	Create(c *gin.Context) error
 	Delete(c *gin.Context) error
 	Update(c *gin.Context) error
+	UpdateAllOrder(c *gin.Context) error
 }
 
 type Handler struct {
@@ -51,7 +52,7 @@ func (h *Handler) Get(c *gin.Context) {
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Banner
 	form, _ := c.MultipartForm()
-	fmt.Println(form)
+	fmt.Println("form:", form)
 	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
 		fmt.Println(err)
@@ -101,6 +102,22 @@ func (h *Handler) Update(c *gin.Context) {
 	}
 
 	err = h.repository.update(c, &item)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
+}
+
+func (h *Handler) UpdateAllOrder(c *gin.Context) {
+	var item []*models.Banner
+	err := c.Bind(&item)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(500, err)
+	}
+
+	err = h.repository.updateAllOrder(c, item)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(500, err)
