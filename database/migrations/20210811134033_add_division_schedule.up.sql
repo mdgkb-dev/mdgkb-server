@@ -1,0 +1,2 @@
+ALTER TABLE divisions
+    ADD COLUMN schedule_id uuid  REFERENCES schedules(id) ON UPDATE CASCADE ON DELETE CASCADE;

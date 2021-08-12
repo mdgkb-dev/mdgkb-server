@@ -1,7 +1,6 @@
 package divisions
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -29,12 +28,24 @@ func NewRepository(db *bun.DB) *Repository {
 func (r *Repository) create(ctx *gin.Context, item *models.Division) (err error) {
 	_, err = r.db.NewInsert().Model(item.Timetable).On("conflict (id) do update").
 		Set("description = ?", item.Timetable.Description).Exec(ctx)
-
 	item.Timetable.SetIdForChildren()
-
 	item.TimetableId = item.Timetable.ID
+	if err != nil {
+		return err
+	}
+
+	_, err = r.db.NewInsert().Model(item.Schedule).On("conflict (id) do update").
+		Set("name = EXCLUDED.name").Exec(ctx)
+	item.Schedule.SetIdForChildren()
+	item.ScheduleId = item.Schedule.ID
+	if err != nil {
+		return err
+	}
 
 	_, err = r.db.NewInsert().Model(item).Exec(ctx)
+	if err != nil {
+		return err
+	}
 
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&item.Timetable.TimetableDays).
@@ -48,6 +59,20 @@ func (r *Repository) create(ctx *gin.Context, item *models.Division) (err error)
 		Set("break_end_time = EXCLUDED.break_end_time").
 		Where("timetable_day.id = EXCLUDED.id").
 		Exec(ctx)
+	if err != nil {
+		return err
+	}
+
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(&item.Schedule.ScheduleItems).
+		Set("name = EXCLUDED.name").
+		Set("start_time = EXCLUDED.start_time").
+		Set("end_time = EXCLUDED.end_time").
+		Where("schedule_item.id = EXCLUDED.id").
+		Exec(ctx)
+	if err != nil {
+		return err
+	}
 
 	return err
 }
@@ -61,7 +86,9 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.Division, err
 	err = r.db.NewSelect().
 		Model(&item).
 		Relation("Timetable.TimetableDays.Weekday").
+		Relation("Schedule.ScheduleItems").
 		Where("division.id = ?", id).Scan(ctx)
+
 	err = r.db.NewSelect().Model(&item.Doctors).Where("division_id = ?", id).
 		Relation("FileInfo").
 		Relation("Human").
@@ -82,16 +109,35 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 func (r *Repository) update(ctx *gin.Context, item *models.Division) (err error) {
 	_, err = r.db.NewInsert().Model(item.Timetable).On("conflict (id) do update").
 		Set("description = ?", item.Timetable.Description).Exec(ctx)
-	fmt.Println(err)
 	item.Timetable.SetIdForChildren()
-
 	item.TimetableId = item.Timetable.ID
+	if err != nil {
+		return err
+	}
+
+	_, err = r.db.NewInsert().Model(item.Schedule).On("conflict (id) do update").
+		Set("description = EXCLUDED.description").Exec(ctx)
+	item.Schedule.SetIdForChildren()
+	item.ScheduleId = item.Schedule.ID
+	if err != nil {
+		return err
+	}
+
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
-	fmt.Println(err)
 	if len(item.Timetable.TimetableDaysForDelete) > 0 {
 		_, err = r.db.NewDelete().Model((*models.TimetableDay)(nil)).Where("id IN (?)", bun.In(item.Timetable.TimetableDaysForDelete)).Exec(ctx)
 	}
-	fmt.Println(err)
+	if err != nil {
+		return err
+	}
+
+	if len(item.Schedule.ScheduleItemsForDelete) > 0 {
+		_, err = r.db.NewDelete().Model((*models.ScheduleItem)(nil)).Where("id IN (?)", bun.In(item.Schedule.ScheduleItemsForDelete)).Exec(ctx)
+	}
+	if err != nil {
+		return err
+	}
+
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&item.Timetable.TimetableDays).
 		Set("is_weekend = EXCLUDED.is_weekend").
@@ -104,6 +150,17 @@ func (r *Repository) update(ctx *gin.Context, item *models.Division) (err error)
 		Set("break_end_time = EXCLUDED.break_end_time").
 		Where("timetable_day.id = EXCLUDED.id").
 		Exec(ctx)
-	fmt.Println(err)
+
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(&item.Schedule.ScheduleItems).
+		Set("name = EXCLUDED.name").
+		Set("start_time = EXCLUDED.start_time").
+		Set("end_time = EXCLUDED.end_time").
+		Where("schedule_item.id = EXCLUDED.id").
+		Exec(ctx)
+	if err != nil {
+		return err
+	}
+
 	return err
 }
