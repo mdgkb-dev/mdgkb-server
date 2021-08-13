@@ -59,7 +59,7 @@ func (h *Handler) Create(c *gin.Context) {
 		c.JSON(500, err)
 	}
 
-	err = h.uploader.Upload(c, form.File["banner"][0], item.FileInfo.FileSystemPath)
+	err = h.uploader.Upload(c, form.File["banners"][0], item.FileInfo.FileSystemPath)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(500, err)
@@ -93,7 +93,7 @@ func (h *Handler) Update(c *gin.Context) {
 	}
 
 	if len(form.File["banner"]) > 0 {
-		err = h.uploader.Upload(c, form.File["banner"][0], item.FileInfo.OriginalName)
+		err = h.uploader.Upload(c, form.File["banners"][0], item.FileInfo.OriginalName)
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(500, err)
