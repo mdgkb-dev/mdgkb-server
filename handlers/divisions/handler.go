@@ -1,6 +1,8 @@
 package divisions
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	// "github.com/gin-gonic/gin/binding"
 	"mdgkb/mdgkb-server/helpers"
@@ -33,11 +35,15 @@ func (h *Handler) Create(c *gin.Context) {
 	var item models.Division
 	err := c.Bind(&item)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
+		return
 	}
 	err = h.repository.create(c, &item)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
+		return
 	}
 
 	c.JSON(200, gin.H{})

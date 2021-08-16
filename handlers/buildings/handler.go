@@ -14,7 +14,6 @@ type Handler interface {
 	GetById(c *gin.Context) error
 	Create(c *gin.Context) error
 	Delete(c *gin.Context) error
-	UpdateStatus(c *gin.Context) error
 	Update(c *gin.Context) error
 }
 
@@ -71,19 +70,6 @@ func (h *AHandler) GetById(c *gin.Context) {
 		c.JSON(500, err)
 	}
 	c.JSON(200, item)
-}
-
-func (h *AHandler) UpdateStatus(c *gin.Context) {
-	var item models.Building
-	err := c.Bind(&item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-	err = h.repository.updateStatus(c, &item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-	c.JSON(200, gin.H{})
 }
 
 func (h *AHandler) Delete(c *gin.Context) {
