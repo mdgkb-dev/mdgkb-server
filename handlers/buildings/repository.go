@@ -14,7 +14,6 @@ type Repository interface {
 	getAll(*gin.Context) ([]models.Building, error)
 	getByFloorId(*gin.Context, string) (models.Building, error)
 	getById(*gin.Context, string) (models.Building, error)
-	updateStatus(*gin.Context, *models.Building) error
 	delete(*gin.Context, string) error
 	update(*gin.Context, *models.Building) error
 }
@@ -36,6 +35,8 @@ func (r *BRepository) getAll(ctx *gin.Context) (buildings []models.Building, err
 	err = r.db.NewSelect().Model(&buildings).
 		Relation("Floors").
 		Relation("Floors.Divisions").
+		Relation("Entrances").
+		Relation("Entrances.Divisions").
 		Order("name").
 		Order("number").
 		Scan(ctx)
@@ -54,19 +55,17 @@ func (r *BRepository) getById(ctx *gin.Context, id string) (item models.Building
 	err = r.db.NewSelect().Model(&item).
 		Relation("Floors").
 		Relation("Floors.Divisions").
+		Relation("Entrances").
+		Relation("Entrances.Divisions").
 		Where("id = ?", id).Scan(ctx)
 	return item, err
-}
-
-func (r *BRepository) updateStatus(ctx *gin.Context, building *models.Building) (err error) {
-	_, err = r.db.NewUpdate().Model(building).Exec(ctx)
-	return err
 }
 
 func (r *BRepository) delete(ctx *gin.Context, id string) (err error) {
 	_, err = r.db.NewDelete().Model(&models.Building{}).Where("id = ?", id).Exec(ctx)
 	return err
 }
+
 // ! TODO Стас посмотри, плз
 func (r *BRepository) update(ctx *gin.Context, building *models.Building) (err error) {
 	_, err = r.db.NewUpdate().Model(building).Where("id = ?", building.ID).Exec(ctx)
@@ -89,5 +88,26 @@ func (r *BRepository) update(ctx *gin.Context, building *models.Building) (err e
 			_, err = r.db.NewInsert().Model(floors).Exec(ctx)
 		}
 	}
+
+	entrance := new([]models.Entrance)
+	r.db.NewSelect().Model(entrance).Where("building_id = ?", building.ID).Scan(ctx)
+	for j := 0; j < len(*entrance); j++ {
+		found := false
+		for i := 0; i < len(building.Entrances); i++ {
+			if building.Entrances[i].ID == (*entrance)[j].ID {
+				found = true
+			}
+		}
+		if !found {
+			_, err = r.db.NewDelete().Model(entrance).Where("id = ?", (*entrance)[j].ID).Exec(ctx)
+		}
+	}
+	for _, entrances := range building.Entrances {
+		_, err = r.db.NewUpdate().Model(entrances).Where("id = ?", entrances.ID).Exec(ctx)
+		if entrances.ID == uuid.Nil {
+			_, err = r.db.NewInsert().Model(entrances).Exec(ctx)
+		}
+	}
+
 	return err
 }
