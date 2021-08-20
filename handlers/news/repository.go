@@ -20,7 +20,6 @@ type IRepository interface {
 	createComment(*gin.Context, *models.NewsComment) error
 	updateComment(*gin.Context, *models.NewsComment) error
 	getAll(*gin.Context, *newsParams) ([]models.News, error)
-	updateStatus(*gin.Context, *models.News) error
 	delete(*gin.Context, string) error
 	deleteLike(*gin.Context, string) error
 	getBySlug(*gin.Context, string) (*models.News, error)
@@ -190,11 +189,6 @@ func (r *Repository) getBySlug(ctx *gin.Context, slug string) (*models.News, err
 		Where("news.slug = ?", slug).Scan(ctx)
 
 	return item, err
-}
-
-func (r *Repository) updateStatus(ctx *gin.Context, news *models.News) (err error) {
-	_, err = r.db.NewUpdate().Model(news).Exec(ctx)
-	return err
 }
 
 func (r *Repository) delete(ctx *gin.Context, id string) (err error) {

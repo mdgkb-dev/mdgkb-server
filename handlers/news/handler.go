@@ -24,7 +24,6 @@ type IHandler interface {
 	Delete(c *gin.Context) error
 	DeleteLike(c *gin.Context) error
 	DeleteComment(c *gin.Context) error
-	UpdateStatus(c *gin.Context) error
 	UpdateComment(c *gin.Context) error
 }
 
@@ -178,19 +177,6 @@ func (h *Handler) Update(c *gin.Context) {
 	err = h.repository.update(c, &item)
 	if err != nil {
 		fmt.Println(err)
-		c.JSON(500, err)
-	}
-	c.JSON(200, gin.H{})
-}
-
-func (h *Handler) UpdateStatus(c *gin.Context) {
-	var item models.News
-	err := c.Bind(&item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-	err = h.repository.updateStatus(c, &item)
-	if err != nil {
 		c.JSON(500, err)
 	}
 	c.JSON(200, gin.H{})

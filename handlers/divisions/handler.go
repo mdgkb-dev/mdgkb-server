@@ -1,6 +1,7 @@
 package divisions
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,6 @@ type IHandler interface {
 	Get(c *gin.Context) error
 	Create(c *gin.Context) error
 	Delete(c *gin.Context) error
-	UpdateStatus(c *gin.Context) error
 	Update(c *gin.Context) error
 }
 
@@ -33,12 +33,22 @@ func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Division
-	err := c.Bind(&item)
+	form, _ := c.MultipartForm()
+	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(500, err)
 		return
 	}
+
+	for i, file := range form.File["gallery"] {
+		err = h.uploader.Upload(c, file, item.DivisionImagesNames[i])
+		if err != nil {
+			fmt.Println(err)
+			c.JSON(500, err)
+		}
+	}
+
 	err = h.repository.create(c, &item)
 	if err != nil {
 		fmt.Println(err)
@@ -65,19 +75,6 @@ func (h *Handler) Get(c *gin.Context) {
 	c.JSON(200, item)
 }
 
-func (h *Handler) UpdateStatus(c *gin.Context) {
-	var item models.Division
-	err := c.Bind(&item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-	err = h.repository.updateStatus(c, &item)
-	if err != nil {
-		c.JSON(500, err)
-	}
-	c.JSON(200, gin.H{})
-}
-
 func (h *Handler) Delete(c *gin.Context) {
 	err := h.repository.delete(c, c.Param("id"))
 	if err != nil {
@@ -88,10 +85,20 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Division
-	err := c.Bind(&item)
+	form, _ := c.MultipartForm()
+	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
 		c.JSON(500, err)
 	}
+
+	for i, file := range form.File["gallery"] {
+		err = h.uploader.Upload(c, file, item.DivisionImagesNames[i])
+		if err != nil {
+			fmt.Println(err)
+			c.JSON(500, err)
+		}
+	}
+
 	err = h.repository.update(c, &item)
 	if err != nil {
 		c.JSON(500, err)
