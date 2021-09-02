@@ -52,7 +52,6 @@ func (h *Handler) Create(c *gin.Context) {
 
 	err = h.uploader.Upload(c, form.File["mainImage"][0], item.MainImage.FileSystemPath)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(500, err)
 	}
 
