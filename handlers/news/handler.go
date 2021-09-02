@@ -20,9 +20,9 @@ type IHandler interface {
 	CreateLike(c *gin.Context) error
 	AddTag(c *gin.Context) error
 	RemoveTag(c *gin.Context) error
-	CreateComment(c *gin.Context) error
 	Delete(c *gin.Context) error
 	DeleteLike(c *gin.Context) error
+	CreateComment(c *gin.Context) error
 	DeleteComment(c *gin.Context) error
 	UpdateComment(c *gin.Context) error
 }
