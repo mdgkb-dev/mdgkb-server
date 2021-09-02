@@ -4,10 +4,10 @@ import (
 	"github.com/google/uuid"
 )
 
-type NewsComment struct {
+type DoctorComment struct {
 	ID        uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	NewsID    uuid.UUID `bun:"type:uuid" json:"newsId"`
+	DoctorID  uuid.UUID `bun:"type:uuid" json:"doctorId"`
 	CommentId uuid.UUID `bun:"type:uuid" json:"commentId"`
-	News      *News     `bun:"rel:belongs-to" json:"news"`
+	Doctor    *Doctor   `bun:"rel:belongs-to" json:"doctor"`
 	Comment   *Comment  `bun:"rel:belongs-to" json:"comment"`
 }

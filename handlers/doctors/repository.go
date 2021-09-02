@@ -17,6 +17,9 @@ type IRepository interface {
 	updateStatus(*gin.Context, *models.Doctor) error
 	delete(*gin.Context, string) error
 	update(*gin.Context, *models.Doctor) error
+	createComment(*gin.Context, *models.DoctorComment) error
+	updateComment(*gin.Context, *models.DoctorComment) error
+	removeComment(*gin.Context, string) error
 }
 
 type Repository struct {
@@ -50,6 +53,8 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.Doctor, err e
 	err = r.db.NewSelect().Model(&item).Where("doctor.id = ?", id).
 		Relation("Human").
 		Relation("FileInfo").
+		Relation("Division").
+		Relation("DoctorComments.Comment.User").
 		Scan(ctx)
 	return item, err
 }
@@ -83,3 +88,21 @@ func (r *Repository) update(ctx *gin.Context, item *models.Doctor) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
 	return err
 }
+
+func (r *Repository) createComment(ctx *gin.Context, item *models.DoctorComment) error {
+	_, err := r.db.NewInsert().Model(item.Comment).Exec(ctx)
+	item.CommentId = item.Comment.ID
+_, err = r.db.NewInsert().Model(item).Exec(ctx)
+	return err
+}
+
+func (r *Repository) updateComment(ctx *gin.Context, item *models.DoctorComment) error {
+	_, err := r.db.NewUpdate().Model(item.Comment).Where("id = ?", item.Comment.ID).Exec(ctx)
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
+	return err
+}
+
+func (r *Repository) removeComment(ctx *gin.Context, id string) error {
+	_, err := r.db.NewDelete().Model(&models.DoctorComment{}).Where("id = ?", id).Exec(ctx)
+	return err
+}		

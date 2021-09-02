@@ -1,9 +1,10 @@
 package news
 
 import (
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 	"strings"
+
+	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -16,9 +17,9 @@ type IRepository interface {
 	createLike(*gin.Context, *models.NewsLike) error
 	addTag(*gin.Context, *models.NewsToTag) error
 	removeTag(*gin.Context, *models.NewsToTag) error
-	removeComment(*gin.Context, string) error
 	createComment(*gin.Context, *models.NewsComment) error
 	updateComment(*gin.Context, *models.NewsComment) error
+	removeComment(*gin.Context, string) error
 	getAll(*gin.Context, *newsParams) ([]models.News, error)
 	delete(*gin.Context, string) error
 	deleteLike(*gin.Context, string) error
@@ -137,20 +138,23 @@ func (r *Repository) removeTag(ctx *gin.Context, item *models.NewsToTag) error {
 	return err
 }
 
-func (r *Repository) removeComment(ctx *gin.Context, id string) error {
-	_, err := r.db.NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(ctx)
-	return err
-}
-
 func (r *Repository) createComment(ctx *gin.Context, item *models.NewsComment) error {
-	_, err := r.db.NewInsert().Model(item).Exec(ctx)
+	_, err := r.db.NewInsert().Model(item.Comment).Exec(ctx)
+	item.CommentId = item.Comment.ID
+_, err = r.db.NewInsert().Model(item).Exec(ctx)
 	return err
 }
 
 func (r *Repository) updateComment(ctx *gin.Context, item *models.NewsComment) error {
-	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
+	_, err := r.db.NewUpdate().Model(item.Comment).Where("id = ?", item.Comment.ID).Exec(ctx)
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
 	return err
 }
+
+func (r *Repository) removeComment(ctx *gin.Context, id string) error {
+	_, err := r.db.NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(ctx)
+	return err
+}		
 
 func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []models.News, err error) {
 	query := r.db.NewSelect().Model(&news).
@@ -184,10 +188,9 @@ func (r *Repository) getBySlug(ctx *gin.Context, slug string) (*models.News, err
 		Relation("MainImage").
 		Relation("NewsLikes").
 		Relation("NewsViews").
-		Relation("NewsComments.User").
+		Relation("NewsComments.Comment.User").
 		Relation("NewsImages.FileInfo").
 		Where("news.slug = ?", slug).Scan(ctx)
-
 	return item, err
 }
 
