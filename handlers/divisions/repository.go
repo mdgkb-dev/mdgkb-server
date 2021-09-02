@@ -12,7 +12,6 @@ type IRepository interface {
 	create(*gin.Context, *models.Division) error
 	getAll(*gin.Context) ([]models.Division, error)
 	get(*gin.Context, string) (models.Division, error)
-	updateStatus(*gin.Context, *models.Division) error
 	delete(*gin.Context, string) error
 	update(*gin.Context, *models.Division) error
 }
@@ -77,11 +76,22 @@ func (r *Repository) create(ctx *gin.Context, item *models.Division) (err error)
 			return err
 		}
 	}
+
+	for _, divisionImage := range item.DivisionImages {
+		_, err = r.db.NewInsert().Model(divisionImage.FileInfo).Exec(ctx)
+		divisionImage.FileInfoId = divisionImage.FileInfo.ID
+		divisionImage.DivisionId = item.ID
+		_, err = r.db.NewInsert().Model(divisionImage).Exec(ctx)
+	}
+
 	return err
 }
 
 func (r *Repository) getAll(ctx *gin.Context) (items []models.Division, err error) {
-	err = r.db.NewSelect().Model(&items).Order("name").Scan(ctx)
+	err = r.db.NewSelect().Model(&items).
+		// Relation("DivisionImages.FileInfo").
+		Order("name").
+		Scan(ctx)
 	return items, err
 }
 
@@ -90,6 +100,7 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.Division, err
 		Model(&item).
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Schedule.ScheduleItems").
+		Relation("DivisionImages.FileInfo").
 		Where("division.id = ?", id).Scan(ctx)
 
 	err = r.db.NewSelect().Model(&item.Doctors).Where("division_id = ?", id).
@@ -99,18 +110,13 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.Division, err
 	return item, err
 }
 
-func (r *Repository) updateStatus(ctx *gin.Context, item *models.Division) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Exec(ctx)
-	return err
-}
-
 func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 	_, err = r.db.NewDelete().Model(&models.Division{}).Where("id = ?", id).Exec(ctx)
 	return err
 }
 
 func (r *Repository) update(ctx *gin.Context, item *models.Division) (err error) {
-		_, err = r.db.NewInsert().Model(item.Timetable).On("conflict (id) do update").
+	_, err = r.db.NewInsert().Model(item.Timetable).On("conflict (id) do update").
 		Set("description = ?", item.Timetable.Description).Exec(ctx)
 	item.Timetable.SetIdForChildren()
 	item.TimetableId = item.Timetable.ID
@@ -143,31 +149,58 @@ func (r *Repository) update(ctx *gin.Context, item *models.Division) (err error)
 
 	if len(item.Timetable.TimetableDays) > 0 {
 		_, err = r.db.NewInsert().On("conflict (id) do update").
-		Model(&item.Timetable.TimetableDays).
-		Set("is_weekend = EXCLUDED.is_weekend").
-		Set("timetable_id = EXCLUDED.timetable_id").
-		Set("weekday_id = EXCLUDED.weekday_id").
-		Set("start_time = EXCLUDED.start_time").
-		Set("end_time = EXCLUDED.end_time").
-		Set("break_exist = EXCLUDED.break_exist").
-		Set("break_start_time = EXCLUDED.break_start_time").
-		Set("break_end_time = EXCLUDED.break_end_time").
-		Where("timetable_day.id = EXCLUDED.id").
-		Exec(ctx)
+			Model(&item.Timetable.TimetableDays).
+			Set("is_weekend = EXCLUDED.is_weekend").
+			Set("timetable_id = EXCLUDED.timetable_id").
+			Set("weekday_id = EXCLUDED.weekday_id").
+			Set("start_time = EXCLUDED.start_time").
+			Set("end_time = EXCLUDED.end_time").
+			Set("break_exist = EXCLUDED.break_exist").
+			Set("break_start_time = EXCLUDED.break_start_time").
+			Set("break_end_time = EXCLUDED.break_end_time").
+			Where("timetable_day.id = EXCLUDED.id").
+			Exec(ctx)
 	}
 
 	if len(item.Schedule.ScheduleItems) > 0 {
 		_, err = r.db.NewInsert().On("conflict (id) do update").
-		Model(&item.Schedule.ScheduleItems).
-		Set("name = EXCLUDED.name").
-		Set("start_time = EXCLUDED.start_time").
-		Set("end_time = EXCLUDED.end_time").
-		Where("schedule_item.id = EXCLUDED.id").
-		Exec(ctx)
-	if err != nil {
+			Model(&item.Schedule.ScheduleItems).
+			Set("name = EXCLUDED.name").
+			Set("start_time = EXCLUDED.start_time").
+			Set("end_time = EXCLUDED.end_time").
+			Where("schedule_item.id = EXCLUDED.id").
+			Exec(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	if len(item.DivisionImagesForDelete) > 0 {
+		_, err = r.db.NewDelete().Model((*models.NewsImage)(nil)).Where("id IN (?)", bun.In(item.DivisionImagesForDelete)).Exec(ctx)
+	}
+	if len(item.DivisionImages) == 0 {
 		return err
 	}
-}
+	var fileInfos []models.FileInfo
+	for _, newsImage := range item.DivisionImages {
+		fileInfos = append(fileInfos, *newsImage.FileInfo)
+	}
+
+	_, err = r.db.NewInsert().Model(&fileInfos).
+		On("CONFLICT (id) DO UPDATE").
+		Set("original_name = EXCLUDED.original_name").
+		Set("file_system_path = EXCLUDED.file_system_path").
+		Exec(ctx)
+
+	for i, newsImage := range item.DivisionImages {
+		newsImage.FileInfoId = fileInfos[i].ID
+		newsImage.DivisionId = item.ID
+	}
+
+	_, err = r.db.NewInsert().Model(&item.DivisionImages).On("CONFLICT (id) DO UPDATE").
+		Set("description = EXCLUDED.description").
+		Set("file_info_id = EXCLUDED.file_info_id").
+		Exec(ctx)
 
 	return err
 }
