@@ -23,8 +23,8 @@ type IHandler interface {
 	Delete(c *gin.Context) error
 	DeleteLike(c *gin.Context) error
 	CreateComment(c *gin.Context) error
-	DeleteComment(c *gin.Context) error
 	UpdateComment(c *gin.Context) error
+	RemoveComment(c *gin.Context) error
 }
 
 type Handler struct {
@@ -190,14 +190,6 @@ func (h *Handler) Delete(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (h *Handler) RemoveComment(c *gin.Context) {
-	err := h.repository.removeComment(c, c.Param("id"))
-	if err != nil {
-		c.JSON(500, err)
-	}
-	c.JSON(200, gin.H{})
-}
-
 func (h *Handler) CreateComment(c *gin.Context) {
 	var item models.NewsComment
 	err := c.ShouldBind(&item)
@@ -219,6 +211,14 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 	err = h.repository.updateComment(c, &item)
 	if err != nil {
 		fmt.Println(err)
+		c.JSON(500, err)
+	}
+	c.JSON(200, gin.H{})
+}
+
+func (h *Handler) RemoveComment(c *gin.Context) {
+	err := h.repository.removeComment(c, c.Param("id"))
+	if err != nil {
 		c.JSON(500, err)
 	}
 	c.JSON(200, gin.H{})

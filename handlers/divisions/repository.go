@@ -14,6 +14,9 @@ type IRepository interface {
 	get(*gin.Context, string) (models.Division, error)
 	delete(*gin.Context, string) error
 	update(*gin.Context, *models.Division) error
+	createComment(*gin.Context, *models.DivisionComment) error
+	updateComment(*gin.Context, *models.DivisionComment) error
+	removeComment(*gin.Context, string) error
 }
 
 type Repository struct {
@@ -101,6 +104,7 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.Division, err
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Schedule.ScheduleItems").
 		Relation("DivisionImages.FileInfo").
+		Relation("DivisionComments.Comment.User").
 		Where("division.id = ?", id).Scan(ctx)
 
 	err = r.db.NewSelect().Model(&item.Doctors).Where("division_id = ?", id).
@@ -204,3 +208,21 @@ func (r *Repository) update(ctx *gin.Context, item *models.Division) (err error)
 
 	return err
 }
+
+func (r *Repository) createComment(ctx *gin.Context, item *models.DivisionComment) error {
+	_, err := r.db.NewInsert().Model(item.Comment).Exec(ctx)
+	item.CommentId = item.Comment.ID
+_, err = r.db.NewInsert().Model(item).Exec(ctx)
+	return err
+}
+
+func (r *Repository) updateComment(ctx *gin.Context, item *models.DivisionComment) error {
+	_, err := r.db.NewUpdate().Model(item.Comment).Where("id = ?", item.Comment.ID).Exec(ctx)
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
+	return err
+}
+
+func (r *Repository) removeComment(ctx *gin.Context, id string) error {
+	_, err := r.db.NewDelete().Model(&models.DivisionComment{}).Where("id = ?", id).Exec(ctx)
+	return err
+}		

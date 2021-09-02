@@ -17,9 +17,9 @@ type IRepository interface {
 	createLike(*gin.Context, *models.NewsLike) error
 	addTag(*gin.Context, *models.NewsToTag) error
 	removeTag(*gin.Context, *models.NewsToTag) error
-	removeComment(*gin.Context, string) error
 	createComment(*gin.Context, *models.NewsComment) error
 	updateComment(*gin.Context, *models.NewsComment) error
+	removeComment(*gin.Context, string) error
 	getAll(*gin.Context, *newsParams) ([]models.News, error)
 	delete(*gin.Context, string) error
 	deleteLike(*gin.Context, string) error
