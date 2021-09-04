@@ -141,7 +141,7 @@ func (r *Repository) removeTag(ctx *gin.Context, item *models.NewsToTag) error {
 func (r *Repository) createComment(ctx *gin.Context, item *models.NewsComment) error {
 	_, err := r.db.NewInsert().Model(item.Comment).Exec(ctx)
 	item.CommentId = item.Comment.ID
-_, err = r.db.NewInsert().Model(item).Exec(ctx)
+	_, err = r.db.NewInsert().Model(item).Exec(ctx)
 	return err
 }
 
@@ -154,7 +154,7 @@ func (r *Repository) updateComment(ctx *gin.Context, item *models.NewsComment) e
 func (r *Repository) removeComment(ctx *gin.Context, id string) error {
 	_, err := r.db.NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(ctx)
 	return err
-}		
+}
 
 func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []models.News, err error) {
 	query := r.db.NewSelect().Model(&news).
@@ -170,10 +170,27 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 	if newsParams.PublishedOn != nil {
 		query = query.Where("published_on < ?", newsParams.PublishedOn)
 	}
-	if newsParams.FilterTags != "" {
+	if newsParams.FilterTags != "" && newsParams.OrderByView == "" {
 		for _, tagId := range strings.Split(newsParams.FilterTags, ",") {
 			query = query.Where("exists (select * from news_to_tags as ntt where ntt.news_id = news.id and ntt.tag_id = ?)", tagId)
 		}
+	}
+	if newsParams.FilterTags != "" && newsParams.OrderByView != "" && newsParams.Limit != 0 {
+		query = query.Join("JOIN news_to_tags ON news_to_tags.news_id = news.id").
+			Join("LEFT JOIN news_views ON news_views.news_id = news.id").
+			Where("news_to_tags.tag_id in (?)", bun.In(strings.Split(newsParams.FilterTags, ","))).
+			Group("news.id", "file_info.id").
+			OrderExpr("count (news_to_tags.id)").
+			OrderExpr("count (news_views.id)").
+			Limit(newsParams.Limit)
+			if len(news) == 0 {
+				query = r.db.NewSelect().Model(&news).Relation("NewsViews").
+					Join("LEFT JOIN news_views ON news_views.news_id = news.id").
+					Group("news.id").
+					Order("published_on DESC").
+					OrderExpr("count (news_views.id)").
+					Limit(newsParams.Limit)
+			}
 	}
 	err = query.Scan(ctx)
 	return news, err

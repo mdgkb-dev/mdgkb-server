@@ -122,6 +122,7 @@ type newsParams struct {
 	PublishedOn *time.Time `form:"publishedOn"`
 	Limit       int        `form:"limit"`
 	FilterTags  string     `form:"filterTags"`
+	OrderByView string     `form:"orderByView"`
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
