@@ -52,7 +52,6 @@ func (h *Handler) Get(c *gin.Context) {
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Banner
 	form, _ := c.MultipartForm()
-	fmt.Println("form:", form)
 	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
 		fmt.Println(err)
@@ -92,7 +91,7 @@ func (h *Handler) Update(c *gin.Context) {
 		c.JSON(500, err)
 	}
 
-	if len(form.File["banner"]) > 0 {
+	if len(form.File["banners"]) > 0 {
 		err = h.uploader.Upload(c, form.File["banners"][0], item.FileInfo.OriginalName)
 		if err != nil {
 			fmt.Println(err)
