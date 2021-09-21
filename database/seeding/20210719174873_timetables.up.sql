@@ -55,3 +55,5 @@ INSERT INTO public.timetables VALUES ('647260fd-fc7e-444c-9a8e-46cc17eade9b', ''
 INSERT INTO public.timetables VALUES ('890e438a-d2c9-4734-8a4e-4118ccd89f98', '');
 INSERT INTO public.timetables VALUES ('dad550e5-fbc7-44cd-875b-2373fe3acc70', '');
 INSERT INTO public.timetables VALUES ('0e4632f1-3548-4bd6-958a-cabb5bd81f2d', '');
+INSERT INTO public.timetables VALUES ('a9b1dc5a-7476-4619-b573-9a9fbf0a6522', '');
+INSERT INTO public.timetables VALUES ('6e5d4521-1268-4013-8a78-5f185bbd0816', '');

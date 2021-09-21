@@ -55,3 +55,5 @@ INSERT INTO public.schedules VALUES ('0bc933ea-5835-4453-bdb2-f8a1ac5427a9', '',
 INSERT INTO public.schedules VALUES ('3807fa5b-42e1-446a-9c26-3151468eab21', '', '');
 INSERT INTO public.schedules VALUES ('b674e0b5-bb9a-4317-980d-eb73d8eb9d1b', '', '');
 INSERT INTO public.schedules VALUES ('501e43bd-5fc7-4e1a-89dd-9187c1ec50df', '', '');
+INSERT INTO public.schedules VALUES ('251c6afe-afc6-4600-8ba7-e8a3cfac564b', '', '');
+INSERT INTO public.schedules VALUES ('3874e475-92e9-4ef5-b439-5358afde0e5a', '', '');

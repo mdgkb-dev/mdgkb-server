@@ -91,6 +91,7 @@ func (h *Handler) Update(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(500, err)
 	}
 

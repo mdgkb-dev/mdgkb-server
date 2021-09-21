@@ -92,6 +92,7 @@ func (r *Repository) create(ctx *gin.Context, item *models.Division) (err error)
 
 func (r *Repository) getAll(ctx *gin.Context) (items []models.Division, err error) {
 	err = r.db.NewSelect().Model(&items).
+		Relation("Entrance.Building").
 		// Relation("DivisionImages.FileInfo").
 		Order("name").
 		Scan(ctx)
@@ -101,6 +102,7 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.Division, err erro
 func (r *Repository) get(ctx *gin.Context, id string) (item models.Division, err error) {
 	err = r.db.NewSelect().
 		Model(&item).
+		Relation("Entrance.Building").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Schedule.ScheduleItems").
 		Relation("DivisionImages.FileInfo").
