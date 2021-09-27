@@ -3,6 +3,7 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
@@ -42,5 +43,6 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	tags.Init(api.Group("/tags"), db, localUploader)
 	users.Init(api.Group("/users"), db, localUploader)
 	timetables.Init(api.Group("/timetables"), db, localUploader)
-	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploader)
+
+	educationalOraganization.Init(api.Group("/educational-organization"), db, uploadHelper.NewLocalUploader(&config.UploadPath))
 }

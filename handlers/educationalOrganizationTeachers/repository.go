@@ -1,7 +1,6 @@
 package educationalOrganizationTeachers
 
 import (
-
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 )

@@ -12,6 +12,9 @@ func (s *Service) GetAll() (models.EducationalOrganizationTeachers, error) {
 }
 
 func (s *Service) UpsertMany(items models.EducationalOrganizationTeachers) error {
+	if len(items) == 0 {
+		return nil
+	}
 	return s.repository.upsertMany(items)
 }
 

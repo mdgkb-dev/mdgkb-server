@@ -9,5 +9,15 @@ type EducationalOrganization struct {
 
 	EducationalOrganizationTeachers EducationalOrganizationTeachers `json:"educationalOrganizationTeachers"`
 	EducationalOrganizationTeachersForDelete []string `json:"educationalOrganizationTeachersForDelete"`
+
+	EducationalOrganizationDocumentTypes EducationalOrganizationDocumentTypes `json:"educationalOrganizationDocumentTypes"`
+	EducationalOrganizationDocumentTypesForDelete []string `json:"educationalOrganizationDocumentTypesForDelete"`
 }
 
+func (item *EducationalOrganization) SetFilePath(fileId *string) *string {
+	path := item.EducationalOrganizationDocumentTypes.SetFilePath(fileId)
+	if path != nil {
+		return path
+	}
+	return nil
+}

@@ -9,7 +9,7 @@ import (
 )
 
 
-//
+
 func (h *Handler) Get(c *gin.Context) {
 	item, err := h.service.Get()
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
@@ -20,7 +20,12 @@ func (h *Handler) Get(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.EducationalOrganization
-	err := c.Bind(&item)
+	files, err := httpHelper.GetForm(c, &item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.Upload(c, &item, files)
+
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

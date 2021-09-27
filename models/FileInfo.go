@@ -9,3 +9,5 @@ type FileInfo struct {
 	OriginalName   string    `json:"originalName"`
 	FileSystemPath string    `json:"fileSystemPath"`
 }
+
+type FileInfos []*FileInfo

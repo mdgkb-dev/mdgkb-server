@@ -1,6 +1,7 @@
 package educationalOrganization
 
 import (
+	"mdgkb/mdgkb-server/handlers/educationalOrganizationDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationProperties"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationTeachers"
@@ -22,6 +23,11 @@ func (s *Service) Get() (*models.EducationalOrganization,  error) {
 	}
 	teachersService := educationalOrganizationTeachers.CreateService(s.repository.getDB())
 	item.EducationalOrganizationTeachers, err = teachersService.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.repository.getDB())
+	item.EducationalOrganizationDocumentTypes, err = educationalOrganizationDocumentTypesService.GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +61,15 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 		return  err
 	}
 	err = teachersService.UpsertMany(item.EducationalOrganizationTeachers)
+	if err != nil {
+		return  err
+	}
+	educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.repository.getDB())
+	err = educationalOrganizationDocumentTypesService.DeleteMany(item.EducationalOrganizationDocumentTypesForDelete)
+	if err != nil {
+		return  err
+	}
+	err = educationalOrganizationDocumentTypesService.UpsertMany(item.EducationalOrganizationDocumentTypes)
 	if err != nil {
 		return  err
 	}
