@@ -13,5 +13,5 @@ import (
 func Init(r *gin.RouterGroup, db *bun.DB, uploader uploadHelper.Uploader) {
 	var h = handler.CreateHandler(db, &uploader)
 	r.GET("/", h.Get)
-	r.PUT("/", h.Update)
+	r.PUT("", h.Update)
 }

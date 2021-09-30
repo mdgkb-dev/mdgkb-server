@@ -1,7 +1,6 @@
 package educationalOrganization
 
 import (
-	educationalOrganizationPages "mdgkb/mdgkb-server/handlers/educationalOrganizationDocumentPages"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationProperties"
@@ -32,7 +31,7 @@ func (s *Service) Get() (*models.EducationalOrganization,  error) {
 	if err != nil {
 		return nil, err
 	}
-	item.EducationalOrganizationPages, err = educationalOrganizationPages.CreateService(s.repository.getDB()).GetAll()
+	//item.EducationalOrganizationPages, err = educationalOrganizationPages.CreateService(s.repository.getDB()).GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -74,6 +73,7 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 	if err != nil {
 		return  err
 	}
+
 	err = educationalOrganizationDocumentTypesService.UpsertMany(item.EducationalOrganizationDocumentTypes)
 	if err != nil {
 		return  err

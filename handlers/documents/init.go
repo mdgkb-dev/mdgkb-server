@@ -12,7 +12,6 @@ type IService interface {
 }
 
 type IRepository interface {
-
 	getDB() *bun.DB
 	createMany(models.Documents) error
 	upsertMany(models.Documents) error
