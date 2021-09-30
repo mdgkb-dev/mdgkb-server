@@ -44,6 +44,7 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.Doctor, err error)
 	err = r.db.NewSelect().Model(&items).
 		Relation("Human").
 		Relation("Division").
+		Relation("FileInfo").
 		Order("human.surname").
 		Scan(ctx)
 	return items, err
