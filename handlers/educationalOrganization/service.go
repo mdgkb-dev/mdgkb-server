@@ -1,6 +1,7 @@
 package educationalOrganization
 
 import (
+	educationalOrganizationPages "mdgkb/mdgkb-server/handlers/educationalOrganizationDocumentPages"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationProperties"
@@ -28,6 +29,10 @@ func (s *Service) Get() (*models.EducationalOrganization,  error) {
 	}
 	educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.repository.getDB())
 	item.EducationalOrganizationDocumentTypes, err = educationalOrganizationDocumentTypesService.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	item.EducationalOrganizationPages, err = educationalOrganizationPages.CreateService(s.repository.getDB()).GetAll()
 	if err != nil {
 		return nil, err
 	}

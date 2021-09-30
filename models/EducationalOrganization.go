@@ -12,6 +12,9 @@ type EducationalOrganization struct {
 
 	EducationalOrganizationDocumentTypes EducationalOrganizationDocumentTypes `json:"educationalOrganizationDocumentTypes"`
 	EducationalOrganizationDocumentTypesForDelete []string `json:"educationalOrganizationDocumentTypesForDelete"`
+
+	EducationalOrganizationPages EducationalOrganizationPages `json:"educationalOrganizationPages"`
+	EducationalOrganizationPagesForDelete []string `json:"educationalOrganizationPagesForDelete"`
 }
 
 func (item *EducationalOrganization) SetFilePath(fileId *string) *string {

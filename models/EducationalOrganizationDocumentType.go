@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -20,10 +19,6 @@ type EducationalOrganizationDocumentTypes []*EducationalOrganizationDocumentType
 func (i EducationalOrganizationDocumentTypes) GetIDForDelete() []string {
 	idPool := make([]string, 0)
 	for _, item := range i {
-		fmt.Println( item.EducationalOrganizationDocumentTypeDocumentsForDelete)
-		fmt.Println( item.EducationalOrganizationDocumentTypeDocumentsForDelete)
-		fmt.Println( item.EducationalOrganizationDocumentTypeDocumentsForDelete)
-		fmt.Println( item.EducationalOrganizationDocumentTypeDocumentsForDelete)
 		idPool = append(idPool, item.EducationalOrganizationDocumentTypeDocumentsForDelete... )
 	}
 	return idPool

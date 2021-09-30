@@ -1,4 +1,4 @@
-package document
+package pages
 
 import (
 	"context"
@@ -8,14 +8,13 @@ import (
 )
 
 type IService interface {
-	CreateMany(models.Documents) error
+	CreateMany(models.Pages) error
 }
 
 type IRepository interface {
-
 	getDB() *bun.DB
-	createMany(models.Documents) error
-	upsertMany(models.Documents) error
+	createMany(models.Pages) error
+	upsertMany(models.Pages) error
 	deleteMany([]string) error
 }
 

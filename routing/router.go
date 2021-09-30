@@ -11,6 +11,7 @@ import (
 	"mdgkb/mdgkb-server/routing/divisions"
 	"mdgkb/mdgkb-server/routing/doctors"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
+	"mdgkb/mdgkb-server/routing/menu"
 	"mdgkb/mdgkb-server/routing/news"
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
@@ -45,4 +46,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	timetables.Init(api.Group("/timetables"), db, localUploader)
 
 	educationalOraganization.Init(api.Group("/educational-organization"), db, uploadHelper.NewLocalUploader(&config.UploadPath))
+	menu.Init(api.Group("/menus"), db)
 }

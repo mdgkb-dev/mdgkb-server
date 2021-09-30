@@ -27,9 +27,9 @@ func (i EducationalOrganizationDocumentTypeDocuments) GetDocuments() Documents {
 	return items
 }
 
-func (i EducationalOrganizationDocumentTypeDocuments) SetForeignKeys()  {
-	for _, item := range i {
-		item.DocumentID = item.Document.ID
+func (items EducationalOrganizationDocumentTypeDocuments) SetForeignKeys()  {
+	for i := range items {
+		items[i].DocumentID = items[i].Document.ID
 	}
 }
 

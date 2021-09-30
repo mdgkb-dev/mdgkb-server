@@ -1,4 +1,4 @@
-package document
+package educationalOrganizationPages
 
 import (
 	"context"
@@ -8,14 +8,17 @@ import (
 )
 
 type IService interface {
-	CreateMany(models.Documents) error
+	GetAll() (models.EducationalOrganizationPages, error)
+	CreateMany(models.EducationalOrganizationPages) error
+	UpsertMany(models.EducationalOrganizationPages) error
+	DeleteMany([]string) error
 }
 
 type IRepository interface {
-
 	getDB() *bun.DB
-	createMany(models.Documents) error
-	upsertMany(models.Documents) error
+	getAll() (models.EducationalOrganizationPages, error)
+	createMany(models.EducationalOrganizationPages) error
+	upsertMany(models.EducationalOrganizationPages) error
 	deleteMany([]string) error
 }
 

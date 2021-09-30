@@ -1,4 +1,4 @@
-package document
+package subSubMenus
 
 import (
 	"context"
@@ -8,14 +8,13 @@ import (
 )
 
 type IService interface {
-	CreateMany(models.Documents) error
+	CreateMany(menus models.SubSubMenus) error
 }
 
 type IRepository interface {
-
 	getDB() *bun.DB
-	createMany(models.Documents) error
-	upsertMany(models.Documents) error
+	createMany(menus models.SubSubMenus) error
+	upsertMany(menus models.SubSubMenus) error
 	deleteMany([]string) error
 }
 
