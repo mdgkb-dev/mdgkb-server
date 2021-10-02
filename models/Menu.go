@@ -13,7 +13,7 @@ type Menu struct {
 	Top bool `json:"top"`
 	Side bool `json:"side"`
 	Page   *Page `bun:"rel:belongs-to" json:"page"`
-	PageId uuid.UUID    `bun:"type:uuid" json:"PageId"`
+	PageId uuid.UUID    `bun:"type:uuid" json:"pageId"`
 
 	SubMenus SubMenus `bun:"rel:has-many" json:"subMenus"`
 	SubMenusForDelete []string `bun:"-" json:"subMenusForDelete"`

@@ -16,14 +16,22 @@ func (r *Repository) create(item *models.Menu) (err error) {
 
 func (r *Repository) getAll() (models.Menus,  error) {
 	items := make(models.Menus, 0)
-	err := r.db.NewSelect().Model(&items).Relation("SubMenus.SubSubMenus").Scan(r.ctx)
+	err := r.db.NewSelect().Model(&items).
+		Relation("Page").
+		Relation("SubMenus.Page").
+		Relation("SubMenus.SubSubMenus").
+		Scan(r.ctx)
 	return items, err
 }
 
 func (r *Repository) get(id *string) (*models.Menu, error) {
 	item := models.Menu{}
-	err := r.db.NewSelect().Model(&item).Relation("SubMenus.SubSubMenus").Where("id = ?", *id).Scan(r.ctx)
-
+	err := r.db.NewSelect().Model(&item).
+		Relation("Page").
+		Relation("SubMenus.Page").
+		Relation("SubMenus.SubSubMenus").
+		Where("menus.id = ?", *id).
+		Scan(r.ctx)
 	return &item, err
 }
 
