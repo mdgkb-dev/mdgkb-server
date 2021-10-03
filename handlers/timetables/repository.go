@@ -1,26 +1,29 @@
 package timetables
 
 import (
+	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
-	"github.com/uptrace/bun"
 )
 
-type IRepository interface {
-	getAllWeekdays(*gin.Context) ([]models.Weekday, error)
+func (r *Repository) getDB() *bun.DB {
+	return r.db
 }
 
-type Repository struct {
-	db *bun.DB
+func (r *Repository) create(item *models.Timetable) (err error) {
+	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	return err
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db}
+
+func (r *Repository) upsert(item *models.Timetable) (err error) {
+	_, err = r.db.NewInsert().Model(item).On("conflict (id) do update").
+		Set("description = ?", item.Description).Exec(r.ctx)
+	return err
 }
 
-func (r *Repository) getAllWeekdays(ctx *gin.Context) (items []models.Weekday, err error) {
-	err = r.db.NewSelect().Model(&items).Order("number").Scan(ctx)
+func (r *Repository) getAllWeekdays() (items models.Weekdays, err error) {
+	err = r.db.NewSelect().Model(&items).Order("number").Scan(r.ctx)
 	return items, err
 }

@@ -8,7 +8,7 @@ type Schedule struct {
 	ID                     uuid.UUID       `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name                   string          `json:"name"`
 	Description            string          `json:"description"`
-	ScheduleItems          []*ScheduleItem `bun:"rel:has-many" json:"scheduleItems"`
+	ScheduleItems          ScheduleItems `bun:"rel:has-many" json:"scheduleItems"`
 	ScheduleItemsForDelete []string        `bun:"-" json:"scheduleItemsForDelete"`
 }
 

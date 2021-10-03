@@ -14,7 +14,7 @@ type SubMenu struct {
 	MenuId uuid.UUID    `bun:"type:uuid" json:"menuId"`
 
 	Page   *Page `bun:"rel:belongs-to" json:"page"`
-	PageId uuid.UUID    `bun:"type:uuid" json:"PageId"`
+	PageId uuid.NullUUID    `bun:"type:uuid" json:"PageId"`
 
 	SubSubMenus SubSubMenus `bun:"rel:has-many" json:"subSubMenus"`
 	SubSubMenusForDelete []string `bun:"-" json:"subSubMenusForDelete"`

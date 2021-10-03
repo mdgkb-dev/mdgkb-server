@@ -18,3 +18,5 @@ type TimetableDay struct {
 	IsCustom       bool      `json:"isCustom"`
 	CustomName     string    `json:"customName"`
 }
+
+type TimetableDays []*TimetableDay

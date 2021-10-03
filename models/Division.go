@@ -10,7 +10,7 @@ type Division struct {
 	Email                   string             `json:"email"`
 	Address                 string             `json:"address"`
 	Slug                    string             `json:"slug"`
-	Doctors                 []*Doctor          `bun:"rel:has-many" json:"doctors"`
+	Doctors                 Doctors          `bun:"rel:has-many" json:"doctors"`
 	Entrance                *Entrance          `bun:"rel:belongs-to" json:"entrance"`
 	EntranceId              uuid.UUID          `bun:"type:uuid" json:"entranceId"`
 	FloorId                 uuid.UUID          `bun:"type:uuid" json:"floorId"`
@@ -18,8 +18,18 @@ type Division struct {
 	TimetableId             uuid.UUID          `bun:"type:uuid" json:"timetableId"`
 	Schedule                *Schedule          `bun:"rel:belongs-to" json:"schedule"`
 	ScheduleId              uuid.UUID          `bun:"type:uuid" json:"scheduleId"`
-	DivisionImages          []*DivisionImage   `bun:"rel:has-many" json:"divisionImages"`
+	DivisionImages          DivisionImages   `bun:"rel:has-many" json:"divisionImages"`
 	DivisionImagesForDelete []string           `bun:"-" json:"divisionImagesForDelete"`
 	DivisionImagesNames     []string           `bun:"-" json:"divisionImagesNames"`
-	DivisionComments        []*DivisionComment `bun:"rel:has-many" json:"divisionComments"`
+	DivisionComments        DivisionComments `bun:"rel:has-many" json:"divisionComments"`
+}
+
+type Divisions []*Division
+
+func (i Division) SetFilePath(fileId *string) *string {
+		path := i.DivisionImages.SetFilePath(fileId)
+		if path != nil {
+			return path
+		}
+	return nil
 }

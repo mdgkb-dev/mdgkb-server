@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v7"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 	"os"
@@ -38,6 +39,10 @@ func (h *AHandler) Register(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
+	err = user.GenerateHashPassword()
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.repository.create(c, user)
 	if err != nil {
 		c.JSON(500, err)
@@ -66,7 +71,7 @@ func (h *AHandler) Login(c *gin.Context) {
 		c.JSON(500, err)
 	}
 
-	if findedUser.Password != user.Password {
+	if !findedUser.CompareWithHashPassword(&user.Password) {
 		c.JSON(401, gin.H{})
 	}
 

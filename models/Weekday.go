@@ -7,3 +7,5 @@ type Weekday struct {
 	Number int       `json:"number"`
 	Name   string    `json:"name"`
 }
+
+type Weekdays []*Weekday

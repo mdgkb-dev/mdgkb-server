@@ -11,3 +11,5 @@ type DivisionComment struct {
 	Division   *Division `bun:"rel:belongs-to" json:"division"`
 	Comment    *Comment  `bun:"rel:belongs-to" json:"comment"`
 }
+
+type DivisionComments []*DivisionComment

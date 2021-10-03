@@ -21,6 +21,7 @@ require (
 	github.com/uptrace/bun/dialect/sqlitedialect v0.3.9
 	github.com/uptrace/bun/driver/pgdriver v0.3.9
 	github.com/uptrace/bun/extra/bundebug v0.3.9
+	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	golang.org/x/net v0.0.0-20210726213435-c6fcb2dbf985 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )

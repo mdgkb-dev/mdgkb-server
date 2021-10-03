@@ -11,3 +11,5 @@ type ScheduleItem struct {
 	StartTime  *string   `json:"startTime"`
 	EndTime    *string   `json:"endTime"`
 }
+
+type ScheduleItems []*ScheduleItem

@@ -16,3 +16,5 @@ type Doctor struct {
 	FileInfoId     uuid.UUID        `bun:"type:uuid" json:"fileInfoId"`
 	DoctorComments []*DoctorComment `bun:"rel:has-many" json:"doctorComments"`
 }
+
+type Doctors []*Doctor

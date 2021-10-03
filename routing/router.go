@@ -29,6 +29,8 @@ import (
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Config) {
 	localUploader := helpers.NewLocalUploader(&config.UploadPath)
+	localUploaderNew := uploadHelper.NewLocalUploader(&config.UploadPath)
+
 	r.Static("/static", "./static/")
 	api := r.Group("/api/v1")
 
@@ -37,14 +39,16 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	carousels.Init(api.Group("/carousels"), db, localUploader)
 	doctors.Init(api.Group("/doctors"), db, localUploader)
-	divisions.Init(api.Group("/divisions"), db, localUploader)
+
+	divisions.Init(api.Group("/divisions"), db, localUploaderNew)
+
 	news.Init(api.Group("/news"), db, localUploader)
 	normativeDocumentTypes.Init(api.Group("/normative-document-types"), db, localUploader)
 	normativeDocuments.Init(api.Group("/normative-documents"), db, localUploader)
 	sideOrganizations.Init(api.Group("/side-organizations"), db, localUploader)
 	tags.Init(api.Group("/tags"), db, localUploader)
 	users.Init(api.Group("/users"), db, localUploader)
-	timetables.Init(api.Group("/timetables"), db, localUploader)
+	timetables.Init(api.Group("/timetables"), db)
 
 	educationalOraganization.Init(api.Group("/educational-organization"), db, uploadHelper.NewLocalUploader(&config.UploadPath))
 	menu.Init(api.Group("/menus"), db)
