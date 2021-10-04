@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 type Menu struct {
@@ -14,6 +15,8 @@ type Menu struct {
 	Side bool `json:"side"`
 	Page   *Page `bun:"rel:belongs-to" json:"page"`
 	PageId uuid.NullUUID    `bun:"type:uuid" json:"pageId"`
+	Icon *FileInfo `bun:"rel:belongs-to" json:"icon"`
+	IconId uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
 
 	SubMenus SubMenus `bun:"rel:has-many" json:"subMenus"`
 	SubMenusForDelete []string `bun:"-" json:"subMenusForDelete"`
@@ -28,4 +31,20 @@ func (item *Menu) SetIdForChildren() {
 	for i := range item.SubMenus {
 		item.SubMenus[i].MenuId = item.ID
 	}
+}
+
+func (item *Menu) SetFilePath(fileId *string) *string {
+	if item.Icon.ID.UUID.String() == *fileId {
+		item.Icon.FileSystemPath = uploadHelper.BuildPath(fileId)
+		return &item.Icon.FileSystemPath
+	}
+	path := item.SubMenus.SetFilePath(fileId)
+	if path != nil {
+		return path
+	}
+	return nil
+}
+
+func (item *Menu) SetForeignKeys()  {
+	item.IconId = item.Icon.ID
 }

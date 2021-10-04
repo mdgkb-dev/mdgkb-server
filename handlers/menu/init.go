@@ -2,7 +2,9 @@ package menu
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -33,9 +35,15 @@ type IRepository interface {
 	delete(*string) error
 }
 
+type IFilesService interface {
+	Upload(*gin.Context, *models.Menu, map[string][]*multipart.FileHeader) error
+}
+
+
 
 type Handler struct {
 	service      IService
+	filesService IFilesService
 }
 
 type Service struct {
@@ -48,16 +56,20 @@ type Repository struct {
 }
 
 
+type FilesService struct {
+	uploader uploadHelper.Uploader
+}
 
-func CreateHandler(db *bun.DB) *Handler {
+func CreateHandler(db *bun.DB, uploader *uploadHelper.Uploader) *Handler {
 	repo := NewRepository(db)
 	service := NewService(repo)
-	return NewHandler(service )
+	filesService := NewFilesService(uploader)
+	return NewHandler(service,filesService )
 }
 
 // NewHandler constructor
-func NewHandler(service IService) *Handler {
-	return &Handler{service: service}
+func NewHandler(service IService, filesService IFilesService) *Handler {
+	return &Handler{service: service, filesService: filesService}
 }
 
 func NewService(repository IRepository) *Service {
@@ -66,4 +78,8 @@ func NewService(repository IRepository) *Service {
 
 func NewRepository(db *bun.DB) *Repository {
 	return &Repository{db: db, ctx: context.Background()}
+}
+
+func NewFilesService(uploader *uploadHelper.Uploader) *FilesService {
+	return &FilesService{uploader: *uploader}
 }

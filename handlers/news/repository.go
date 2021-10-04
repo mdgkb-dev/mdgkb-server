@@ -38,9 +38,9 @@ func NewRepository(db *bun.DB) *Repository {
 
 func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
 	_, err = r.db.NewInsert().Model(news.FileInfo).Exec(ctx)
-	news.FileInfoId = news.FileInfo.ID
+	news.FileInfoId = news.FileInfo.ID.UUID
 	_, err = r.db.NewInsert().Model(news.MainImage).Exec(ctx)
-	news.MainImageID = news.MainImage.ID
+	news.MainImageID = news.MainImage.ID.UUID
 
 	_, err = r.db.NewInsert().Model(news).Exec(ctx)
 
@@ -51,7 +51,7 @@ func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
 
 	for _, newsImage := range news.NewsImages {
 		_, err = r.db.NewInsert().Model(newsImage.FileInfo).Exec(ctx)
-		newsImage.FileInfoId = newsImage.FileInfo.ID
+		newsImage.FileInfoId = newsImage.FileInfo.ID.UUID
 		newsImage.NewsId = news.ID
 		_, err = r.db.NewInsert().Model(newsImage).Exec(ctx)
 	}
@@ -60,14 +60,14 @@ func (r *Repository) create(ctx *gin.Context, news *models.News) (err error) {
 }
 
 func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
-	if news.FileInfo.ID != uuid.Nil {
+	if news.FileInfo.ID.UUID != uuid.Nil {
 		_, err = r.db.NewUpdate().Model(news.FileInfo).Where("id = ?", news.FileInfo.ID).Exec(ctx)
 	}
-	news.FileInfoId = news.FileInfo.ID
-	if news.MainImage.ID != uuid.Nil {
+	news.FileInfoId = news.FileInfo.ID.UUID
+	if news.MainImage.ID.UUID != uuid.Nil {
 		_, err = r.db.NewUpdate().Model(news.MainImage).Where("id = ?", news.MainImage.ID).Exec(ctx)
 	}
-	news.MainImageID = news.MainImage.ID
+	news.MainImageID = news.MainImage.ID.UUID
 
 	_, err = r.db.NewUpdate().Model(news).Where("id = ?", news.ID).Exec(ctx)
 
@@ -111,7 +111,7 @@ func (r *Repository) update(ctx *gin.Context, news *models.News) (err error) {
 		Exec(ctx)
 
 	for i, newsImage := range news.NewsImages {
-		newsImage.FileInfoId = fileInfos[i].ID
+		newsImage.FileInfoId = fileInfos[i].ID.UUID
 		newsImage.NewsId = news.ID
 	}
 

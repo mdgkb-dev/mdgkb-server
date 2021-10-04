@@ -5,5 +5,6 @@ CREATE TABLE menus
     top boolean,
     side boolean,
     link VARCHAR,
+    icon_id uuid ,
     page_id uuid
 );

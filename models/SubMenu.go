@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 type SubMenu struct {
@@ -15,6 +16,8 @@ type SubMenu struct {
 
 	Page   *Page `bun:"rel:belongs-to" json:"page"`
 	PageId uuid.NullUUID    `bun:"type:uuid" json:"PageId"`
+	Icon *FileInfo `bun:"rel:belongs-to" json:"icon"`
+	IconId uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
 
 	SubSubMenus SubSubMenus `bun:"rel:has-many" json:"subSubMenus"`
 	SubSubMenusForDelete []string `bun:"-" json:"subSubMenusForDelete"`
@@ -50,6 +53,36 @@ func (items SubMenus) GetSubSubMenus() SubSubMenus {
 	itemsForGet := make(SubSubMenus, 0)
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.SubSubMenus...)
+	}
+	return itemsForGet
+}
+
+func (items SubMenus) SetFilePath(fileId *string) *string {
+	for _, item := range items {
+		if item.Icon.ID.UUID.String() == *fileId {
+			item.Icon.FileSystemPath = uploadHelper.BuildPath(fileId)
+			return &item.Icon.FileSystemPath
+		}
+		path := item.SubSubMenus.SetFilePath(fileId)
+		if path != nil {
+			return path
+		}
+	}
+	return nil
+}
+
+func (items SubMenus) SetForeignKeys()  {
+	for i := range items {
+		items[i].IconId.UUID = items[i].Icon.ID.UUID
+		items[i].IconId = items[i].Icon.ID
+	}
+}
+
+
+func (items SubMenus) GetFileInfos() FileInfos {
+	itemsForGet := make(FileInfos, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.Icon)
 	}
 	return itemsForGet
 }

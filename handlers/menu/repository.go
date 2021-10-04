@@ -18,8 +18,11 @@ func (r *Repository) getAll() (models.Menus,  error) {
 	items := make(models.Menus, 0)
 	err := r.db.NewSelect().Model(&items).
 		Relation("Page").
+		Relation("Icon").
 		Relation("SubMenus.Page").
-		Relation("SubMenus.SubSubMenus").
+		Relation("SubMenus.Icon").
+		Relation("SubMenus.SubSubMenus.Icon").
+		Relation("SubMenus.SubSubMenus.Page").
 		Scan(r.ctx)
 	return items, err
 }
@@ -28,8 +31,11 @@ func (r *Repository) get(id *string) (*models.Menu, error) {
 	item := models.Menu{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("Page").
+		Relation("Icon").
 		Relation("SubMenus.Page").
-		Relation("SubMenus.SubSubMenus").
+		Relation("SubMenus.Icon").
+		Relation("SubMenus.SubSubMenus.Icon").
+		Relation("SubMenus.SubSubMenus.Page").
 		Where("menus.id = ?", *id).
 		Scan(r.ctx)
 	return &item, err

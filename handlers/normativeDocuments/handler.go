@@ -43,8 +43,8 @@ func (h *Handler) Create(c *gin.Context) {
 	document.NormativeDocumentTypeId = document.NormativeDocumentType.ID
 
 	if document.FileInfo != nil {
-		document.FileInfo.ID = uuid.New()
-		document.FileInfo.FileSystemPath = "normative-documents" + "/" + document.FileInfo.ID.String() + ".pdf"
+		document.FileInfo.ID.UUID = uuid.New()
+		document.FileInfo.FileSystemPath = "normative-documents" + "/" + document.FileInfo.ID.UUID.String() + ".pdf"
 		document.FileInfo.OriginalName = sanitize.BaseName(document.FileInfo.OriginalName)
 		err = h.uploader.Upload(c, form.File["files"][0], document.FileInfo.FileSystemPath)
 
@@ -99,11 +99,11 @@ func (h *Handler) Update(c *gin.Context) {
 	if len(form.File["files"]) > 0 {
 		// TODO: Переделать на замену файла, вместо создания нового.
 
-		if document.FileInfo.ID == uuid.Nil {
-			document.FileInfo.ID = uuid.New()
+		if document.FileInfo.ID.UUID == uuid.Nil {
+			document.FileInfo.ID.UUID = uuid.New()
 		}
 
-		document.FileInfo.FileSystemPath = "normative-documents" + "/" + document.FileInfo.ID.String() + ".pdf"
+		document.FileInfo.FileSystemPath = "normative-documents" + "/" + document.FileInfo.ID.UUID.String() + ".pdf"
 		document.FileInfo.OriginalName = sanitize.BaseName(document.FileInfo.OriginalName)
 		err = h.uploader.Upload(c, form.File["files"][0], document.FileInfo.FileSystemPath)
 

@@ -10,7 +10,7 @@ type Document struct {
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
 	Name          string    `json:"name" json:"name,omitempty"`
 	FileInfo      *FileInfo `bun:"rel:belongs-to" json:"fileInfo" json:"file_info,omitempty"`
-	FileInfoId    uuid.UUID `bun:"type:uuid" json:"fileInfoId"`
+	FileInfoId    uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
 }
 
 type Documents []*Document

@@ -1,12 +1,19 @@
 package menu
 
 import (
+	"fmt"
+	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/subMenus"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.Menu) error {
-	err := s.repository.create(item)
+	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(models.FileInfos{item.Icon})
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -31,7 +38,14 @@ func (s *Service) Get(id *string) (*models.Menu, error) {
 }
 
 func (s *Service) Update(item *models.Menu) error {
-	err := s.repository.update(item)
+	fmt.Println(item.Icon)
+	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(models.FileInfos{item.Icon})
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}

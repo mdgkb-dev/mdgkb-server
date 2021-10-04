@@ -32,7 +32,7 @@ func NewRepository(db *bun.DB) *Repository {
 
 func (r *Repository) create(ctx *gin.Context, item *models.Doctor) (err error) {
 	_, err = r.db.NewInsert().Model(item.FileInfo).Exec(ctx)
-	item.FileInfoId = item.FileInfo.ID
+	item.FileInfoId = item.FileInfo.ID.UUID
 	_, err = r.db.NewInsert().Model(item.Human).Exec(ctx)
 	item.HumanId = item.Human.ID
 	_, err = r.db.NewInsert().Model(item).Exec(ctx)
@@ -84,7 +84,7 @@ func (r *Repository) update(ctx *gin.Context, item *models.Doctor) (err error) {
 		Set("file_system_path = EXCLUDED.file_system_path").
 		Exec(ctx)
 
-	item.FileInfoId = item.FileInfo.ID
+	item.FileInfoId = item.FileInfo.ID.UUID
 	r.db.NewUpdate().Model(item.Human).Where("id = ?", item.Human.ID).Exec(ctx)
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
 	return err

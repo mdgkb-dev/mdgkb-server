@@ -50,7 +50,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	users.Init(api.Group("/users"), db, localUploader)
 	timetables.Init(api.Group("/timetables"), db)
 
-	educationalOraganization.Init(api.Group("/educational-organization"), db, uploadHelper.NewLocalUploader(&config.UploadPath))
-	menu.Init(api.Group("/menus"), db)
+	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
+	menu.Init(api.Group("/menus"), db, localUploaderNew)
 	pages.Init(api.Group("/pages"), db)
 }

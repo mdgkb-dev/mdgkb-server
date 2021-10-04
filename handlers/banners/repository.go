@@ -44,7 +44,7 @@ func (r *Repository) get(ctx *gin.Context, id string) (item models.Banner, err e
 
 func (r *Repository) create(ctx *gin.Context, item *models.Banner) (err error) {
 	_, err = r.db.NewInsert().Model(item.FileInfo).Exec(ctx)
-	item.FileInfoId = item.FileInfo.ID
+	item.FileInfoId = item.FileInfo.ID.UUID
 	_, err = r.db.NewInsert().Model(item).Exec(ctx)
 	fmt.Println(err)
 	return err
@@ -56,10 +56,10 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 }
 
 func (r *Repository) update(ctx *gin.Context, item *models.Banner) (err error) {
-	if item.FileInfo.ID != uuid.Nil {
+	if item.FileInfo.ID.UUID != uuid.Nil {
 		_, err = r.db.NewUpdate().Model(item.FileInfo).Where("id = ?", item.FileInfo.ID).Exec(ctx)
 	}
-	item.FileInfoId = item.FileInfo.ID
+	item.FileInfoId = item.FileInfo.ID.UUID
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
 	return err
 }

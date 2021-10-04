@@ -87,7 +87,7 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 
 	var info models.FileInfo
 
-	if document.FileInfoId != uuid.Nil {
+	if document.FileInfoId.UUID != uuid.Nil {
 		err = r.db.NewSelect().Model(&info).Where("id = ?", document.FileInfoId).Scan(ctx)
 
 		if err != nil {
@@ -101,7 +101,7 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 		return err
 	}
 
-	if document.FileInfoId != uuid.Nil {
+	if document.FileInfoId.UUID != uuid.Nil {
 		_, err = r.db.NewDelete().Model(&models.FileInfo{}).Where("id = ?", info.ID).Exec(ctx)
 	}
 

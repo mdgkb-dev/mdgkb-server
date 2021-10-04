@@ -10,7 +10,14 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Menu
-	err := c.Bind(&item)
+	files, err := httpHelper.GetForm(c, &item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.Upload(c, &item, files)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Create(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -47,7 +54,11 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Menu
-	err := c.Bind(&item)
+	files, err := httpHelper.GetForm(c, &item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.Upload(c, &item, files)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

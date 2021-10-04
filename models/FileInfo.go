@@ -5,7 +5,7 @@ import (
 )
 
 type FileInfo struct {
-	ID             uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID             uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	OriginalName   string    `json:"originalName"`
 	FileSystemPath string    `json:"fileSystemPath"`
 }

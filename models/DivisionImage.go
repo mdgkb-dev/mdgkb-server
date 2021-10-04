@@ -10,7 +10,7 @@ type DivisionImage struct {
 	Description string    `json:"description"`
 	DivisionId  uuid.UUID `bun:"type:uuid" json:"divisionId" `
 	FileInfo    *FileInfo `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoId  uuid.UUID `bun:"type:uuid" json:"fileInfoId"`
+	FileInfoId  uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
 }
 
 type DivisionImages []*DivisionImage
@@ -31,7 +31,7 @@ func (i DivisionImages) SetFileInfoID()  {
 
 func (i DivisionImages) SetFilePath(fileId *string) *string {
 	for _, item := range i {
-		if item.FileInfo.ID.String() == *fileId {
+		if item.FileInfo.ID.UUID.String() == *fileId {
 			item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileId)
 			return &item.FileInfo.FileSystemPath
 		}

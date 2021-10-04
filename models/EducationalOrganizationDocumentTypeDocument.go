@@ -35,7 +35,7 @@ func (items EducationalOrganizationDocumentTypeDocuments) SetForeignKeys()  {
 
 func (i EducationalOrganizationDocumentTypeDocuments) SetFilePath(fileId *string) *string {
 	for _, item := range i {
-		if item.Document.FileInfo.ID.String() == *fileId {
+		if item.Document.FileInfo.ID.UUID.String() == *fileId {
 			item.Document.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileId)
 			return &item.Document.FileInfo.FileSystemPath
 		}

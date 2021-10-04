@@ -1,6 +1,7 @@
 package subMenus
 
 import (
+	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/subSubMenus"
 	"mdgkb/mdgkb-server/models"
 )
@@ -9,7 +10,14 @@ func (s *Service) CreateMany(items models.SubMenus) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.createMany(items)
+
+	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.GetFileInfos())
+	if err != nil {
+		return err
+	}
+	items.SetForeignKeys()
+
+	err = s.repository.createMany(items)
 	if err != nil {
 		return err
 	}
@@ -27,7 +35,14 @@ func (s *Service) UpsertMany(items models.SubMenus) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+
+	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.GetFileInfos())
+	if err != nil {
+		return err
+	}
+	items.SetForeignKeys()
+
+	err = s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}

@@ -4,5 +4,7 @@ CREATE TABLE sub_menus
     name varchar,
     link VARCHAR,
     page_id uuid  ,
+    svg text,
+    icon_id uuid ,
     menu_id uuid  REFERENCES menus (id) ON UPDATE CASCADE ON DELETE CASCADE
 );

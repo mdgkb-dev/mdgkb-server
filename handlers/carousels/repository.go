@@ -37,7 +37,7 @@ func (r *Repository) create(ctx *gin.Context, item *models.Carousel) (err error)
 	_, err = r.db.NewInsert().Model(&fileInfos).Exec(ctx)
 
 	for i, slide := range item.CarouselSlides {
-		slide.FileInfoId = fileInfos[i].ID
+		slide.FileInfoId = fileInfos[i].ID.UUID
 		slide.CarouselID = item.ID
 	}
 
@@ -84,7 +84,7 @@ func (r *Repository) update(ctx *gin.Context, item *models.Carousel) (err error)
 		Exec(ctx)
 
 	for i, slide := range item.CarouselSlides {
-		slide.FileInfoId = fileInfos[i].ID
+		slide.FileInfoId = fileInfos[i].ID.UUID
 		slide.CarouselID = item.ID
 	}
 
