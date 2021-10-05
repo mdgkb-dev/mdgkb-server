@@ -3,6 +3,7 @@ package pages
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 import (
@@ -12,11 +13,11 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB) {
-	var h = handler.CreateHandler(db)
+func Init(r *gin.RouterGroup, db *bun.DB, uploader uploadHelper.Uploader) {
+	var h = handler.CreateHandler(db,&uploader)
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
-	r.POST("/", h.Create)
+	r.POST("", h.Create)
 	r.DELETE("/:id", h.Delete)
 	r.PUT("/:id", h.Update)
 

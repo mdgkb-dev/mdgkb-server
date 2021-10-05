@@ -52,5 +52,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 
 	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
 	menu.Init(api.Group("/menus"), db, localUploaderNew)
-	pages.Init(api.Group("/pages"), db)
+	pages.Init(api.Group("/pages"), db, localUploaderNew)
 }

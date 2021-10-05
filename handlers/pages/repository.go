@@ -22,7 +22,11 @@ func (r *Repository) getAll() (models.Pages,  error) {
 
 func (r *Repository) get(id *string) (*models.Page, error) {
 	item := models.Page{}
-	err := r.db.NewSelect().Model(&item).Where("id = ?", *id).Scan(r.ctx)
+	err := r.db.NewSelect().
+		Model(&item).
+		Relation("PageDocuments.Document.FileInfo").
+		Relation("PageComments.Comment").
+		Where("id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 
@@ -38,6 +42,11 @@ func (r *Repository) update(item *models.Page) (err error) {
 
 func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
 	item := models.Page{}
-	err := r.db.NewSelect().Model(&item).Where("slug = ?", *slug).Scan(r.ctx)
+	err := r.db.NewSelect().
+		Model(&item).
+		Relation("PageDocuments.Document.FileInfo").
+		Relation("PageComments.Comment").
+		Where("slug = ?", *slug).
+		Scan(r.ctx)
 	return &item, err
 }

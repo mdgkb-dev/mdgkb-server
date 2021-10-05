@@ -55,7 +55,6 @@ type Repository struct {
 	ctx context.Context
 }
 
-
 type FilesService struct {
 	uploader uploadHelper.Uploader
 }

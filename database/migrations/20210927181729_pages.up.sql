@@ -4,5 +4,6 @@ CREATE TABLE pages
     title varchar,
     content text,
     slug VARCHAR,
-    link VARCHAR
+    link VARCHAR,
+    with_comments boolean default false
 );

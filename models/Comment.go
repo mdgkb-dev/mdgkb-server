@@ -12,3 +12,5 @@ type Comment struct {
 	PublishedOn time.Time    `json:"publishedOn"`
 	User        *User        `bun:"rel:belongs-to" json:"user"`
 }
+
+type Comments []*Comment
