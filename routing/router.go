@@ -20,6 +20,7 @@ import (
 	"mdgkb/mdgkb-server/routing/tags"
 	"mdgkb/mdgkb-server/routing/timetables"
 	"mdgkb/mdgkb-server/routing/users"
+	"mdgkb/mdgkb-server/routing/vacancies"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -53,4 +54,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
 	menu.Init(api.Group("/menus"), db, localUploaderNew)
 	pages.Init(api.Group("/pages"), db, localUploaderNew)
+	vacancies.Init(api.Group("/vacancies"), db)
 }

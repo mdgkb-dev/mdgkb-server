@@ -6,7 +6,7 @@ func (s *Service) Create(item *models.Vacancy) error {
 	return s.repository.create(item)
 }
 
-func (s *Service) GetAll() ([]*models.Vacancies, error) {
+func (s *Service) GetAll() (models.Vacancies, error) {
 	items, err := s.repository.getAll()
 	if err != nil {
 		return nil, err

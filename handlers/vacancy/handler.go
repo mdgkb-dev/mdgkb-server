@@ -2,8 +2,9 @@ package vacancy
 
 import (
 	"mdgkb/mdgkb-server/helpers/httpHelper"
-	"net/http"
 	"mdgkb/mdgkb-server/models"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 

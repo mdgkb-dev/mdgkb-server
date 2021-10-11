@@ -1,8 +1,9 @@
 package vacancy
 
 import (
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/uptrace/bun"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -14,8 +15,9 @@ func (r *Repository) create(item *models.Vacancy) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (items []*models.Vacancies, err error) {
-	err = r.db.NewSelect().Model(&items).Scan(r.ctx)
+func (r *Repository) getAll() ( models.Vacancies, error) {
+	items := make(models.Vacancies, 0)
+	err := r.db.NewSelect().Model(&items).Scan(r.ctx)
 	return items, err
 }
 
