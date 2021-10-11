@@ -21,6 +21,7 @@ import (
 	"mdgkb/mdgkb-server/routing/timetables"
 	"mdgkb/mdgkb-server/routing/users"
 	"mdgkb/mdgkb-server/routing/vacancies"
+	"mdgkb/mdgkb-server/routing/vacancyResponse"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -55,4 +56,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	menu.Init(api.Group("/menus"), db, localUploaderNew)
 	pages.Init(api.Group("/pages"), db, localUploaderNew)
 	vacancies.Init(api.Group("/vacancies"), db)
+	vacancyResponse.Init(api.Group("/vacancy-responses"), db)
 }
