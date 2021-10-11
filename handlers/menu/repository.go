@@ -1,8 +1,9 @@
 package menu
 
 import (
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/uptrace/bun"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -14,7 +15,7 @@ func (r *Repository) create(item *models.Menu) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (models.Menus,  error) {
+func (r *Repository) getAll() (models.Menus, error) {
 	items := make(models.Menus, 0)
 	err := r.db.NewSelect().Model(&items).
 		Relation("Page").

@@ -37,8 +37,8 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.Banner, err error)
 
 func (r *Repository) get(ctx *gin.Context, id string) (item models.Banner, err error) {
 	err = r.db.NewSelect().Model(&item).Where("banner.id = ?", id).
-	Relation("FileInfo").
-	Scan(ctx)
+		Relation("FileInfo").
+		Scan(ctx)
 	return item, err
 }
 
@@ -66,9 +66,9 @@ func (r *Repository) update(ctx *gin.Context, item *models.Banner) (err error) {
 
 func (r *Repository) updateAllOrder(ctx *gin.Context, item []*models.Banner) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
-  Model(&item).
-	Set("list_number = EXCLUDED.list_number").
-	Where("banner.id = EXCLUDED.id").
-	 Exec(ctx)
-  return err
+		Model(&item).
+		Set("list_number = EXCLUDED.list_number").
+		Where("banner.id = EXCLUDED.id").
+		Exec(ctx)
+	return err
 }

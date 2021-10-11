@@ -1,4 +1,4 @@
-package schedules
+package vacancy
 
 import (
 	"context"
@@ -9,18 +9,27 @@ import (
 )
 
 type IHandler interface {
-	GetValueTypes(c *gin.Context) error
+	GetAll(c *gin.Context) error
+	Get(c *gin.Context) error
+	Create(c *gin.Context) error
+	Update(c *gin.Context) error
+	Delete(c *gin.Context) error
 }
 
 type IService interface {
-	Create(timetable *models.Schedule) error
-	Upsert(timetable *models.Schedule) error
+	GetAll() ([]*models.Vacancies, error)
+	Get(*string) (*models.Vacancy, error)
+	Create(*models.Vacancy) error
+	Update(*models.Vacancy) error
+	Delete(*string) error
 }
 
 type IRepository interface {
-	getDB() *bun.DB
-	create(timetable *models.Schedule) error
-	upsert(timetable *models.Schedule) error
+	create(*models.Vacancy) error
+	getAll() ([]*models.Vacancies, error)
+	get(*string) (*models.Vacancy, error)
+	update(*models.Vacancy) error
+	delete(*string) error
 }
 
 type Handler struct {
@@ -40,11 +49,6 @@ func CreateHandler(db *bun.DB) *Handler {
 	repo := NewRepository(db)
 	service := NewService(repo)
 	return NewHandler(service)
-}
-
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
 }
 
 // NewHandler constructor

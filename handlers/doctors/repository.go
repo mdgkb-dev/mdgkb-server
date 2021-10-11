@@ -93,7 +93,7 @@ func (r *Repository) update(ctx *gin.Context, item *models.Doctor) (err error) {
 func (r *Repository) createComment(ctx *gin.Context, item *models.DoctorComment) error {
 	_, err := r.db.NewInsert().Model(item.Comment).Exec(ctx)
 	item.CommentId = item.Comment.ID
-_, err = r.db.NewInsert().Model(item).Exec(ctx)
+	_, err = r.db.NewInsert().Model(item).Exec(ctx)
 	return err
 }
 
@@ -106,4 +106,4 @@ func (r *Repository) updateComment(ctx *gin.Context, item *models.DoctorComment)
 func (r *Repository) removeComment(ctx *gin.Context, id string) error {
 	_, err := r.db.NewDelete().Model(&models.DoctorComment{}).Where("id = ?", id).Exec(ctx)
 	return err
-}		
+}

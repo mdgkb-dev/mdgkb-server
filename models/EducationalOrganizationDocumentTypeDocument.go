@@ -1,19 +1,20 @@
 package models
 
 import (
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 type EducationalOrganizationDocumentTypeDocument struct {
 	bun.BaseModel `bun:"educational_organization_document_types_documents,alias:educational_organization_document_types_documents"`
-	ID   uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 
-	EducationalOrganizationDocumentType *EducationalOrganizationDocumentType `bun:"rel:belongs-to" json:"educationalOrganizationDocumentType"`
-	EducationalOrganizationDocumentTypeID uuid.UUID `bun:"type:uuid" json:"educationalOrganizationDocumentTypeId"`
+	EducationalOrganizationDocumentType   *EducationalOrganizationDocumentType `bun:"rel:belongs-to" json:"educationalOrganizationDocumentType"`
+	EducationalOrganizationDocumentTypeID uuid.UUID                            `bun:"type:uuid" json:"educationalOrganizationDocumentTypeId"`
 
-	Document *Document `bun:"rel:belongs-to" json:"document"`
+	Document   *Document `bun:"rel:belongs-to" json:"document"`
 	DocumentID uuid.UUID `bun:"type:uuid" json:"documentId"`
 }
 
@@ -27,7 +28,7 @@ func (i EducationalOrganizationDocumentTypeDocuments) GetDocuments() Documents {
 	return items
 }
 
-func (items EducationalOrganizationDocumentTypeDocuments) SetForeignKeys()  {
+func (items EducationalOrganizationDocumentTypeDocuments) SetForeignKeys() {
 	for i := range items {
 		items[i].DocumentID = items[i].Document.ID
 	}

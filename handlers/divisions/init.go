@@ -2,11 +2,12 @@ package divisions
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
@@ -19,7 +20,6 @@ type IHandler interface {
 	UpdateComment(c *gin.Context) error
 	RemoveComment(c *gin.Context) error
 }
-
 
 type IService interface {
 	Create(*models.Division) error
@@ -34,13 +34,13 @@ type IService interface {
 
 type IRepository interface {
 	getDB() *bun.DB
-	create( *models.Division) error
+	create(*models.Division) error
 	getAll() (models.Divisions, error)
 	get(*string) (*models.Division, error)
 	delete(*string) error
-	update( *models.Division) error
-	createComment( *models.DivisionComment) error
-	updateComment( *models.DivisionComment) error
+	update(*models.Division) error
+	createComment(*models.DivisionComment) error
+	updateComment(*models.DivisionComment) error
 	removeComment(*string) error
 }
 

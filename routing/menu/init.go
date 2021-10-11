@@ -10,7 +10,7 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB , uploader uploadHelper.Uploader) {
+func Init(r *gin.RouterGroup, db *bun.DB, uploader uploadHelper.Uploader) {
 	var h = handler.CreateHandler(db, &uploader)
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)

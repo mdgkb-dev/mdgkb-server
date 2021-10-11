@@ -7,22 +7,21 @@ import (
 
 type Page struct {
 	bun.BaseModel `bun:"pages,alias:pages"`
-	ID                  uuid.UUID      `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Title               string         `json:"title"`
-	Content             string         `json:"content"`
-	Slug                string         `json:"slug"`
-	Link                string         `json:"link"`
-	WithComments                bool         `json:"withComments"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Title         string    `json:"title"`
+	Content       string    `json:"content"`
+	Slug          string    `json:"slug"`
+	Link          string    `json:"link"`
+	WithComments  bool      `json:"withComments"`
 
-	PageComments PageComments `bun:"rel:has-many" json:"pageComments"`
-	PageCommentsForDelete []string `bun:"-" json:"pageCommentsForDelete"`
+	PageComments          PageComments `bun:"rel:has-many" json:"pageComments"`
+	PageCommentsForDelete []string     `bun:"-" json:"pageCommentsForDelete"`
 
-	PageDocuments PageDocuments `bun:"rel:has-many" json:"pageDocuments"`
-	PageDocumentsForDelete []string `bun:"-" json:"pageDocumentsForDelete"`
+	PageDocuments          PageDocuments `bun:"rel:has-many" json:"pageDocuments"`
+	PageDocumentsForDelete []string      `bun:"-" json:"pageDocumentsForDelete"`
 }
 
 type Pages []*Page
-
 
 func (item *Page) SetIdForChildren() {
 	if len(item.PageComments) < 0 {

@@ -19,7 +19,6 @@ type IFilesService interface {
 	Upload(*gin.Context, *models.EducationalOrganization, map[string][]*multipart.FileHeader) error
 }
 
-
 type IService interface {
 	Get() (*models.EducationalOrganization, error)
 	Update(*models.EducationalOrganization) error
@@ -29,13 +28,12 @@ type FilesService struct {
 	uploader uploadHelper.Uploader
 }
 
-
 type IRepository interface {
 	getDB() *bun.DB
 }
 
 type Handler struct {
-	service IService
+	service      IService
 	filesService IFilesService
 }
 
@@ -67,7 +65,6 @@ func NewService(repository IRepository) *Service {
 func NewRepository(db *bun.DB) *Repository {
 	return &Repository{db: db, ctx: context.Background()}
 }
-
 
 func NewFilesService(uploader *uploadHelper.Uploader) *FilesService {
 	return &FilesService{uploader: *uploader}

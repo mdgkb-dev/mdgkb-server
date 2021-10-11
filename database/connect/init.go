@@ -3,10 +3,11 @@ package connect
 import (
 	"database/sql"
 	"fmt"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/go-redis/redis/v7"
 	"github.com/uptrace/bun/driver/pgdriver"
 	"github.com/uptrace/bun/extra/bundebug"
-	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"

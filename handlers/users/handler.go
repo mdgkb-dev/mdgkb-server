@@ -1,8 +1,9 @@
 package users
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/helpers"
+
+	"github.com/gin-gonic/gin"
 )
 
 type IHandler interface {

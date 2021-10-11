@@ -183,14 +183,14 @@ func (r *Repository) getAll(ctx *gin.Context, newsParams *newsParams) (news []mo
 			OrderExpr("count (news_to_tags.id)").
 			OrderExpr("count (news_views.id)").
 			Limit(newsParams.Limit)
-			if len(news) == 0 {
-				query = r.db.NewSelect().Model(&news).Relation("NewsViews").
-					Join("LEFT JOIN news_views ON news_views.news_id = news.id").
-					Group("news.id").
-					Order("published_on DESC").
-					OrderExpr("count (news_views.id)").
-					Limit(newsParams.Limit)
-			}
+		if len(news) == 0 {
+			query = r.db.NewSelect().Model(&news).Relation("NewsViews").
+				Join("LEFT JOIN news_views ON news_views.news_id = news.id").
+				Group("news.id").
+				Order("published_on DESC").
+				OrderExpr("count (news_views.id)").
+				Limit(newsParams.Limit)
+		}
 	}
 	err = query.Scan(ctx)
 	return news, err

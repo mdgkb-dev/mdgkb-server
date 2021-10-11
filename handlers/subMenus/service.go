@@ -24,7 +24,7 @@ func (s *Service) CreateMany(items models.SubMenus) error {
 	items.SetIdForChildren()
 	subSubMenuService := subSubMenus.CreateService(s.repository.getDB())
 	err = subSubMenuService.CreateMany(items.GetSubSubMenus())
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	return nil
@@ -49,11 +49,11 @@ func (s *Service) UpsertMany(items models.SubMenus) error {
 	items.SetIdForChildren()
 	subSubMenuService := subSubMenus.CreateService(s.repository.getDB())
 	err = subSubMenuService.DeleteMany(items.GetIDForDelete())
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	err = subSubMenuService.UpsertMany(items.GetSubSubMenus())
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	return nil
@@ -65,4 +65,3 @@ func (s *Service) DeleteMany(idPool []string) error {
 	}
 	return s.repository.deleteMany(idPool)
 }
-

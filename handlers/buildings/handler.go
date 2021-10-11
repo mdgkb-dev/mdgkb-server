@@ -2,10 +2,11 @@ package buildings
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 type Handler interface {

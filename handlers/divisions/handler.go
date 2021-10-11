@@ -9,7 +9,6 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Division
 	files, err := httpHelper.GetForm(c, &item)
@@ -85,7 +84,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.service.UpdateComment( &item)
+	err = h.service.UpdateComment(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

@@ -1,8 +1,9 @@
 package educationalOrganizationManagers
 
 import (
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/uptrace/bun"
 )
 
 func (r *Repository) getDB() *bun.DB {

@@ -5,8 +5,6 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-
-
 func (s *Service) CreateMany(items models.EducationalOrganizationDocumentTypes) error {
 	if len(items) == 0 {
 		return nil

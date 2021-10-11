@@ -49,7 +49,6 @@ func (s *Service) Update(item *models.Division) error {
 	}
 	item.ScheduleId = item.Schedule.ID
 
-
 	divisionImagesService := divisionImages.CreateService(s.repository.getDB())
 	err = divisionImagesService.DeleteMany(item.DivisionImagesForDelete)
 	if err != nil {
@@ -62,7 +61,6 @@ func (s *Service) Update(item *models.Division) error {
 
 	return s.repository.update(item)
 }
-
 
 func (s *Service) GetAll() (models.Divisions, error) {
 	return s.repository.getAll()

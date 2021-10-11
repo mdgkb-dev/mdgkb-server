@@ -1,9 +1,10 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/helpers"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Authentication() gin.HandlerFunc {

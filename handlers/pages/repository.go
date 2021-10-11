@@ -1,8 +1,9 @@
 package pages
 
 import (
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/uptrace/bun"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -14,7 +15,7 @@ func (r *Repository) create(item *models.Page) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (models.Pages,  error) {
+func (r *Repository) getAll() (models.Pages, error) {
 	items := make(models.Pages, 0)
 	err := r.db.NewSelect().Model(&items).Scan(r.ctx)
 	return items, err

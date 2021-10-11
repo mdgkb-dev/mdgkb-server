@@ -63,12 +63,11 @@ type FilesService struct {
 	uploader uploadHelper.Uploader
 }
 
-
 func CreateHandler(db *bun.DB, uploader *uploadHelper.Uploader) *Handler {
 	repo := NewRepository(db)
 	service := NewService(repo)
 	filesService := NewFilesService(uploader)
-	return NewHandler(service,filesService )
+	return NewHandler(service, filesService)
 }
 
 // NewHandler constructor

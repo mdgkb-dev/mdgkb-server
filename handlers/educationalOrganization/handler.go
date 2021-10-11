@@ -8,8 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
 func (h *Handler) Get(c *gin.Context) {
 	item, err := h.service.Get()
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {

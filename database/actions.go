@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/uptrace/bun/migrate"
 	"log"
+
+	"github.com/uptrace/bun/migrate"
 )
 
 func createMigrationSql(migrator *migrate.Migrator, name *string) {

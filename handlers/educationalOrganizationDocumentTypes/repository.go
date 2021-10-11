@@ -1,9 +1,9 @@
 package educationalOrganizationDocumentTypes
 
 import (
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -16,7 +16,6 @@ func (r *Repository) getAll() (models.EducationalOrganizationDocumentTypes, erro
 		Relation("EducationalOrganizationDocumentTypeDocuments.Document.FileInfo").Scan(r.ctx)
 	return items, err
 }
-
 
 func (r *Repository) createMany(items models.EducationalOrganizationDocumentTypes) (err error) {
 	_, err = r.db.NewInsert().Model(&items).Exec(r.ctx)

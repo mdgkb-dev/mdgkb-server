@@ -1,10 +1,11 @@
 package auth
 
 import (
+	handler "mdgkb/mdgkb-server/handlers/auth"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v7"
 	"github.com/uptrace/bun"
-	handler "mdgkb/mdgkb-server/handlers/auth"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )

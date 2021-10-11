@@ -10,5 +10,5 @@ type NormativeDocument struct {
 	NormativeDocumentType   *NormativeDocumentType `bun:"rel:belongs-to" json:"type"`
 	NormativeDocumentTypeId uuid.UUID              `bun:"type:uuid"`
 	FileInfo                *FileInfo              `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoId              uuid.NullUUID              `bun:"type:uuid"`
+	FileInfoId              uuid.NullUUID          `bun:"type:uuid"`
 }

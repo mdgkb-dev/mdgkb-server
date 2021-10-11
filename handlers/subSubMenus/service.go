@@ -46,4 +46,3 @@ func (s *Service) DeleteMany(idPool []string) error {
 	}
 	return s.repository.deleteMany(idPool)
 }
-

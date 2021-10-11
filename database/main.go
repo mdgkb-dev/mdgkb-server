@@ -4,13 +4,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/migrate"
 	"log"
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/database/connect"
 	"mdgkb/mdgkb-server/database/migrations"
 	"mdgkb/mdgkb-server/database/seeding"
+
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/migrate"
 )
 
 func main() {

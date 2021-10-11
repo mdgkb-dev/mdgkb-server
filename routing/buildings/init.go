@@ -1,10 +1,11 @@
 package buildings
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 	handler "mdgkb/mdgkb-server/handlers/buildings"
 	"mdgkb/mdgkb-server/helpers"
+
+	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )

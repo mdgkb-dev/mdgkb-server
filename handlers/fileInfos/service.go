@@ -4,8 +4,6 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-
-
 func (s *Service) UpsertMany(items models.FileInfos) error {
 	if len(items) == 0 {
 		return nil

@@ -1,17 +1,17 @@
 package models
 
 type EducationalOrganization struct {
-	EducationalOrganizationProperties EducationalOrganizationProperties `json:"educationalOrganizationProperties"`
-	EducationalOrganizationPropertiesForDelete []string `json:"educationalOrganizationPropertiesForDelete"`
+	EducationalOrganizationProperties          EducationalOrganizationProperties `json:"educationalOrganizationProperties"`
+	EducationalOrganizationPropertiesForDelete []string                          `json:"educationalOrganizationPropertiesForDelete"`
 
-	EducationalOrganizationManagers EducationalOrganizationManagers `json:"educationalOrganizationManagers"`
-	EducationalOrganizationManagersForDelete []string `json:"educationalOrganizationManagersForDelete"`
+	EducationalOrganizationManagers          EducationalOrganizationManagers `json:"educationalOrganizationManagers"`
+	EducationalOrganizationManagersForDelete []string                        `json:"educationalOrganizationManagersForDelete"`
 
-	EducationalOrganizationTeachers EducationalOrganizationTeachers `json:"educationalOrganizationTeachers"`
-	EducationalOrganizationTeachersForDelete []string `json:"educationalOrganizationTeachersForDelete"`
+	EducationalOrganizationTeachers          EducationalOrganizationTeachers `json:"educationalOrganizationTeachers"`
+	EducationalOrganizationTeachersForDelete []string                        `json:"educationalOrganizationTeachersForDelete"`
 
-	EducationalOrganizationDocumentTypes EducationalOrganizationDocumentTypes `json:"educationalOrganizationDocumentTypes"`
-	EducationalOrganizationDocumentTypesForDelete []string `json:"educationalOrganizationDocumentTypesForDelete"`
+	EducationalOrganizationDocumentTypes          EducationalOrganizationDocumentTypes `json:"educationalOrganizationDocumentTypes"`
+	EducationalOrganizationDocumentTypesForDelete []string                             `json:"educationalOrganizationDocumentTypesForDelete"`
 
 	//EducationalOrganizationPages EducationalOrganizationPages `json:"educationalOrganizationPages"`
 	//EducationalOrganizationPagesForDelete []string `json:"educationalOrganizationPagesForDelete"`

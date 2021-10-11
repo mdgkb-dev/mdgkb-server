@@ -1,8 +1,9 @@
 package divisions
 
 import (
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/uptrace/bun"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )
@@ -55,7 +56,7 @@ func (r *Repository) update(item *models.Division) (err error) {
 func (r *Repository) createComment(item *models.DivisionComment) error {
 	_, err := r.db.NewInsert().Model(item.Comment).Exec(r.ctx)
 	item.CommentId = item.Comment.ID
-_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
@@ -68,4 +69,4 @@ func (r *Repository) updateComment(item *models.DivisionComment) error {
 func (r *Repository) removeComment(id *string) error {
 	_, err := r.db.NewDelete().Model(&models.DivisionComment{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
-}		
+}

@@ -1,15 +1,14 @@
 package fileInfos
 
 import (
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
-
 
 //func (r *Repository) deleteMany(idPool []string) (err error) {
 //	_, err = r.db.NewDelete().

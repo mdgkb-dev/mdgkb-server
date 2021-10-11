@@ -1,20 +1,15 @@
-package pages
+package vacancy
 
 import (
 	"mdgkb/mdgkb-server/helpers/httpHelper"
-	"mdgkb/mdgkb-server/models"
 	"net/http"
-
+	"mdgkb/mdgkb-server/models"
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.Page
-	files, err := httpHelper.GetForm(c, &item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.filesService.Upload(c, &item, files)
+	var item models.Vacancy
+	err := c.Bind(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -31,7 +26,6 @@ func (h *Handler) GetAll(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
-	return
 }
 
 func (h *Handler) Get(c *gin.Context) {
@@ -53,25 +47,12 @@ func (h *Handler) Delete(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.Page
-	files, err := httpHelper.GetForm(c, &item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.filesService.Upload(c, &item, files)
+	var item models.Vacancy
+	err := c.Bind(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.Update(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, item)
-}
-
-func (h *Handler) GetBySlug(c *gin.Context) {
-	slug := c.Param("slug")
-	item, err := h.service.GetBySlug(&slug)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

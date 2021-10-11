@@ -7,14 +7,14 @@ import (
 
 type EducationalOrganizationPage struct {
 	bun.BaseModel `bun:"pages,alias:pages"`
-	ID                  uuid.UUID      `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Page *Page `bun:"rel:belongs-to" json:"page"`
-	PageID  uuid.UUID  `bun:"type:uuid,nullzero,default:NULL" json:"pageID"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Page          *Page     `bun:"rel:belongs-to" json:"page"`
+	PageID        uuid.UUID `bun:"type:uuid,nullzero,default:NULL" json:"pageID"`
 }
 
 type EducationalOrganizationPages []*EducationalOrganizationPage
 
-func (i EducationalOrganizationPages) SetForeignKeys()  {
+func (i EducationalOrganizationPages) SetForeignKeys() {
 	for index := range i {
 		i[index].PageID = i[index].Page.ID
 	}

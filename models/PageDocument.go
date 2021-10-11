@@ -1,19 +1,20 @@
 package models
 
 import (
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 type PageDocument struct {
 	bun.BaseModel `bun:"pages_documents,alias:pages_documents"`
-	ID   uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 
-	Page *Page `bun:"rel:belongs-to" json:"page"`
+	Page   *Page     `bun:"rel:belongs-to" json:"page"`
 	PageId uuid.UUID `bun:"type:uuid" json:"pageId"`
 
-	Document *Document `bun:"rel:belongs-to" json:"document"`
+	Document   *Document `bun:"rel:belongs-to" json:"document"`
 	DocumentID uuid.UUID `bun:"type:uuid" json:"documentId"`
 }
 
@@ -27,7 +28,7 @@ func (items PageDocuments) GetDocuments() Documents {
 	return itemsForGet
 }
 
-func (items PageDocuments) SetForeignKeys()  {
+func (items PageDocuments) SetForeignKeys() {
 	for i := range items {
 		items[i].DocumentID = items[i].Document.ID
 	}

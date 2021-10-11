@@ -1,15 +1,16 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
+
+	"github.com/google/uuid"
 )
 
 type DivisionImage struct {
-	ID          uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Description string    `json:"description"`
-	DivisionId  uuid.UUID `bun:"type:uuid" json:"divisionId" `
-	FileInfo    *FileInfo `bun:"rel:belongs-to" json:"fileInfo"`
+	ID          uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Description string        `json:"description"`
+	DivisionId  uuid.UUID     `bun:"type:uuid" json:"divisionId" `
+	FileInfo    *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
 	FileInfoId  uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
 }
 
@@ -23,7 +24,7 @@ func (i DivisionImages) GetFileInfos() FileInfos {
 	return items
 }
 
-func (i DivisionImages) SetFileInfoID()  {
+func (i DivisionImages) SetFileInfoID() {
 	for _, item := range i {
 		item.FileInfoId = item.FileInfo.ID
 	}

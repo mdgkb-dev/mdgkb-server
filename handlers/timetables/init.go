@@ -2,11 +2,11 @@ package timetables
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
-
 
 type IHandler interface {
 	GetValueTypes(c *gin.Context) error
@@ -34,10 +34,9 @@ type Service struct {
 }
 
 type Repository struct {
-	db *bun.DB
+	db  *bun.DB
 	ctx context.Context
 }
-
 
 func CreateHandler(db *bun.DB) *Handler {
 	repo := NewRepository(db)
@@ -52,7 +51,7 @@ func CreateService(db *bun.DB) *Service {
 
 // NewHandler constructor
 func NewHandler(s IService) *Handler {
-	return &Handler{service: s }
+	return &Handler{service: s}
 }
 
 func NewService(repository IRepository) *Service {
@@ -62,5 +61,3 @@ func NewService(repository IRepository) *Service {
 func NewRepository(db *bun.DB) *Repository {
 	return &Repository{db: db, ctx: context.Background()}
 }
-
-

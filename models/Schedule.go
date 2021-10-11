@@ -5,11 +5,11 @@ import (
 )
 
 type Schedule struct {
-	ID                     uuid.UUID       `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name                   string          `json:"name"`
-	Description            string          `json:"description"`
+	ID                     uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name                   string        `json:"name"`
+	Description            string        `json:"description"`
 	ScheduleItems          ScheduleItems `bun:"rel:has-many" json:"scheduleItems"`
-	ScheduleItemsForDelete []string        `bun:"-" json:"scheduleItemsForDelete"`
+	ScheduleItemsForDelete []string      `bun:"-" json:"scheduleItemsForDelete"`
 }
 
 func (item *Schedule) SetIdForChildren() {

@@ -28,8 +28,8 @@ func (h *Handler) Create(c *gin.Context) {
 func (h *Handler) GetAll(c *gin.Context) {
 	items, err := h.service.GetAll()
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
-			return
-		}
+		return
+	}
 	c.JSON(http.StatusOK, items)
 	return
 }

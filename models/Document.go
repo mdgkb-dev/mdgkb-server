@@ -7,9 +7,9 @@ import (
 
 type Document struct {
 	bun.BaseModel `bun:"documents,alias:documents" json:"bun_base_model"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
-	Name          string    `json:"name" json:"name,omitempty"`
-	FileInfo      *FileInfo `bun:"rel:belongs-to" json:"fileInfo" json:"file_info,omitempty"`
+	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
+	Name          string        `json:"name" json:"name,omitempty"`
+	FileInfo      *FileInfo     `bun:"rel:belongs-to" json:"fileInfo" json:"file_info,omitempty"`
 	FileInfoId    uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
 }
 
@@ -23,7 +23,7 @@ func (i Documents) GetFileInfos() FileInfos {
 	return items
 }
 
-func (i Documents) SetFileInfoID()  {
+func (i Documents) SetFileInfoID() {
 	for _, item := range i {
 		item.FileInfoId = item.FileInfo.ID
 	}

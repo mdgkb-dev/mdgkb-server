@@ -1,10 +1,11 @@
 package timetables
 
 import (
+	handler "mdgkb/mdgkb-server/handlers/timetables"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
-	handler "mdgkb/mdgkb-server/handlers/timetables"
 )
 
 // Init func

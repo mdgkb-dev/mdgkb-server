@@ -39,8 +39,6 @@ type IFilesService interface {
 	Upload(*gin.Context, *models.Menu, map[string][]*multipart.FileHeader) error
 }
 
-
-
 type Handler struct {
 	service      IService
 	filesService IFilesService
@@ -63,7 +61,7 @@ func CreateHandler(db *bun.DB, uploader *uploadHelper.Uploader) *Handler {
 	repo := NewRepository(db)
 	service := NewService(repo)
 	filesService := NewFilesService(uploader)
-	return NewHandler(service,filesService )
+	return NewHandler(service, filesService)
 }
 
 // NewHandler constructor

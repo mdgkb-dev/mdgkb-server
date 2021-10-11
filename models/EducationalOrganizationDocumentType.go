@@ -7,11 +7,11 @@ import (
 
 type EducationalOrganizationDocumentType struct {
 	bun.BaseModel `bun:"educational_organization_document_types,alias:educational_organization_document_types"`
-	ID   uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
-	Name string    `json:"name"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	Name          string    `json:"name"`
 
-	EducationalOrganizationDocumentTypeDocuments EducationalOrganizationDocumentTypeDocuments `bun:"rel:has-many" json:"educationalOrganizationDocumentTypeDocuments"`
-	EducationalOrganizationDocumentTypeDocumentsForDelete []string `bun:"-" json:"educationalOrganizationDocumentTypeDocumentsForDelete"`
+	EducationalOrganizationDocumentTypeDocuments          EducationalOrganizationDocumentTypeDocuments `bun:"rel:has-many" json:"educationalOrganizationDocumentTypeDocuments"`
+	EducationalOrganizationDocumentTypeDocumentsForDelete []string                                     `bun:"-" json:"educationalOrganizationDocumentTypeDocumentsForDelete"`
 }
 
 type EducationalOrganizationDocumentTypes []*EducationalOrganizationDocumentType
@@ -19,7 +19,7 @@ type EducationalOrganizationDocumentTypes []*EducationalOrganizationDocumentType
 func (i EducationalOrganizationDocumentTypes) GetIDForDelete() []string {
 	idPool := make([]string, 0)
 	for _, item := range i {
-		idPool = append(idPool, item.EducationalOrganizationDocumentTypeDocumentsForDelete... )
+		idPool = append(idPool, item.EducationalOrganizationDocumentTypeDocumentsForDelete...)
 	}
 	return idPool
 }
@@ -32,14 +32,13 @@ func (i EducationalOrganizationDocumentTypes) GetEducationalOrganizationDocument
 	return items
 }
 
-
-func (i EducationalOrganizationDocumentTypes) SetChildrenForeignKeys()  {
+func (i EducationalOrganizationDocumentTypes) SetChildrenForeignKeys() {
 	for id := range i {
 		i[id].SetChildrenForeignKeys()
 	}
 }
 
-func (i *EducationalOrganizationDocumentType) SetChildrenForeignKeys()  {
+func (i *EducationalOrganizationDocumentType) SetChildrenForeignKeys() {
 	for index := range i.EducationalOrganizationDocumentTypeDocuments {
 		i.EducationalOrganizationDocumentTypeDocuments[index].EducationalOrganizationDocumentTypeID = i.ID
 	}
