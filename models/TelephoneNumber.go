@@ -11,3 +11,5 @@ type TelephoneNumber struct {
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoId uuid.UUID    `bun:"type:uuid"`
 }
+
+type TelephoneNumbers []*TelephoneNumber

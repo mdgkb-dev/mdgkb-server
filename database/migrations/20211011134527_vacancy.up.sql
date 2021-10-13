@@ -4,5 +4,11 @@ CREATE TABLE vacancies (
     title varchar,
     description varchar,
     specialization varchar,
-    salary varchar
+    archived boolean,
+    salary varchar,
+    requirements varchar,
+    experience varchar,
+    duties varchar,
+    schedule varchar
+
 );

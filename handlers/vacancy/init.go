@@ -18,6 +18,7 @@ type IHandler interface {
 
 type IService interface {
 	GetAll() (models.Vacancies, error)
+	GetAllWithResponses() (models.Vacancies, error)
 	Get(*string) (*models.Vacancy, error)
 	Create(*models.Vacancy) error
 	Update(*models.Vacancy) error
@@ -25,8 +26,10 @@ type IService interface {
 }
 
 type IRepository interface {
+	getDB() *bun.DB
 	create(*models.Vacancy) error
 	getAll() (models.Vacancies, error)
+	getAllWithResponses() (models.Vacancies, error)
 	get(*string) (*models.Vacancy, error)
 	update(*models.Vacancy) error
 	delete(*string) error

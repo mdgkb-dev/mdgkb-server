@@ -1,4 +1,4 @@
-CREATE TABLE humen
+CREATE TABLE humans
 (
     id             uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
     name VARCHAR,

@@ -14,6 +14,14 @@ func (s *Service) GetAll() (models.Vacancies, error) {
 	return items, nil
 }
 
+func (s *Service) GetAllWithResponses() (models.Vacancies, error) {
+	items, err := s.repository.getAllWithResponses()
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 func (s *Service) Get(id *string) (*models.Vacancy, error) {
 	item, err := s.repository.get(id)
 	if err != nil {

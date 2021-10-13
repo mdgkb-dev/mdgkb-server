@@ -1,6 +1,7 @@
 package vacancy
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -22,7 +23,15 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	items, err := h.service.GetAll()
+	withResponses := c.Query("withResponses")
+	items := make(models.Vacancies, 0)
+	var err error
+	fmt.Println(withResponses)
+	if withResponses == "" {
+		items, err = h.service.GetAll()
+	} else {
+		items, err = h.service.GetAllWithResponses()
+	}
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

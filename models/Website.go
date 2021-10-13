@@ -11,3 +11,5 @@ type Website struct {
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoId uuid.UUID    `bun:"type:uuid"`
 }
+
+type Websites []*Website

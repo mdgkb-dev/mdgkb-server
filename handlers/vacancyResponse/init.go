@@ -25,6 +25,7 @@ type IService interface {
 }
 
 type IRepository interface {
+	getDB() *bun.DB
 	create(*models.VacancyResponse) error
 	getAll() (models.VacancyResponses, error)
 	get(*string) (*models.VacancyResponse, error)

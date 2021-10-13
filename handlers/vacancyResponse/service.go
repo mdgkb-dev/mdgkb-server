@@ -1,8 +1,16 @@
 package vacancyResponse
 
-import "mdgkb/mdgkb-server/models"
+import (
+	"mdgkb/mdgkb-server/handlers/contactInfo"
+	"mdgkb/mdgkb-server/models"
+)
 
 func (s *Service) Create(item *models.VacancyResponse) error {
+	err := contactInfo.CreateService(s.repository.getDB()).Create(item.ContactInfo)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	return s.repository.create(item)
 }
 
@@ -23,6 +31,11 @@ func (s *Service) Get(id *string) (*models.VacancyResponse, error) {
 }
 
 func (s *Service) Update(item *models.VacancyResponse) error {
+	//err := contactInfo.CreateService(s.repository.getDB()).Update(item.ContactInfo)
+	//if err != nil {
+	//	return err
+	//}
+	item.SetForeignKeys()
 	return s.repository.update(item)
 }
 

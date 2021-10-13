@@ -1,4 +1,4 @@
-INSERT INTO public.humen (id, name, surname, patronymic, is_male, date_birth)
+INSERT INTO public.humans (id, name, surname, patronymic, is_male, date_birth)
 VALUES  ('fb40366b-b230-4e25-b3f7-46280c8eb983', 'Светлана', 'Короткова ', 'Анатольевна', false, '1995-09-07'),
         ('27746755-07f7-44ec-8ec3-e1a80a7cdba8', 'Екатерина', 'Моксякова', 'Геннадьевна', false, '1993-09-06'),
         ('6ec356e0-cd80-4617-b6dc-a98db98106d6', 'Елена', 'Полякова', 'Ивановна', false, '1994-09-22'),

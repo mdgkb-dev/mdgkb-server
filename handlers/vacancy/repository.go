@@ -21,9 +21,25 @@ func (r *Repository) getAll() (models.Vacancies, error) {
 	return items, err
 }
 
+func (r *Repository) getAllWithResponses() (models.Vacancies, error) {
+	items := make(models.Vacancies, 0)
+	err := r.db.NewSelect().
+		Model(&items).
+		Relation("VacancyResponses").
+		Relation("VacancyResponses.ContactInfo.Emails").
+		Relation("VacancyResponses.ContactInfo.TelephoneNumbers").
+		Scan(r.ctx)
+	return items, err
+}
+
 func (r *Repository) get(id *string) (*models.Vacancy, error) {
 	item := models.Vacancy{}
-	err := r.db.NewSelect().Model(&item).Where("id = ?", *id).Scan(r.ctx)
+	err := r.db.NewSelect().
+		Model(&item).
+		Relation("VacancyResponses.ContactInfo.Emails").
+		Relation("VacancyResponses.ContactInfo.TelephoneNumbers").
+		Where("id = ?", *id).
+		Scan(r.ctx)
 	return &item, err
 }
 

@@ -1,9 +1,10 @@
 package vacancyResponse
 
 import (
+	handler "mdgkb/mdgkb-server/handlers/vacancyResponse"
+
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
-	handler "mdgkb/mdgkb-server/handlers/vacancyResponse"
 )
 
 // Init func
