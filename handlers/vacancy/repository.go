@@ -17,7 +17,7 @@ func (r *Repository) create(item *models.Vacancy) (err error) {
 
 func (r *Repository) getAll() (models.Vacancies, error) {
 	items := make(models.Vacancies, 0)
-	err := r.db.NewSelect().Model(&items).Scan(r.ctx)
+	err := r.db.NewSelect().Model(&items).Where("vacancies.archived = false").Scan(r.ctx)
 	return items, err
 }
 

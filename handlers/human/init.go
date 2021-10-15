@@ -1,4 +1,4 @@
-package fileInfos
+package human
 
 import (
 	"context"
@@ -8,19 +8,14 @@ import (
 )
 
 type IService interface {
-	Create(info *models.FileInfo) error
-	Update(info *models.FileInfo) error
-	Upsert(info *models.FileInfo) error
-	UpsertMany(infos models.FileInfos) error
+	Create(*models.Human) error
+	Update(*models.Human) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	create(info *models.FileInfo) error
-	update(info *models.FileInfo) error
-	upsert(info *models.FileInfo) error
-	upsertMany(infos models.FileInfos) error
-	//deleteMany([]string) error
+	create(*models.Human) error
+	update(*models.Human) error
 }
 
 type Handler struct {

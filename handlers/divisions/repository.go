@@ -26,7 +26,7 @@ func (r *Repository) getAll() (items models.Divisions, err error) {
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.Division, error) {
+func (r *Repository) get(id string) (*models.Division, error) {
 	item := models.Division{}
 	err := r.db.NewSelect().
 		Model(&item).
@@ -37,14 +37,14 @@ func (r *Repository) get(id *string) (*models.Division, error) {
 		Relation("DivisionComments.Comment.User").
 		Relation("Doctors.FileInfo").
 		Relation("Doctors.Human").
-		Where("division.id = ?", *id).
+		Where("division.id = ?", id).
 		Scan(r.ctx)
 
 	return &item, err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.Division{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) delete(id string) (err error) {
+	_, err = r.db.NewDelete().Model(&models.Division{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
@@ -66,7 +66,7 @@ func (r *Repository) updateComment(item *models.DivisionComment) error {
 	return err
 }
 
-func (r *Repository) removeComment(id *string) error {
-	_, err := r.db.NewDelete().Model(&models.DivisionComment{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) removeComment(id string) error {
+	_, err := r.db.NewDelete().Model(&models.DivisionComment{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }

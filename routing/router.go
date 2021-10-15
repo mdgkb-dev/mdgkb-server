@@ -2,6 +2,7 @@ package routing
 
 import (
 	"mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/routing/auth"
@@ -9,7 +10,7 @@ import (
 	"mdgkb/mdgkb-server/routing/buildings"
 	"mdgkb/mdgkb-server/routing/carousels"
 	"mdgkb/mdgkb-server/routing/divisions"
-	"mdgkb/mdgkb-server/routing/doctors"
+	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
 	"mdgkb/mdgkb-server/routing/menu"
 	"mdgkb/mdgkb-server/routing/news"
@@ -40,7 +41,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	banners.Init(api.Group("/banners"), db, localUploader)
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	carousels.Init(api.Group("/carousels"), db, localUploader)
-	doctors.Init(api.Group("/doctors"), db, localUploader)
+	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, localUploaderNew))
 
 	divisions.Init(api.Group("/divisions"), db, localUploaderNew)
 

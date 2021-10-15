@@ -10,5 +10,4 @@ CREATE TABLE vacancies (
     experience varchar,
     duties varchar,
     schedule varchar
-
 );

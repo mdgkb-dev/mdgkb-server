@@ -1,30 +1,21 @@
-package fileInfos
+package doctorRegalia
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/models"
-
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/models"
 )
 
 type IService interface {
-	Create(info *models.FileInfo) error
-	Update(info *models.FileInfo) error
-	Upsert(info *models.FileInfo) error
-	UpsertMany(infos models.FileInfos) error
+	CreateMany(models.DoctorRegalias) error
+	UpsertMany(models.DoctorRegalias) error
+	DeleteMany([]string) error
 }
 
 type IRepository interface {
-	getDB() *bun.DB
-	create(info *models.FileInfo) error
-	update(info *models.FileInfo) error
-	upsert(info *models.FileInfo) error
-	upsertMany(infos models.FileInfos) error
-	//deleteMany([]string) error
-}
-
-type Handler struct {
-	service IService
+	createMany(models.DoctorRegalias) error
+	upsertMany(models.DoctorRegalias) error
+	deleteMany([]string) error
 }
 
 type Service struct {

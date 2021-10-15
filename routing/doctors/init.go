@@ -1,25 +1,19 @@
 package doctors
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/doctors"
-	"mdgkb/mdgkb-server/helpers"
-
 	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
-
 	_ "github.com/go-pg/pg/v10/orm"
+	handler "mdgkb/mdgkb-server/handlers/doctors"
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
-	var h = handler.NewHandler(handler.NewRepository(db), uploader)
+func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
-	r.GET("/division/:id", h.GetByDivisionId)
+	r.GET("/division/:id", h.GetByDivisionID)
 	r.POST("", h.Create)
 	r.DELETE("/:id", h.Delete)
 	r.PUT("/:id", h.Update)
-	r.PUT("/:id/status", h.UpdateStatus)
 	r.DELETE("/comment/:id", h.RemoveComment)
 	r.PUT("/comment/:id", h.UpdateComment)
 	r.POST("/comment", h.CreateComment)

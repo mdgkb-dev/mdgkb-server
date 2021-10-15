@@ -1,4 +1,4 @@
-package divisions
+package doctors
 
 import (
 	"context"
@@ -11,48 +11,51 @@ import (
 )
 
 type IHandler interface {
-	GetAll(c *gin.Context) error
-	Get(c *gin.Context) error
-	Create(c *gin.Context) error
-	Delete(c *gin.Context) error
-	Update(c *gin.Context) error
-	CreateComment(c *gin.Context) error
-	UpdateComment(c *gin.Context) error
-	RemoveComment(c *gin.Context) error
+	GetAll(c *gin.Context)
+	Get(c *gin.Context)
+	GetByDivisionID(c *gin.Context)
+	Create(c *gin.Context)
+	Delete(c *gin.Context)
+	Update(c *gin.Context)
+	CreateComment(c *gin.Context)
+	UpdateComment(c *gin.Context)
+	RemoveComment(c *gin.Context)
 }
 
 type IService interface {
-	Create(*models.Division) error
-	GetAll() (models.Divisions, error)
-	Get(string) (*models.Division, error)
+	Create(*models.Doctor) error
+	GetAll() (models.Doctors, error)
+	Get(string) (*models.Doctor, error)
 	Delete(string) error
-	Update(*models.Division) error
-	CreateComment(*models.DivisionComment) error
-	UpdateComment(*models.DivisionComment) error
+	Update(*models.Doctor) error
+
+	GetByDivisionID(string) (models.Doctors, error)
+	CreateComment(*models.DoctorComment) error
+	UpdateComment(*models.DoctorComment) error
 	RemoveComment(string) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	create(*models.Division) error
-	getAll() (models.Divisions, error)
-	get(string) (*models.Division, error)
+	create(*models.Doctor) error
+	getAll() (models.Doctors, error)
+	get(string) (*models.Doctor, error)
+	getByDivisionID(string) (models.Doctors, error)
 	delete(string) error
-	update(*models.Division) error
-	createComment(*models.DivisionComment) error
-	updateComment(*models.DivisionComment) error
+	update(*models.Doctor) error
+	createComment(*models.DoctorComment) error
+	updateComment(*models.DoctorComment) error
 	removeComment(string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.Division, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.Doctor, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
 	service      IService
 	filesService IFilesService
 }
-
 type Service struct {
 	repository IRepository
 }
@@ -66,7 +69,7 @@ type FilesService struct {
 	uploader uploadHelper.Uploader
 }
 
-func CreateHandler(db *bun.DB, uploader *uploadHelper.Uploader) *Handler {
+func CreateHandler(db *bun.DB, uploader uploadHelper.Uploader) *Handler {
 	repo := NewRepository(db)
 	service := NewService(repo)
 	filesService := NewFilesService(uploader)
@@ -86,6 +89,6 @@ func NewRepository(db *bun.DB) *Repository {
 	return &Repository{db: db, ctx: context.Background()}
 }
 
-func NewFilesService(uploader *uploadHelper.Uploader) *FilesService {
-	return &FilesService{uploader: *uploader}
+func NewFilesService(uploader uploadHelper.Uploader) *FilesService {
+	return &FilesService{uploader: uploader}
 }

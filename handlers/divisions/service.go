@@ -66,7 +66,7 @@ func (s *Service) GetAll() (models.Divisions, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id *string) (*models.Division, error) {
+func (s *Service) Get(id string) (*models.Division, error) {
 	item, err := s.repository.get(id)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (s *Service) Get(id *string) (*models.Division, error) {
 	return item, nil
 }
 
-func (s *Service) Delete(id *string) error {
+func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
 
@@ -86,6 +86,6 @@ func (s *Service) UpdateComment(item *models.DivisionComment) error {
 	return s.repository.updateComment(item)
 }
 
-func (s *Service) RemoveComment(id *string) error {
+func (s *Service) RemoveComment(id string) error {
 	return s.repository.removeComment(id)
 }
