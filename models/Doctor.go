@@ -15,11 +15,13 @@ type Doctor struct {
 	FileInfoId     uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
 	DoctorComments DoctorComments `bun:"rel:has-many" json:"doctorComments"`
 
-	AcademicDegree string         `json:"academicDegree"`
-	AcademicRank   string         `json:"academicRank"`
-	DoctorRegalias DoctorRegalias `bun:"type:has-many" json:"doctorRegalias"`
+	AcademicDegree          string         `json:"academicDegree"`
+	AcademicRank            string         `json:"academicRank"`
+	DoctorRegalias          DoctorRegalias `bun:"type:has-many" json:"doctorRegalias"`
+	DoctorRegaliasForDelete []uuid.UUID    `bun:"type:has-many" json:"doctorRegaliasForDelete"`
 
-	Educations Educations `bun:"type:has-many" json:"educations"`
+	Educations          Educations  `bun:"type:has-many" json:"educations"`
+	EducationsForDelete []uuid.UUID `bun:"type:has-many" json:"educationsForDelete"`
 }
 
 type Doctors []*Doctor
@@ -31,5 +33,7 @@ func (item *Doctor) SetForeignKeys() {
 }
 
 func (item *Doctor) SetIdForChildren() {
-
+	for i := range item.Educations {
+		item.Educations[i].DoctorID = item.ID
+	}
 }

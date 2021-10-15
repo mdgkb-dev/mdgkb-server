@@ -51,12 +51,21 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 	item.SetIdForChildren()
-
-	err = doctorRegalia.CreateService(s.repository.getDB()).UpsertMany(item.DoctorRegalias)
+	doctorRegaliaService := doctorRegalia.CreateService(s.repository.getDB())
+	err = doctorRegaliaService.UpsertMany(item.DoctorRegalias)
 	if err != nil {
 		return err
 	}
-	err = educations.CreateService(s.repository.getDB()).UpsertMany(item.Educations)
+	err = doctorRegaliaService.DeleteMany(item.DoctorRegaliasForDelete)
+	if err != nil {
+		return err
+	}
+	educationsService := educations.CreateService(s.repository.getDB())
+	err = educationsService.UpsertMany(item.Educations)
+	if err != nil {
+		return err
+	}
+	err = educationsService.DeleteMany(item.EducationsForDelete)
 	if err != nil {
 		return err
 	}

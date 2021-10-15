@@ -2,6 +2,7 @@ package doctorRegalia
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 )
@@ -9,13 +10,13 @@ import (
 type IService interface {
 	CreateMany(models.DoctorRegalias) error
 	UpsertMany(models.DoctorRegalias) error
-	DeleteMany([]string) error
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
 	createMany(models.DoctorRegalias) error
 	upsertMany(models.DoctorRegalias) error
-	deleteMany([]string) error
+	deleteMany([]uuid.UUID) error
 }
 
 type Service struct {

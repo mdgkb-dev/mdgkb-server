@@ -1,23 +1,21 @@
-package educations
+package educationCertification
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 )
 
 type IService interface {
-	CreateMany(models.Educations) error
-	UpsertMany(models.Educations) error
-	DeleteMany([]uuid.UUID) error
+	CreateMany(certifications models.EducationCertifications) error
+	UpsertMany(models.EducationCertifications) error
+	DeleteMany([]string) error
 }
 
 type IRepository interface {
-	getDB() *bun.DB
-	createMany(models.Educations) error
-	upsertMany(models.Educations) error
-	deleteMany([]uuid.UUID) error
+	createMany(models.EducationCertifications) error
+	upsertMany(models.EducationCertifications) error
+	deleteMany([]string) error
 }
 
 type Service struct {

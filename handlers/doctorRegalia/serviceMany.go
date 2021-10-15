@@ -1,6 +1,9 @@
 package doctorRegalia
 
-import "mdgkb/mdgkb-server/models"
+import (
+	"github.com/google/uuid"
+	"mdgkb/mdgkb-server/models"
+)
 
 func (s *Service) CreateMany(items models.DoctorRegalias) error {
 	if len(items) == 0 {
@@ -16,7 +19,7 @@ func (s *Service) UpsertMany(items models.DoctorRegalias) error {
 	return s.repository.upsertMany(items)
 }
 
-func (s *Service) DeleteMany(idPool []string) error {
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
 	if len(idPool) == 0 {
 		return nil
 	}

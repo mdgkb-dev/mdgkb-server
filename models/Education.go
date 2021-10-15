@@ -26,3 +26,34 @@ type Education struct {
 }
 
 type Educations []*Education
+
+func (item *Education) SetIdForChildren() {
+	if item.EducationCertification != nil {
+		item.EducationCertificationID = item.EducationCertification.ID
+	}
+	if item.EducationQualification != nil {
+		item.EducationQualificationID = item.EducationQualification.ID
+	}
+}
+
+func (items Educations) SetIdForChildren() {
+	for i := range items {
+		items[i].SetIdForChildren()
+	}
+}
+
+func (items Educations) GetEducationCertifications() EducationCertifications {
+	itemsForGet := make(EducationCertifications, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.EducationCertification)
+	}
+	return itemsForGet
+}
+
+func (items Educations) GetEducationQualification() EducationQualifications {
+	itemsForGet := make(EducationQualifications, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.EducationQualification)
+	}
+	return itemsForGet
+}
