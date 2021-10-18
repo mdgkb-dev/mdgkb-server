@@ -22,7 +22,7 @@ func (r *Repository) update(item *models.FileInfo) (err error) {
 
 func (r *Repository) upsertMany(items models.FileInfos) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
-		Model(items).
+		Model(&items).
 		Set("original_name = EXCLUDED.original_name").
 		Set("file_system_path = EXCLUDED.file_system_path").
 		Exec(r.ctx)

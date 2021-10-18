@@ -19,6 +19,9 @@ type Page struct {
 
 	PageDocuments          PageDocuments `bun:"rel:has-many" json:"pageDocuments"`
 	PageDocumentsForDelete []string      `bun:"-" json:"pageDocumentsForDelete"`
+
+	PageImages          PageImages  `bun:"rel:has-many" json:"pageImages"`
+	PageImagesForDelete []uuid.UUID `bun:"-" json:"pageImagesForDelete"`
 }
 
 type Pages []*Page
@@ -31,12 +34,19 @@ func (item *Page) SetIdForChildren() {
 		item.PageComments[i].PageId = item.ID
 	}
 	for i := range item.PageDocuments {
-		item.PageDocuments[i].PageId = item.ID
+		item.PageDocuments[i].PageID = item.ID
+	}
+	for i := range item.PageImages {
+		item.PageImages[i].PageID = item.ID
 	}
 }
 
 func (item *Page) SetFilePath(fileId *string) *string {
 	path := item.PageDocuments.SetFilePath(fileId)
+	if path != nil {
+		return path
+	}
+	path = item.PageImages.SetFilePath(fileId)
 	if path != nil {
 		return path
 	}

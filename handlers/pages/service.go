@@ -1,6 +1,8 @@
 package pages
 
 import (
+	"fmt"
+	"mdgkb/mdgkb-server/handlers/pageImages"
 	"mdgkb/mdgkb-server/handlers/pagesDocuments"
 	"mdgkb/mdgkb-server/models"
 )
@@ -11,8 +13,11 @@ func (s *Service) Create(item *models.Page) error {
 		return err
 	}
 	item.SetIdForChildren()
-	pagesDocumentsService := pagesDocuments.CreateService(s.repository.getDB())
-	err = pagesDocumentsService.CreateMany(item.PageDocuments)
+	err = pagesDocuments.CreateService(s.repository.getDB()).CreateMany(item.PageDocuments)
+	if err != nil {
+		return err
+	}
+	err = pageImages.CreateService(s.repository.getDB()).CreateMany(item.PageImages)
 	if err != nil {
 		return err
 	}
@@ -51,6 +56,18 @@ func (s *Service) Update(item *models.Page) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(1)
+	pageImagesService := pageImages.CreateService(s.repository.getDB())
+	err = pageImagesService.UpsertMany(item.PageImages)
+	if err != nil {
+		return err
+	}
+	fmt.Println(2)
+	err = pageImagesService.DeleteMany(item.PageImagesForDelete)
+	if err != nil {
+		return err
+	}
+	fmt.Println(3)
 	return nil
 }
 

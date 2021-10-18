@@ -12,7 +12,7 @@ type PageDocument struct {
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 
 	Page   *Page     `bun:"rel:belongs-to" json:"page"`
-	PageId uuid.UUID `bun:"type:uuid" json:"pageId"`
+	PageID uuid.UUID `bun:"type:uuid" json:"pageId"`
 
 	Document   *Document `bun:"rel:belongs-to" json:"document"`
 	DocumentID uuid.UUID `bun:"type:uuid" json:"documentId"`
