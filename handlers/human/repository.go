@@ -15,6 +15,6 @@ func (r *Repository) create(item *models.Human) (err error) {
 }
 
 func (r *Repository) update(item *models.Human) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("human.id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db.NewUpdate().Model(item).Where("humans.id = ?", item.ID).Exec(r.ctx)
 	return err
 }

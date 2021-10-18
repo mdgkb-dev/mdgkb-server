@@ -37,6 +37,7 @@ func (r *Repository) get(id string) (*models.Division, error) {
 		Relation("DivisionComments.Comment.User").
 		Relation("Doctors.FileInfo").
 		Relation("Doctors.Human").
+		Relation("Vacancies").
 		Where("division.id = ?", id).
 		Scan(r.ctx)
 

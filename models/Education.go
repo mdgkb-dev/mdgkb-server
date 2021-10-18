@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -11,15 +12,16 @@ type Education struct {
 	Type          string    `json:"type"`
 	Institution   string    `json:"institution"`
 	Document      string    `json:"document"`
+	Qualification string    `json:"qualification"`
 
 	EducationSpeciality   *EducationSpeciality `bun:"rel:belongs-to" json:"educationSpeciality"`
 	EducationSpecialityID uuid.UUID            `bun:"type:uuid" json:"educationSpecialityId"`
 
 	EducationCertification   *EducationCertification `bun:"rel:belongs-to" json:"educationCertification"`
-	EducationCertificationID uuid.UUID               `bun:"type:uuid" json:"educationCertificationId"`
+	EducationCertificationID uuid.NullUUID           `bun:"type:uuid" json:"educationCertificationId"`
 
-	EducationQualificationID uuid.UUID               `bun:"type:uuid" json:"educationQualificationId"`
-	EducationQualification   *EducationQualification `bun:"rel:belongs-to" json:"educationQualification"`
+	EducationAccreditationID uuid.NullUUID           `bun:"type:uuid" json:"educationAccreditationId"`
+	EducationAccreditation   *EducationAccreditation `bun:"rel:belongs-to" json:"educationAccreditation"`
 
 	DoctorID uuid.UUID `bun:"type:uuid" json:"doctorId"`
 	Doctor   *Doctor   `bun:"rel:belongs-to" json:"doctor"`
@@ -27,33 +29,38 @@ type Education struct {
 
 type Educations []*Education
 
-func (item *Education) SetIdForChildren() {
+func (item *Education) SetForeignKeys() {
+	fmt.Println(item.EducationCertification)
 	if item.EducationCertification != nil {
 		item.EducationCertificationID = item.EducationCertification.ID
 	}
-	if item.EducationQualification != nil {
-		item.EducationQualificationID = item.EducationQualification.ID
+	if item.EducationAccreditation != nil {
+		item.EducationAccreditationID = item.EducationAccreditation.ID
 	}
 }
 
-func (items Educations) SetIdForChildren() {
+func (items Educations) SetForeignKeys() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetForeignKeys()
 	}
 }
 
 func (items Educations) GetEducationCertifications() EducationCertifications {
 	itemsForGet := make(EducationCertifications, 0)
 	for _, item := range items {
-		itemsForGet = append(itemsForGet, item.EducationCertification)
+		if item.EducationCertification != nil {
+			itemsForGet = append(itemsForGet, item.EducationCertification)
+		}
 	}
 	return itemsForGet
 }
 
-func (items Educations) GetEducationQualification() EducationQualifications {
-	itemsForGet := make(EducationQualifications, 0)
+func (items Educations) GetEducationQualification() EducationAccreditations {
+	itemsForGet := make(EducationAccreditations, 0)
 	for _, item := range items {
-		itemsForGet = append(itemsForGet, item.EducationQualification)
+		if item.EducationAccreditation != nil {
+			itemsForGet = append(itemsForGet, item.EducationAccreditation)
+		}
 	}
 	return itemsForGet
 }

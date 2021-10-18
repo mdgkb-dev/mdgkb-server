@@ -27,14 +27,19 @@ func (r *Repository) getAll() (models.Doctors, error) {
 	return items, err
 }
 
-func (r *Repository) get(id string) (item *models.Doctor, err error) {
-	err = r.db.NewSelect().Model(&item).Where("doctor.id = ?", id).
+func (r *Repository) get(id string) (*models.Doctor, error) {
+	item := models.Doctor{}
+	err := r.db.NewSelect().Model(&item).Where("doctor.id = ?", id).
 		Relation("Human").
 		Relation("FileInfo").
 		Relation("Division").
+		Relation("DoctorRegalias").
+		Relation("Timetable.TimetableDays.Weekday").
+		Relation("Educations.EducationCertification").
+		Relation("Educations.EducationAccreditation").
 		Relation("DoctorComments.Comment.User").
 		Scan(r.ctx)
-	return item, err
+	return &item, err
 }
 
 func (r *Repository) getByDivisionID(id string) (models.Doctors, error) {

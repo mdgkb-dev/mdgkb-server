@@ -26,6 +26,7 @@ func (r *Repository) getAllWithResponses() (models.Vacancies, error) {
 	err := r.db.NewSelect().
 		Model(&items).
 		Relation("VacancyResponses").
+		Relation("Division").
 		Relation("VacancyResponses.ContactInfo.Emails").
 		Relation("VacancyResponses.ContactInfo.TelephoneNumbers").
 		Scan(r.ctx)

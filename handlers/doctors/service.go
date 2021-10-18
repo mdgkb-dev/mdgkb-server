@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/human"
+	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -17,9 +18,12 @@ func (s *Service) Create(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-
+	err = timetables.CreateService(s.repository.getDB()).Create(item.Timetable)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	err = s.Create(item)
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -45,8 +49,12 @@ func (s *Service) Update(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
+	err = timetables.CreateService(s.repository.getDB()).Upsert(item.Timetable)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	err = s.Update(item)
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}

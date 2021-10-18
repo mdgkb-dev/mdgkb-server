@@ -3,8 +3,9 @@ CREATE TABLE educations (
     type varchar,
     institution varchar,
     document varchar,
+    qualification varchar,
     doctor_id uuid REFERENCES doctors (id),
-    education_speciality_id uuid REFERENCES education_specialities (id),
+    education_speciality_id uuid,
     education_certification_id uuid REFERENCES education_certifications (id),
-    education_qualification_id uuid REFERENCES education_qualifications (id)
+    education_accreditation_id uuid REFERENCES education_accreditations (id)
 );

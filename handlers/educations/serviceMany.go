@@ -2,8 +2,8 @@ package educations
 
 import (
 	"github.com/google/uuid"
+	"mdgkb/mdgkb-server/handlers/educationAccreditation"
 	"mdgkb/mdgkb-server/handlers/educationCertification"
-	"mdgkb/mdgkb-server/handlers/educationQualification"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -11,16 +11,16 @@ func (s *Service) CreateMany(items models.Educations) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.createMany(items)
+	err := educationCertification.CreateService(s.repository.getDB()).CreateMany(items.GetEducationCertifications())
 	if err != nil {
 		return err
 	}
-	items.SetIdForChildren()
-	err = educationCertification.CreateService(s.repository.getDB()).CreateMany(items.GetEducationCertifications())
+	err = educationAccreditation.CreateService(s.repository.getDB()).CreateMany(items.GetEducationQualification())
 	if err != nil {
 		return err
 	}
-	err = educationQualification.CreateService(s.repository.getDB()).CreateMany(items.GetEducationQualification())
+	items.SetForeignKeys()
+	err = s.repository.createMany(items)
 	if err != nil {
 		return err
 	}
@@ -31,19 +31,15 @@ func (s *Service) UpsertMany(items models.Educations) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	err := educationCertification.CreateService(s.repository.getDB()).UpsertMany(items.GetEducationCertifications())
 	if err != nil {
 		return err
 	}
-	items.SetIdForChildren()
-	err = educationCertification.CreateService(s.repository.getDB()).UpsertMany(items.GetEducationCertifications())
+	err = educationAccreditation.CreateService(s.repository.getDB()).UpsertMany(items.GetEducationQualification())
 	if err != nil {
 		return err
 	}
-	err = educationQualification.CreateService(s.repository.getDB()).UpsertMany(items.GetEducationQualification())
-	if err != nil {
-		return err
-	}
+	items.SetForeignKeys()
 	return s.repository.upsertMany(items)
 }
 

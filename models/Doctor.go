@@ -17,11 +17,14 @@ type Doctor struct {
 
 	AcademicDegree          string         `json:"academicDegree"`
 	AcademicRank            string         `json:"academicRank"`
-	DoctorRegalias          DoctorRegalias `bun:"type:has-many" json:"doctorRegalias"`
-	DoctorRegaliasForDelete []uuid.UUID    `bun:"type:has-many" json:"doctorRegaliasForDelete"`
+	DoctorRegalias          DoctorRegalias `bun:"rel:has-many" json:"doctorRegalias"`
+	DoctorRegaliasForDelete []uuid.UUID    `bun:"-" json:"doctorRegaliasForDelete"`
 
-	Educations          Educations  `bun:"type:has-many" json:"educations"`
-	EducationsForDelete []uuid.UUID `bun:"type:has-many" json:"educationsForDelete"`
+	Educations          Educations  `bun:"rel:has-many" json:"educations"`
+	EducationsForDelete []uuid.UUID `bun:"-" json:"educationsForDelete"`
+
+	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
+	TimetableId uuid.UUID  `bun:"type:uuid" json:"timetableId"`
 }
 
 type Doctors []*Doctor
@@ -30,10 +33,19 @@ func (item *Doctor) SetForeignKeys() {
 	if item.FileInfo != nil {
 		item.FileInfoId = item.FileInfo.ID.UUID
 	}
+	if item.Human != nil {
+		item.HumanId = item.Human.ID
+	}
+	if item.Timetable != nil {
+		item.TimetableId = item.Timetable.ID
+	}
 }
 
 func (item *Doctor) SetIdForChildren() {
 	for i := range item.Educations {
 		item.Educations[i].DoctorID = item.ID
+	}
+	for i := range item.DoctorRegalias {
+		item.DoctorRegalias[i].DoctorID = item.ID
 	}
 }

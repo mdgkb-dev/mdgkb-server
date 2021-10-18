@@ -9,5 +9,6 @@ CREATE TABLE vacancies (
     requirements varchar,
     experience varchar,
     duties varchar,
-    schedule varchar
+    schedule varchar,
+    division_id uuid  REFERENCES divisions (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL
 );

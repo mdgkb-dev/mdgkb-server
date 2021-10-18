@@ -1,4 +1,4 @@
-package educationQualification
+package educationAccreditation
 
 import (
 	"context"
@@ -7,14 +7,14 @@ import (
 )
 
 type IService interface {
-	CreateMany(certifications models.EducationQualifications) error
-	UpsertMany(models.EducationQualifications) error
+	CreateMany(certifications models.EducationAccreditations) error
+	UpsertMany(models.EducationAccreditations) error
 	DeleteMany([]string) error
 }
 
 type IRepository interface {
-	createMany(models.EducationQualifications) error
-	upsertMany(models.EducationQualifications) error
+	createMany(models.EducationAccreditations) error
+	upsertMany(models.EducationAccreditations) error
 	deleteMany([]string) error
 }
 

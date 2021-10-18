@@ -8,22 +8,14 @@ func (s *Service) Create(item *models.FileInfo) error {
 	if item == nil {
 		return nil
 	}
-	err := s.repository.create(item)
-	if err != nil {
-		return err
-	}
-	return nil
+	return s.repository.create(item)
 }
 
 func (s *Service) Update(item *models.FileInfo) error {
 	if item == nil {
 		return nil
 	}
-	err := s.repository.update(item)
-	if err != nil {
-		return err
-	}
-	return nil
+	return s.repository.update(item)
 }
 
 func (s *Service) UpsertMany(items models.FileInfos) error {

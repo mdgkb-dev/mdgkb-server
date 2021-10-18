@@ -18,6 +18,9 @@ type Vacancy struct {
 	Duties           string           `json:"duties"`
 	Schedule         string           `json:"schedule"`
 	VacancyResponses VacancyResponses `bun:"rel:has-many" json:"vacancyResponses"`
+
+	Division   *Division     `bun:"rel:belongs-to" json:"division"`
+	DivisionId uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
 }
 
 type Vacancies []*Vacancy

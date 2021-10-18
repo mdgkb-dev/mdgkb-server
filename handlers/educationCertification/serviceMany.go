@@ -1,6 +1,8 @@
 package educationCertification
 
-import "mdgkb/mdgkb-server/models"
+import (
+	"mdgkb/mdgkb-server/models"
+)
 
 func (s *Service) CreateMany(items models.EducationCertifications) error {
 	if len(items) == 0 {

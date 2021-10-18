@@ -11,6 +11,7 @@ type Division struct {
 	Address                 string           `json:"address"`
 	Slug                    string           `json:"slug"`
 	Doctors                 Doctors          `bun:"rel:has-many" json:"doctors"`
+	Vacancies               Vacancies        `bun:"rel:has-many" json:"vacancies"`
 	Entrance                *Entrance        `bun:"rel:belongs-to" json:"entrance"`
 	EntranceId              uuid.UUID        `bun:"type:uuid" json:"entranceId"`
 	FloorId                 uuid.UUID        `bun:"type:uuid" json:"floorId"`
