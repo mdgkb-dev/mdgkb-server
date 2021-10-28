@@ -41,12 +41,12 @@ func (item *Page) SetIdForChildren() {
 	}
 }
 
-func (item *Page) SetFilePath(fileId *string) *string {
-	path := item.PageDocuments.SetFilePath(fileId)
+func (item *Page) SetFilePath(fileID *string) *string {
+	path := item.PageDocuments.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}
-	path = item.PageImages.SetFilePath(fileId)
+	path = item.PageImages.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}

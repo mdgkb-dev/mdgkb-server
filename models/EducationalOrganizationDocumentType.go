@@ -44,9 +44,9 @@ func (i *EducationalOrganizationDocumentType) SetChildrenForeignKeys() {
 	}
 }
 
-func (i EducationalOrganizationDocumentTypes) SetFilePath(fileId *string) *string {
+func (i EducationalOrganizationDocumentTypes) SetFilePath(fileID *string) *string {
 	for _, item := range i {
-		path := item.EducationalOrganizationDocumentTypeDocuments.SetFilePath(fileId)
+		path := item.EducationalOrganizationDocumentTypeDocuments.SetFilePath(fileID)
 		if path != nil {
 			return path
 		}

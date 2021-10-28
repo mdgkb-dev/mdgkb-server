@@ -7,3 +7,5 @@ type Tag struct {
 	Color string    `json:"color"`
 	Label string    `json:"label"`
 }
+
+type Tags []*Tag

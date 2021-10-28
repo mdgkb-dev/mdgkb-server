@@ -34,10 +34,10 @@ func (items PageDocuments) SetForeignKeys() {
 	}
 }
 
-func (items PageDocuments) SetFilePath(fileId *string) *string {
+func (items PageDocuments) SetFilePath(fileID *string) *string {
 	for _, item := range items {
-		if item.Document.FileInfo.ID.UUID.String() == *fileId {
-			item.Document.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileId)
+		if item.Document.FileInfo.ID.UUID.String() == *fileID {
+			item.Document.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
 			return &item.Document.FileInfo.FileSystemPath
 		}
 	}

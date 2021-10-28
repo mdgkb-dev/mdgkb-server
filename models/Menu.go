@@ -35,12 +35,12 @@ func (item *Menu) SetIdForChildren() {
 	}
 }
 
-func (item *Menu) SetFilePath(fileId *string) *string {
-	if item.Icon.ID.UUID.String() == *fileId {
-		item.Icon.FileSystemPath = uploadHelper.BuildPath(fileId)
+func (item *Menu) SetFilePath(fileID *string) *string {
+	if item.Icon.ID.UUID.String() == *fileID {
+		item.Icon.FileSystemPath = uploadHelper.BuildPath(fileID)
 		return &item.Icon.FileSystemPath
 	}
-	path := item.SubMenus.SetFilePath(fileId)
+	path := item.SubMenus.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}

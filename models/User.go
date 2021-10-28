@@ -2,14 +2,20 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"github.com/uptrace/bun"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID       uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Email    string    `json:"email"`
-	Password string    `json:"password"`
+	bun.BaseModel `bun:"users,alias:users"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Email         string    `json:"email"`
+	Password      string    `json:"password"`
+	Human         *Human    `bun:"rel:belongs-to" json:"human"`
+	HumanID       uuid.UUID `bun:"type:uuid" json:"humanId"`
 }
+
+type Users []*User
 
 func (u *User) GenerateHashPassword() error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)

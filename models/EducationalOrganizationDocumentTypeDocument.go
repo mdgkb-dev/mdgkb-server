@@ -34,10 +34,10 @@ func (items EducationalOrganizationDocumentTypeDocuments) SetForeignKeys() {
 	}
 }
 
-func (i EducationalOrganizationDocumentTypeDocuments) SetFilePath(fileId *string) *string {
+func (i EducationalOrganizationDocumentTypeDocuments) SetFilePath(fileID *string) *string {
 	for _, item := range i {
-		if item.Document.FileInfo.ID.UUID.String() == *fileId {
-			item.Document.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileId)
+		if item.Document.FileInfo.ID.UUID.String() == *fileID {
+			item.Document.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
 			return &item.Document.FileInfo.FileSystemPath
 		}
 	}

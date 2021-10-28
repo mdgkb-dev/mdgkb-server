@@ -7,3 +7,5 @@ type NewsLike struct {
 	NewsID uuid.UUID `bun:"type:uuid" json:"newsId"`
 	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
 }
+
+type NewsLikes []*NewsLike

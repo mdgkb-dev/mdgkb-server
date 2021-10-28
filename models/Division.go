@@ -27,8 +27,8 @@ type Division struct {
 
 type Divisions []*Division
 
-func (i Division) SetFilePath(fileId *string) *string {
-	path := i.DivisionImages.SetFilePath(fileId)
+func (i Division) SetFilePath(fileID *string) *string {
+	path := i.DivisionImages.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}

@@ -17,8 +17,8 @@ type EducationalOrganization struct {
 	//EducationalOrganizationPagesForDelete []string `json:"educationalOrganizationPagesForDelete"`
 }
 
-func (item *EducationalOrganization) SetFilePath(fileId *string) *string {
-	path := item.EducationalOrganizationDocumentTypes.SetFilePath(fileId)
+func (item *EducationalOrganization) SetFilePath(fileID *string) *string {
+	path := item.EducationalOrganizationDocumentTypes.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}

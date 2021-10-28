@@ -24,10 +24,10 @@ type SubSubMenu struct {
 
 type SubSubMenus []*SubSubMenu
 
-func (items SubSubMenus) SetFilePath(fileId *string) *string {
+func (items SubSubMenus) SetFilePath(fileID *string) *string {
 	for _, item := range items {
-		if item.Icon.ID.UUID.String() == *fileId {
-			item.Icon.FileSystemPath = uploadHelper.BuildPath(fileId)
+		if item.Icon.ID.UUID.String() == *fileID {
+			item.Icon.FileSystemPath = uploadHelper.BuildPath(fileID)
 			return &item.Icon.FileSystemPath
 		}
 	}

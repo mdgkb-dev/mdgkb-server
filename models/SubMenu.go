@@ -57,13 +57,13 @@ func (items SubMenus) GetSubSubMenus() SubSubMenus {
 	return itemsForGet
 }
 
-func (items SubMenus) SetFilePath(fileId *string) *string {
+func (items SubMenus) SetFilePath(fileID *string) *string {
 	for _, item := range items {
-		if item.Icon.ID.UUID.String() == *fileId {
-			item.Icon.FileSystemPath = uploadHelper.BuildPath(fileId)
+		if item.Icon.ID.UUID.String() == *fileID {
+			item.Icon.FileSystemPath = uploadHelper.BuildPath(fileID)
 			return &item.Icon.FileSystemPath
 		}
-		path := item.SubSubMenus.SetFilePath(fileId)
+		path := item.SubSubMenus.SetFilePath(fileID)
 		if path != nil {
 			return path
 		}

@@ -3,6 +3,7 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/doctors"
+	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/routing/auth"
@@ -13,7 +14,7 @@ import (
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
 	"mdgkb/mdgkb-server/routing/menu"
-	"mdgkb/mdgkb-server/routing/news"
+	newsRouter "mdgkb/mdgkb-server/routing/news"
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
 	"mdgkb/mdgkb-server/routing/pages"
@@ -45,7 +46,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 
 	divisions.Init(api.Group("/divisions"), db, localUploaderNew)
 
-	news.Init(api.Group("/news"), db, localUploader)
+	newsRouter.Init(api.Group("/news"), news.CreateHandler(db, localUploaderNew))
 	normativeDocumentTypes.Init(api.Group("/normative-document-types"), db, localUploader)
 	normativeDocuments.Init(api.Group("/normative-documents"), db, localUploader)
 	sideOrganizations.Init(api.Group("/side-organizations"), db, localUploader)

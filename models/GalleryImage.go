@@ -30,10 +30,10 @@ func (i PageImages) SetFileInfoID() {
 	}
 }
 
-func (i PageImages) SetFilePath(fileId *string) *string {
+func (i PageImages) SetFilePath(fileID *string) *string {
 	for _, item := range i {
-		if item.FileInfo.ID.UUID.String() == *fileId {
-			item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileId)
+		if item.FileInfo.ID.UUID.String() == *fileID {
+			item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
 			return &item.FileInfo.FileSystemPath
 		}
 	}
