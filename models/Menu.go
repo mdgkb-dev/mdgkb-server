@@ -14,6 +14,7 @@ type Menu struct {
 	Link          string        `json:"link"`
 	Top           bool          `json:"top"`
 	Side          bool          `json:"side"`
+	Order         uint          `bun:"menu_order" json:"order"`
 	Page          *Page         `bun:"rel:belongs-to" json:"page"`
 	PageId        uuid.NullUUID `bun:"type:uuid" json:"pageId"`
 	Icon          *FileInfo     `bun:"rel:belongs-to" json:"icon"`

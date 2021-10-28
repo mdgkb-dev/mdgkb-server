@@ -68,3 +68,17 @@ func (h *Handler) Update(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, item)
 }
+
+func (h *Handler) UpdateAll(c *gin.Context) {
+	var items models.Menus
+	err := c.Bind(&items)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+
+	err = h.service.UpdateAll(items)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}

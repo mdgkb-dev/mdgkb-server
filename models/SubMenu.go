@@ -9,16 +9,16 @@ import (
 
 type SubMenu struct {
 	bun.BaseModel `bun:"sub_menus,alias:sub_menus"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name          string    `json:"name"`
-	Link          string    `json:"link"`
-	Menu          *Menu     `bun:"rel:belongs-to" json:"menu"`
-	MenuId        uuid.UUID `bun:"type:uuid" json:"menuId"`
-
-	Page   *Page         `bun:"rel:belongs-to" json:"page"`
-	PageId uuid.NullUUID `bun:"type:uuid" json:"PageId"`
-	Icon   *FileInfo     `bun:"rel:belongs-to" json:"icon"`
-	IconId uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
+	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name          string        `json:"name"`
+	Link          string        `json:"link"`
+	Menu          *Menu         `bun:"rel:belongs-to" json:"menu"`
+	MenuId        uuid.UUID     `bun:"type:uuid" json:"menuId"`
+	Order         uint          `bun:"sub_menu_order" json:"order"`
+	Page          *Page         `bun:"rel:belongs-to" json:"page"`
+	PageId        uuid.NullUUID `bun:"type:uuid" json:"PageId"`
+	Icon          *FileInfo     `bun:"rel:belongs-to" json:"icon"`
+	IconId        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
 
 	SubSubMenus          SubSubMenus `bun:"rel:has-many" json:"subSubMenus"`
 	SubSubMenusForDelete []string    `bun:"-" json:"subSubMenusForDelete"`

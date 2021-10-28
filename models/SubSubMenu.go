@@ -16,6 +16,7 @@ type SubSubMenu struct {
 	SubMenuId     uuid.UUID     `bun:"type:uuid" json:"subMenuId"`
 	Icon          *FileInfo     `bun:"rel:belongs-to" json:"icon"`
 	IconId        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
+	Order         uint          `bun:"sub_sub_menu_order" json:"order"`
 
 	Page   *Page         `bun:"rel:belongs-to" json:"page"`
 	PageId uuid.NullUUID `bun:"type:uuid" json:"PageId"`

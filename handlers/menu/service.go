@@ -1,7 +1,6 @@
 package menu
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/subMenus"
 	"mdgkb/mdgkb-server/models"
@@ -38,7 +37,6 @@ func (s *Service) Get(id *string) (*models.Menu, error) {
 }
 
 func (s *Service) Update(item *models.Menu) error {
-	fmt.Println(item.Icon)
 	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(models.FileInfos{item.Icon})
 	if err != nil {
 		return err
@@ -65,4 +63,8 @@ func (s *Service) Update(item *models.Menu) error {
 
 func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) UpdateAll(items models.Menus) error {
+	return s.repository.updateAll(items)
 }

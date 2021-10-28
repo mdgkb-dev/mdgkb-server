@@ -5,5 +5,6 @@ CREATE TABLE sub_sub_menus
     link VARCHAR,
     page_id uuid ,
     icon_id uuid ,
+    sub_sub_menu_order int not null default 1,
     sub_menu_id uuid  REFERENCES sub_menus (id) ON UPDATE CASCADE ON DELETE CASCADE
 );

@@ -16,6 +16,7 @@ type IHandler interface {
 	Create(c *gin.Context) error
 	Update(c *gin.Context) error
 	Delete(c *gin.Context) error
+	UpdateAll(c *gin.Context) error
 }
 
 type IService interface {
@@ -24,6 +25,8 @@ type IService interface {
 	Create(*models.Menu) error
 	Update(*models.Menu) error
 	Delete(*string) error
+
+	UpdateAll(models.Menus) error
 }
 
 type IRepository interface {
@@ -33,6 +36,8 @@ type IRepository interface {
 	get(*string) (*models.Menu, error)
 	update(*models.Menu) error
 	delete(*string) error
+
+	updateAll(models.Menus) error
 }
 
 type IFilesService interface {

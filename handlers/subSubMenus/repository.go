@@ -28,6 +28,7 @@ func (r *Repository) upsertMany(items models.SubSubMenus) (err error) {
 		Model(&items).
 		Set("name = EXCLUDED.name").
 		Set("link = EXCLUDED.link").
+		Set("sub_sub_menu_order = EXCLUDED.sub_sub_menu_order").
 		Set("icon_id = EXCLUDED.icon_id").
 		Exec(r.ctx)
 	return err
