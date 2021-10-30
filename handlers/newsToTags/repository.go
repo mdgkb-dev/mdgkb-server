@@ -26,10 +26,9 @@ func (r *Repository) deleteMany(idPool []string) (err error) {
 func (r *Repository) upsertMany(items models.NewsToTags) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
-		Set("name = EXCLUDED.name").
-		Set("link = EXCLUDED.link").
-		Set("sub_sub_menu_order = EXCLUDED.sub_sub_menu_order").
-		Set("icon_id = EXCLUDED.icon_id").
+		Set("id = EXCLUDED.id").
+		Set("news_id = EXCLUDED.news_id").
+		Set("tag_id = EXCLUDED.tag_id").
 		Exec(r.ctx)
 	return err
 }

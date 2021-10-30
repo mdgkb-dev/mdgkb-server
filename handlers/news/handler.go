@@ -72,6 +72,7 @@ type newsParams struct {
 	Limit       int        `form:"limit"`
 	FilterTags  string     `form:"filterTags"`
 	OrderByView string     `form:"orderByView"`
+	Events      bool       `form:"events"`
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -188,4 +189,17 @@ func (h *Handler) GetByMonth(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, items)
+}
+
+func (h *Handler) CreateEventApplication(c *gin.Context) {
+	var item models.EventApplication
+	err := c.Bind(&item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.CreateEventApplication(&item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
 }

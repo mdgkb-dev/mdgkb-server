@@ -26,8 +26,8 @@ type News struct {
 	MainImage           *FileInfo     `bun:"rel:belongs-to" json:"mainImage"`
 	MainImageID         uuid.NullUUID `bun:"type:uuid" json:"mainImageId"`
 	ViewsCount          int           `bun:"-" json:"viewsCount"`
-	Event               *Event        `bun:"rel:has-one" json:"event"`
-	EventID             uuid.UUID     `bun:"type:uuid" json:"eventId"`
+	Event               *Event        `bun:"rel:belongs-to" json:"event"`
+	EventID             uuid.NullUUID `bun:"type:uuid" json:"eventId"`
 
 	NewsToCategories NewsToCategories `bun:"rel:has-many" json:"newsToCategories"`
 	NewsToTags       NewsToTags       `bun:"rel:has-many" json:"newsToTags"`
@@ -56,7 +56,10 @@ func (item *News) SetFilePath(fileID *string) *string {
 func (item *News) SetForeignKeys() {
 	item.FileInfoID = item.FileInfo.ID
 	item.MainImageID = item.MainImage.ID
-	item.EventID = item.Event.ID
+	if item.Event != nil {
+		item.EventID = item.Event.ID
+	}
+
 }
 
 func (item *News) SetIdForChildren() {

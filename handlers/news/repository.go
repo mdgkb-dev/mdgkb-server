@@ -57,8 +57,8 @@ func (r *Repository) removeComment(id string) error {
 
 func (r *Repository) getAll(newsParams *newsParams) (news []models.News, err error) {
 	query := r.db.NewSelect().Model(&news).
-		Relation("Categories").
-		Relation("Tags").
+		Relation("NewsToCategories.Category").
+		Relation("NewsToTags.Tag").
 		Relation("FileInfo").
 		Relation("NewsLikes").
 		Relation("NewsViews")
@@ -91,6 +91,9 @@ func (r *Repository) getAll(newsParams *newsParams) (news []models.News, err err
 				Limit(newsParams.Limit)
 		}
 	}
+	if newsParams.Events {
+		query = query.Join("JOIN events ON events.id = news.event_id")
+	}
 	err = query.Scan(r.ctx)
 	return news, err
 }
@@ -98,12 +101,13 @@ func (r *Repository) getAll(newsParams *newsParams) (news []models.News, err err
 func (r *Repository) getBySlug(slug string) (*models.News, error) {
 	item := new(models.News)
 	err := r.db.NewSelect().Model(item).
-		Relation("Categories").
-		Relation("Tags").
+		Relation("NewsToCategories.Category").
+		Relation("NewsToTags.Tag").
 		Relation("FileInfo").
 		Relation("MainImage").
 		Relation("NewsLikes").
 		Relation("NewsViews").
+		Relation("Event").
 		Relation("NewsComments.Comment.User").
 		Relation("NewsImages.FileInfo").
 		Where("news.slug = ?", slug).Scan(r.ctx)
@@ -129,5 +133,10 @@ func (r *Repository) getByMonth(monthParams *monthParams) (news []models.News, e
 
 func (r *Repository) createViewOfNews(newsView *models.NewsView) (err error) {
 	_, err = r.db.NewInsert().Model(newsView).On("CONFLICT (ip_address, news_id) DO NOTHING").Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) createEventApplication(item *models.EventApplication) error {
+	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }

@@ -24,6 +24,7 @@ type IHandler interface {
 	CreateComment(c *gin.Context)
 	UpdateComment(c *gin.Context)
 	RemoveComment(c *gin.Context)
+	CreateEventApplication(c *gin.Context)
 }
 
 type IService interface {
@@ -41,6 +42,7 @@ type IService interface {
 	GetBySlug(string) (*models.News, error)
 	GetByMonth(*monthParams) ([]models.News, error)
 	CreateViewOfNews(*models.NewsView) error
+	CreateEventApplication(*models.EventApplication) error
 }
 
 type IRepository interface {
@@ -59,6 +61,7 @@ type IRepository interface {
 	getBySlug(string) (*models.News, error)
 	getByMonth(*monthParams) ([]models.News, error)
 	createViewOfNews(*models.NewsView) error
+	createEventApplication(*models.EventApplication) error
 }
 
 type IFilesService interface {

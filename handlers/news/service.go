@@ -89,12 +89,12 @@ func (s *Service) Update(item *models.News) error {
 	if err != nil {
 		return err
 	}
-	err = events.CreateService(s.repository.getDB()).Update(item.Event)
+	err = events.CreateService(s.repository.getDB()).Upsert(item.Event)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}
@@ -116,4 +116,8 @@ func (s *Service) Update(item *models.News) error {
 }
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) CreateEventApplication(item *models.EventApplication) error {
+	return s.repository.createEventApplication(item)
 }
