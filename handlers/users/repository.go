@@ -1,38 +1,33 @@
 package users
 
 import (
+	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
-	"github.com/uptrace/bun"
 )
 
-type IRepository interface {
-	getAll(*gin.Context) ([]models.User, error)
-	get(*gin.Context, string) (models.User, error)
-	getByEmail(*gin.Context, string) (models.User, error)
+func (r *Repository) getDB() *bun.DB {
+	return r.db
 }
 
-type Repository struct {
-	db *bun.DB
-}
-
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db}
-}
-
-func (r *Repository) getAll(ctx *gin.Context) (items []models.User, err error) {
-	err = r.db.NewSelect().Model(&items).Scan(ctx)
+func (r *Repository) getAll() (models.Users, error) {
+	items := make(models.Users, 0)
+	err := r.db.NewSelect().Model(&items).Scan(r.ctx)
 	return items, err
 }
 
-func (r *Repository) get(ctx *gin.Context, id string) (item models.User, err error) {
-	err = r.db.NewSelect().Model(&item).Where("id = ?", id).Scan(ctx)
-	return item, err
+func (r *Repository) get(id string) (*models.User, error) {
+	item := models.User{}
+	err := r.db.NewSelect().
+		Model(&item).Relation("Human").
+		Where("users.id = ?", id).
+		Scan(r.ctx)
+	return &item, err
 }
 
-func (r *Repository) getByEmail(ctx *gin.Context, id string) (item models.User, err error) {
-	err = r.db.NewSelect().Model(&item).Where("email = ?", id).Scan(ctx)
-	return item, err
+func (r *Repository) getByEmail(id string) (*models.User, error) {
+	item := models.User{}
+	err := r.db.NewSelect().Model(&item).Where("users.email = ?", id).Scan(r.ctx)
+	return &item, err
 }

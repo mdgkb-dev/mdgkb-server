@@ -11,20 +11,38 @@ type Document struct {
 	Name          string        `json:"name" json:"name,omitempty"`
 	FileInfo      *FileInfo     `bun:"rel:belongs-to" json:"fileInfo" json:"file_info,omitempty"`
 	FileInfoId    uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
+
+	Scans          FileInfos `bun:"rel:has-many" json:"scans"`
+	ScansForDelete []string  `bun:"-" json:"scansForDelete"`
+
+	DocumentFields          DocumentFields `bun:"rel:has-many" json:"documentFields"`
+	DocumentFieldsForDelete []uuid.UUID    `bun:"-" json:"documentFieldsForDelete"`
 }
 
 type Documents []*Document
 
-func (i Documents) GetFileInfos() FileInfos {
-	items := make(FileInfos, 0)
-	for _, item := range i {
-		items = append(items, item.FileInfo)
+func (item *Document) SetIdForChildren() {
+	for i := range item.DocumentFields {
+		item.DocumentFields[i].DocumentID = item.ID
 	}
-	return items
 }
 
-func (i Documents) SetFileInfoID() {
-	for _, item := range i {
+func (items Documents) SetIdForChildren() {
+	for i := range items {
+		items[i].SetIdForChildren()
+	}
+}
+
+func (items Documents) GetFileInfos() FileInfos {
+	itemsForGet := make(FileInfos, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.FileInfo)
+	}
+	return itemsForGet
+}
+
+func (items Documents) SetFileInfoID() {
+	for _, item := range items {
 		item.FileInfoId = item.FileInfo.ID
 	}
 }

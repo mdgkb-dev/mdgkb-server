@@ -3,7 +3,10 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/doctors"
+	"mdgkb/mdgkb-server/handlers/document"
 	"mdgkb/mdgkb-server/handlers/news"
+	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/routing/auth"
@@ -12,6 +15,7 @@ import (
 	"mdgkb/mdgkb-server/routing/carousels"
 	"mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
+	documentsRouter "mdgkb/mdgkb-server/routing/documents"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
 	"mdgkb/mdgkb-server/routing/menu"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
@@ -21,9 +25,10 @@ import (
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
 	"mdgkb/mdgkb-server/routing/tags"
 	"mdgkb/mdgkb-server/routing/timetables"
-	"mdgkb/mdgkb-server/routing/users"
+	usersRouter "mdgkb/mdgkb-server/routing/users"
 	"mdgkb/mdgkb-server/routing/vacancies"
 	"mdgkb/mdgkb-server/routing/vacancyResponse"
+	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -51,7 +56,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	normativeDocuments.Init(api.Group("/normative-documents"), db, localUploader)
 	sideOrganizations.Init(api.Group("/side-organizations"), db, localUploader)
 	tags.Init(api.Group("/tags"), db, localUploader)
-	users.Init(api.Group("/users"), db, localUploader)
+	usersRouter.Init(api.Group("/users"), users.CreateHandler(db, localUploaderNew))
 	timetables.Init(api.Group("/timetables"), db)
 
 	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
@@ -59,4 +64,6 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	pages.Init(api.Group("/pages"), db, localUploaderNew)
 	vacancies.Init(api.Group("/vacancies"), db)
 	vacancyResponse.Init(api.Group("/vacancy-responses"), db)
+	documentsRouter.Init(api.Group("/documents"), document.CreateHandler(db))
+	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
 }

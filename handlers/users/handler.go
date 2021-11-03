@@ -1,52 +1,32 @@
 package users
 
 import (
-	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/helpers/httpHelper"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type IHandler interface {
-	GetAll(c *gin.Context) error
-	Get(c *gin.Context) error
-	GetByEmail(c *gin.Context) error
-}
-
-type Handler struct {
-	repository IRepository
-	uploader   helpers.Uploader
-}
-
-// NewHandler constructor
-func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
-	return &Handler{
-		uploader:   uploader,
-		repository: repository,
-	}
-}
-
 func (h *Handler) GetAll(c *gin.Context) {
-	items, err := h.repository.getAll(c)
-	if err != nil {
-		c.JSON(500, err)
+	items, err := h.service.GetAll()
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, items)
+	c.JSON(http.StatusOK, items)
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	item, err := h.repository.get(c, c.Param("id"))
-	if err != nil {
-		c.JSON(500, err)
+	item, err := h.service.Get(c.Param("id"))
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, item)
+	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) GetByEmail(c *gin.Context) {
-	item, err := h.repository.getByEmail(c, c.Param("email"))
-	if err != nil || &item.Email == nil {
-		c.JSON(200, nil)
+	item, err := h.service.GetByEmail(c.Param("email"))
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	if &item != nil && len(item.Email) > 0 {
-		c.JSON(200, item.Email)
-	}
+	c.JSON(http.StatusOK, item)
 }
