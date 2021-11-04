@@ -17,14 +17,14 @@ func (r *Repository) create(item *models.Document) (err error) {
 }
 
 func (r *Repository) getAll() (items models.Documents, err error) {
-	err = r.db.NewSelect().Model(&items).Relation("DocumentFields").Scan(r.ctx)
+	err = r.db.NewSelect().Model(&items).Relation("DocumentFields.ValueType").Scan(r.ctx)
 	return items, err
 }
 
 func (r *Repository) get(id *string) (*models.Document, error) {
 	item := models.Document{}
 	err := r.db.NewSelect().Model(&item).
-		Relation("DocumentFields").
+		Relation("DocumentFields.ValueType").
 		Where("documents.id = ?", *id).
 		Scan(context.Background())
 	return &item, err

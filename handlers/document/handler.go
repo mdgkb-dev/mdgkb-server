@@ -51,10 +51,12 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Document
-	err := c.Bind(&item)
+	_, err := httpHelper.GetForm(c, &item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	//err = h.filesService.Upload(c, &item, files)
+
 	err = h.service.Update(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return

@@ -23,8 +23,8 @@ func (r *Repository) upsertMany(items models.DocumentFields) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("name = EXCLUDED.name").
-		Set(`"order" = EXCLUDED."order"`).
-		Set("type = EXCLUDED.type").
+		Set(`document_field_order = EXCLUDED."document_field_order"`).
+		Set("value_type_id = EXCLUDED.value_type_id").
 		Exec(r.ctx)
 	return err
 }
