@@ -1,21 +1,21 @@
-package documentFields
+package vacancyResponsesToDocuments
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
 )
 
 type IService interface {
-	CreateMany(models.DocumentFields) error
+	CreateMany(menus models.VacancyResponsesToDocuments) error
 }
 
 type IRepository interface {
-	createMany(models.DocumentFields) error
-	upsertMany(models.DocumentFields) error
-	deleteMany([]uuid.UUID) error
+	getDB() *bun.DB
+	createMany(menus models.VacancyResponsesToDocuments) error
+	upsertMany(menus models.VacancyResponsesToDocuments) error
+	deleteMany([]string) error
 }
 
 type Handler struct {

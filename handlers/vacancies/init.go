@@ -1,19 +1,23 @@
-package vacancy
+package vacancies
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
-	GetAll(c *gin.Context) error
-	Get(c *gin.Context) error
-	Create(c *gin.Context) error
-	Update(c *gin.Context) error
-	Delete(c *gin.Context) error
+	GetAll(c *gin.Context)
+	Get(c *gin.Context)
+	Create(c *gin.Context)
+	Update(c *gin.Context)
+	Delete(c *gin.Context)
+
+	CreateResponse(c *gin.Context)
 }
 
 type IService interface {
@@ -23,6 +27,8 @@ type IService interface {
 	Create(*models.Vacancy) error
 	Update(*models.Vacancy) error
 	Delete(*string) error
+
+	CreateResponse(*models.VacancyResponse) error
 }
 
 type IRepository interface {
@@ -33,10 +39,17 @@ type IRepository interface {
 	get(*string) (*models.Vacancy, error)
 	update(*models.Vacancy) error
 	delete(*string) error
+
+	createResponse(*models.VacancyResponse) error
+}
+
+type IFilesService interface {
+	Upload(*gin.Context, *models.VacancyResponse, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
-	service IService
+	service      IService
+	filesService IFilesService
 }
 
 type Service struct {
@@ -48,15 +61,20 @@ type Repository struct {
 	ctx context.Context
 }
 
-func CreateHandler(db *bun.DB) *Handler {
+type FilesService struct {
+	uploader uploadHelper.Uploader
+}
+
+func CreateHandler(db *bun.DB, uploader uploadHelper.Uploader) *Handler {
 	repo := NewRepository(db)
 	service := NewService(repo)
-	return NewHandler(service)
+	filesService := NewFilesService(uploader)
+	return NewHandler(service, filesService)
 }
 
 // NewHandler constructor
-func NewHandler(s IService) *Handler {
-	return &Handler{service: s}
+func NewHandler(service IService, filesService IFilesService) *Handler {
+	return &Handler{service: service, filesService: filesService}
 }
 
 func NewService(repository IRepository) *Service {
@@ -65,4 +83,8 @@ func NewService(repository IRepository) *Service {
 
 func NewRepository(db *bun.DB) *Repository {
 	return &Repository{db: db, ctx: context.Background()}
+}
+
+func NewFilesService(uploader uploadHelper.Uploader) *FilesService {
+	return &FilesService{uploader: uploader}
 }

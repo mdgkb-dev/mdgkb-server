@@ -1,6 +1,7 @@
-package document
+package documents
 
 import (
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/models"
 )
@@ -25,7 +26,7 @@ func (s *Service) UpsertMany(items models.Documents) error {
 	if err != nil {
 		return err
 	}
-	items.SetFileInfoID()
+	//items.SetFileInfoID()
 	err = s.repository.upsertMany(items)
 	if err != nil {
 		return err
@@ -33,7 +34,7 @@ func (s *Service) UpsertMany(items models.Documents) error {
 	return nil
 }
 
-func (s *Service) DeleteMany(idPool []string) error {
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
 	if len(idPool) == 0 {
 		return nil
 	}

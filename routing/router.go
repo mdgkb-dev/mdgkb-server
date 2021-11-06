@@ -3,9 +3,10 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/doctors"
-	"mdgkb/mdgkb-server/handlers/document"
+	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/handlers/vacancies"
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
@@ -15,7 +16,7 @@ import (
 	"mdgkb/mdgkb-server/routing/carousels"
 	"mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
-	documentsRouter "mdgkb/mdgkb-server/routing/documents"
+	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
 	"mdgkb/mdgkb-server/routing/menu"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
@@ -26,7 +27,7 @@ import (
 	"mdgkb/mdgkb-server/routing/tags"
 	"mdgkb/mdgkb-server/routing/timetables"
 	usersRouter "mdgkb/mdgkb-server/routing/users"
-	"mdgkb/mdgkb-server/routing/vacancies"
+	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
 	"mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 
@@ -62,8 +63,8 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
 	menu.Init(api.Group("/menus"), db, localUploaderNew)
 	pages.Init(api.Group("/pages"), db, localUploaderNew)
-	vacancies.Init(api.Group("/vacancies"), db)
+	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, localUploaderNew))
 	vacancyResponse.Init(api.Group("/vacancy-responses"), db)
-	documentsRouter.Init(api.Group("/documents"), document.CreateHandler(db))
+	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
 	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
 }

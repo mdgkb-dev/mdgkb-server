@@ -1,4 +1,4 @@
-package documents
+package documentTypeFields
 
 import (
 	"context"
@@ -9,13 +9,12 @@ import (
 )
 
 type IService interface {
-	CreateMany(models.Documents) error
+	CreateMany(models.DocumentTypeFields) error
 }
 
 type IRepository interface {
-	getDB() *bun.DB
-	createMany(models.Documents) error
-	upsertMany(models.Documents) error
+	createMany(models.DocumentTypeFields) error
+	upsertMany(models.DocumentTypeFields) error
 	deleteMany([]uuid.UUID) error
 }
 

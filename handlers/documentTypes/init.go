@@ -1,4 +1,4 @@
-package document
+package documentTypes
 
 import (
 	"context"
@@ -14,22 +14,26 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+
+	GetDocumentsTypesForTablesNames(c *gin.Context)
 }
 
 type IService interface {
-	GetAll() ([]*models.Document, error)
-	Get(*string) (*models.Document, error)
-	Create(*models.Document) error
-	Update(*models.Document) error
+	GetAll(params models.DocumentsParams) ([]*models.DocumentType, error)
+	Get(*string) (*models.DocumentType, error)
+	Create(*models.DocumentType) error
+	Update(*models.DocumentType) error
 	Delete(*string) error
+
+	GetDocumentsTypesForTablesNames() map[string]string
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	create(*models.Document) error
-	getAll() (models.Documents, error)
-	get(*string) (*models.Document, error)
-	update(*models.Document) error
+	create(*models.DocumentType) error
+	getAll(params models.DocumentsParams) (models.DocumentsTypes, error)
+	get(*string) (*models.DocumentType, error)
+	update(*models.DocumentType) error
 	delete(*string) error
 }
 

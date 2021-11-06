@@ -1,4 +1,4 @@
-create table document_fields
+create table document_type_fields
 (
     id uuid default uuid_generate_v4() not null
         constraint "PK_504d1a17f1681be11d94673ba31"
@@ -7,10 +7,10 @@ create table document_fields
     value_type_id uuid
         constraint "FK_f021d1969d6682de1f265c62a6c"
             references value_types,
-    document_field_order integer,
-    document_id uuid
+    document_type_field_order integer,
+    document_type_id uuid
         constraint "FK_040777158438fdb7a2ca0d9a3bd"
-        references documents
+        references document_types
         on delete cascade
 );
 

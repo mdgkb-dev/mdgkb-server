@@ -1,15 +1,14 @@
 package vacancyResponse
 
 import (
-	"mdgkb/mdgkb-server/handlers/contactInfo"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.VacancyResponse) error {
-	err := contactInfo.CreateService(s.repository.getDB()).Create(item.ContactInfo)
-	if err != nil {
-		return err
-	}
+	//err := contactInfo.CreateService(s.repository.getDB()).Create(item.ContactInfo)
+	//if err != nil {
+	//	return err
+	//}
 	item.SetForeignKeys()
 	return s.repository.create(item)
 }

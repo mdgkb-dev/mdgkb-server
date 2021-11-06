@@ -3,27 +3,30 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 type Document struct {
-	bun.BaseModel `bun:"documents,alias:documents" json:"bun_base_model"`
-	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
-	Name          string        `json:"name" json:"name,omitempty"`
-	FileInfo      *FileInfo     `bun:"rel:belongs-to" json:"fileInfo" json:"file_info,omitempty"`
-	FileInfoId    uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
+	bun.BaseModel `bun:"documents,alias:documents"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
+
+	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
+	DocumentTypeID uuid.UUID     `bun:"type:uuid" json:"documentTypeId"`
+
+	//Scan   *FileInfo     `bun:"rel:belongs-to" json:"scan,omitempty"`
+	//ScanID uuid.NullUUID `bun:"type:uuid" json:"scanId"`
 
 	Scans          FileInfos `bun:"rel:has-many" json:"scans"`
 	ScansForDelete []string  `bun:"-" json:"scansForDelete"`
 
-	DocumentFields          DocumentFields `bun:"rel:has-many" json:"documentFields"`
-	DocumentFieldsForDelete []uuid.UUID    `bun:"-" json:"documentFieldsForDelete"`
+	DocumentFieldsValues DocumentFieldValues `bun:"rel:has-many" json:"documentFields"`
 }
 
 type Documents []*Document
 
 func (item *Document) SetIdForChildren() {
-	for i := range item.DocumentFields {
-		item.DocumentFields[i].DocumentID = item.ID
+	for i := range item.DocumentFieldsValues {
+		item.DocumentFieldsValues[i].DocumentID = item.ID
 	}
 }
 
@@ -36,13 +39,25 @@ func (items Documents) SetIdForChildren() {
 func (items Documents) GetFileInfos() FileInfos {
 	itemsForGet := make(FileInfos, 0)
 	for _, item := range items {
-		itemsForGet = append(itemsForGet, item.FileInfo)
+		itemsForGet = append(itemsForGet, item.Scans...)
+		//itemsForGet = append(itemsForGet, item.Scan)
 	}
 	return itemsForGet
 }
 
-func (items Documents) SetFileInfoID() {
-	for _, item := range items {
-		item.FileInfoId = item.FileInfo.ID
+func (item *Document) SetFilePath(fileID *string) *string {
+	for i, scan := range item.Scans {
+		if scan.ID.UUID.String() == *fileID {
+			item.Scans[i].FileSystemPath = uploadHelper.BuildPath(fileID)
+			return &item.Scans[i].FileSystemPath
+		}
 	}
+	return nil
+}
+
+func (items Documents) SetFilePath(fileID *string) *string {
+	for i := range items {
+		items[i].SetFilePath(fileID)
+	}
+	return nil
 }

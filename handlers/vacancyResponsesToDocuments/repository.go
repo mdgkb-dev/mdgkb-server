@@ -1,4 +1,4 @@
-package divisionImages
+package vacancyResponsesToDocuments
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -10,24 +10,26 @@ func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
-func (r *Repository) createMany(items models.DivisionImages) (err error) {
+func (r *Repository) createMany(items models.VacancyResponsesToDocuments) (err error) {
 	_, err = r.db.NewInsert().Model(&items).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) deleteMany(idPool []string) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.DocumentType)(nil)).
+		Model((*models.VacancyResponseToDocument)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.DivisionImages) (err error) {
+func (r *Repository) upsertMany(items models.VacancyResponsesToDocuments) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
-		Set("description = EXCLUDED.description").
-		Set("file_info_id = EXCLUDED.file_info_id").
+		Set("name = EXCLUDED.name").
+		Set("link = EXCLUDED.link").
+		Set("sub_sub_menu_order = EXCLUDED.sub_sub_menu_order").
+		Set("icon_id = EXCLUDED.icon_id").
 		Exec(r.ctx)
 	return err
 }

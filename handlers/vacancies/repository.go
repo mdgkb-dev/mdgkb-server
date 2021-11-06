@@ -1,4 +1,4 @@
-package vacancy
+package vacancies
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -51,5 +51,10 @@ func (r *Repository) delete(id *string) (err error) {
 
 func (r *Repository) update(item *models.Vacancy) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) createResponse(item *models.VacancyResponse) (err error) {
+	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }

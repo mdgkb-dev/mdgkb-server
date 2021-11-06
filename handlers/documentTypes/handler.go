@@ -1,4 +1,4 @@
-package vacancy
+package documentTypes
 
 import (
 	"fmt"
@@ -10,28 +10,22 @@ import (
 )
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.Vacancy
-	err := c.Bind(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
+	var item models.DocumentType
+	_, err := httpHelper.GetForm(c, &item)
+	//if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	//	return
+	//}
+	//err = h.filesService.Upload(c, &item, files)
 	err = h.service.Create(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+
 	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	withResponses := c.Query("withResponses")
-	items := make(models.Vacancies, 0)
-	var err error
-	fmt.Println(withResponses)
-	if withResponses == "" {
-		items, err = h.service.GetAll()
-	} else {
-		items, err = h.service.GetAllWithResponses()
-	}
+	items, err := h.service.GetAll(models.CreateDocumentsParamsFromContext(c))
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -57,14 +51,22 @@ func (h *Handler) Delete(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.Vacancy
-	err := c.Bind(&item)
+	var item models.DocumentType
+	_, err := httpHelper.GetForm(c, &item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	//err = h.filesService.Upload(c, &item, files)
+
 	err = h.service.Update(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) GetDocumentsTypesForTablesNames(c *gin.Context) {
+	fmt.Println(123)
+	items := h.service.GetDocumentsTypesForTablesNames()
+	c.JSON(http.StatusOK, items)
 }

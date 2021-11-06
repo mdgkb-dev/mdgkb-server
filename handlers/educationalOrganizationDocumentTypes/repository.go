@@ -13,7 +13,7 @@ func (r *Repository) getDB() *bun.DB {
 func (r *Repository) getAll() (models.EducationalOrganizationDocumentTypes, error) {
 	items := make(models.EducationalOrganizationDocumentTypes, 0)
 	err := r.db.NewSelect().Model(&items).
-		Relation("EducationalOrganizationDocumentTypeDocuments.Document.FileInfo").Scan(r.ctx)
+		Relation("EducationalOrganizationDocumentTypeDocuments.DocumentType.FileInfo").Scan(r.ctx)
 	return items, err
 }
 

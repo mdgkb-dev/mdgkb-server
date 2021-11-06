@@ -1,6 +1,7 @@
-package document
+package documents
 
 import (
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -15,9 +16,9 @@ func (r *Repository) createMany(items models.Documents) (err error) {
 	return err
 }
 
-func (r *Repository) deleteMany(idPool []string) (err error) {
+func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.Document)(nil)).
+		Model((*models.DocumentType)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err

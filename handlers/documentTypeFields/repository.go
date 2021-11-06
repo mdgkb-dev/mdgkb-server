@@ -1,4 +1,4 @@
-package documentFields
+package documentTypeFields
 
 import (
 	"github.com/google/uuid"
@@ -6,20 +6,20 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-func (r *Repository) createMany(items models.DocumentFields) (err error) {
+func (r *Repository) createMany(items models.DocumentTypeFields) (err error) {
 	_, err = r.db.NewInsert().Model(&items).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.DocumentField)(nil)).
+		Model((*models.DocumentTypeField)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.DocumentFields) (err error) {
+func (r *Repository) upsertMany(items models.DocumentTypeFields) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("name = EXCLUDED.name").

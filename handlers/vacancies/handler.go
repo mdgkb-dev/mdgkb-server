@@ -1,4 +1,4 @@
-package document
+package vacancies
 
 import (
 	"mdgkb/mdgkb-server/helpers/httpHelper"
@@ -9,22 +9,27 @@ import (
 )
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.Document
-	_, err := httpHelper.GetForm(c, &item)
-	//if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
-	//	return
-	//}
-	//err = h.filesService.Upload(c, &item, files)
+	var item models.Vacancy
+	err := c.Bind(&item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Create(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-
 	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	items, err := h.service.GetAll()
+	withResponses := c.Query("withResponses")
+	items := make(models.Vacancies, 0)
+	var err error
+	if withResponses == "" {
+		items, err = h.service.GetAll()
+	} else {
+		items, err = h.service.GetAllWithResponses()
+	}
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -50,16 +55,29 @@ func (h *Handler) Delete(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.Document
-	_, err := httpHelper.GetForm(c, &item)
+	var item models.Vacancy
+	err := c.Bind(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	//err = h.filesService.Upload(c, &item, files)
-
 	err = h.service.Update(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) CreateResponse(c *gin.Context) {
+	var item models.VacancyResponse
+	files, err := httpHelper.GetForm(c, &item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.Upload(c, &item, files)
+	err = h.service.CreateResponse(&item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+
 	c.JSON(http.StatusOK, item)
 }

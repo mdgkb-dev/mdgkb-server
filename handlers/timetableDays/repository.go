@@ -17,7 +17,7 @@ func (r *Repository) createMany(items models.TimetableDays) (err error) {
 
 func (r *Repository) deleteMany(idPool []string) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.Document)(nil)).
+		Model((*models.DocumentType)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err

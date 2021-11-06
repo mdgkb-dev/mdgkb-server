@@ -1,8 +1,6 @@
 package models
 
 import (
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
-
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -35,11 +33,11 @@ func (items PageDocuments) SetForeignKeys() {
 }
 
 func (items PageDocuments) SetFilePath(fileID *string) *string {
-	for _, item := range items {
-		if item.Document.FileInfo.ID.UUID.String() == *fileID {
-			item.Document.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
-			return &item.Document.FileInfo.FileSystemPath
-		}
+	for _ = range items {
+		//if item.Document.Scan.ID.UUID.String() == *fileID {
+		//	item.Document.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
+		//	return &item.Document.Scan.FileSystemPath
+		//}
 	}
 	return nil
 }
