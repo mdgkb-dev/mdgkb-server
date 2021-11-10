@@ -14,6 +14,7 @@ import (
 	"mdgkb/mdgkb-server/routing/buildings"
 	"mdgkb/mdgkb-server/routing/carousels"
 	"mdgkb/mdgkb-server/routing/divisions"
+	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentsRouter "mdgkb/mdgkb-server/routing/documents"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
@@ -48,6 +49,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	carousels.Init(api.Group("/carousels"), db, localUploader)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, localUploaderNew))
+	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, localUploaderNew)
 
 	divisions.Init(api.Group("/divisions"), db, localUploaderNew)
 

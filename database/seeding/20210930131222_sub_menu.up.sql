@@ -7,4 +7,7 @@ VALUES  ('d6017ef7-dbaa-4f88-8bb3-d59e87396b97', 'Сведения об обра
         ('1a35e4c8-96c3-4123-a6d2-18caddbb700c', 'Диспансеризация населения', '/dispanserization', NULL, 0, NULL, '35d8708c-2a72-4dd1-9ada-0d2eabb0f409', '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
         ('05c075d1-fe0c-4219-b62e-205969044199', 'Просветительский проект СтопКома', '/stop-coma', NULL, 1, NULL, 'a98fe7c9-ca6c-47ad-a7ed-112fd54b2c2d', '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
         ('0545784e-f27a-4007-8673-14588ed2aea7', 'Нормативные документы', '/normative-documents', NULL, 2, NULL, '56cee821-cc66-4971-bd98-401591030479', '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
-        ('9af96c54-b064-4d32-9efe-58117ea41b0f', 'Сведения об организациях в сфере охраны здоровья', '/side-organizations', NULL, 3, NULL, '879af4b8-60b8-4139-a86b-d51edfe6a2e3', '4f6836fe-36eb-440d-8c02-5dd9307f7620');
+        ('9af96c54-b064-4d32-9efe-58117ea41b0f', 'Сведения об организациях в сфере охраны здоровья', '/side-organizations', NULL, 3, NULL, '879af4b8-60b8-4139-a86b-d51edfe6a2e3', '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
+        ('aacbd183-a7a8-451d-b85c-6df701c578ae', 'Госпитализация', '/hospitalization', NULL, 4, NULL, NULL, '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
+        ('ce08a0da-65d3-44d6-aaf0-0dd573c887ee', 'Амбулаторные услуги', '/ambulatory-services', NULL, 5, NULL, NULL, '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
+        ('6d4a9470-83d8-4b3e-9be7-71d2a7e1f3a9', 'Платные медицинские услуги', '/paid-services', NULL, 6, NULL, NULL, '4f6836fe-36eb-440d-8c02-5dd9307f7620');
