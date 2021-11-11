@@ -1,16 +1,27 @@
 package vacancyResponse
 
 import (
+	"mdgkb/mdgkb-server/handlers/human"
+	"mdgkb/mdgkb-server/handlers/vacancyResponsesToDocuments"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.VacancyResponse) error {
-	//err := contactInfo.CreateService(s.repository.getDB()).Create(item.ContactInfo)
-	//if err != nil {
-	//	return err
-	//}
+	err := human.CreateService(s.repository.getDB()).Create(item.Human)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	return s.repository.create(item)
+	err = s.repository.create(item)
+	if err != nil {
+		return err
+	}
+	item.SetIdForChildren()
+	err = vacancyResponsesToDocuments.CreateService(s.repository.getDB()).CreateMany(item.VacancyResponsesToDocuments)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) GetAll() (models.VacancyResponses, error) {

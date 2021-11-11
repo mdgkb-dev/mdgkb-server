@@ -9,15 +9,22 @@ type DocumentScan struct {
 	bun.BaseModel `bun:"documents_scans,alias:documents_scans"`
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
 
-	Document   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
-	DocumentID uuid.UUID     `bun:"type:uuid" json:"documentTypeId"`
+	Document   *Document `bun:"rel:belongs-to" json:"document"`
+	DocumentID uuid.UUID     `bun:"type:uuid" json:"documentId"`
 
 	Scan   *FileInfo `bun:"rel:belongs-to" json:"scan"`
-	ScanID uuid.UUID     `bun:"type:uuid" json:"scanId"`
+	ScanID uuid.NullUUID     `bun:"type:uuid" json:"scanId"`
 }
 
 type DocumentsScans []*DocumentScan
-//
+
+func (items DocumentsScans) SetForeignKeys() {
+	for i := range items {
+		items[i].ScanID = items[i].Scan.ID
+	}
+}
+
+
 //func (item *Document) SetIdForChildren() {
 //	for i := range item.DocumentFieldsValues {
 //		item.DocumentFieldsValues[i].DocumentID = item.ID
@@ -29,7 +36,7 @@ type DocumentsScans []*DocumentScan
 //		items[i].SetIdForChildren()
 //	}
 //}
-//
+
 
 func (items DocumentsScans) GetFileInfos() FileInfos {
 	itemsForGet := make(FileInfos, 0)

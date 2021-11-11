@@ -1,4 +1,4 @@
-create table document_scans
+create table documents_scans
 (
     id uuid default uuid_generate_v4() not null
         constraint "PK_2e1aa55eac1947ddf3221506edb"
