@@ -27,8 +27,8 @@ func (r *Repository) getAllWithResponses() (models.Vacancies, error) {
 		Model(&items).
 		Relation("VacancyResponses").
 		Relation("Division").
-		Relation("VacancyResponses.ContactInfo.Emails").
-		Relation("VacancyResponses.ContactInfo.TelephoneNumbers").
+		Relation("VacancyResponses.Human.ContactInfo.Emails").
+		Relation("VacancyResponses.Human.ContactInfo.TelephoneNumbers").
 		Scan(r.ctx)
 	return items, err
 }
@@ -37,8 +37,8 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 	item := models.Vacancy{}
 	err := r.db.NewSelect().
 		Model(&item).
-		Relation("VacancyResponses.ContactInfo.Emails").
-		Relation("VacancyResponses.ContactInfo.TelephoneNumbers").
+		Relation("VacancyResponses.Human.ContactInfo.Emails").
+		Relation("VacancyResponses.Human.ContactInfo.TelephoneNumbers").
 		Where("id = ?", *id).
 		Scan(r.ctx)
 	return &item, err

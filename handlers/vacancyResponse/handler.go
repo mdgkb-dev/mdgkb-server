@@ -9,7 +9,12 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.VacancyResponse
-	err := c.Bind(&item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.Upload(c, &item, files)
+
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

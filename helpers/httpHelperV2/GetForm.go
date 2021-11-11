@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetForm(c *gin.Context, item interface{}) (map[string][]*multipart.FileHeader, error) {
+func (i *HTTPHelper)GetForm(c *gin.Context, item interface{}) (map[string][]*multipart.FileHeader, error) {
 	form, err := c.MultipartForm()
 	if err != nil {
 		return nil, err
