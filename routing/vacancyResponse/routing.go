@@ -13,4 +13,6 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.POST("/", h.Create)
 	r.DELETE("/:id", h.Delete)
 	r.PUT("/:id", h.Update)
+
+	r.GET("/pdf/:id", h.PDF)
 }
