@@ -4,12 +4,10 @@ import (
 	handler "mdgkb/mdgkb-server/handlers/vacancyResponse"
 
 	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB) {
-	var h = handler.CreateHandler(db)
+func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
 	r.POST("/", h.Create)

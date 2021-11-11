@@ -18,6 +18,7 @@ type Config struct {
 	RedisPort string `mapstructure:"REDIS_PORT"`
 
 	UploadPath string `mapstructure:"UPLOAD_PATH"`
+	TemplatesPath string `mapstructure:"TEMPLATES_PATH"`
 }
 
 func LoadConfig() (config *Config, err error) {

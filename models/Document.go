@@ -13,12 +13,7 @@ type Document struct {
 	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
 	DocumentTypeID uuid.UUID     `bun:"type:uuid" json:"documentTypeId"`
 
-	//Scan   *FileInfo     `bun:"rel:belongs-to" json:"scan,omitempty"`
-	//ScanID uuid.NullUUID `bun:"type:uuid" json:"scanId"`
-
-	Scans          FileInfos `bun:"rel:has-many" json:"scans"`
-	ScansForDelete []string  `bun:"-" json:"scansForDelete"`
-
+	DocumentsScans          DocumentsScans `bun:"rel:has-many" json:"documentsScans"`
 	DocumentFieldsValues DocumentFieldValues `bun:"rel:has-many" json:"documentFields"`
 }
 
@@ -36,20 +31,20 @@ func (items Documents) SetIdForChildren() {
 	}
 }
 
-func (items Documents) GetFileInfos() FileInfos {
-	itemsForGet := make(FileInfos, 0)
+func (items Documents) GetDocumentsScans() DocumentsScans {
+	itemsForGet := make(DocumentsScans, 0)
 	for _, item := range items {
-		itemsForGet = append(itemsForGet, item.Scans...)
+		itemsForGet = append(itemsForGet, item.DocumentsScans...)
 		//itemsForGet = append(itemsForGet, item.Scan)
 	}
 	return itemsForGet
 }
 
 func (item *Document) SetFilePath(fileID *string) *string {
-	for i, scan := range item.Scans {
-		if scan.ID.UUID.String() == *fileID {
-			item.Scans[i].FileSystemPath = uploadHelper.BuildPath(fileID)
-			return &item.Scans[i].FileSystemPath
+	for i, documentScan := range item.DocumentsScans {
+		if documentScan.Scan.ID.UUID.String() == *fileID {
+			item.DocumentsScans[i].Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
+			return &item.DocumentsScans[i].Scan.FileSystemPath
 		}
 	}
 	return nil

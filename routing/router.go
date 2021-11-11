@@ -7,6 +7,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
+	"mdgkb/mdgkb-server/handlers/vacancyResponse"
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
@@ -28,7 +29,7 @@ import (
 	"mdgkb/mdgkb-server/routing/timetables"
 	usersRouter "mdgkb/mdgkb-server/routing/users"
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
-	"mdgkb/mdgkb-server/routing/vacancyResponse"
+	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 
 	"github.com/gin-gonic/gin"
@@ -40,7 +41,7 @@ import (
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Config) {
 	localUploader := helpers.NewLocalUploader(&config.UploadPath)
 	localUploaderNew := uploadHelper.NewLocalUploader(&config.UploadPath)
-
+	helper := helpers.NewHelper(config)
 	r.Static("/static", "./static/")
 	api := r.Group("/api/v1")
 
@@ -64,7 +65,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	menu.Init(api.Group("/menus"), db, localUploaderNew)
 	pages.Init(api.Group("/pages"), db, localUploaderNew)
 	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, localUploaderNew))
-	vacancyResponse.Init(api.Group("/vacancy-responses"), db)
+	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(db, helper))
 	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
 	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
 }

@@ -1,7 +1,6 @@
 package documentTypes
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -66,7 +65,6 @@ func (h *Handler) Update(c *gin.Context) {
 }
 
 func (h *Handler) GetDocumentsTypesForTablesNames(c *gin.Context) {
-	fmt.Println(123)
 	items := h.service.GetDocumentsTypesForTablesNames()
 	c.JSON(http.StatusOK, items)
 }

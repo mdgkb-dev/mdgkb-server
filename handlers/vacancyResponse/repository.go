@@ -21,14 +21,14 @@ func (r *Repository) getAll() (models.VacancyResponses, error) {
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.VacancyResponse, error) {
+func (r *Repository) get(id string) (*models.VacancyResponse, error) {
 	item := models.VacancyResponse{}
-	err := r.db.NewSelect().Model(&item).Where("id = ?", *id).Scan(r.ctx)
+	err := r.db.NewSelect().Model(&item).Where("id = ?", id).Scan(r.ctx)
 	return &item, err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.VacancyResponse{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) delete(id string) (err error) {
+	_, err = r.db.NewDelete().Model(&models.VacancyResponse{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 

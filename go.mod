@@ -3,6 +3,7 @@ module mdgkb/mdgkb-server
 go 1.16
 
 require (
+	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.7.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/gin-gonic/gin v1.7.3
@@ -21,7 +22,7 @@ require (
 	github.com/uptrace/bun/dialect/sqlitedialect v0.3.9
 	github.com/uptrace/bun/driver/pgdriver v0.3.9
 	github.com/uptrace/bun/extra/bundebug v0.3.9
-	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
+	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
 	golang.org/x/net v0.0.0-20210726213435-c6fcb2dbf985 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )

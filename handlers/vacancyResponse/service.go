@@ -21,7 +21,7 @@ func (s *Service) GetAll() (models.VacancyResponses, error) {
 	return items, nil
 }
 
-func (s *Service) Get(id *string) (*models.VacancyResponse, error) {
+func (s *Service) Get(id string) (*models.VacancyResponse, error) {
 	item, err := s.repository.get(id)
 	if err != nil {
 		return nil, err
@@ -38,6 +38,6 @@ func (s *Service) Update(item *models.VacancyResponse) error {
 	return s.repository.update(item)
 }
 
-func (s *Service) Delete(id *string) error {
+func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
