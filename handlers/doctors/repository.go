@@ -16,14 +16,17 @@ func (r *Repository) create(item *models.Doctor) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (models.Doctors, error) {
+func (r *Repository) getAll(params *doctorsParams) (models.Doctors, error) {
 	items := make(models.Doctors, 0)
-	err := r.db.NewSelect().Model(&items).
+	query := r.db.NewSelect().Model(&items).
 		Relation("Human").
 		Relation("Division").
 		Relation("FileInfo").
-		Order("human.surname").
-		Scan(r.ctx)
+		Order("human.surname")
+	if params.Limit != 0 {
+		query = query.Limit(params.Limit)
+	}
+	err := query.Scan(r.ctx)
 	return items, err
 }
 

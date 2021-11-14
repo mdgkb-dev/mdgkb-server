@@ -8,11 +8,11 @@ import (
 
 type User struct {
 	bun.BaseModel `bun:"users,alias:users"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Email         string    `json:"email"`
-	Password      string    `json:"password"`
-	Human         *Human    `bun:"rel:belongs-to" json:"human"`
-	HumanID       uuid.UUID `bun:"type:uuid" json:"humanId"`
+	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Email         string        `json:"email"`
+	Password      string        `json:"password"`
+	Human         *Human        `bun:"rel:belongs-to" json:"human"`
+	HumanID       uuid.NullUUID `bun:"type:uuid,nullzero" json:"humanId"`
 }
 
 type Users []*User

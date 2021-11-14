@@ -33,3 +33,15 @@ func (s *Service) DeleteMany(idPool []string) error {
 	}
 	return s.repository.deleteMany(idPool)
 }
+
+func (s *Service) GetAll(params *commentsParams) (models.Comments, error) {
+	items, err := s.repository.getAll(params)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+func (s *Service) UpdateOne(item *models.Comment) error {
+	return s.repository.updateOne(item)
+}

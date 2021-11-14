@@ -32,3 +32,29 @@ func (r *Repository) upsertMany(items models.Comments) (err error) {
 		Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
+	items := make(models.Comments, 0)
+	query := r.db.NewSelect().Model(&items).
+		Relation("NewsComment.News").
+		Relation("DoctorComment.Doctor.Human").
+		Relation("DivisionComment.Division").
+		Relation("User").
+		Order("published_on DESC")
+	if params.Limit != 0 {
+		query = query.Limit(params.Limit)
+	}
+	if params.ModChecked != nil {
+		query = query.Where("comment.mod_checked = ?", params.ModChecked)
+	}
+	if params.Positive != nil {
+		query = query.Where("comment.positive = ?", params.Positive)
+	}
+	err := query.Scan(r.ctx)
+	return items, err
+}
+
+func (r *Repository) updateOne(item *models.Comment) error {
+	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
