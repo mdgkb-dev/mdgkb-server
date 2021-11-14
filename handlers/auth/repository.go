@@ -29,6 +29,8 @@ func (r *ARepository) getByEmail(ctx *gin.Context, email string) (user models.Us
 }
 
 func (r *ARepository) create(ctx *gin.Context, user *models.User) (err error) {
+	// _, err = r.db.NewInsert().Model(user.Human).Exec(ctx)
+	// user.HumanID = user.Human.ID
 	_, err = r.db.NewInsert().Model(user).Exec(ctx)
 	return err
 }

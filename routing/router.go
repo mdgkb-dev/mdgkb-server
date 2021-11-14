@@ -13,6 +13,8 @@ import (
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
+	"mdgkb/mdgkb-server/handlers/comments"
+	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	"mdgkb/mdgkb-server/routing/buildings"
 	"mdgkb/mdgkb-server/routing/carousels"
 	"mdgkb/mdgkb-server/routing/divisions"
@@ -55,6 +57,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 
 	divisions.Init(api.Group("/divisions"), db, localUploaderNew)
 
+	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(db))
 	newsRouter.Init(api.Group("/news"), news.CreateHandler(db, localUploaderNew))
 	normativeDocumentTypes.Init(api.Group("/normative-document-types"), db, localUploader)
 	normativeDocuments.Init(api.Group("/normative-documents"), db, localUploader)

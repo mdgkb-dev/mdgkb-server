@@ -80,8 +80,8 @@ func (s *Service) Update(item *models.Doctor) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Doctors, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(params *doctorsParams) (models.Doctors, error) {
+	return s.repository.getAll(params)
 }
 
 func (s *Service) Get(id string) (*models.Doctor, error) {

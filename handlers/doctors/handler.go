@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type doctorsParams struct {
+	Limit      int  `form:"limit"`
+}
+
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Doctor
 	_, err := httpHelper.GetForm(c, &item)
@@ -25,7 +29,12 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	items, err := h.service.GetAll()
+	var doctorsParams doctorsParams
+	err := c.BindQuery(&doctorsParams)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	items, err := h.service.GetAll(&doctorsParams)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

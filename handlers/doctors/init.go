@@ -24,7 +24,7 @@ type IHandler interface {
 
 type IService interface {
 	Create(*models.Doctor) error
-	GetAll() (models.Doctors, error)
+	GetAll(*doctorsParams) (models.Doctors, error)
 	Get(string) (*models.Doctor, error)
 	Delete(string) error
 	Update(*models.Doctor) error
@@ -38,7 +38,7 @@ type IService interface {
 type IRepository interface {
 	getDB() *bun.DB
 	create(*models.Doctor) error
-	getAll() (models.Doctors, error)
+	getAll(*doctorsParams) (models.Doctors, error)
 	get(string) (*models.Doctor, error)
 	getByDivisionID(string) (models.Doctors, error)
 	delete(string) error
