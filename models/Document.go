@@ -23,6 +23,9 @@ func (item *Document) SetIdForChildren() {
 	for i := range item.DocumentFieldsValues {
 		item.DocumentFieldsValues[i].DocumentID = item.ID
 	}
+	for i := range item.DocumentsScans {
+		item.DocumentsScans[i].DocumentID = item.ID
+	}
 }
 
 func (items Documents) SetIdForChildren() {

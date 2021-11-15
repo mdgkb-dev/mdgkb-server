@@ -30,7 +30,7 @@ func (s *Service) UpsertMany(items models.DocumentsScans) error {
 	if err != nil {
 		return err
 	}
-	//items.SetFileInfoID()
+	items.SetForeignKeys()
 	err = s.repository.upsertMany(items)
 	if err != nil {
 		return err
