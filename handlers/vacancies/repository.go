@@ -29,6 +29,7 @@ func (r *Repository) getAllWithResponses() (models.Vacancies, error) {
 		Relation("Division").
 		Relation("VacancyResponses.Human.ContactInfo.Emails").
 		Relation("VacancyResponses.Human.ContactInfo.TelephoneNumbers").
+		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
 		Scan(r.ctx)
 	return items, err
 }
@@ -39,6 +40,8 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 		Model(&item).
 		Relation("VacancyResponses.Human.ContactInfo.Emails").
 		Relation("VacancyResponses.Human.ContactInfo.TelephoneNumbers").
+		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
+		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentType").
 		Where("id = ?", *id).
 		Scan(r.ctx)
 	return &item, err
