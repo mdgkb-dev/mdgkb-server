@@ -1,4 +1,4 @@
-package vacancyResponsesToDocuments
+package hospitalizationsToDocumentTypes
 
 import (
 	"context"
@@ -8,13 +8,13 @@ import (
 )
 
 type IService interface {
-	CreateMany(items models.VacancyResponsesToDocuments) error
+	CreateMany(items models.HospitalizationsToDocumentTypes) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	createMany(items models.VacancyResponsesToDocuments) error
-	upsertMany(items models.VacancyResponsesToDocuments) error
+	createMany(items models.HospitalizationsToDocumentTypes) error
+	upsertMany(items models.HospitalizationsToDocumentTypes) error
 	deleteMany([]string) error
 }
 

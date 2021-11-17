@@ -6,10 +6,11 @@ import (
 )
 
 type Hospitalization struct {
-	bun.BaseModel `bun:"hospitalizations,alias:hospitalizations"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
-	Name          string    `json:"name"`
-	Paid          bool      `json:"paid"`
+	bun.BaseModel                   `bun:"hospitalizations,alias:hospitalizations"`
+	ID                              uuid.UUID                       `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	Name                            string                          `json:"name"`
+	Paid                            bool                            `json:"paid"`
+	HospitalizationsToDocumentTypes HospitalizationsToDocumentTypes `bun:"rel:has-many" json:"hospitalizationsToDocumentTypes"`
 }
 
 type Hospitalizations []*Hospitalization
