@@ -14,11 +14,11 @@ func (s *Service) Create(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	//item.SetForeignKeys()
-	//err = s.repository.create(item)
-	//if err != nil {
-	//	return err
-	//}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
+	if err != nil {
+		return err
+	}
 	//item.SetIdForChildren()
 	return nil
 }
@@ -80,6 +80,15 @@ func (s *Service) GetByEmail(email string) (*models.User, error) {
 	item, err := s.repository.getByEmail(email)
 	if err != nil {
 		return nil, err
+	}
+	return item, nil
+}
+
+
+func (s *Service) EmailExists(email string) (bool, error) {
+	item, err := s.repository.emailExists(email)
+	if err != nil {
+		return item, err
 	}
 	return item, nil
 }

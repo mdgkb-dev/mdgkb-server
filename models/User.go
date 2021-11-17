@@ -12,25 +12,29 @@ type User struct {
 	Email         string        `json:"email"`
 	Password      string        `json:"password"`
 	Human         *Human        `bun:"rel:belongs-to" json:"human"`
-	HumanID       uuid.NullUUID `bun:"type:uuid,nullzero" json:"humanId"`
+	HumanID       uuid.UUID `bun:"type:uuid" json:"humanId"`
 }
 
 type Users []*User
 
-func (u *User) GenerateHashPassword() error {
-	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+func (i *User) GenerateHashPassword() error {
+	hash, err := bcrypt.GenerateFromPassword([]byte(i.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
 	pass := string(hash)
-	u.Password = pass
+	i.Password = pass
 	return nil
 }
 
-func (u *User) CompareWithHashPassword(password *string) bool {
+func (i *User) CompareWithHashPassword(password *string) bool {
 	p, err := bcrypt.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
 	if err != nil {
 		return false
 	}
 	return bcrypt.CompareHashAndPassword(p, []byte(*password)) == nil
+}
+
+func (i *User) SetForeignKeys() {
+	i.HumanID = i.Human.ID
 }

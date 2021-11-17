@@ -18,8 +18,8 @@ require (
 	github.com/spf13/cast v1.4.0 // indirect
 	github.com/spf13/viper v1.8.1
 	github.com/ugorji/go v1.2.6 // indirect
-	github.com/uptrace/bun v0.3.9
-	github.com/uptrace/bun/dialect/sqlitedialect v0.3.9
+	github.com/uptrace/bun v1.0.17
+	github.com/uptrace/bun/dialect/sqlitedialect v1.0.17
 	github.com/uptrace/bun/driver/pgdriver v0.3.9
 	github.com/uptrace/bun/extra/bundebug v0.3.9
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97

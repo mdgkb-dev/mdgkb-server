@@ -31,3 +31,14 @@ func (r *Repository) getByEmail(id string) (*models.User, error) {
 	err := r.db.NewSelect().Model(&item).Where("users.email = ?", id).Scan(r.ctx)
 	return &item, err
 }
+
+
+func (r *Repository) create(user *models.User) (err error) {
+	_, err = r.db.NewInsert().Model(user).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) emailExists(email string) (bool, error) {
+	exists, err := r.db.NewSelect().Model((*models.User)(nil)).Where("users.email = ?", email).Exists(r.ctx)
+	return exists, err
+}

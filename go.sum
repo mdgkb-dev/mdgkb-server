@@ -311,8 +311,12 @@ github.com/ugorji/go/codec v1.2.6/go.mod h1:V6TCNZ4PHqoHGFZuSG1W8nrCzzdgA2DozYxW
 github.com/uptrace/bun v0.1.1/go.mod h1:y7OgTXdMe3wrAyp1He4Sx1o41kzCQQ8TeBFZyQp3SOg=
 github.com/uptrace/bun v0.3.9 h1:h8L83pHWUyoOpo7xc3KLcDbf76nlaVg4BRe6/gBMQQU=
 github.com/uptrace/bun v0.3.9/go.mod h1:aL6D9vPw8DXaTQTwGrEPtUderBYXx7ShUmPfnxnqscw=
+github.com/uptrace/bun v1.0.17 h1:ti3IyOieIKaBO2pmxB1Rj8R1WpXw7utaRmr5kL9WrSs=
+github.com/uptrace/bun v1.0.17/go.mod h1:rs7qARtH6aqLtcfmloWM6qn90iyY53N2ScLQssIrevw=
 github.com/uptrace/bun/dialect/sqlitedialect v0.3.9 h1:71BWL3/HvK/0sBxvaIZEAvJb8Ivu3v8qEi3wAFScOJc=
 github.com/uptrace/bun/dialect/sqlitedialect v0.3.9/go.mod h1:jAoFlOBNOGre5RcGosX3O7MlqjqfgASf2Up6QnaJdMM=
+github.com/uptrace/bun/dialect/sqlitedialect v1.0.17 h1:ca3c/YnkrL1fp/Ok0lDGNbpgF0t07WWGHdh2NAzwctM=
+github.com/uptrace/bun/dialect/sqlitedialect v1.0.17/go.mod h1:HH9VihgggYYA4igpgw/5qJEsC7UfpJPqfXgp5DvVJfU=
 github.com/uptrace/bun/driver/pgdriver v0.3.9 h1:fHK/NslM5/ZibuFj5wKt/IZp6QeRIP29IH6N5gxbxg0=
 github.com/uptrace/bun/driver/pgdriver v0.3.9/go.mod h1:FVOjDFPT+zazAGg8K73N8nKzkqlsm8pjBI6ONFkGRPQ=
 github.com/uptrace/bun/extra/bundebug v0.3.9 h1:yX1m2FpN+w2sTzq4Bbf/cJ/HlxBoI0pTO3AWciyvAuw=
@@ -509,6 +513,8 @@ golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1/go.mod h1:oPkhp1MJrh7nUepCBc
 golang.org/x/sys v0.0.0-20210616094352-59db8d763f22/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c h1:F1jZWGFhYfh0Ci55sIpILtKKK8p3i2/krTr0H1rg74I=
 golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.0.0-20211007075335-d3039528d8ac h1:oN6lz7iLW/YC7un8pq+9bOLyXrprv2+DKfkJY+2LJJw=
+golang.org/x/sys v0.0.0-20211007075335-d3039528d8ac/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=

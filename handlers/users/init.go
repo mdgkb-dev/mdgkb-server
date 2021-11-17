@@ -20,14 +20,16 @@ type IService interface {
 	GetAll() (models.Users, error)
 	Get(string) (*models.User, error)
 	GetByEmail(string) (*models.User, error)
+	EmailExists(string) (bool, error)
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-
+	create(*models.User) error
 	getAll() (models.Users, error)
 	get(string) (*models.User, error)
 	getByEmail(string) (*models.User, error)
+	emailExists(string) (bool, error)
 }
 
 type IFilesService interface {
@@ -61,6 +63,12 @@ func CreateHandler(db *bun.DB, uploader uploadHelper.Uploader) *Handler {
 // NewHandler constructor
 func NewHandler(service IService, filesService IFilesService) *Handler {
 	return &Handler{service: service, filesService: filesService}
+}
+
+
+func CreateService(db *bun.DB) *Service {
+	repo := NewRepository(db)
+	return NewService(repo)
 }
 
 func NewService(repository IRepository) *Service {

@@ -1,7 +1,6 @@
 package hospitalizationsToDocumentTypes
 
 import (
-	"mdgkb/mdgkb-server/handlers/documents"
 	"mdgkb/mdgkb-server/models"
 )
 

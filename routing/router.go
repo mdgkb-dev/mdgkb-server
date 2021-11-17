@@ -2,6 +2,7 @@ package routing
 
 import (
 	"mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/news"
@@ -11,7 +12,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
-	"mdgkb/mdgkb-server/routing/auth"
+	authRouter "mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/handlers/comments"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
@@ -48,7 +49,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	r.Static("/static", "./static/")
 	api := r.Group("/api/v1")
 
-	auth.Init(api.Group("/auth"), db, redisClient)
+	authRouter.Init(api.Group("/auth"), auth.CreateHandler(db, helper))
 	banners.Init(api.Group("/banners"), db, localUploader)
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	carousels.Init(api.Group("/carousels"), db, localUploader)

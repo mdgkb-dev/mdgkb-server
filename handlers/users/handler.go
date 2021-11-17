@@ -24,7 +24,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) GetByEmail(c *gin.Context) {
-	item, err := h.service.GetByEmail(c.Param("email"))
+	item, err := h.service.EmailExists(c.Param("email"))
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

@@ -3,6 +3,8 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"time"
+
 	// "time"
 )
 
@@ -13,7 +15,7 @@ type Human struct {
 	Surname       string    `json:"surname"`
 	Patronymic    string    `json:"patronymic"`
 	IsMale        bool      `json:"isMale"`
-	// DateBirth     time.Time `bun:"default:current_timestamp" json:"dateBirth,omitempty"`
+	DateBirth     *time.Time `json:"dateBirth,omitempty"`
 
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
