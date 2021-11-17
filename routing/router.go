@@ -53,7 +53,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	carousels.Init(api.Group("/carousels"), db, localUploader)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, localUploaderNew))
-	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, localUploaderNew)
+	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, helper)
 
 	divisions.Init(api.Group("/divisions"), db, localUploaderNew)
 
