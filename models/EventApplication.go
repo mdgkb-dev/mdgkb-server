@@ -14,6 +14,16 @@ type EventApplication struct {
 
 	User   *User         `bun:"rel:belongs-to" json:"user"`
 	UserID uuid.NullUUID `bun:"type:uuid" json:"userId"`
+
+	FieldValues          FieldValues `bun:"rel:has-many" json:"fieldValues"`
 }
 
 type EventApplications []*EventApplication
+
+
+
+func (item *EventApplication) SetIdForChildren() {
+	for i := range item.FieldValues {
+		item.FieldValues[i].EventApplicationID = item.ID
+	}
+}

@@ -2,6 +2,7 @@ package news
 
 import (
 	"mdgkb/mdgkb-server/handlers/events"
+	"mdgkb/mdgkb-server/handlers/fieldsValues"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/newsImages"
 	"mdgkb/mdgkb-server/handlers/newsToCategories"
@@ -119,5 +120,14 @@ func (s *Service) Delete(id string) error {
 }
 
 func (s *Service) CreateEventApplication(item *models.EventApplication) error {
-	return s.repository.createEventApplication(item)
+	err := s.repository.createEventApplication(item)
+	if err != nil {
+		return err
+	}
+	item.SetIdForChildren()
+	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -107,7 +107,9 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		Relation("MainImage").
 		Relation("NewsLikes").
 		Relation("NewsViews").
-		Relation("Event").
+		Relation("Event.Form.Fields.ValueType").
+		Relation("Event.EventApplications.FieldValues").
+		Relation("Event.EventApplications.User").
 		Relation("NewsComments.Comment.User").
 		Relation("NewsImages.FileInfo").
 		Where("news.slug = ?", slug).Scan(r.ctx)
