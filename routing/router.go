@@ -3,9 +3,12 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/auth"
+	"mdgkb/mdgkb-server/handlers/comments"
+	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/news"
+	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
 	"mdgkb/mdgkb-server/handlers/vacancyResponse"
@@ -14,20 +17,20 @@ import (
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
-	"mdgkb/mdgkb-server/handlers/comments"
-	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	"mdgkb/mdgkb-server/routing/buildings"
 	"mdgkb/mdgkb-server/routing/carousels"
-	"mdgkb/mdgkb-server/routing/divisions"
-	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
+	commentsRouter "mdgkb/mdgkb-server/routing/comments"
+	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
+	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
 	"mdgkb/mdgkb-server/routing/menu"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
 	"mdgkb/mdgkb-server/routing/pages"
+	searchRouter "mdgkb/mdgkb-server/routing/search"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
 	"mdgkb/mdgkb-server/routing/tags"
 	"mdgkb/mdgkb-server/routing/timetables"
@@ -56,7 +59,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, localUploaderNew))
 	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, helper)
 
-	divisions.Init(api.Group("/divisions"), db, localUploaderNew)
+	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(db, helper))
 
 	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(db))
 	newsRouter.Init(api.Group("/news"), news.CreateHandler(db, localUploaderNew))
@@ -74,4 +77,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(db, helper))
 	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
 	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
+	searchRouter.Init(api.Group("/search"), search.CreateHandler(db, helper))
 }

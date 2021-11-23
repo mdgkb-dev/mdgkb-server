@@ -1,8 +1,12 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"github.com/uptrace/bun"
+)
 
 type Division struct {
+	bun.BaseModel `bun:"divisions,alias:divisions"`
 	ID                      uuid.UUID        `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name                    string           `json:"name"`
 	Info                    string           `json:"info"`
@@ -33,4 +37,12 @@ func (i Division) SetFilePath(fileID *string) *string {
 		return path
 	}
 	return nil
+}
+
+func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {
+	//searchGroup.SearchElements = make(SearchElements, len(items))
+	//for i := range items {
+	//	searchGroup.SearchElements[i].Value = fmt.Sprintf("%s/%s", searchGroup.Prefix, items[i].Slug)
+	//	searchGroup.SearchElements[i].Label = items[i].Name
+	//}
 }

@@ -89,3 +89,7 @@ func (s *Service) UpdateComment(item *models.DivisionComment) error {
 func (s *Service) RemoveComment(id string) error {
 	return s.repository.removeComment(id)
 }
+
+func (s *Service) GetBySearch(search string) (models.Divisions, error) {
+	return s.repository.getBySearch(search)
+}

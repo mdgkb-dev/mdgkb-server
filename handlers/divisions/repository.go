@@ -71,3 +71,14 @@ func (r *Repository) removeComment(id string) error {
 	_, err := r.db.NewDelete().Model(&models.DivisionComment{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) getBySearch(search string) (models.Divisions, error) {
+	items := make(models.Divisions, 0)
+
+	err := r.db.NewSelect().
+		Model(&items).
+		Column("divisions.id", "divisions.name", "divisions.slug").
+		Where(r.helper.SQL.WhereLikeWithLowerTranslit("divisions.name", search)).
+		Scan(r.ctx)
+	return items, err
+}
