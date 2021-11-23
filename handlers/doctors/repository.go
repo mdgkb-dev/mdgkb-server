@@ -32,7 +32,7 @@ func (r *Repository) getAll(params *doctorsParams) (models.Doctors, error) {
 
 func (r *Repository) get(id string) (*models.Doctor, error) {
 	item := models.Doctor{}
-	err := r.db.NewSelect().Model(&item).Where("doctor.id = ?", id).
+	err := r.db.NewSelect().Model(&item).Where("doctors_view.id = ?", id).
 		Relation("Human").
 		Relation("FileInfo").
 		Relation("Division").
@@ -49,7 +49,7 @@ func (r *Repository) getByDivisionID(id string) (models.Doctors, error) {
 	items := make(models.Doctors, 0)
 	err := r.db.NewSelect().
 		Model(&items).
-		Where("doctors.id = ?", id).
+		Where("doctors_view.id = ?", id).
 		Relation("Human").
 		Scan(r.ctx)
 	return items, err

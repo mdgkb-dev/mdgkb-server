@@ -26,7 +26,7 @@ func (r *Repository) getAll() (items models.Divisions, err error) {
 	return items, err
 }
 
-func (r *Repository) get(id string) (*models.Division, error) {
+func (r *Repository) get(slug string) (*models.Division, error) {
 	item := models.Division{}
 	err := r.db.NewSelect().
 		Model(&item).
@@ -38,7 +38,7 @@ func (r *Repository) get(id string) (*models.Division, error) {
 		Relation("Doctors.FileInfo").
 		Relation("Doctors.Human").
 		Relation("Vacancies").
-		Where("division.id = ?", id).
+		Where("divisions.slug = ?", slug).
 		Scan(r.ctx)
 
 	return &item, err
