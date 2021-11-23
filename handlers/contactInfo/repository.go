@@ -23,3 +23,11 @@ func (r *Repository) update(item *models.ContactInfo) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) upsert(item *models.ContactInfo) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(item).
+		Set("id = EXCLUDED.id").
+		Exec(r.ctx)
+	return err
+}

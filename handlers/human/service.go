@@ -21,5 +21,10 @@ func (s *Service) Update(item *models.Human) error {
 	if item == nil {
 		return nil
 	}
+	err := contactInfo.CreateService(s.repository.getDB()).Upsert(item.ContactInfo)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	return s.repository.update(item)
 }

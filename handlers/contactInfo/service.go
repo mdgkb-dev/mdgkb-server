@@ -69,6 +69,43 @@ func (s *Service) Update(item *models.ContactInfo) error {
 	return nil
 }
 
+
+func (s *Service) Upsert(item *models.ContactInfo) error {
+	err := s.repository.upsert(item)
+	if err != nil {
+		return err
+	}
+	item.SetIdForChildren()
+	emailService := email.CreateService(s.repository.getDB())
+	err = emailService.UpsertMany(item.Emails)
+	if err != nil {
+		return err
+	}
+	err = emailService.DeleteMany(item.EmailsForDelete)
+
+	websiteService := website.CreateService(s.repository.getDB())
+	err = websiteService.UpsertMany(item.Websites)
+	if err != nil {
+		return err
+	}
+	err = websiteService.DeleteMany(item.WebsitesForDelete)
+
+	telephoneNumberService := telephoneNumber.CreateService(s.repository.getDB())
+	err = telephoneNumberService.UpsertMany(item.TelephoneNumbers)
+	if err != nil {
+		return err
+	}
+	err = telephoneNumberService.DeleteMany(item.TelephoneNumbersForDelete)
+
+	postAddressService := postAddress.CreateService(s.repository.getDB())
+	err = postAddressService.UpsertMany(item.PostAddresses)
+	if err != nil {
+		return err
+	}
+	err = postAddressService.DeleteMany(item.PostAddressesForDelete)
+	return nil
+}
+
 func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)
 }

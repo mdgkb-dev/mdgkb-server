@@ -35,7 +35,7 @@ func (r *Repository) get(id string) (*models.Doctor, error) {
 	err := r.db.NewSelect().Model(&item).Where("doctors_view.id = ?", id).
 		Relation("Human").
 		Relation("FileInfo").
-		Relation("Division").
+		Relation("Division.Timetable.TimetableDays.Weekday").
 		Relation("DoctorRegalias").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Educations.EducationCertification").

@@ -9,6 +9,7 @@ import (
 type IService interface {
 	Create(*models.ContactInfo) error
 	Update(*models.ContactInfo) error
+	Upsert(*models.ContactInfo) error
 	Delete(*string) error
 }
 
@@ -16,6 +17,7 @@ type IRepository interface {
 	getDB() *bun.DB
 	create(*models.ContactInfo) error
 	update(*models.ContactInfo) error
+	upsert(*models.ContactInfo) error
 	delete(*string) error
 }
 
