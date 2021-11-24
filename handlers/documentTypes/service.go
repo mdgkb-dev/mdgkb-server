@@ -45,6 +45,9 @@ func (s *Service) Update(item *models.DocumentType) error {
 	}
 	if len(item.DocumentFieldsForDelete) > 0 {
 		err = DocumentFieldsService.DeleteMany(item.DocumentFieldsForDelete)
+		if err != nil {
+			return err
+		}
 	}
 	return err
 }

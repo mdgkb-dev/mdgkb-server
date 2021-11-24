@@ -17,32 +17,3 @@ type HospitalizationToDocumentType struct {
 }
 
 type HospitalizationsToDocumentTypes []*HospitalizationToDocumentType
-
-// func (item *VacancyResponseToDocument) SetForeignKeys() {
-// 	item.DocumentID = item.Document.ID
-// }
-
-// func (items VacancyResponsesToDocuments) SetForeignKeys() {
-// 	for i := range items {
-// 		items[i].SetForeignKeys()
-// 	}
-// }
-
-// func (items VacancyResponsesToDocuments) GetDocuments() Documents {
-// 	itemsForGet := make(Documents, len(items))
-// 	for i := range items {
-// 		itemsForGet[i] = items[i].Document
-// 	}
-// 	return itemsForGet
-// }
-
-// func (item *VacancyResponseToDocument) SetFilePath(fileID *string) *string {
-// 	return item.Document.SetFilePath(fileID)
-// }
-
-// func (items VacancyResponsesToDocuments) SetFilePath(fileID *string) *string {
-// 	for i := range items {
-// 		return items[i].SetFilePath(fileID)
-// 	}
-// 	return nil
-// }
