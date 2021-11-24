@@ -402,3 +402,11 @@ INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('339
 INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('ba958b87-2e3a-432c-8877-2db247f8116b','баннер_донор-300x225.jpg','c968913c-ac2e-47ff-8e99-167c570df18d');
 INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('dcc0d9d3-30ea-4e35-a1cd-8ed445a6d63e','CIK_banners.png','39293f38-d04b-4ee8-bac0-a5198b8acd85');
 INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('c1c78f02-e706-4550-a48e-9ad98715eecd','mos.png','mos.png');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('748dae0b-42f6-4746-bd03-53c5fcb03c2f', 'stopcovid.png', '735/891/748dae0b-42f6-4746-bd03-53c5fcb03c2f');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('0d9edfb2-bef2-4093-8d6e-8473bceeabdf', 'stopcovid.png', '258/605/0d9edfb2-bef2-4093-8d6e-8473bceeabdf');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('0d457226-5f0e-41c9-ab96-712e6bfb1694', 'stopcovid.png', '616/519/0d457226-5f0e-41c9-ab96-712e6bfb1694');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('a40f46da-8467-422c-9d38-72fcdd28f8de', 'stopcovid.png', '829/416/a40f46da-8467-422c-9d38-72fcdd28f8de');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('b21bb2ea-0ffc-4ad0-a705-3fa380577be2', 'shiefs.png', '975/284/b21bb2ea-0ffc-4ad0-a705-3fa380577be2');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('8e951870-249b-4763-bd63-aadddccc2096', 'shiefs.png', '152/349/8e951870-249b-4763-bd63-aadddccc2096');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('6ff18454-712c-4552-9e35-46ccb69b71e9', 'shiefs.png', '833/485/6ff18454-712c-4552-9e35-46ccb69b71e9');
+INSERT INTO public.file_infos (id, original_name, file_system_path) VALUES ('ced67dd4-1512-40d6-83ff-1a3e5ce801a3', 'shiefs.png', '63/829/ced67dd4-1512-40d6-83ff-1a3e5ce801a3');

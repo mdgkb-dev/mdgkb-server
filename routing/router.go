@@ -8,6 +8,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/news"
+	"mdgkb/mdgkb-server/handlers/newsSlides"
 	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
@@ -18,7 +19,6 @@ import (
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
-	"mdgkb/mdgkb-server/routing/carousels"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
@@ -27,6 +27,7 @@ import (
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
 	"mdgkb/mdgkb-server/routing/menu"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
+	newsSlidesRouter "mdgkb/mdgkb-server/routing/newsSlides"
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
 	"mdgkb/mdgkb-server/routing/pages"
@@ -55,7 +56,6 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	authRouter.Init(api.Group("/auth"), auth.CreateHandler(db, helper))
 	banners.Init(api.Group("/banners"), db, localUploader)
 	buildings.Init(api.Group("/buildings"), db, localUploader)
-	carousels.Init(api.Group("/carousels"), db, localUploader)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, localUploaderNew))
 	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, helper)
 
@@ -78,4 +78,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
 	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
 	searchRouter.Init(api.Group("/search"), search.CreateHandler(db, helper))
+	newsSlidesRouter.Init(api.Group("/news-slides"), newsSlides.CreateHandler(db, helper))
 }
