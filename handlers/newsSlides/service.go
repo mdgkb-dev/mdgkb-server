@@ -68,3 +68,7 @@ func (s *Service) Update(item *models.NewsSlide) error {
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
+
+func (s *Service) UpdateAll(items models.NewsSlides) error {
+	return s.repository.updateAll(items)
+}

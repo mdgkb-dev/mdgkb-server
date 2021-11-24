@@ -12,6 +12,7 @@ type NewsSlideButton struct {
 	BackgroundColor string     `json:"backgroundColor"`
 	Color           string     `json:"color"`
 	Link            string     `json:"link"`
+	Order           uint       `bun:"news_slide_button_order" json:"order"`
 	NewsSlide       *NewsSlide `bun:"rel:belongs-to" json:"newsSlide"`
 	NewsSlideId     uuid.UUID  `bun:"type:uuid" json:"newsSlideId"`
 }

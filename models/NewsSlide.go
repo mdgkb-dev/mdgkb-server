@@ -11,6 +11,8 @@ type NewsSlide struct {
 	ID                        uuid.UUID        `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 	Title                     string           `json:"title"`
 	Content                   string           `json:"content"`
+	Color                     string           `json:"color"`
+	Order                     uint             `bun:"news_slide_order" json:"order"`
 	DesktopImg                *FileInfo        `bun:"rel:belongs-to" json:"desktopImg"`
 	DesktopImgID              uuid.NullUUID    `bun:"type:uuid" json:"desktopImgId"`
 	LaptopImg                 *FileInfo        `bun:"rel:belongs-to" json:"laptopImg"`

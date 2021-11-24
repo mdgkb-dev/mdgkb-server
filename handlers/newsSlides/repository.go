@@ -23,6 +23,7 @@ func (r *Repository) getAll() (models.NewsSlides, error) {
 		Relation("LaptopImg").
 		Relation("TabletImg").
 		Relation("MobileImg").
+		Order("news_slide_order").
 		Scan(r.ctx)
 	return items, err
 }
@@ -46,5 +47,14 @@ func (r *Repository) delete(id string) (err error) {
 
 func (r *Repository) update(item *models.NewsSlide) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) updateAll(items models.NewsSlides) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(&items).
+		Set("news_slide_order = EXCLUDED.news_slide_order").
+		Where("news_slides.id = EXCLUDED.id").
+		Exec(r.ctx)
 	return err
 }

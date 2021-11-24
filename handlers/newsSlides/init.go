@@ -11,11 +11,12 @@ import (
 )
 
 type IHandler interface {
-	GetAll(c *gin.Context) 
-	Get(c *gin.Context) 
-	Create(c *gin.Context) 
-	Update(c *gin.Context) 
+	GetAll(c *gin.Context)
+	Get(c *gin.Context)
+	Create(c *gin.Context)
+	Update(c *gin.Context)
 	Delete(c *gin.Context)
+	UpdateAll(c *gin.Context)
 }
 
 type IService interface {
@@ -24,6 +25,7 @@ type IService interface {
 	Create(*models.NewsSlide) error
 	Update(*models.NewsSlide) error
 	Delete(string) error
+	UpdateAll(models.NewsSlides) error
 }
 
 type IRepository interface {
@@ -33,6 +35,7 @@ type IRepository interface {
 	create(*models.NewsSlide) error
 	update(*models.NewsSlide) error
 	delete(string) error
+	updateAll(models.NewsSlides) error
 }
 
 type IFilesService interface {
