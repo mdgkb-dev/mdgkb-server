@@ -7,8 +7,10 @@ import (
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
+	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/newsSlides"
+	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
@@ -24,6 +26,7 @@ import (
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
+	faqRouter "mdgkb/mdgkb-server/routing/faqs"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
 	"mdgkb/mdgkb-server/routing/menu"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
@@ -39,6 +42,7 @@ import (
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
+	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -78,5 +82,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
 	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
 	searchRouter.Init(api.Group("/search"), search.CreateHandler(db, helper))
+	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(db, helper))
 	newsSlidesRouter.Init(api.Group("/news-slides"), newsSlides.CreateHandler(db, helper))
+	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(db, helper))
 }

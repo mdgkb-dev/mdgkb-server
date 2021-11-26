@@ -13,6 +13,7 @@ type User struct {
 	Password      string        `json:"password"`
 	Human         *Human        `bun:"rel:belongs-to" json:"human"`
 	HumanID       uuid.UUID `bun:"type:uuid" json:"humanId"`
+	Questions          Questions `bun:"rel:has-many" json:"questions"`
 }
 
 type Users []*User

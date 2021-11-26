@@ -1,8 +1,10 @@
 package models
 
-import "mdgkb/mdgkb-server/helpers"
+import (
+	"mdgkb/mdgkb-server/helpers/tokenHelper"
+)
 
 type TokensWithUser struct {
-	Token *helpers.TokenDetails `json:"token"`
+	Token *tokenHelper.TokenDetails `json:"token"`
 	User  User           `json:"user"`
 }

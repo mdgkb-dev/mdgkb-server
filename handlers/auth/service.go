@@ -2,7 +2,6 @@ package auth
 
 import (
 	"mdgkb/mdgkb-server/handlers/users"
-	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -15,7 +14,7 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	ts, err := helpers.CreateToken(item.ID.String())
+	ts, err := s.helper.Token.CreateToken(item.ID.String())
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +36,7 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 	}
 
 
-	ts, err := helpers.CreateToken(item.ID.String())
+	ts, err := s.helper.Token.CreateToken(findedUser.ID.String())
 	if err != nil {
 		return nil, err
 	}
@@ -47,5 +46,5 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 	//	return nil, err
 	//}
 
-	return &models.TokensWithUser{Token: ts, User: *item},nil
+	return &models.TokensWithUser{Token: ts, User: *findedUser},nil
 }

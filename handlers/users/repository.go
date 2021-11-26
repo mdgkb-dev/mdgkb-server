@@ -20,7 +20,9 @@ func (r *Repository) getAll() (models.Users, error) {
 func (r *Repository) get(id string) (*models.User, error) {
 	item := models.User{}
 	err := r.db.NewSelect().
-		Model(&item).Relation("Human").
+		Model(&item).
+		Relation("Human").
+		Relation("Questions").
 		Where("users.id = ?", id).
 		Scan(r.ctx)
 	return &item, err

@@ -2,12 +2,11 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 )
 
-//
+
 func (h *Handler) Register(c *gin.Context) {
 	var user *models.User
 	err := c.Bind(&user)
@@ -35,11 +34,11 @@ func (h *Handler) Login(c *gin.Context) {
 }
 
 func (h *Handler) Logout(c *gin.Context) {
-	_, err := helpers.ExtractTokenMetadata(c.Request)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "unauthorized")
-		return
-	}
+	//_, err := h.helper.Token.ExtractTokenMetadata(c.Request)
+	//if err != nil {
+	//	c.JSON(http.StatusUnauthorized, "unauthorized")
+	//	return
+	//}
 	//delErr := helpers.DeleteTokens(metadata, h.redis)
 	//if delErr != nil {
 	//	c.JSON(http.StatusUnauthorized, delErr.Error())
