@@ -20,6 +20,7 @@ func (s *Service) Create(item *models.News) error {
 		return err
 	}
 	item.SetForeignKeys()
+	item.Slug = s.helper.MakeSlug(item.Title)
 	err = s.repository.create(item)
 	if err != nil {
 		return err

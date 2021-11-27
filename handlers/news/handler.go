@@ -12,15 +12,15 @@ import (
 func (h *Handler) Create(c *gin.Context) {
 	var item models.News
 	files, err := httpHelper.GetForm(c, &item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.Create(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
@@ -29,11 +29,11 @@ func (h *Handler) Create(c *gin.Context) {
 func (h *Handler) RemoveTag(c *gin.Context) {
 	var item models.NewsToTag
 	err := c.ShouldBind(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.RemoveTag(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
@@ -42,11 +42,11 @@ func (h *Handler) RemoveTag(c *gin.Context) {
 func (h *Handler) AddTag(c *gin.Context) {
 	var item models.NewsToTag
 	err := c.ShouldBind(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.AddTag(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
@@ -55,12 +55,12 @@ func (h *Handler) AddTag(c *gin.Context) {
 func (h *Handler) CreateLike(c *gin.Context) {
 	var item models.NewsLike
 	err := c.ShouldBind(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
 	err = h.service.CreateLike(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
@@ -78,12 +78,12 @@ type newsParams struct {
 func (h *Handler) GetAll(c *gin.Context) {
 	var newsParams newsParams
 	err := c.BindQuery(&newsParams)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
 	news, err := h.service.GetAll(&newsParams)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	for i := range news {
@@ -95,15 +95,15 @@ func (h *Handler) GetAll(c *gin.Context) {
 func (h *Handler) Update(c *gin.Context) {
 	var item models.News
 	files, err := httpHelper.GetForm(c, &item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.Update(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
@@ -111,7 +111,7 @@ func (h *Handler) Update(c *gin.Context) {
 
 func (h *Handler) Delete(c *gin.Context) {
 	err := h.service.Delete(c.Param("id"))
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
@@ -120,12 +120,12 @@ func (h *Handler) Delete(c *gin.Context) {
 func (h *Handler) CreateComment(c *gin.Context) {
 	var item models.NewsComment
 	err := c.ShouldBind(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
 	err = h.service.CreateComment(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
@@ -136,7 +136,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 	var item models.NewsComment
 	err := c.Bind(&item)
 	err = h.service.UpdateComment(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(200, item)
@@ -144,7 +144,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 
 func (h *Handler) RemoveComment(c *gin.Context) {
 	err := h.service.RemoveComment(c.Param("id"))
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
@@ -152,7 +152,7 @@ func (h *Handler) RemoveComment(c *gin.Context) {
 
 func (h *Handler) DeleteLike(c *gin.Context) {
 	err := h.service.DeleteLike(c.Param("id"))
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
@@ -160,7 +160,7 @@ func (h *Handler) DeleteLike(c *gin.Context) {
 
 func (h *Handler) GetBySLug(c *gin.Context) {
 	item, err := h.service.GetBySlug(c.Param("slug"))
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	item.ViewsCount = len(item.NewsViews)
@@ -179,12 +179,12 @@ type monthParams struct {
 func (h *Handler) GetByMonth(c *gin.Context) {
 	var monthParams monthParams
 	err := c.BindQuery(&monthParams)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
 	items, err := h.service.GetByMonth(&monthParams)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
@@ -194,11 +194,11 @@ func (h *Handler) GetByMonth(c *gin.Context) {
 func (h *Handler) CreateEventApplication(c *gin.Context) {
 	var item models.EventApplication
 	err := c.Bind(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.CreateEventApplication(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)

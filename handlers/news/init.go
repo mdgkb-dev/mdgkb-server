@@ -2,7 +2,7 @@ package news
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
+	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -69,43 +69,47 @@ type IFilesService interface {
 }
 
 type Handler struct {
-	service      IService
+	service IService
 	filesService IFilesService
+	helper *helpers.Helper
 }
 
 type Service struct {
 	repository IRepository
+	helper *helpers.Helper
 }
 
 type Repository struct {
 	db  *bun.DB
 	ctx context.Context
+	helper *helpers.Helper
 }
 
 type FilesService struct {
-	uploader uploadHelper.Uploader
+	helper *helpers.Helper
 }
 
-func CreateHandler(db *bun.DB, uploader uploadHelper.Uploader) *Handler {
-	repo := NewRepository(db)
-	service := NewService(repo)
-	filesService := NewFilesService(uploader)
-	return NewHandler(service, filesService)
+func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
+	repo := NewRepository(db, helper)
+	service := NewService(repo, helper)
+	filesService := NewFilesService(helper)
+	return NewHandler(service,filesService, helper)
 }
 
 // NewHandler constructor
-func NewHandler(service IService, filesService IFilesService) *Handler {
-	return &Handler{service: service, filesService: filesService}
+func NewHandler(s IService,filesService IFilesService, helper *helpers.Helper) *Handler {
+	return &Handler{service: s, filesService: filesService, helper: helper}
 }
 
-func NewService(repository IRepository) *Service {
-	return &Service{repository: repository}
+func NewService(repository IRepository, helper *helpers.Helper) *Service {
+	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
+	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }
 
-func NewFilesService(uploader uploadHelper.Uploader) *FilesService {
-	return &FilesService{uploader: uploader}
+
+func NewFilesService(helper *helpers.Helper) *FilesService {
+	return &FilesService{helper: helper}
 }

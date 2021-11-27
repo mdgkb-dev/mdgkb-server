@@ -8,6 +8,7 @@ import (
 )
 
 func (s *Service) Create(item *models.Page) error {
+	item.Slug = s.helper.MakeSlug(item.Title)
 	err := s.repository.create(item)
 	if err != nil {
 		return err
