@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	"time"
@@ -16,6 +17,7 @@ type Human struct {
 	Patronymic    string    `json:"patronymic"`
 	IsMale        bool      `json:"isMale"`
 	DateBirth     *time.Time `json:"dateBirth,omitempty"`
+	Slug string `json:"slug"`
 
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
@@ -23,4 +25,8 @@ type Human struct {
 
 func (item *Human) SetForeignKeys() {
 	item.ContactInfoID = item.ContactInfo.ID
+}
+
+func (item *Human) GetFullName() string {
+	return fmt.Sprintf("%s %s %s", item.Surname, item.Name, item.Patronymic)
 }

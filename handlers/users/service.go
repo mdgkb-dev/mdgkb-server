@@ -10,7 +10,7 @@ func (s *Service) Create(item *models.User) error {
 	//if err != nil {
 	//	return err
 	//}
-	err := human.CreateService(s.repository.getDB()).Create(item.Human)
+	err := human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}

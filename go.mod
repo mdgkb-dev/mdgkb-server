@@ -12,6 +12,7 @@ require (
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/google/uuid v1.3.0
+	github.com/gosimple/slug v1.11.2 // indirect
 	github.com/kennygrant/sanitize v1.2.4
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

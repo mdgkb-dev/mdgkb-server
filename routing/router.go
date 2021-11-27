@@ -34,6 +34,7 @@ import (
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
 	"mdgkb/mdgkb-server/routing/pages"
+	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 	searchRouter "mdgkb/mdgkb-server/routing/search"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
 	"mdgkb/mdgkb-server/routing/tags"
@@ -42,7 +43,6 @@ import (
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
-	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -60,7 +60,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	authRouter.Init(api.Group("/auth"), auth.CreateHandler(db, helper))
 	banners.Init(api.Group("/banners"), db, localUploader)
 	buildings.Init(api.Group("/buildings"), db, localUploader)
-	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, localUploaderNew))
+	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, helper))
 	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, helper)
 
 	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(db, helper))
@@ -71,13 +71,13 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	normativeDocuments.Init(api.Group("/normative-documents"), db, localUploader)
 	sideOrganizations.Init(api.Group("/side-organizations"), db, localUploader)
 	tags.Init(api.Group("/tags"), db, localUploader)
-	usersRouter.Init(api.Group("/users"), users.CreateHandler(db, localUploaderNew))
+	usersRouter.Init(api.Group("/users"), users.CreateHandler(db, helper))
 	timetables.Init(api.Group("/timetables"), db)
 
 	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
 	menu.Init(api.Group("/menus"), db, localUploaderNew)
 	pages.Init(api.Group("/pages"), db, localUploaderNew)
-	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, localUploaderNew))
+	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, helper))
 	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(db, helper))
 	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
 	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))

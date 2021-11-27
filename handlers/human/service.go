@@ -14,6 +14,7 @@ func (s *Service) Create(item *models.Human) error {
 		return err
 	}
 	item.SetForeignKeys()
+	item.Slug = s.helper.MakeSlug(item.GetFullName())
 	return s.repository.create(item)
 }
 
@@ -26,5 +27,6 @@ func (s *Service) Update(item *models.Human) error {
 		return err
 	}
 	item.SetForeignKeys()
+	item.Slug = s.helper.MakeSlug(item.GetFullName())
 	return s.repository.update(item)
 }

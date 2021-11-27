@@ -10,7 +10,7 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = users.CreateService(s.repository.getDB()).Create(item)
+	err = users.CreateService(s.repository.getDB(), s.helper).Create(item)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	findedUser, err := users.CreateService(s.repository.getDB()).GetByEmail(item.Email)
+	findedUser, err := users.CreateService(s.repository.getDB(), s.helper).GetByEmail(item.Email)
 	if err != nil {
 		return nil, err
 	}

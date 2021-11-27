@@ -14,7 +14,7 @@ func (s *Service) Create(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.repository.getDB()).Create(item.Human)
+	err = human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
@@ -45,7 +45,7 @@ func (s *Service) Update(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.repository.getDB()).Update(item.Human)
+	err = human.CreateService(s.repository.getDB(), s.helper).Update(item.Human)
 	if err != nil {
 		return err
 	}

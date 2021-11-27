@@ -25,3 +25,4 @@ func NewHelper(config config.Config) *Helper {
 	token := tokenHelper.NewTokenHelper()
 	return &Helper{HTTP: http, Uploader: uploader, PDF: pdf, SQL: sql, Token: token}
 }
+

@@ -20,7 +20,8 @@ func (s *Service) Create(item *models.Division) error {
 		return err
 	}
 	item.ScheduleId = item.Schedule.ID
-
+	item.Slug = s.helper.MakeSlug(item.Name)
+	
 	err = s.repository.create(item)
 	if err != nil {
 		return err

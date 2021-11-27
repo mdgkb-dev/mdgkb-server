@@ -43,8 +43,7 @@ func (s *Service) Delete(id *string) error {
 }
 
 func (s *Service) CreateResponse(item *models.VacancyResponse) error {
-
-	err := human.CreateService(s.repository.getDB()).Create(item.Human)
+	err := human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
