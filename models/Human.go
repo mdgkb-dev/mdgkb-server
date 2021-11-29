@@ -23,10 +23,28 @@ type Human struct {
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
 }
 
+type Humans []*Human
+
 func (item *Human) SetForeignKeys() {
 	item.ContactInfoID = item.ContactInfo.ID
 }
 
+func (items Humans) SetForeignKeys() {
+	for i := range items {
+		items[i].SetForeignKeys()
+	}
+}
+
 func (item *Human) GetFullName() string {
 	return fmt.Sprintf("%s %s %s", item.Surname, item.Name, item.Patronymic)
+}
+
+
+
+func (items Humans) GetContactInfos() ContactInfos {
+	itemsForGet := make(ContactInfos, len(items))
+	for i := range items {
+		itemsForGet[i] = items[i].ContactInfo
+	}
+	return itemsForGet
 }

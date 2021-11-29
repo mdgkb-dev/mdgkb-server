@@ -14,6 +14,7 @@ type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
 	GetByEmail(c *gin.Context)
+	Update(c *gin.Context)
 }
 
 type IService interface {
@@ -21,6 +22,8 @@ type IService interface {
 	Get(string) (*models.User, error)
 	GetByEmail(string) (*models.User, error)
 	EmailExists(string) (bool, error)
+	Update(*models.User) error
+
 }
 
 type IRepository interface {
@@ -30,6 +33,7 @@ type IRepository interface {
 	get(string) (*models.User, error)
 	getByEmail(string) (*models.User, error)
 	emailExists(string) (bool, error)
+	update(*models.User) error
 }
 
 type IFilesService interface {

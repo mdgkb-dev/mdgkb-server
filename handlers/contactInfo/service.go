@@ -33,6 +33,31 @@ func (s *Service) Create(item *models.ContactInfo) error {
 	return nil
 }
 
+func (s *Service) CreateMany(items models.ContactInfos) error {
+	err := s.repository.createMany(items)
+	if err != nil {
+		return err
+	}
+	items.SetIdForChildren()
+	err = email.CreateService(s.repository.getDB()).CreateMany(items.GetEmails())
+	if err != nil {
+		return err
+	}
+	err = website.CreateService(s.repository.getDB()).CreateMany(items.GetWebsites())
+	if err != nil {
+		return err
+	}
+	err = telephoneNumber.CreateService(s.repository.getDB()).CreateMany(items.GetTelephoneNumbers())
+	if err != nil {
+		return err
+	}
+	err = postAddress.CreateService(s.repository.getDB()).CreateMany(items.GetPostAddresses())
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Service) Update(item *models.ContactInfo) error {
 	err := s.repository.update(item)
 	if err != nil {
@@ -103,6 +128,31 @@ func (s *Service) Upsert(item *models.ContactInfo) error {
 		return err
 	}
 	err = postAddressService.DeleteMany(item.PostAddressesForDelete)
+	return nil
+}
+
+func (s *Service) UpsertMany(items models.ContactInfos) error {
+	err := s.repository.createMany(items)
+	if err != nil {
+		return err
+	}
+	items.SetIdForChildren()
+	err = email.CreateService(s.repository.getDB()).UpsertMany(items.GetEmails())
+	if err != nil {
+		return err
+	}
+	err = website.CreateService(s.repository.getDB()).UpsertMany(items.GetWebsites())
+	if err != nil {
+		return err
+	}
+	err = telephoneNumber.CreateService(s.repository.getDB()).UpsertMany(items.GetTelephoneNumbers())
+	if err != nil {
+		return err
+	}
+	err = postAddress.CreateService(s.repository.getDB()).UpsertMany(items.GetPostAddresses())
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

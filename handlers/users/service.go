@@ -1,15 +1,12 @@
 package users
 
 import (
+	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.User) error {
-	//err := fileInfos.CreateService(s.repository.getDB()).Create(item.FileInfo)
-	//if err != nil {
-	//	return err
-	//}
 	err := human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
 	if err != nil {
 		return err
@@ -19,50 +16,42 @@ func (s *Service) Create(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	//item.SetIdForChildren()
+	item.SetIdForChildren()
+	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	err = childrenService.CreateMany(item.Children)
+	if err != nil {
+		return err
+	}
+	err = childrenService.DeleteMany(item.ChildrenForDelete)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-//
-//func (s *Service) Update(item *models.User) error {
-//	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.FileInfo)
-//	if err != nil {
-//		return err
-//	}
-//	err = human.CreateService(s.repository.getDB()).Update(item.Human)
-//	if err != nil {
-//		return err
-//	}
-//	err = timetables.CreateService(s.repository.getDB()).Upsert(item.Timetable)
-//	if err != nil {
-//		return err
-//	}
-//	item.SetForeignKeys()
-//	err = s.repository.update(item)
-//	if err != nil {
-//		return err
-//	}
-//	item.SetIdForChildren()
-//	UserRegaliaService := UserRegalia.CreateService(s.repository.getDB())
-//	err = UserRegaliaService.UpsertMany(item.UserRegalias)
-//	if err != nil {
-//		return err
-//	}
-//	err = UserRegaliaService.DeleteMany(item.UserRegaliasForDelete)
-//	if err != nil {
-//		return err
-//	}
-//	educationsService := educations.CreateService(s.repository.getDB())
-//	err = educationsService.UpsertMany(item.Educations)
-//	if err != nil {
-//		return err
-//	}
-//	err = educationsService.DeleteMany(item.EducationsForDelete)
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}
+
+func (s *Service) Update(item *models.User) error {
+	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	item.SetIdForChildren()
+	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	err = childrenService.UpsertMany(item.Children)
+	if err != nil {
+		return err
+	}
+	err = childrenService.DeleteMany(item.ChildrenForDelete)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func (s *Service) GetAll() (models.Users, error) {
 	return s.repository.getAll()

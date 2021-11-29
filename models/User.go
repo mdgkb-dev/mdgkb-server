@@ -14,6 +14,9 @@ type User struct {
 	Human         *Human        `bun:"rel:belongs-to" json:"human"`
 	HumanID       uuid.UUID `bun:"type:uuid" json:"humanId"`
 	Questions          Questions `bun:"rel:has-many" json:"questions"`
+
+	Children Children `bun:"rel:has-many" json:"children"`
+	ChildrenForDelete []uuid.UUID `bun:"-" json:"childrenForDelete"`
 }
 
 type Users []*User
@@ -38,4 +41,10 @@ func (i *User) CompareWithHashPassword(password *string) bool {
 
 func (i *User) SetForeignKeys() {
 	i.HumanID = i.Human.ID
+}
+
+func (i *User) SetIdForChildren() {
+	for index := range i.Children {
+		i.Children[index].UserID = i.ID
+	}
 }

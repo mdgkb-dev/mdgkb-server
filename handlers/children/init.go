@@ -1,7 +1,8 @@
-package human
+package children
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 
@@ -9,20 +10,15 @@ import (
 )
 
 type IService interface {
-	Create(*models.Human) error
-	CreateMany(models.Humans) error
-	Update(*models.Human) error
-	UpsertMany(models.Humans) error
-	Upsert(*models.Human) error
+	CreateMany(menus models.Children) error
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	create(*models.Human) error
-	createMany(models.Humans) error
-	update(*models.Human) error
-	upsertMany(models.Humans) error
-	upsert(*models.Human) error
+	createMany(menus models.Children) error
+	upsertMany(menus models.Children) error
+	deleteMany([]uuid.UUID) error
 }
 
 type Handler struct {

@@ -23,6 +23,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Model(&item).
 		Relation("Human").
 		Relation("Questions").
+		Relation("Children.Human").
 		Where("users.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
@@ -43,4 +44,16 @@ func (r *Repository) create(user *models.User) (err error) {
 func (r *Repository) emailExists(email string) (bool, error) {
 	exists, err := r.db.NewSelect().Model((*models.User)(nil)).Where("users.email = ?", email).Exists(r.ctx)
 	return exists, err
+}
+
+
+func (r *Repository) update(item *models.User) (err error) {
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+
+func (r *Repository) upsert(item *models.User) (err error) {
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
 }

@@ -11,7 +11,7 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Division
-	files, err := httpHelper.GetForm(c, &item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -51,7 +51,7 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Division
-	files, err := httpHelper.GetForm(c, &item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

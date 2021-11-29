@@ -18,6 +18,21 @@ func (s *Service) Create(item *models.Human) error {
 	return s.repository.create(item)
 }
 
+func (s *Service) CreateMany(items models.Humans) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := contactInfo.CreateService(s.repository.getDB()).CreateMany(items.GetContactInfos())
+	if err != nil {
+		return err
+	}
+	items.SetForeignKeys()
+	for i := range items {
+		items[i].Slug = s.helper.MakeSlug(items[i].GetFullName())
+	}
+	return s.repository.createMany(items)
+}
+
 func (s *Service) Update(item *models.Human) error {
 	if item == nil {
 		return nil
@@ -29,4 +44,32 @@ func (s *Service) Update(item *models.Human) error {
 	item.SetForeignKeys()
 	item.Slug = s.helper.MakeSlug(item.GetFullName())
 	return s.repository.update(item)
+}
+
+func (s *Service) UpsertMany(items models.Humans) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := contactInfo.CreateService(s.repository.getDB()).UpsertMany(items.GetContactInfos())
+	if err != nil {
+		return err
+	}
+	items.SetForeignKeys()
+	for i := range items {
+		items[i].Slug = s.helper.MakeSlug(items[i].GetFullName())
+	}
+	return s.repository.upsertMany(items)
+}
+
+func (s *Service) Upsert(item *models.Human) error {
+	if item == nil {
+		return nil
+	}
+	err := contactInfo.CreateService(s.repository.getDB()).Upsert(item.ContactInfo)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	item.Slug = s.helper.MakeSlug(item.GetFullName())
+	return s.repository.upsert(item)
 }
