@@ -12,13 +12,11 @@ import (
 )
 
 type TokenHelper struct {
-
 }
 
 func NewTokenHelper() *TokenHelper {
 	return &TokenHelper{}
 }
-
 
 type AccessDetails struct {
 	AccessUuid string
@@ -68,6 +66,7 @@ func (h *TokenHelper) CreateToken(userID string) (*TokenDetails, error) {
 	}
 	return td, nil
 }
+
 //
 //func (h *TokenHelper)createAuth(userid string, td *TokenDetails, client *redis.Client) error {
 //	at := time.Unix(td.AtExpires, 0) //converting Unix to UTC(to Time object)
@@ -118,11 +117,11 @@ func (h *TokenHelper) GetUserID(c *gin.Context) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.New(), err
 	}
-	uuidFromString, err :=uuid.Parse(accessDetail.UserID)
+	uuidFromString, err := uuid.Parse(accessDetail.UserID)
 	return uuidFromString, err
 }
 
-func (h *TokenHelper)extractTokenMetadata(r *http.Request) (*AccessDetails, error) {
+func (h *TokenHelper) extractTokenMetadata(r *http.Request) (*AccessDetails, error) {
 	token, err := h.verifyToken(r)
 	if err != nil {
 		return nil, err
@@ -139,13 +138,13 @@ func (h *TokenHelper)extractTokenMetadata(r *http.Request) (*AccessDetails, erro
 		}
 		return &AccessDetails{
 			AccessUuid: accessUuid,
-			UserID: userID,
-		 }, nil
+			UserID:     userID,
+		}, nil
 	}
 	return nil, err
 }
 
-func (h *TokenHelper)verifyToken(r *http.Request) (*jwt.Token, error) {
+func (h *TokenHelper) verifyToken(r *http.Request) (*jwt.Token, error) {
 	tokenString := h.extractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -160,7 +159,7 @@ func (h *TokenHelper)verifyToken(r *http.Request) (*jwt.Token, error) {
 	return token, nil
 }
 
-func(h *TokenHelper) extractToken(r *http.Request) string {
+func (h *TokenHelper) extractToken(r *http.Request) string {
 	bearToken := r.Header.Get("token")
 	strArr := strings.Split(bearToken, " ")
 	if len(strArr) == 2 {

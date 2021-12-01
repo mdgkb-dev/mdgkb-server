@@ -39,15 +39,15 @@ func (items ContactInfos) SetIdForChildren() {
 	}
 }
 
-func (items ContactInfos) GetEmails() Emails{
+func (items ContactInfos) GetEmails() Emails {
 	itemsForGet := make(Emails, 0)
 	for i := range items {
-			itemsForGet = append(itemsForGet, items[i].Emails...)
+		itemsForGet = append(itemsForGet, items[i].Emails...)
 	}
 	return itemsForGet
 }
 
-func (items ContactInfos) GetPostAddresses() PostAddresses{
+func (items ContactInfos) GetPostAddresses() PostAddresses {
 	itemsForGet := make(PostAddresses, 0)
 	for i := range items {
 		itemsForGet = append(itemsForGet, items[i].PostAddresses...)
@@ -55,7 +55,7 @@ func (items ContactInfos) GetPostAddresses() PostAddresses{
 	return itemsForGet
 }
 
-func (items ContactInfos) GetTelephoneNumbers() TelephoneNumbers{
+func (items ContactInfos) GetTelephoneNumbers() TelephoneNumbers {
 	itemsForGet := make(TelephoneNumbers, 0)
 	for i := range items {
 		itemsForGet = append(itemsForGet, items[i].TelephoneNumbers...)
@@ -63,7 +63,7 @@ func (items ContactInfos) GetTelephoneNumbers() TelephoneNumbers{
 	return itemsForGet
 }
 
-func (items ContactInfos) GetWebsites() Websites{
+func (items ContactInfos) GetWebsites() Websites {
 	itemsForGet := make(Websites, 0)
 	for i := range items {
 		itemsForGet = append(itemsForGet, items[i].Websites...)

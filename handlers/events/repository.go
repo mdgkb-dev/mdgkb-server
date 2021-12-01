@@ -15,6 +15,18 @@ func (r *Repository) create(item *models.Event) (err error) {
 	return err
 }
 
+
+func (r *Repository) get(id string) (*models.Event, error) {
+	item := new(models.Event)
+	err := r.db.NewSelect().Model(item).
+		Relation("News").
+		Relation("EventApplications.FieldValues.Field").
+		Relation("EventApplications.User.Human.ContactInfo.Emails").
+		Relation("EventApplications.User.Human.ContactInfo.TelephoneNumbers").
+		Where("events.id = ?", id).Scan(r.ctx)
+	return item, err
+}
+
 func (r *Repository) update(item *models.Event) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("file_infos.id = ?", item.ID).Exec(r.ctx)
 	return err
@@ -44,3 +56,10 @@ func (r *Repository) upsert(item *models.Event) (err error) {
 //		Exec(r.ctx)
 //	return err
 //}
+
+
+func (r *Repository) createEventApplication(item *models.EventApplication) error {
+	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
+	return err
+}
+

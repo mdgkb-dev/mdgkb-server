@@ -21,5 +21,4 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.POST("/comment", h.CreateComment)
 	r.DELETE("/:id", h.Delete)
 	r.DELETE("/like/:id", h.DeleteLike)
-	r.POST("/event/application", h.CreateEventApplication)
 }

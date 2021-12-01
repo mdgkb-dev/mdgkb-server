@@ -1,8 +1,8 @@
 package newsSlides
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/newsSlides"
 	"github.com/gin-gonic/gin"
+	handler "mdgkb/mdgkb-server/handlers/newsSlides"
 )
 
 func Init(r *gin.RouterGroup, h handler.IHandler) {

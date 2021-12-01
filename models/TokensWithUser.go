@@ -6,5 +6,5 @@ import (
 
 type TokensWithUser struct {
 	Token *tokenHelper.TokenDetails `json:"token"`
-	User  User           `json:"user"`
+	User  User                      `json:"user"`
 }

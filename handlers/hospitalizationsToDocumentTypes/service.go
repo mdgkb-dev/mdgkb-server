@@ -21,7 +21,7 @@ func (s *Service) UpsertMany(items models.HospitalizationsToDocumentTypes) error
 	if len(items) == 0 {
 		return nil
 	}
-	
+
 	err := s.repository.upsertMany(items)
 	if err != nil {
 		return err

@@ -21,7 +21,6 @@ func (h *Handler) Search(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-
 func (h *Handler) SearchGroups(c *gin.Context) {
 	items, err := h.service.SearchGroups()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {

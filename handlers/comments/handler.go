@@ -10,7 +10,7 @@ import (
 )
 
 type commentsParams struct {
-	Limit      int  `form:"limit"`
+	Limit      int   `form:"limit"`
 	ModChecked *bool `form:"modChecked"`
 	Positive   *bool `form:"positive"`
 }

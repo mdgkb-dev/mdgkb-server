@@ -94,7 +94,6 @@ func (s *Service) Update(item *models.ContactInfo) error {
 	return nil
 }
 
-
 func (s *Service) Upsert(item *models.ContactInfo) error {
 	err := s.repository.upsert(item)
 	if err != nil {

@@ -6,7 +6,7 @@ import (
 )
 
 type Division struct {
-	bun.BaseModel `bun:"divisions,alias:divisions"`
+	bun.BaseModel           `bun:"divisions,alias:divisions"`
 	ID                      uuid.UUID        `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name                    string           `json:"name"`
 	Info                    string           `json:"info"`

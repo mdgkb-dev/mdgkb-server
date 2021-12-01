@@ -6,7 +6,6 @@ import (
 	"net/http"
 )
 
-
 func (h *Handler) Register(c *gin.Context) {
 	var user *models.User
 	err := c.Bind(&user)

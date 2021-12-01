@@ -53,19 +53,19 @@ type IFilesService interface {
 }
 
 type Handler struct {
-	service IService
+	service      IService
 	filesService IFilesService
-	helper *helpers.Helper
+	helper       *helpers.Helper
 }
 
 type Service struct {
 	repository IRepository
-	helper *helpers.Helper
+	helper     *helpers.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	db     *bun.DB
+	ctx    context.Context
 	helper *helpers.Helper
 }
 
@@ -77,11 +77,11 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	repo := NewRepository(db, helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
-	return NewHandler(service,filesService, helper)
+	return NewHandler(service, filesService, helper)
 }
 
 // NewHandler constructor
-func NewHandler(s IService,filesService IFilesService, helper *helpers.Helper) *Handler {
+func NewHandler(s IService, filesService IFilesService, helper *helpers.Helper) *Handler {
 	return &Handler{service: s, filesService: filesService, helper: helper}
 }
 

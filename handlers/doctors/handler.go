@@ -9,7 +9,7 @@ import (
 )
 
 type doctorsParams struct {
-	Limit      int  `form:"limit"`
+	Limit int `form:"limit"`
 }
 
 func (h *Handler) Create(c *gin.Context) {

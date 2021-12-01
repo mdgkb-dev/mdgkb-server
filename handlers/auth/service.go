@@ -18,7 +18,7 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &models.TokensWithUser{Token: ts, User: *item},nil
+	return &models.TokensWithUser{Token: ts, User: *item}, nil
 }
 
 func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
@@ -35,7 +35,6 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 		return nil, err
 	}
 
-
 	ts, err := s.helper.Token.CreateToken(findedUser.ID.String())
 	if err != nil {
 		return nil, err
@@ -46,5 +45,5 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 	//	return nil, err
 	//}
 
-	return &models.TokensWithUser{Token: ts, User: *findedUser},nil
+	return &models.TokensWithUser{Token: ts, User: *findedUser}, nil
 }

@@ -5,7 +5,6 @@ import (
 	handler "mdgkb/mdgkb-server/handlers/search"
 )
 
-
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/", h.Search)

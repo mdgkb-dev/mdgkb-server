@@ -1,6 +1,5 @@
 package chatMessages
 
-
 import (
 	"mdgkb/mdgkb-server/models"
 )

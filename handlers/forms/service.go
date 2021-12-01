@@ -27,7 +27,7 @@ func (s *Service) Update(item *models.Form) error {
 		return nil
 	}
 	err := s.repository.update(item)
-	if err !=nil {
+	if err != nil {
 		return err
 	}
 	item.SetIdForChildren()

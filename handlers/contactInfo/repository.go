@@ -37,7 +37,6 @@ func (r *Repository) upsert(item *models.ContactInfo) (err error) {
 	return err
 }
 
-
 func (r *Repository) upsertMany(items models.ContactInfos) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).

@@ -41,7 +41,6 @@ func (r *Repository) update(item *models.Question) (err error) {
 	return err
 }
 
-
 func (r *Repository) readAnswers(userID string) (err error) {
 	_, err = r.db.NewUpdate().Model(&models.Question{}).
 		Set("answer_is_read = true").

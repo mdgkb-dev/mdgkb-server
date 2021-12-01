@@ -10,8 +10,8 @@ func (s *Service) Search(searchModel *models.SearchModel) (err error) {
 		return err
 	}
 	search := s.helper.TranslitToRu(searchModel.Query)
-	for  i := range searchModel.SearchGroups {
-	err = s.repository.search(searchModel.SearchGroups[i], search)
+	for i := range searchModel.SearchGroups {
+		err = s.repository.search(searchModel.SearchGroups[i], search)
 		if err != nil {
 			return err
 		}

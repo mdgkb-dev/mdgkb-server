@@ -41,7 +41,6 @@ func (s *Service) ReadAnswers(userID string) error {
 	return s.repository.readAnswers(userID)
 }
 
-
 func (s *Service) Publish(id string) error {
 	return s.repository.publish(id)
 }

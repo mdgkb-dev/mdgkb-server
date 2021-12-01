@@ -7,12 +7,12 @@ import (
 
 type Child struct {
 	bun.BaseModel `bun:"children,alias:children"`
-	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Human         *Human        `bun:"rel:belongs-to" json:"human"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Human         *Human    `bun:"rel:belongs-to" json:"human"`
 	HumanID       uuid.UUID `bun:"type:uuid" json:"humanId"`
 
-	User         *User        `bun:"rel:belongs-to" json:"user"`
-	UserID       uuid.UUID `bun:"type:uuid" json:"userId"`
+	User   *User     `bun:"rel:belongs-to" json:"user"`
+	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
 }
 
 type Children []*Child
@@ -21,7 +21,7 @@ func (i *Child) SetForeignKeys() {
 	i.HumanID = i.Human.ID
 }
 
-func (items Children) SetForeignKeys()  {
+func (items Children) SetForeignKeys() {
 	for i := range items {
 		items[i].SetForeignKeys()
 	}

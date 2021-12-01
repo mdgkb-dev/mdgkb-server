@@ -190,16 +190,3 @@ func (h *Handler) GetByMonth(c *gin.Context) {
 
 	c.JSON(http.StatusOK, items)
 }
-
-func (h *Handler) CreateEventApplication(c *gin.Context) {
-	var item models.EventApplication
-	err := c.Bind(&item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.service.CreateEventApplication(&item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, item)
-}

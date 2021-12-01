@@ -138,7 +138,3 @@ func (r *Repository) createViewOfNews(newsView *models.NewsView) (err error) {
 	return err
 }
 
-func (r *Repository) createEventApplication(item *models.EventApplication) error {
-	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
-	return err
-}

@@ -8,4 +8,3 @@ import (
 func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
-

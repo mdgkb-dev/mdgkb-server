@@ -7,6 +7,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
+	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/newsSlides"
@@ -44,6 +45,7 @@ import (
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
+	eventsRouter "mdgkb/mdgkb-server/routing/events"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -86,4 +88,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(db, helper))
 	newsSlidesRouter.Init(api.Group("/news-slides"), newsSlides.CreateHandler(db, helper))
 	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(db, helper))
+	eventsRouter.Init(api.Group("/events"), events.CreateHandler(db, helper))
 }

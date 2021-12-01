@@ -29,7 +29,6 @@ func (s *Service) Create(item *models.User) error {
 	return nil
 }
 
-
 func (s *Service) Update(item *models.User) error {
 	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
 	if err != nil {
@@ -72,7 +71,6 @@ func (s *Service) GetByEmail(email string) (*models.User, error) {
 	}
 	return item, nil
 }
-
 
 func (s *Service) EmailExists(email string) (bool, error) {
 	item, err := s.repository.emailExists(email)

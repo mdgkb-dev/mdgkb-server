@@ -18,7 +18,6 @@ func NewPDFHelper(config config.Config) *PDFHelper {
 	}
 }
 
-
 func (i *PDFHelper) GeneratePDF(template string, data interface{}) ([]byte, error) {
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 	if err != nil {

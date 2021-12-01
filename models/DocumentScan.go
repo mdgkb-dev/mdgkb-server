@@ -10,10 +10,10 @@ type DocumentScan struct {
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
 
 	Document   *Document `bun:"rel:belongs-to" json:"document"`
-	DocumentID uuid.UUID     `bun:"type:uuid" json:"documentId"`
+	DocumentID uuid.UUID `bun:"type:uuid" json:"documentId"`
 
-	Scan   *FileInfo `bun:"rel:belongs-to" json:"scan"`
-	ScanID uuid.NullUUID     `bun:"type:uuid" json:"scanId"`
+	Scan   *FileInfo     `bun:"rel:belongs-to" json:"scan"`
+	ScanID uuid.NullUUID `bun:"type:uuid" json:"scanId"`
 }
 
 type DocumentsScans []*DocumentScan
@@ -23,7 +23,6 @@ func (items DocumentsScans) SetForeignKeys() {
 		items[i].ScanID = items[i].Scan.ID
 	}
 }
-
 
 //func (item *Document) SetIdForChildren() {
 //	for i := range item.DocumentFieldsValues {
@@ -36,7 +35,6 @@ func (items DocumentsScans) SetForeignKeys() {
 //		items[i].SetIdForChildren()
 //	}
 //}
-
 
 func (items DocumentsScans) GetFileInfos() FileInfos {
 	itemsForGet := make(FileInfos, 0)

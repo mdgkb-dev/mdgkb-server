@@ -11,10 +11,10 @@ import (
 )
 
 type IHandler interface {
-	GetAll(c *gin.Context) 
-	Get(c *gin.Context) 
-	Create(c *gin.Context) 
-	Update(c *gin.Context) 
+	GetAll(c *gin.Context)
+	Get(c *gin.Context)
+	Create(c *gin.Context)
+	Update(c *gin.Context)
 	Delete(c *gin.Context)
 
 	ReadAnswers(c *gin.Context)
@@ -49,19 +49,19 @@ type IFilesService interface {
 }
 
 type Handler struct {
-	service IService
+	service      IService
 	filesService IFilesService
-	helper *helpers.Helper
+	helper       *helpers.Helper
 }
 
 type Service struct {
 	repository IRepository
-	helper *helpers.Helper
+	helper     *helpers.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	db     *bun.DB
+	ctx    context.Context
 	helper *helpers.Helper
 }
 
@@ -73,11 +73,11 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	repo := NewRepository(db, helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
-	return NewHandler(service,filesService, helper)
+	return NewHandler(service, filesService, helper)
 }
 
 // NewHandler constructor
-func NewHandler(s IService,filesService IFilesService, helper *helpers.Helper) *Handler {
+func NewHandler(s IService, filesService IFilesService, helper *helpers.Helper) *Handler {
 	return &Handler{service: s, filesService: filesService, helper: helper}
 }
 
@@ -88,7 +88,6 @@ func NewService(repository IRepository, helper *helpers.Helper) *Service {
 func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
 	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }
-
 
 func NewFilesService(helper *helpers.Helper) *FilesService {
 	return &FilesService{helper: helper}

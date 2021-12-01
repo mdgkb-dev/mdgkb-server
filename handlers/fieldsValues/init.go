@@ -8,18 +8,18 @@ import (
 )
 
 type IService interface {
-	Create( *models.FieldValue) error
-	Update( *models.FieldValue) error
-	Upsert( *models.FieldValue) error
-	UpsertMany( models.Fields) error
+	Create(*models.FieldValue) error
+	Update(*models.FieldValue) error
+	Upsert(*models.FieldValue) error
+	UpsertMany(models.Fields) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	create( *models.FieldValue) error
-	update( *models.FieldValue) error
-	upsert( *models.FieldValue) error
-	upsertMany( models.FieldValues) error
+	create(*models.FieldValue) error
+	update(*models.FieldValue) error
+	upsert(*models.FieldValue) error
+	upsertMany(models.FieldValues) error
 	//deleteMany([]string) error
 }
 

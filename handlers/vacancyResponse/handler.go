@@ -1,7 +1,6 @@
 package vacancyResponse
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -67,7 +66,6 @@ func (h *Handler) Update(c *gin.Context) {
 
 func (h *Handler) PDF(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println(id)
 	item, err := h.service.Get(id)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

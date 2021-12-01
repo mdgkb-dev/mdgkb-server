@@ -10,11 +10,11 @@ import (
 )
 
 type Helper struct {
-	HTTP *httpHelper.HTTPHelper
-	PDF *pdfHelper.PDFHelper
+	HTTP     *httpHelper.HTTPHelper
+	PDF      *pdfHelper.PDFHelper
 	Uploader uploadHelper.Uploader
-	SQL *sqlHelper.SQLHelper
-	Token *tokenHelper.TokenHelper
+	SQL      *sqlHelper.SQLHelper
+	Token    *tokenHelper.TokenHelper
 }
 
 func NewHelper(config config.Config) *Helper {
@@ -25,4 +25,3 @@ func NewHelper(config config.Config) *Helper {
 	token := tokenHelper.NewTokenHelper()
 	return &Helper{HTTP: http, Uploader: uploader, PDF: pdf, SQL: sql, Token: token}
 }
-

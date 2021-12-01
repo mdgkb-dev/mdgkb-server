@@ -35,7 +35,6 @@ func (r *Repository) getByEmail(id string) (*models.User, error) {
 	return &item, err
 }
 
-
 func (r *Repository) create(user *models.User) (err error) {
 	_, err = r.db.NewInsert().Model(user).Exec(r.ctx)
 	return err
@@ -46,12 +45,10 @@ func (r *Repository) emailExists(email string) (bool, error) {
 	return exists, err
 }
 
-
 func (r *Repository) update(item *models.User) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
-
 
 func (r *Repository) upsert(item *models.User) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
