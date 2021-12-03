@@ -1,4 +1,4 @@
-package timetableDays
+package timePeriods
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -10,30 +10,26 @@ func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
-func (r *Repository) createMany(items models.TimetableDays) (err error) {
+func (r *Repository) createMany(items models.TimePeriods) (err error) {
 	_, err = r.db.NewInsert().Model(&items).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) deleteMany(idPool []string) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.TimetableDay)(nil)).
+		Model((*models.TimePeriod)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.TimetableDays) (err error) {
+func (r *Repository) upsertMany(items models.TimePeriods) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
-		Set("is_weekend = EXCLUDED.is_weekend").
-		Set("timetable_id = EXCLUDED.timetable_id").
-		Set("weekday_id = EXCLUDED.weekday_id").
+		Set("timetable_day_id = EXCLUDED.timetable_day_id").
 		Set("start_time = EXCLUDED.start_time").
 		Set("end_time = EXCLUDED.end_time").
-		Set("breaks_exists = EXCLUDED.breaks_exists").
-		Set("around_the_clock = EXCLUDED.around_the_clock").
-		Where("timetable_day.id = EXCLUDED.id").
+		Where("time_periods.id = EXCLUDED.id").
 		Exec(r.ctx)
 	return err
 }

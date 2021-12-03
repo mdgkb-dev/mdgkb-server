@@ -16,11 +16,12 @@ type Division struct {
 	Slug                    string           `json:"slug"`
 	Doctors                 Doctors          `bun:"rel:has-many" json:"doctors"`
 	Vacancies               Vacancies        `bun:"rel:has-many" json:"vacancies"`
+	
 	Entrance                *Entrance        `bun:"rel:belongs-to" json:"entrance"`
 	EntranceId              uuid.UUID        `bun:"type:uuid" json:"entranceId"`
 	FloorId                 uuid.UUID        `bun:"type:uuid" json:"floorId"`
 	Timetable               *Timetable       `bun:"rel:belongs-to" json:"timetable"`
-	TimetableId             uuid.UUID        `bun:"type:uuid" json:"timetableId"`
+	TimetableId             uuid.UUID        `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 	Schedule                *Schedule        `bun:"rel:belongs-to" json:"schedule"`
 	ScheduleId              uuid.UUID        `bun:"type:uuid" json:"scheduleId"`
 	DivisionImages          DivisionImages   `bun:"rel:has-many" json:"divisionImages"`

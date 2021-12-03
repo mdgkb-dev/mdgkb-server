@@ -12,7 +12,7 @@ type Timetable struct {
 }
 
 func (timetable *Timetable) SetIdForChildren() {
-	if len(timetable.TimetableDays) < 0 {
+	if len(timetable.TimetableDays) == 0 {
 		return
 	}
 	for i := range timetable.TimetableDays {

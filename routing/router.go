@@ -20,6 +20,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
+	"mdgkb/mdgkb-server/handlers/timetablePatterns"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
@@ -33,6 +34,7 @@ import (
 	"mdgkb/mdgkb-server/routing/menu"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
 	newsSlidesRouter "mdgkb/mdgkb-server/routing/newsSlides"
+	timetablePatternsRouter "mdgkb/mdgkb-server/routing/timetablePatterns"
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
 	pagesRouter "mdgkb/mdgkb-server/routing/pages"
@@ -89,4 +91,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	newsSlidesRouter.Init(api.Group("/news-slides"), newsSlides.CreateHandler(db, helper))
 	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(db, helper))
 	eventsRouter.Init(api.Group("/events"), events.CreateHandler(db, helper))
+	timetablePatternsRouter.Init(api.Group("/timetable-patterns"), timetablePatterns.CreateHandler(db, helper))
 }
