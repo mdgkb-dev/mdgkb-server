@@ -50,3 +50,8 @@ func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 		Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) update(item *models.Faq) (err error) {
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}

@@ -38,15 +38,15 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Delete(c *gin.Context) {
-	//id := c.Param("id")
-	//err := h.service.Delete(id)
-	//if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-	//	return
-	//}
+	id := c.Param("id")
+	err := h.service.Delete(id)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func (h *Handler) Update(c *gin.Context) {
+func (h *Handler) UpdateMany(c *gin.Context) {
 	var items models.FaqsWithDelete
 	err := c.Bind(&items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
@@ -57,4 +57,17 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
+}
+
+func (h *Handler) Update(c *gin.Context) {
+	var item models.Faq
+	err := c.ShouldBind(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.Update(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
 }
