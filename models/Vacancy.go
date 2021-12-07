@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"time"
 )
 
 type Vacancy struct {
@@ -17,6 +18,7 @@ type Vacancy struct {
 	Experience       string           `json:"experience"`
 	Duties           string           `json:"duties"`
 	Schedule         string           `json:"schedule"`
+	Date             time.Time        `bun:"vacancy_date" json:"date"`
 	VacancyResponses VacancyResponses `bun:"rel:has-many" json:"vacancyResponses"`
 
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`
