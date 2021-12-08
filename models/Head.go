@@ -5,37 +5,30 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type Doctor struct {
+type Head struct {
 	bun.BaseModel  `bun:"doctors,select:doctors_view,alias:doctors_view"`
 	ID             uuid.UUID      `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Division       *Division      `bun:"rel:belongs-to" json:"division"`
-	DivisionId     uuid.UUID      `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
 	Human          *Human         `bun:"rel:belongs-to" json:"human"`
 	HumanId        uuid.UUID      `bun:"type:uuid" json:"humanId"`
-	Schedule       string         `json:"schedule"`
 	Position       string         `json:"position"`
 	Tags           string         `json:"tags"`
-	FileInfo       *FileInfo      `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoId     uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
-	DoctorComments DoctorComments `bun:"rel:has-many" json:"doctorComments"`
+	Photo       *FileInfo      `bun:"rel:belongs-to" json:"photo"`
+	PhotoId     uuid.UUID      `bun:"type:uuid" json:"photoId"`
 
 	AcademicDegree          string         `json:"academicDegree"`
 	AcademicRank            string         `json:"academicRank"`
 	Regalias          Regalias `bun:"rel:has-many" json:"regalias"`
-	RegaliasForDelete []uuid.UUID    `bun:"-" json:"regaliasForDelete"`
-
-	Educations          Educations  `bun:"rel:has-many" json:"educations"`
-	EducationsForDelete []uuid.UUID `bun:"-" json:"educationsForDelete"`
-
+	RegaliasForDelete []uuid.UUID    `bun:"-" json:"doctorRegaliasForDelete"`
+	
 	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
 	TimetableId uuid.UUID  `bun:"type:uuid" json:"timetableId"`
 }
 
-type Doctors []*Doctor
+type Heads []*Head
 
-func (item *Doctor) SetForeignKeys() {
-	if item.FileInfo != nil {
-		item.FileInfoId = item.FileInfo.ID.UUID
+func (item *Head) SetForeignKeys() {
+	if item.Photo != nil {
+		item.PhotoId = item.Photo.ID.UUID
 	}
 	if item.Human != nil {
 		item.HumanId = item.Human.ID
@@ -45,11 +38,8 @@ func (item *Doctor) SetForeignKeys() {
 	}
 }
 
-func (item *Doctor) SetIdForChildren() {
-	for i := range item.Educations {
-		item.Educations[i].DoctorID = item.ID
-	}
+func (item *Head) SetIdForChildren() {
 	for i := range item.Regalias {
-		item.Regalias[i].DoctorID = item.ID
+		item.Regalias[i].HeadID = item.ID
 	}
 }

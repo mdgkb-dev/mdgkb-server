@@ -1,4 +1,4 @@
-package doctorRegalia
+package regalias
 
 import (
 	"context"
@@ -8,14 +8,14 @@ import (
 )
 
 type IService interface {
-	CreateMany(models.DoctorRegalias) error
-	UpsertMany(models.DoctorRegalias) error
+	CreateMany(models.Regalias) error
+	UpsertMany(models.Regalias) error
 	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
-	createMany(models.DoctorRegalias) error
-	upsertMany(models.DoctorRegalias) error
+	createMany(models.Regalias) error
+	upsertMany(models.Regalias) error
 	deleteMany([]uuid.UUID) error
 }
 

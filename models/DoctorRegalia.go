@@ -5,13 +5,16 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type DoctorRegalia struct {
-	bun.BaseModel `bun:"doctor_regalias,alias:doctor_regalias"`
+type Regalia struct {
+	bun.BaseModel `bun:"regalias,alias:regalias"`
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string    `json:"name"`
 
 	DoctorID uuid.UUID `bun:"type:uuid" json:"doctorId"`
 	Doctor   *Doctor   `bun:"rel:belongs-to" json:"doctor"`
+
+	HeadID uuid.UUID `bun:"type:uuid" json:"headId"`
+	Head   *Head   `bun:"rel:belongs-to" json:"head"`
 }
 
-type DoctorRegalias []*DoctorRegalia
+type Regalias []*Regalia

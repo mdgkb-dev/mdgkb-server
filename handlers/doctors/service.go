@@ -1,10 +1,10 @@
 package doctors
 
 import (
-	"mdgkb/mdgkb-server/handlers/doctorRegalia"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/human"
+	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
 )
@@ -29,7 +29,7 @@ func (s *Service) Create(item *models.Doctor) error {
 	}
 	item.SetIdForChildren()
 
-	err = doctorRegalia.CreateService(s.repository.getDB()).CreateMany(item.DoctorRegalias)
+	err = regalias.CreateService(s.repository.getDB()).CreateMany(item.Regalias)
 	if err != nil {
 		return err
 	}
@@ -59,12 +59,12 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 	item.SetIdForChildren()
-	doctorRegaliaService := doctorRegalia.CreateService(s.repository.getDB())
-	err = doctorRegaliaService.UpsertMany(item.DoctorRegalias)
+	doctorRegaliaService := regalias.CreateService(s.repository.getDB())
+	err = doctorRegaliaService.UpsertMany(item.Regalias)
 	if err != nil {
 		return err
 	}
-	err = doctorRegaliaService.DeleteMany(item.DoctorRegaliasForDelete)
+	err = doctorRegaliaService.DeleteMany(item.RegaliasForDelete)
 	if err != nil {
 		return err
 	}

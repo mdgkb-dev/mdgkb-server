@@ -1,18 +1,18 @@
-package doctorRegalia
+package regalias
 
 import (
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 )
 
-func (s *Service) CreateMany(items models.DoctorRegalias) error {
+func (s *Service) CreateMany(items models.Regalias) error {
 	if len(items) == 0 {
 		return nil
 	}
 	return s.repository.createMany(items)
 }
 
-func (s *Service) UpsertMany(items models.DoctorRegalias) error {
+func (s *Service) UpsertMany(items models.Regalias) error {
 	if len(items) == 0 {
 		return nil
 	}
