@@ -15,6 +15,7 @@ type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
 	Create(c *gin.Context)
+	UpdateMany(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
 }
@@ -24,6 +25,8 @@ type IService interface {
 	Get(string) (*models.Faq, error)
 	Create(*models.Faq) error
 	UpsertMany(models.FaqsWithDelete) error
+	Update(item *models.Faq) error
+	Delete(string) error
 }
 
 type IRepository interface {
@@ -33,6 +36,8 @@ type IRepository interface {
 	get(string) (*models.Faq, error)
 	upsertMany(models.Faqs) error
 	deleteMany([]uuid.UUID) error
+	update(item *models.Faq) error
+	delete(string) error
 }
 
 type IFilesService interface {
