@@ -17,17 +17,17 @@ func (r *Repository) create(item *models.Question) (err error) {
 
 func (r *Repository) getAll(published bool) (models.Questions, error) {
 	items := make(models.Questions, 0)
-	query := r.db.NewSelect().Model(&items)
+	query := r.db.NewSelect().Model(&items).Order("question_date DESC")
 	if published {
 		query = query.Where("published = true")
 	}
-	err := query.Scan(r.ctx)
+		err := query.Scan(r.ctx)
 	return items, err
 }
 
 func (r *Repository) get(id string) (*models.Question, error) {
 	item := models.Question{}
-	err := r.db.NewSelect().Model(&item).Where("id = ?", id).Scan(r.ctx)
+	err := r.db.NewSelect().Model(&item).Relation("User.Human").Where("questions.id = ?", id).Scan(r.ctx)
 	return &item, err
 }
 

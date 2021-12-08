@@ -1,6 +1,8 @@
 CREATE TABLE questions (
     id uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
     question varchar,
+    theme varchar,
+    publish_agreement boolean,
     answer varchar,
     original_question varchar,
     original_answer varchar,
