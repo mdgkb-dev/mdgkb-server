@@ -1,4 +1,4 @@
-package faqs
+package timetablePatterns
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -6,19 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
-func (h *Handler) Create(c *gin.Context) {
-	var item models.Faq
-	err := c.Bind(&item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.service.Create(&item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, item)
-}
 
 func (h *Handler) GetAll(c *gin.Context) {
 	items, err := h.service.GetAll()
@@ -46,26 +33,26 @@ func (h *Handler) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func (h *Handler) UpdateMany(c *gin.Context) {
-	var items models.FaqsWithDelete
-	err := c.Bind(&items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.service.UpsertMany(items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, items)
-}
-
 func (h *Handler) Update(c *gin.Context) {
-	var item models.Faq
+	var item models.TimetablePattern
 	err := c.ShouldBind(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.Update(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) Create(c *gin.Context) {
+	var item models.TimetablePattern
+	err := c.ShouldBind(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.Create(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

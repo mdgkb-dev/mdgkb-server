@@ -38,6 +38,7 @@ func (r *Repository) get(id string) (*models.Doctor, error) {
 		Relation("Division.Timetable.TimetableDays.Weekday").
 		Relation("Regalias").
 		Relation("Timetable.TimetableDays.Weekday").
+		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("Educations.EducationCertification").
 		Relation("Educations.EducationAccreditation").
 		Relation("DoctorComments.Comment.User").

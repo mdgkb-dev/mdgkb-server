@@ -1,11 +1,27 @@
-package timetables
+package timetablePatterns
 
 import (
 	"mdgkb/mdgkb-server/handlers/timetableDays"
 	"mdgkb/mdgkb-server/models"
 )
 
-func (s *Service) Create(item *models.Timetable) error {
+func (s *Service) GetAll() (models.TimetablePatterns, error) {
+	items, err := s.repository.getAll()
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+func (s *Service) Get(id string) (*models.TimetablePattern, error) {
+	item, err := s.repository.get(id)
+	if err != nil {
+		return nil, err
+	}
+	return item, nil
+}
+
+func (s *Service) Create(item *models.TimetablePattern) error {
 	err := s.repository.create(item)
 	if err != nil {
 		return err
@@ -19,8 +35,8 @@ func (s *Service) Create(item *models.Timetable) error {
 	return nil
 }
 
-func (s *Service) Upsert(item *models.Timetable) error {
-	err := s.repository.upsert(item)
+func (s *Service) Update(item *models.TimetablePattern) error {
+	err := s.repository.update(item)
 	if err != nil {
 		return err
 	}
@@ -37,10 +53,6 @@ func (s *Service) Upsert(item *models.Timetable) error {
 	return nil
 }
 
-func (s *Service) GetAllWeekdays() (models.Weekdays, error) {
-	items, err := s.repository.getAllWeekdays()
-	if err != nil {
-		return nil, err
-	}
-	return items, nil
+func (s *Service) Delete(id string) error {
+	return s.repository.delete(id)
 }

@@ -28,7 +28,7 @@ type Doctor struct {
 	EducationsForDelete []uuid.UUID `bun:"-" json:"educationsForDelete"`
 
 	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
-	TimetableId uuid.UUID  `bun:"type:uuid" json:"timetableId"`
+	TimetableId uuid.UUID  `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 }
 
 type Doctors []*Doctor

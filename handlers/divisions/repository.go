@@ -35,6 +35,7 @@ func (r *Repository) get(slug string) (*models.Division, error) {
 		Relation("Schedule.ScheduleItems").
 		Relation("DivisionImages.FileInfo").
 		Relation("DivisionComments.Comment.User").
+		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("Doctors.FileInfo").
 		Relation("Doctors.Human").
 		Relation("Vacancies").

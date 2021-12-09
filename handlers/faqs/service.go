@@ -38,3 +38,15 @@ func (s *Service) UpsertMany(items models.FaqsWithDelete) error {
 	}
 	return err
 }
+
+func (s *Service) Update(item *models.Faq) error {
+	err := s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Service) Delete(id string) error {
+	return s.repository.delete(id)
+}
