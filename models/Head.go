@@ -6,8 +6,8 @@ import (
 )
 
 type Head struct {
-	bun.BaseModel  `bun:"doctors,select:doctors_view,alias:doctors_view"`
-	ID             uuid.UUID      `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	bun.BaseModel  `bun:"heads,select:heads,alias:heads"`
+	ID             uuid.NullUUID      `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Human          *Human         `bun:"rel:belongs-to" json:"human"`
 	HumanId        uuid.UUID      `bun:"type:uuid" json:"humanId"`
 	Position       string         `json:"position"`
@@ -18,10 +18,14 @@ type Head struct {
 	AcademicDegree          string         `json:"academicDegree"`
 	AcademicRank            string         `json:"academicRank"`
 	Regalias          Regalias `bun:"rel:has-many" json:"regalias"`
-	RegaliasForDelete []uuid.UUID    `bun:"-" json:"doctorRegaliasForDelete"`
-	
+	RegaliasForDelete []uuid.UUID    `bun:"-" json:"regaliasForDelete"`
 	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
+
 	TimetableId uuid.UUID  `bun:"type:uuid" json:"timetableId"`
+	IsMain bool `json:"isMain"`
+
+	Departments    Departments    `bun:"rel:has-many" json:"departments"`
+	DepartmentsForDelete []uuid.UUID    `bun:"-" json:"departmentsForDelete"`
 }
 
 type Heads []*Head
@@ -41,5 +45,8 @@ func (item *Head) SetForeignKeys() {
 func (item *Head) SetIdForChildren() {
 	for i := range item.Regalias {
 		item.Regalias[i].HeadID = item.ID
+	}
+	for i := range item.Departments {
+		item.Departments[i].HeadID = item.ID
 	}
 }

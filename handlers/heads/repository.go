@@ -32,6 +32,7 @@ func (r *Repository) get(id string) (*models.Head, error) {
 		Relation("Human").
 		Relation("Photo").
 		Relation("Regalias").
+		Relation("Departments").
 		Relation("Timetable.TimetableDays.Weekday").
 		Scan(r.ctx)
 	return &item, err

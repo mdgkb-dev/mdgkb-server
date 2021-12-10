@@ -1,6 +1,7 @@
 package heads
 
 import (
+	"mdgkb/mdgkb-server/handlers/departments"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/regalias"
@@ -29,6 +30,10 @@ func (s *Service) Create(item *models.Head) error {
 	item.SetIdForChildren()
 
 	err = regalias.CreateService(s.repository.getDB()).CreateMany(item.Regalias)
+	if err != nil {
+		return err
+	}
+	err = departments.CreateService(s.repository.getDB()).CreateMany(item.Departments)
 	if err != nil {
 		return err
 	}
@@ -63,6 +68,17 @@ func (s *Service) Update(item *models.Head) error {
 	if err != nil {
 		return err
 	}
+
+	departmentsService := departments.CreateService(s.repository.getDB())
+	err = departmentsService.UpsertMany(item.Departments)
+	if err != nil {
+		return err
+	}
+	err = departmentsService.DeleteMany(item.DepartmentsForDelete)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

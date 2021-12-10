@@ -10,10 +10,10 @@ type Regalia struct {
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string    `json:"name"`
 
-	DoctorID uuid.UUID `bun:"type:uuid" json:"doctorId"`
+	DoctorID uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Doctor   *Doctor   `bun:"rel:belongs-to" json:"doctor"`
 
-	HeadID uuid.UUID `bun:"type:uuid" json:"headId"`
+	HeadID uuid.NullUUID `bun:"type:uuid" json:"headId"`
 	Head   *Head   `bun:"rel:belongs-to" json:"head"`
 }
 
