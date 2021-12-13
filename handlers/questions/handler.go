@@ -1,7 +1,6 @@
 package questions
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 	"strconv"
@@ -12,10 +11,6 @@ import (
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Question
 	err := c.Bind(&item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	item.UserID, err = h.helper.Token.GetUserID(c)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -71,8 +66,17 @@ func (h *Handler) Update(c *gin.Context) {
 
 func (h *Handler) ReadAnswers(c *gin.Context) {
 	userID := c.Param("user-id")
-	fmt.Println(userID)
 	err := h.service.ReadAnswers(userID)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{})
+}
+
+func (h *Handler) ChangeNewStatus(c *gin.Context) {
+	id := c.Param("id")
+	isNew, err := strconv.ParseBool(c.Query("isNew"))
+	err = h.service.ChangeNewStatus(id, isNew)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

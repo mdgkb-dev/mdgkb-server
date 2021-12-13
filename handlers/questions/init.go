@@ -17,6 +17,7 @@ type IHandler interface {
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
 
+	ChangeNewStatus(c *gin.Context)
 	ReadAnswers(c *gin.Context)
 	Publish(c *gin.Context)
 }
@@ -28,6 +29,7 @@ type IService interface {
 	Update(*models.Question) error
 	Delete(string) error
 
+	ChangeNewStatus(string, bool) error
 	ReadAnswers(string) error
 	Publish(string) error
 }
@@ -40,6 +42,7 @@ type IRepository interface {
 	update(*models.Question) error
 	delete(string) error
 
+	changeNewStatus(string, bool) error
 	readAnswers(string) error
 	publish(string) error
 }

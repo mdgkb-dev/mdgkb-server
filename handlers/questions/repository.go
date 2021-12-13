@@ -17,7 +17,7 @@ func (r *Repository) create(item *models.Question) (err error) {
 
 func (r *Repository) getAll(published bool) (models.Questions, error) {
 	items := make(models.Questions, 0)
-	query := r.db.NewSelect().Model(&items).Order("question_date DESC")
+	query := r.db.NewSelect().Model(&items).Order("question_date DESC").Order("is_new DESC")
 	if published {
 		query = query.Where("published = true")
 	}
@@ -45,6 +45,14 @@ func (r *Repository) readAnswers(userID string) (err error) {
 	_, err = r.db.NewUpdate().Model(&models.Question{}).
 		Set("answer_is_read = true").
 		Where("user_id = ?", userID).
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) changeNewStatus(id string, isNew bool) (err error) {
+	_, err = r.db.NewUpdate().Model(&models.Question{}).
+		Set("is_new = ?", isNew).
+		Where("id = ?", id).
 		Exec(r.ctx)
 	return err
 }
