@@ -7,6 +7,7 @@ CREATE TABLE questions (
     original_question varchar,
     original_answer varchar,
     published boolean,
+    answered boolean,
     question_date date,
     is_new boolean,
     answer_is_read boolean,

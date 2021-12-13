@@ -31,7 +31,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 
 func (r *Repository) getByEmail(id string) (*models.User, error) {
 	item := models.User{}
-	err := r.db.NewSelect().Model(&item).Where("users.email = ?", id).Scan(r.ctx)
+	err := r.db.NewSelect().Model(&item).Relation("Human").Where("users.email = ?", id).Scan(r.ctx)
 	return &item, err
 }
 

@@ -2,11 +2,16 @@ package questions
 
 import (
 	"mdgkb/mdgkb-server/models"
+	"mdgkb/mdgkb-server/handlers/human"
 )
 
 func (s *Service) Create(item *models.Question) error {
-
-	err := s.repository.create(item)
+	err := human.CreateService(s.repository.getDB(), s.helper).Update(item.User.Human)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -35,6 +40,10 @@ func (s *Service) Update(item *models.Question) error {
 
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) ChangeNewStatus(id string, isNew bool) error {
+	return s.repository.changeNewStatus(id, isNew)
 }
 
 func (s *Service) ReadAnswers(userID string) error {

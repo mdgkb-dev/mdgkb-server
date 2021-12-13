@@ -16,6 +16,7 @@ type Question struct {
 	OriginalAnswer   string    `json:"originalAnswer"`
 	PublishAgreement bool      `json:"publishAgreement"`
 	Published        bool      `json:"published"`
+	Answered         bool      `json:"answered"`
 	Date             time.Time `bun:"question_date" json:"date"`
 	User             *User     `bun:"rel:belongs-to" json:"user"`
 	UserID           uuid.UUID `bun:"type:uuid" json:"userId"`
@@ -24,3 +25,9 @@ type Question struct {
 }
 
 type Questions []*Question
+
+func (item *Question) SetForeignKeys() {
+	if item.User != nil {
+		item.UserID = item.User.ID
+	}
+}
