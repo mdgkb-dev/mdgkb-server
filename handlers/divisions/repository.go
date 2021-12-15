@@ -39,6 +39,7 @@ func (r *Repository) get(slug string) (*models.Division, error) {
 		Relation("Doctors.FileInfo").
 		Relation("Doctors.Human").
 		Relation("Vacancies").
+		Relation("VisitingRules").
 		Where("divisions.id = ?", slug).
 		Scan(r.ctx)
 

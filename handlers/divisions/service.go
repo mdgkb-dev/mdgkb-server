@@ -4,6 +4,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/divisionImages"
 	"mdgkb/mdgkb-server/handlers/schedules"
 	"mdgkb/mdgkb-server/handlers/timetables"
+	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -26,7 +27,12 @@ func (s *Service) Create(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-
+	item.SetIdForChildren()
+	visitingRulesService := visitingRules.CreateService(s.repository.getDB(), s.helper)
+	err = visitingRulesService.UpsertMany(item.VisitingRules)
+	if err != nil {
+		return err
+	}
 	divisionImagesService := divisionImages.CreateService(s.repository.getDB())
 	err = divisionImagesService.CreateMany(item.DivisionImages)
 	if err != nil {
@@ -59,7 +65,16 @@ func (s *Service) Update(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-
+	item.SetIdForChildren()
+	visitingRulesService := visitingRules.CreateService(s.repository.getDB(), s.helper)
+	err = visitingRulesService.UpsertMany(item.VisitingRules)
+	if err != nil {
+		return err
+	}
+	err = visitingRulesService.DeleteMany(item.VisitingRulesForDelete)
+	if err != nil {
+		return err
+	}
 	return s.repository.update(item)
 }
 

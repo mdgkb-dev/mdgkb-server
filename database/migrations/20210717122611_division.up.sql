@@ -6,6 +6,7 @@ CREATE TABLE divisions (
   email VARCHAR,
   address VARCHAR,
   slug VARCHAR,
+  show_common_visiting_rules boolean default true,
   floor_id uuid REFERENCES floors (id) ON UPDATE CASCADE ON DELETE CASCADE,
   entrance_id uuid REFERENCES entrances (id) ON UPDATE CASCADE ON DELETE CASCADE
 );

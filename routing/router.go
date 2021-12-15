@@ -9,6 +9,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
+	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/handlers/heads"
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/newsSlides"
@@ -33,6 +34,7 @@ import (
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
+	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
 	"mdgkb/mdgkb-server/routing/menu"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
@@ -91,6 +93,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
 	searchRouter.Init(api.Group("/search"), search.CreateHandler(db, helper))
 	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(db, helper))
+	visitingRulesRouter.Init(api.Group("/visiting-rules"), visitingRules.CreateHandler(db, helper))
 	newsSlidesRouter.Init(api.Group("/news-slides"), newsSlides.CreateHandler(db, helper))
 	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(db, helper))
 	eventsRouter.Init(api.Group("/events"), events.CreateHandler(db, helper))

@@ -7,16 +7,17 @@ import (
 
 type Division struct {
 	bun.BaseModel           `bun:"divisions,alias:divisions"`
-	ID                      uuid.UUID        `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name                    string           `json:"name"`
-	Info                    string           `json:"info"`
-	Phone                   string           `json:"phone"`
-	Email                   string           `json:"email"`
-	Address                 string           `json:"address"`
-	Slug                    string           `json:"slug"`
-	Doctors                 Doctors          `bun:"rel:has-many" json:"doctors"`
-	Vacancies               Vacancies        `bun:"rel:has-many" json:"vacancies"`
-	
+	ID                      uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name                    string        `json:"name"`
+	Info                    string        `json:"info"`
+	Phone                   string        `json:"phone"`
+	Email                   string        `json:"email"`
+	Address                 string        `json:"address"`
+	Slug                    string        `json:"slug"`
+	ShowCommonVisitingRules bool          `bun:"default:true" json:"showCommonVisitingRules"`
+	Doctors                 Doctors       `bun:"rel:has-many" json:"doctors"`
+	Vacancies               Vacancies     `bun:"rel:has-many" json:"vacancies"`
+
 	Entrance                *Entrance        `bun:"rel:belongs-to" json:"entrance"`
 	EntranceId              uuid.UUID        `bun:"type:uuid" json:"entranceId"`
 	FloorId                 uuid.UUID        `bun:"type:uuid" json:"floorId"`
@@ -28,6 +29,8 @@ type Division struct {
 	DivisionImagesForDelete []string         `bun:"-" json:"divisionImagesForDelete"`
 	DivisionImagesNames     []string         `bun:"-" json:"divisionImagesNames"`
 	DivisionComments        DivisionComments `bun:"rel:has-many" json:"divisionComments"`
+	VisitingRules           VisitingRules    `bun:"rel:has-many" json:"visitingRules"`
+	VisitingRulesForDelete  []uuid.UUID      `bun:"-" json:"visitingRulesForDelete"`
 }
 
 type Divisions []*Division
@@ -46,4 +49,10 @@ func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {
 	//	searchGroup.SearchElements[i].Value = fmt.Sprintf("%s/%s", searchGroup.Prefix, items[i].Slug)
 	//	searchGroup.SearchElements[i].Label = items[i].Name
 	//}
+}
+
+func (item *Division) SetIdForChildren() {
+	for i := range item.VisitingRules {
+		item.VisitingRules[i].DivisionID = item.ID
+	}
 }
