@@ -25,7 +25,6 @@ func (r *Repository) get(id *string) (*models.Page, error) {
 	item := models.Page{}
 	err := r.db.NewSelect().
 		Model(&item).
-		Relation("PageDocuments.DocumentType.FileInfo").
 		Relation("PageComments.Comment").
 		Relation("PageImages.FileInfo").
 		Where("id = ?", *id).Scan(r.ctx)
@@ -47,7 +46,6 @@ func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
 	err := r.db.NewSelect().
 		Model(&item).
 		Relation("PageImages.FileInfo").
-		Relation("PageDocuments.DocumentType.FileInfo").
 		Relation("PageComments.Comment").
 		Where("slug = ?", *slug).
 		Scan(r.ctx)

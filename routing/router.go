@@ -14,6 +14,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/newsSlides"
 	"mdgkb/mdgkb-server/handlers/pages"
+	"mdgkb/mdgkb-server/handlers/projects"
 	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/users"
@@ -43,6 +44,7 @@ import (
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
 	"mdgkb/mdgkb-server/routing/normativeDocuments"
 	pagesRouter "mdgkb/mdgkb-server/routing/pages"
+	projectsRouter "mdgkb/mdgkb-server/routing/projects"
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 	searchRouter "mdgkb/mdgkb-server/routing/search"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
@@ -87,6 +89,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
 	menu.Init(api.Group("/menus"), db, localUploaderNew)
 	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(db, helper))
+	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(db, helper))
 	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, helper))
 	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(db, helper))
 	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))

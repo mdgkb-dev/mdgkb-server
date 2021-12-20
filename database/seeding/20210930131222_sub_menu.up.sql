@@ -1,6 +1,7 @@
 INSERT INTO public.sub_menus (id, name, link, page_id, sub_menu_order, svg, icon_id, menu_id)
 VALUES  ('d6017ef7-dbaa-4f88-8bb3-d59e87396b97', 'Сведения об образовательной организации', '', NULL, 1, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
         ('dc2c21fa-9962-4352-b22f-4065626fa052', 'Данные о медицинской организации', '/medical-organization', NULL, 1, NULL, 'f6a16253-5040-4db4-8e23-e26f98205428', 'd147efe7-7ab5-4d37-99f2-11a47a4d1e24'),
+        ('47badb02-ca08-416f-966e-639681bcd9b6', 'Проекты', '/projects', NULL, 1, NULL, 'f6a16253-5040-4db4-8e23-e26f98205428', 'd147efe7-7ab5-4d37-99f2-11a47a4d1e24'),
         ('dabcabe7-269a-43e0-af19-660013f360da', 'Структура и органы управления', '/medical-organization-structure', NULL, 1, NULL, '92bb22a8-ac91-4a50-abc0-76573f701efb', 'd147efe7-7ab5-4d37-99f2-11a47a4d1e24'),
         ('93df2b39-c38b-40b6-8bfe-58a535b5ac50', 'Вакансии', '/vacancies', NULL, 1, NULL, '26257f3b-4462-4d2c-a099-63bdd57d830a', 'd147efe7-7ab5-4d37-99f2-11a47a4d1e24'),
         ('dbbaaa8d-1189-4524-8e03-091af0610c37', 'Отзывы', '/comments', NULL, 1, NULL, '990ea74a-42a7-4701-9170-49a1d240f318', 'd147efe7-7ab5-4d37-99f2-11a47a4d1e24'),
