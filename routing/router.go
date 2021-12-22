@@ -21,9 +21,13 @@ import (
 	"mdgkb/mdgkb-server/handlers/vacancies"
 	"mdgkb/mdgkb-server/handlers/vacancyResponse"
 	"mdgkb/mdgkb-server/handlers/valueTypes"
+	"mdgkb/mdgkb-server/handlers/partnerTypes"
+	"mdgkb/mdgkb-server/handlers/partners"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/handlers/timetablePatterns"
+	partnerTypesRouter "mdgkb/mdgkb-server/routing/partnerTypes"
+	partnersRouter "mdgkb/mdgkb-server/routing/partners"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
@@ -101,4 +105,6 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(db, helper))
 	eventsRouter.Init(api.Group("/events"), events.CreateHandler(db, helper))
 	timetablePatternsRouter.Init(api.Group("/timetable-patterns"), timetablePatterns.CreateHandler(db, helper))
+	partnerTypesRouter.Init(api.Group("/partner-types"), partnerTypes.CreateHandler(db, helper))
+	partnersRouter.Init(api.Group("/partners"), partners.CreateHandler(db, helper))
 }

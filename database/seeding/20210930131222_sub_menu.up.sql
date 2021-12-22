@@ -11,4 +11,5 @@ VALUES  ('d6017ef7-dbaa-4f88-8bb3-d59e87396b97', 'Сведения об обра
         ('9af96c54-b064-4d32-9efe-58117ea41b0f', 'Сведения об организациях в сфере охраны здоровья', '/side-organizations', NULL, 3, NULL, '879af4b8-60b8-4139-a86b-d51edfe6a2e3', '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
         ('aacbd183-a7a8-451d-b85c-6df701c578ae', 'Госпитализация', '/hospitalization', NULL, 4, NULL, NULL, '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
         ('ce08a0da-65d3-44d6-aaf0-0dd573c887ee', 'Амбулаторные услуги', '/ambulatory-services', NULL, 5, NULL, NULL, '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
-        ('6d4a9470-83d8-4b3e-9be7-71d2a7e1f3a9', 'Платные медицинские услуги', '/paid-services', NULL, 6, NULL, NULL, '4f6836fe-36eb-440d-8c02-5dd9307f7620');
+        ('6d4a9470-83d8-4b3e-9be7-71d2a7e1f3a9', 'Платные медицинские услуги', '/paid-services', NULL, 6, NULL, NULL, '4f6836fe-36eb-440d-8c02-5dd9307f7620'),
+        ('d5610693-f87a-4b68-8588-a95b71ed40d6', 'Наши партнеры', '/partners', NULL, 1, NULL, NULL, 'd147efe7-7ab5-4d37-99f2-11a47a4d1e24');
