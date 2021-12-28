@@ -7,7 +7,7 @@ import (
 
 type Doctor struct {
 	bun.BaseModel  `bun:"doctors,select:doctors_view,alias:doctors_view"`
-	ID             uuid.NullUUID      `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID             uuid.NullUUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Division       *Division      `bun:"rel:belongs-to" json:"division"`
 	DivisionId     uuid.UUID      `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
 	Human          *Human         `bun:"rel:belongs-to" json:"human"`
@@ -19,10 +19,10 @@ type Doctor struct {
 	FileInfoId     uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
 	DoctorComments DoctorComments `bun:"rel:has-many" json:"doctorComments"`
 
-	AcademicDegree          string         `json:"academicDegree"`
-	AcademicRank            string         `json:"academicRank"`
-	Regalias          Regalias `bun:"rel:has-many" json:"regalias"`
-	RegaliasForDelete []uuid.UUID    `bun:"-" json:"regaliasForDelete"`
+	AcademicDegree    string      `json:"academicDegree"`
+	AcademicRank      string      `json:"academicRank"`
+	Regalias          Regalias    `bun:"rel:has-many" json:"regalias"`
+	RegaliasForDelete []uuid.UUID `bun:"-" json:"regaliasForDelete"`
 
 	Educations          Educations  `bun:"rel:has-many" json:"educations"`
 	EducationsForDelete []uuid.UUID `bun:"-" json:"educationsForDelete"`

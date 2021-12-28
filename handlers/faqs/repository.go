@@ -18,7 +18,7 @@ func (r *Repository) create(item *models.Faq) (err error) {
 
 func (r *Repository) getAll() (models.Faqs, error) {
 	items := make(models.Faqs, 0)
-	err := r.db.NewSelect().Model(&items).Order("faq_order").Scan(r.ctx)
+	err := r.db.NewSelect().Model(&items).Scan(r.ctx)
 	return items, err
 }
 
@@ -38,7 +38,6 @@ func (r *Repository) upsertMany(items models.Faqs) (err error) {
 		Set("id = EXCLUDED.id").
 		Set("question = EXCLUDED.question").
 		Set("answer = EXCLUDED.answer").
-		Set("faq_order = EXCLUDED.faq_order").
 		Model(&items).
 		Exec(r.ctx)
 	return err

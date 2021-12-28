@@ -137,4 +137,3 @@ func (r *Repository) createViewOfNews(newsView *models.NewsView) (err error) {
 	_, err = r.db.NewInsert().Model(newsView).On("CONFLICT (ip_address, news_id) DO NOTHING").Exec(r.ctx)
 	return err
 }
-

@@ -15,7 +15,6 @@ type IHandler interface {
 	EventApplicationsPDF(c *gin.Context)
 }
 
-
 type IService interface {
 	Create(info *models.Event) error
 	Get(string) (*models.Event, error)
@@ -68,12 +67,10 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	return NewHandler(service, filesService, helper)
 }
 
-
 func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
-	repo := NewRepository(db, helper )
-	return NewService(repo, helper )
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
-
 
 // NewHandler constructor
 func NewHandler(s IService, filesService IFilesService, helper *helpers.Helper) *Handler {

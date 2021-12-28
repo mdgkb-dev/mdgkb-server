@@ -15,7 +15,6 @@ func (r *Repository) create(item *models.Event) (err error) {
 	return err
 }
 
-
 func (r *Repository) get(id string) (*models.Event, error) {
 	item := new(models.Event)
 	err := r.db.NewSelect().Model(item).
@@ -57,9 +56,7 @@ func (r *Repository) upsert(item *models.Event) (err error) {
 //	return err
 //}
 
-
 func (r *Repository) createEventApplication(item *models.EventApplication) error {
 	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
-

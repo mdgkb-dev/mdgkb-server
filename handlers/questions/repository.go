@@ -21,7 +21,7 @@ func (r *Repository) getAll(published bool) (models.Questions, error) {
 	if published {
 		query = query.Where("published = true")
 	}
-		err := query.Scan(r.ctx)
+	err := query.Scan(r.ctx)
 	return items, err
 }
 

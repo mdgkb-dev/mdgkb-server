@@ -26,6 +26,7 @@ func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 func (r *Repository) upsertMany(items models.Regalias) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").
+		Set("name = EXCLUDED.name").
 		Model(&items).
 		Exec(r.ctx)
 	return err

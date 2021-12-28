@@ -9,10 +9,10 @@ import (
 
 func (s *FilesService) Upload(c *gin.Context, item *models.Head, files map[string][]*multipart.FileHeader) (err error) {
 	//for i, file := range files {
-		//err := s.uploader.Upload(c, file, item.SetFilePath(&i))
-		//if err != nil {
-		//	return err
-		//}
+	//err := s.uploader.Upload(c, file, item.SetFilePath(&i))
+	//if err != nil {
+	//	return err
+	//}
 	//}
 	return nil
 }

@@ -12,7 +12,7 @@ type EventApplication struct {
 	Event   *Event        `bun:"rel:belongs-to" json:"event"`
 	EventID uuid.NullUUID `bun:"type:uuid" json:"eventId"`
 
-	User   *User         `bun:"rel:belongs-to" json:"user"`
+	User   *User     `bun:"rel:belongs-to" json:"user"`
 	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
 
 	FieldValues FieldValues `bun:"rel:has-many" json:"fieldValues"`

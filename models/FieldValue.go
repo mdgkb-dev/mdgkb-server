@@ -12,9 +12,9 @@ import (
 
 type FieldValue struct {
 	bun.BaseModel `bun:"field_values,alias:field_values"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	ValueString   string    `json:"valueString"`
-	ValueNumber   int       `json:"valueNumber"`
+	ID            uuid.UUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ValueString   string     `json:"valueString"`
+	ValueNumber   int        `json:"valueNumber"`
 	ValueDate     *time.Time `json:"valueDate"`
 
 	Field   *Field    `bun:"rel:belongs-to" json:"field"`
@@ -28,24 +28,24 @@ type FieldValue struct {
 
 type FieldValues []*FieldValue
 
-func (items FieldValues) sortByFieldName()  {
+func (items FieldValues) sortByFieldName() {
 	sort.Slice(items, func(i, j int) bool {
 		return items[i].Field.Order < items[j].Field.Order
 	})
 }
 
-func (items FieldValues) PrepareValuesForPrint()  {
+func (items FieldValues) PrepareValuesForPrint() {
 	items.sortByFieldName()
 	items.writeValueToPrint()
 }
 
-func (items FieldValues) writeValueToPrint()  {
+func (items FieldValues) writeValueToPrint() {
 	for i := range items {
 		items[i].writeValueToPrint()
 	}
 }
 
-func (i *FieldValue) writeValueToPrint()  {
+func (i *FieldValue) writeValueToPrint() {
 	if i.ValueDate != nil {
 		i.Value = fmt.Sprintf("%d-%d-%d", i.ValueDate.Year(), i.ValueDate.Month(), i.ValueDate.Day())
 	}

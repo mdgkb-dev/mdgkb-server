@@ -12,10 +12,7 @@ func NewHTTPHelper() *HTTPHelper {
 	return &HTTPHelper{}
 }
 
-
-
-func (i *HTTPHelper) SetFileHeaders(c *gin.Context, fileName string)  {
+func (i *HTTPHelper) SetFileHeaders(c *gin.Context, fileName string) {
 	c.Header("Content-Description", "File Transfer")
 	c.Header("Content-Disposition", fmt.Sprintf(`attachment; filename="%s"`, fileName))
 }
-

@@ -93,7 +93,6 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	return NewHandler(service, filesService, helper)
 }
 
-
 // NewHandler constructor
 func NewHandler(s IService, filesService IFilesService, helper *helpers.Helper) *Handler {
 	return &Handler{service: s, filesService: filesService, helper: helper}

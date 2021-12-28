@@ -20,7 +20,6 @@ func (h *Handler) CreateEventApplication(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-
 func (h *Handler) EventApplicationsPDF(c *gin.Context) {
 	id := c.Param("id")
 	item, err := h.service.Get(id)

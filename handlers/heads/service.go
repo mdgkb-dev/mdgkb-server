@@ -94,7 +94,6 @@ func (s *Service) Get(id string) (*models.Head, error) {
 	return item, nil
 }
 
-
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }

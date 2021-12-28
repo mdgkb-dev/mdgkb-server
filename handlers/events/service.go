@@ -22,7 +22,6 @@ func (s *Service) Create(item *models.Event) error {
 	return nil
 }
 
-
 func (s *Service) Get(id string) (*models.Event, error) {
 	item, err := s.repository.get(id)
 	if err != nil {
@@ -92,5 +91,3 @@ func (s *Service) CreateEventApplication(item *models.EventApplication) error {
 	}
 	return nil
 }
-
-

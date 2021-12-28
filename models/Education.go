@@ -24,7 +24,7 @@ type Education struct {
 	EducationAccreditation   *EducationAccreditation `bun:"rel:belongs-to" json:"educationAccreditation"`
 
 	DoctorID uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
-	Doctor   *Doctor   `bun:"rel:belongs-to" json:"doctor"`
+	Doctor   *Doctor       `bun:"rel:belongs-to" json:"doctor"`
 }
 
 type Educations []*Education

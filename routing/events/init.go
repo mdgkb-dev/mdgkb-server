@@ -1,4 +1,5 @@
 package events
+
 import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"

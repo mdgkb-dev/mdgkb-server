@@ -13,7 +13,7 @@ type Project struct {
 	Slug          string        `json:"slug"`
 
 	ProjectItems          ProjectItems `bun:"rel:has-many" json:"projectItems"`
-	ProjectItemsForDelete []uuid.UUID     `bun:"-" json:"projectItemsForDelete"`
+	ProjectItemsForDelete []uuid.UUID  `bun:"-" json:"projectItemsForDelete"`
 }
 
 type Projects []*Project

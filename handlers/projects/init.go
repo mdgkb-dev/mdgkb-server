@@ -41,8 +41,8 @@ type IRepository interface {
 }
 
 type Handler struct {
-	service      IService
-	helper       *helpers.Helper
+	service IService
+	helper  *helpers.Helper
 }
 
 type Service struct {
@@ -64,7 +64,7 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 
 // NewHandler constructor
 func NewHandler(s IService, helper *helpers.Helper) *Handler {
-	return &Handler{service: s,  helper: helper}
+	return &Handler{service: s, helper: helper}
 }
 
 func NewService(repository IRepository, helper *helpers.Helper) *Service {
@@ -74,4 +74,3 @@ func NewService(repository IRepository, helper *helpers.Helper) *Service {
 func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
 	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }
-

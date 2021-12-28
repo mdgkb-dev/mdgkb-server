@@ -44,7 +44,7 @@ type IRepository interface {
 
 type Handler struct {
 	service IService
-	helper       *helpers.Helper
+	helper  *helpers.Helper
 }
 
 type Service struct {

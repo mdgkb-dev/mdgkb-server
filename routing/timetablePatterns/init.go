@@ -1,8 +1,8 @@
 package timetablePatterns
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/timetablePatterns"
 	"github.com/gin-gonic/gin"
+	handler "mdgkb/mdgkb-server/handlers/timetablePatterns"
 )
 
 func Init(r *gin.RouterGroup, h handler.IHandler) {

@@ -11,10 +11,10 @@ type Regalia struct {
 	Name          string    `json:"name"`
 
 	DoctorID uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
-	Doctor   *Doctor   `bun:"rel:belongs-to" json:"doctor"`
+	Doctor   *Doctor       `bun:"rel:belongs-to" json:"doctor"`
 
 	HeadID uuid.NullUUID `bun:"type:uuid" json:"headId"`
-	Head   *Head   `bun:"rel:belongs-to" json:"head"`
+	Head   *Head         `bun:"rel:belongs-to" json:"head"`
 }
 
 type Regalias []*Regalia

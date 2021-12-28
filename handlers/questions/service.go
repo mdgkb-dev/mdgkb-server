@@ -1,8 +1,8 @@
 package questions
 
 import (
-	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/handlers/human"
+	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.Question) error {

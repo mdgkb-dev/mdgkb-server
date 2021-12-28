@@ -40,8 +40,6 @@ func (h *Handler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-
-
 func (h *Handler) Delete(c *gin.Context) {
 	err := h.service.Delete(c.Param("id"))
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
