@@ -17,6 +17,7 @@ import (
 	paidProgramsGroups "mdgkb/mdgkb-server/handlers/paidProgramsGroups"
 	"mdgkb/mdgkb-server/handlers/partnerTypes"
 	"mdgkb/mdgkb-server/handlers/partners"
+	"mdgkb/mdgkb-server/handlers/preparations"
 	"mdgkb/mdgkb-server/handlers/projects"
 	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/search"
@@ -50,6 +51,7 @@ import (
 	paidProgramsGroupsRouter "mdgkb/mdgkb-server/routing/paidProgramsGroups"
 	partnerTypesRouter "mdgkb/mdgkb-server/routing/partnerTypes"
 	partnersRouter "mdgkb/mdgkb-server/routing/partners"
+	preparationsRouter "mdgkb/mdgkb-server/routing/preparations"
 	projectsRouter "mdgkb/mdgkb-server/routing/projects"
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 	searchRouter "mdgkb/mdgkb-server/routing/search"
@@ -113,4 +115,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	paidProgramsGroupsRouter.Init(api.Group("/paid-programs-groups"), paidProgramsGroups.CreateHandler(db, helper))
 	partnerTypesRouter.Init(api.Group("/partner-types"), partnerTypes.CreateHandler(db, helper))
 	partnersRouter.Init(api.Group("/partners"), partners.CreateHandler(db, helper))
+	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(db, helper))
 }
