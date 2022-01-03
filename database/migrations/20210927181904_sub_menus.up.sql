@@ -2,6 +2,8 @@ CREATE TABLE sub_menus
 (
     id uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
     name varchar,
+    description varchar,
+    color varchar,
     link VARCHAR,
     page_id uuid  ,
     sub_menu_order int not null default 1,
