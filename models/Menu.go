@@ -20,11 +20,35 @@ type Menu struct {
 	Icon          *FileInfo     `bun:"rel:belongs-to" json:"icon"`
 	IconId        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
 
-	SubMenus          SubMenus `bun:"rel:has-many" json:"subMenus"`
-	SubMenusForDelete []string `bun:"-" json:"subMenusForDelete"`
+	SubMenus          SubMenus    `bun:"rel:has-many" json:"subMenus"`
+	SubMenusForDelete []uuid.UUID `bun:"-" json:"subMenusForDelete"`
 }
 
 type Menus []*Menu
+
+func (items Menus) GetIcons() FileInfos {
+	itemsForGet := make(FileInfos, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.Icon)
+	}
+	return itemsForGet
+}
+
+func (items Menus) GetSubMenus() SubMenus {
+	itemsForGet := make(SubMenus, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.SubMenus...)
+	}
+	return itemsForGet
+}
+
+func (items Menus) GetSubMenusForDelete() []uuid.UUID {
+	itemsForGet := make([]uuid.UUID, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.SubMenusForDelete...)
+	}
+	return itemsForGet
+}
 
 func (item *Menu) SetIdForChildren() {
 	if len(item.SubMenus) == 0 {
@@ -32,6 +56,12 @@ func (item *Menu) SetIdForChildren() {
 	}
 	for i := range item.SubMenus {
 		item.SubMenus[i].MenuId = item.ID
+	}
+}
+
+func (items Menus) SetIdForChildren() {
+	for i := range items {
+		items[i].SetIdForChildren()
 	}
 }
 
@@ -49,4 +79,10 @@ func (item *Menu) SetFilePath(fileID *string) *string {
 
 func (item *Menu) SetForeignKeys() {
 	item.IconId = item.Icon.ID
+}
+
+func (items Menus) SetForeignKeys() {
+	for i := range items {
+		items[i].SetForeignKeys()
+	}
 }
