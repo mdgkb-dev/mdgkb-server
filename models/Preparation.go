@@ -12,6 +12,9 @@ type Preparation struct {
 
 	PreparationRulesGroups          PreparationRulesGroups `bun:"rel:has-many" json:"preparationRulesGroups"`
 	PreparationRulesGroupsForDelete []uuid.UUID            `bun:"-" json:"preparationRulesGroupsForDelete"`
+
+	PreparationsToTags          PreparationsToTags `bun:"rel:has-many" json:"preparationsToTags"`
+	PreparationsToTagsForDelete []uuid.UUID        `bun:"-" json:"preparationsToTagsForDelete"`
 }
 
 type Preparations []*Preparation
@@ -19,6 +22,9 @@ type Preparations []*Preparation
 func (item *Preparation) SetIdForChildren() {
 	for i := range item.PreparationRulesGroups {
 		item.PreparationRulesGroups[i].PreparationID = item.ID
+	}
+	for i := range item.PreparationsToTags {
+		item.PreparationsToTags[i].PreparationID = item.ID
 	}
 }
 
@@ -36,10 +42,26 @@ func (items Preparations) GetPreparationRulesGroups() PreparationRulesGroups {
 	return itemsForGet
 }
 
-func (items Preparations) GetPreparationRulesGroupsForDeleted() []uuid.UUID {
+func (items Preparations) GetPreparationRulesGroupsForDelete() []uuid.UUID {
 	itemsForGet := make([]uuid.UUID, 0)
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.PreparationRulesGroupsForDelete...)
+	}
+	return itemsForGet
+}
+
+func (items Preparations) GetPreparationsToTags() PreparationsToTags {
+	itemsForGet := make(PreparationsToTags, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.PreparationsToTags...)
+	}
+	return itemsForGet
+}
+
+func (items Preparations) GetPreparationsToTagsForDelete() []uuid.UUID {
+	itemsForGet := make([]uuid.UUID, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.PreparationsToTagsForDelete...)
 	}
 	return itemsForGet
 }

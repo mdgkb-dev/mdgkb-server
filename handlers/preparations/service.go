@@ -2,6 +2,7 @@ package preparations
 
 import (
 	"mdgkb/mdgkb-server/handlers/preparationRulesGroups"
+	"mdgkb/mdgkb-server/handlers/preparationsToTags"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -13,6 +14,11 @@ func (s *Service) Create(item *models.Preparation) error {
 	item.SetIdForChildren()
 
 	err = preparationRulesGroups.CreateService(s.repository.getDB()).CreateMany(item.PreparationRulesGroups)
+	if err != nil {
+		return err
+	}
+
+	err = preparationsToTags.CreateService(s.repository.getDB()).CreateMany(item.PreparationsToTags)
 	if err != nil {
 		return err
 	}
@@ -35,6 +41,17 @@ func (s *Service) Update(item *models.Preparation) error {
 	if err != nil {
 		return err
 	}
+
+	preparationsToTagsService := preparationsToTags.CreateService(s.repository.getDB())
+	err = preparationsToTagsService.UpsertMany(item.PreparationsToTags)
+	if err != nil {
+		return err
+	}
+	err = preparationsToTagsService.DeleteMany(item.PreparationsToTagsForDelete)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -72,9 +89,23 @@ func (s *Service) UpsertMany(item PreparationsWithDeleted) error {
 	if err != nil {
 		return err
 	}
-	err = preparationRulesGroupsService.DeleteMany(item.Preparations.GetPreparationRulesGroupsForDeleted())
+	err = preparationRulesGroupsService.DeleteMany(item.Preparations.GetPreparationRulesGroupsForDelete())
+	if err != nil {
+		return err
+	}
+
+	preparationsToTagsService := preparationsToTags.CreateService(s.repository.getDB())
+	err = preparationsToTagsService.UpsertMany(item.Preparations.GetPreparationsToTags())
+	if err != nil {
+		return err
+	}
+	err = preparationsToTagsService.DeleteMany(item.Preparations.GetPreparationsToTagsForDelete())
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (s *Service) GetTags() (models.PreparationsTags, error) {
+	return s.repository.getTags()
 }

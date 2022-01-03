@@ -84,3 +84,11 @@ func (h *Handler) UpdateMany(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, items.Preparations)
 }
+
+func (h *Handler) GetTags(c *gin.Context) {
+	items, err := h.service.GetTags()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}

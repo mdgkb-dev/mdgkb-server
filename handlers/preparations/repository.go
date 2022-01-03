@@ -22,6 +22,7 @@ func (r *Repository) getAll() (models.Preparations, error) {
 	items := make(models.Preparations, 0)
 	err := r.db.NewSelect().Model(&items).
 		Relation("PreparationRulesGroups.PreparationRules").
+		Relation("PreparationsToTags").
 		Scan(r.ctx)
 	return items, err
 }
@@ -62,4 +63,11 @@ func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) getTags() (models.PreparationsTags, error) {
+	items := make(models.PreparationsTags, 0)
+	err := r.db.NewSelect().Model(&items).
+		Scan(r.ctx)
+	return items, err
 }

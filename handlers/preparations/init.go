@@ -14,6 +14,7 @@ import (
 
 type IHandler interface {
 	GetAll(c *gin.Context)
+	GetTags(c *gin.Context)
 	Get(c *gin.Context)
 	Create(c *gin.Context)
 	Delete(c *gin.Context)
@@ -28,6 +29,7 @@ type IService interface {
 	Delete(string) error
 	Update(*models.Preparation) error
 	UpsertMany(PreparationsWithDeleted) error
+	GetTags() (models.PreparationsTags, error)
 }
 
 type IRepository interface {
@@ -39,6 +41,7 @@ type IRepository interface {
 	update(*models.Preparation) error
 	upsertMany(models.Preparations) error
 	deleteMany([]uuid.UUID) error
+	getTags() (models.PreparationsTags, error)
 }
 
 type IFilesService interface {
