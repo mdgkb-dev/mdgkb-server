@@ -10,6 +10,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/heads"
+	"mdgkb/mdgkb-server/handlers/menus"
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/newsSlides"
 	"mdgkb/mdgkb-server/handlers/pages"
@@ -41,7 +42,7 @@ import (
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
-	"mdgkb/mdgkb-server/routing/menu"
+	menusRouter "mdgkb/mdgkb-server/routing/menus"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
 	newsSlidesRouter "mdgkb/mdgkb-server/routing/newsSlides"
 	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
@@ -97,7 +98,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	timetables.Init(api.Group("/timetables"), db)
 
 	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
-	menu.Init(api.Group("/menus"), db, localUploaderNew)
+	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(db, helper))
 	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(db, helper))
 	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(db, helper))
 	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, helper))

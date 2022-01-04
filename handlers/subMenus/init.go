@@ -2,6 +2,7 @@ package subMenus
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -15,7 +16,7 @@ type IRepository interface {
 	getDB() *bun.DB
 	createMany(menus models.SubMenus) error
 	upsertMany(menus models.SubMenus) error
-	deleteMany([]string) error
+	deleteMany([]uuid.UUID) error
 }
 
 type Handler struct {
