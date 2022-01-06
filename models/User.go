@@ -17,6 +17,9 @@ type User struct {
 
 	Children          Children    `bun:"rel:has-many" json:"children"`
 	ChildrenForDelete []uuid.UUID `bun:"-" json:"childrenForDelete"`
+
+	DonorRulesUsers          DonorRulesUsers `bun:"rel:has-many" json:"donorRulesUsers"`
+	DonorRulesUsersForDelete []uuid.UUID     `bun:"-" json:"donorRulesUsersForDelete"`
 }
 
 type Users []*User
@@ -46,5 +49,8 @@ func (i *User) SetForeignKeys() {
 func (i *User) SetIdForChildren() {
 	for index := range i.Children {
 		i.Children[index].UserID = i.ID
+	}
+	for index := range i.Children {
+		i.DonorRulesUsers[index].UserID = i.ID
 	}
 }

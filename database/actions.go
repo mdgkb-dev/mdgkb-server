@@ -48,6 +48,7 @@ func initMigration(migrator *migrate.Migrator) {
 }
 
 func runMigration(migrator *migrate.Migrator) {
+
 	group, err := migrator.Migrate(context.TODO())
 	if err != nil {
 		log.Fatalf("fail migrate: %s", err)

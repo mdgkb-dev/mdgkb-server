@@ -23,6 +23,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Model(&item).
 		Relation("Human").
 		Relation("Questions").
+		Relation("DonorRulesUsers.DonorRule").
 		Relation("Children.Human").
 		Where("users.id = ?", id).
 		Scan(r.ctx)

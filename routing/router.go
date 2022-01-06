@@ -7,6 +7,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
+	"mdgkb/mdgkb-server/handlers/donorRules"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/heads"
@@ -37,6 +38,7 @@ import (
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
+	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
 	"mdgkb/mdgkb-server/routing/educationalOraganization"
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
@@ -117,4 +119,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	partnerTypesRouter.Init(api.Group("/partner-types"), partnerTypes.CreateHandler(db, helper))
 	partnersRouter.Init(api.Group("/partners"), partners.CreateHandler(db, helper))
 	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(db, helper))
+	donorRulesRouter.Init(api.Group("/donor-rules"), donorRules.CreateHandler(db, helper))
 }

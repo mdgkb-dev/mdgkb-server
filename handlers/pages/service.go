@@ -1,7 +1,6 @@
 package pages
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/pageImages"
 	"mdgkb/mdgkb-server/handlers/pagesDocuments"
 	"mdgkb/mdgkb-server/models"
@@ -57,18 +56,15 @@ func (s *Service) Update(item *models.Page) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(1)
 	pageImagesService := pageImages.CreateService(s.repository.getDB())
 	err = pageImagesService.UpsertMany(item.PageImages)
 	if err != nil {
 		return err
 	}
-	fmt.Println(2)
 	err = pageImagesService.DeleteMany(item.PageImagesForDelete)
 	if err != nil {
 		return err
 	}
-	fmt.Println(3)
 	return nil
 }
 
