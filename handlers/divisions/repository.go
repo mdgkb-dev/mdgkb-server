@@ -17,26 +17,34 @@ func (r *Repository) create(item *models.Division) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (items models.Divisions, err error) {
-	err = r.db.NewSelect().Model(&items).
+func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error) {
+	q := r.db.NewSelect().Model(&items).
 		Relation("Entrance.Building").
-		Relation("DivisionImages.FileInfo").
-		Order("name").
-		Scan(r.ctx)
+		Relation("DivisionImages.FileInfo")
+	if onlyShowed {
+		q = q.Where("divisions.show = true")
+	}
+	err = q.Order("name").Scan(r.ctx)
 	return items, err
 }
 
-func (r *Repository) get(slug string) (*models.Division, error) {
+func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error) {
 	item := models.Division{}
-	err := r.db.NewSelect().
+	q := r.db.NewSelect().
 		Model(&item).
 		Relation("Entrance.Building").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Schedule.ScheduleItems").
 		Relation("DivisionImages.FileInfo").
 		Relation("DivisionComments.Comment.User").
-		Relation("Timetable.TimetableDays.BreakPeriods").
-		Relation("Doctors.FileInfo").
+		Relation("Timetable.TimetableDays.BreakPeriods")
+	if onlyShowed {
+		q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
+			return query.Where("doctors_view.show = true")
+		})
+	}
+
+	err := q.Relation("Doctors.FileInfo").
 		Relation("Doctors.Human").
 		Relation("Vacancies").
 		Relation("VisitingRules").

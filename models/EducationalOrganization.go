@@ -10,6 +10,9 @@ type EducationalOrganization struct {
 	EducationalOrganizationTeachers          EducationalOrganizationTeachers `json:"educationalOrganizationTeachers"`
 	EducationalOrganizationTeachersForDelete []string                        `json:"educationalOrganizationTeachersForDelete"`
 
+	EducationalOrganizationAcademics          EducationalOrganizationAcademics `json:"educationalOrganizationAcademics"`
+	EducationalOrganizationAcademicsForDelete []string                         `json:"educationalOrganizationAcademicsForDelete"`
+
 	EducationalOrganizationDocumentTypes          EducationalOrganizationDocumentTypes `json:"educationalOrganizationDocumentTypes"`
 	EducationalOrganizationDocumentTypesForDelete []string                             `json:"educationalOrganizationDocumentTypesForDelete"`
 

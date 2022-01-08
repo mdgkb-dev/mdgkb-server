@@ -17,10 +17,11 @@ type Division struct {
 	ShowCommonVisitingRules bool          `bun:"default:true" json:"showCommonVisitingRules"`
 	Doctors                 Doctors       `bun:"rel:has-many" json:"doctors"`
 	Vacancies               Vacancies     `bun:"rel:has-many" json:"vacancies"`
+	Show                    bool          `json:"show"`
 
 	Entrance                *Entrance        `bun:"rel:belongs-to" json:"entrance"`
-	EntranceId              uuid.UUID        `bun:"type:uuid" json:"entranceId"`
-	FloorId                 uuid.UUID        `bun:"type:uuid" json:"floorId"`
+	EntranceId              uuid.NullUUID    `bun:"type:uuid" json:"entranceId"`
+	FloorId                 uuid.NullUUID    `bun:"type:uuid" json:"floorId"`
 	Timetable               *Timetable       `bun:"rel:belongs-to" json:"timetable"`
 	TimetableId             uuid.UUID        `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 	Schedule                *Schedule        `bun:"rel:belongs-to" json:"schedule"`

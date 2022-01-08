@@ -34,6 +34,10 @@ func (h *Handler) GetAll(c *gin.Context) {
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	err = h.service.setQueryFilter(c)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	items, err := h.service.GetAll(&doctorsParams)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -42,7 +46,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	item, err := h.service.Get(c.Param("id"))
+	item, err := h.service.Get(c.Param("slug"))
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -112,4 +116,25 @@ func (h *Handler) RemoveComment(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err)
 	}
 	c.JSON(http.StatusOK, gin.H{})
+}
+
+func (h *Handler) CreateSlugs(c *gin.Context) {
+	err := h.service.CreateSlugs()
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, nil)
+}
+
+func (h *Handler) Search(c *gin.Context) {
+	query := c.Query("query")
+	if query != "" {
+		items, err := h.service.Search(query)
+		if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+			return
+		}
+		c.JSON(http.StatusOK, items)
+		return
+	}
+	c.JSON(http.StatusOK, nil)
 }

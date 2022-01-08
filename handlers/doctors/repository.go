@@ -1,6 +1,7 @@
 package doctors
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 
@@ -16,23 +17,25 @@ func (r *Repository) create(item *models.Doctor) (err error) {
 	return err
 }
 
-func (r *Repository) getAll(params *doctorsParams) (models.Doctors, error) {
-	items := make(models.Doctors, 0)
-	query := r.db.NewSelect().Model(&items).
+func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCount, err error) {
+	query := r.db.NewSelect().Model(&items.Doctors).
 		Relation("Human").
 		Relation("Division").
 		Relation("FileInfo").
 		Order("human.surname")
-	if params.Limit != 0 {
-		query = query.Limit(params.Limit)
+
+	if r.queryFilter != nil {
+		r.helper.HTTP.CreatePaginationQuery(query, r.queryFilter.Pagination)
 	}
-	err := query.Scan(r.ctx)
+	//r.helper.HTTP.CreateFilter(query, r.queryFilter.FilterModels)
+
+	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
 
-func (r *Repository) get(id string) (*models.Doctor, error) {
+func (r *Repository) get(slug string) (*models.Doctor, error) {
 	item := models.Doctor{}
-	err := r.db.NewSelect().Model(&item).Where("doctors_view.id = ?", id).
+	err := r.db.NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
 		Relation("Human").
 		Relation("FileInfo").
 		Relation("Division.Timetable.TimetableDays.Weekday").
@@ -82,4 +85,34 @@ func (r *Repository) updateComment(item *models.DoctorComment) error {
 func (r *Repository) removeComment(id string) error {
 	_, err := r.db.NewDelete().Model(&models.DoctorComment{}).Where("id = ?", id).Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) upsertMany(items models.Doctors) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Set("id = EXCLUDED.id").
+		Set("show = EXCLUDED.show").
+		Set("division_id = EXCLUDED.division_id").
+		Model(&items).
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.HTTP.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Repository) search(search string) (models.Doctors, error) {
+	items := make(models.Doctors, 0)
+	err := r.db.NewSelect().
+		Model(&items).
+		Relation("Human").
+		Where("lower(regexp_replace(human.name, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", "%"+search+"%").
+		WhereOr("lower(regexp_replace(human.surname, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", "%"+search+"%").
+		WhereOr("lower(regexp_replace(human.patronymic, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", "%"+search+"%").
+		Scan(r.ctx)
+	return items, err
 }

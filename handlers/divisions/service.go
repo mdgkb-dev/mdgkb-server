@@ -2,6 +2,7 @@ package divisions
 
 import (
 	"mdgkb/mdgkb-server/handlers/divisionImages"
+	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/schedules"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/handlers/visitingRules"
@@ -22,6 +23,12 @@ func (s *Service) Create(item *models.Division) error {
 	}
 	item.ScheduleId = item.Schedule.ID
 	item.Slug = s.helper.MakeSlug(item.Name)
+
+	doctorsService := doctors.CreateService(s.repository.getDB(), s.helper)
+	err = doctorsService.UpsertMany(item.Doctors)
+	if err != nil {
+		return err
+	}
 
 	err = s.repository.create(item)
 	if err != nil {
@@ -56,6 +63,12 @@ func (s *Service) Update(item *models.Division) error {
 	}
 	item.ScheduleId = item.Schedule.ID
 
+	doctorsService := doctors.CreateService(s.repository.getDB(), s.helper)
+	err = doctorsService.UpsertMany(item.Doctors)
+	if err != nil {
+		return err
+	}
+
 	divisionImagesService := divisionImages.CreateService(s.repository.getDB())
 	err = divisionImagesService.DeleteMany(item.DivisionImagesForDelete)
 	if err != nil {
@@ -78,12 +91,12 @@ func (s *Service) Update(item *models.Division) error {
 	return s.repository.update(item)
 }
 
-func (s *Service) GetAll() (models.Divisions, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(onlyShowed bool) (models.Divisions, error) {
+	return s.repository.getAll(onlyShowed)
 }
 
-func (s *Service) Get(id string) (*models.Division, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(id string, onlyShowed bool) (*models.Division, error) {
+	item, err := s.repository.get(id, onlyShowed)
 	if err != nil {
 		return nil, err
 	}

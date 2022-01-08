@@ -9,7 +9,7 @@ type Doctor struct {
 	bun.BaseModel  `bun:"doctors,select:doctors_view,alias:doctors_view"`
 	ID             uuid.NullUUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Division       *Division      `bun:"rel:belongs-to" json:"division"`
-	DivisionId     uuid.UUID      `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
+	DivisionId     uuid.NullUUID  `bun:"type:uuid" json:"divisionId,omitempty"`
 	Human          *Human         `bun:"rel:belongs-to" json:"human"`
 	HumanId        uuid.UUID      `bun:"type:uuid" json:"humanId"`
 	Schedule       string         `json:"schedule"`
@@ -21,6 +21,7 @@ type Doctor struct {
 
 	AcademicDegree    string      `json:"academicDegree"`
 	AcademicRank      string      `json:"academicRank"`
+	Show              bool        `json:"show"`
 	Regalias          Regalias    `bun:"rel:has-many" json:"regalias"`
 	RegaliasForDelete []uuid.UUID `bun:"-" json:"regaliasForDelete"`
 

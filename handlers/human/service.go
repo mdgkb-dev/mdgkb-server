@@ -54,6 +54,7 @@ func (s *Service) UpsertMany(items models.Humans) error {
 	if err != nil {
 		return err
 	}
+	//
 	items.SetForeignKeys()
 	for i := range items {
 		items[i].Slug = s.helper.MakeSlug(items[i].GetFullName())

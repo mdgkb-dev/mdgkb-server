@@ -18,7 +18,7 @@ type Pagination struct {
 	Limit  *int
 }
 
-func CreateQueryFilter(c *gin.Context) (*QueryFilter, error) {
+func (i *HTTPHelper) CreateQueryFilter(c *gin.Context) (*QueryFilter, error) {
 	filterModels, err := CreateFilterModels(c)
 	if err != nil {
 		return nil, err

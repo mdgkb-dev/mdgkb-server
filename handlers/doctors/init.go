@@ -3,6 +3,7 @@ package doctors
 import (
 	"context"
 	"mdgkb/mdgkb-server/helpers"
+	httpHelper2 "mdgkb/mdgkb-server/helpers/httpHelperV2"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -20,11 +21,15 @@ type IHandler interface {
 	CreateComment(c *gin.Context)
 	UpdateComment(c *gin.Context)
 	RemoveComment(c *gin.Context)
+	CreateSlugs(c *gin.Context)
+	Search(c *gin.Context)
 }
 
 type IService interface {
+	setQueryFilter(*gin.Context) error
+
 	Create(*models.Doctor) error
-	GetAll(*doctorsParams) (models.Doctors, error)
+	GetAll(*doctorsParams) (models.DoctorsWithCount, error)
 	Get(string) (*models.Doctor, error)
 	Delete(string) error
 	Update(*models.Doctor) error
@@ -33,12 +38,17 @@ type IService interface {
 	CreateComment(*models.DoctorComment) error
 	UpdateComment(*models.DoctorComment) error
 	RemoveComment(string) error
+
+	UpsertMany(models.Doctors) error
+	CreateSlugs() error
+	Search(string) (models.Doctors, error)
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	create(*models.Doctor) error
-	getAll(*doctorsParams) (models.Doctors, error)
+	getAll(*doctorsParams) (models.DoctorsWithCount, error)
 	get(string) (*models.Doctor, error)
 	getByDivisionID(string) (models.Doctors, error)
 	delete(string) error
@@ -46,6 +56,8 @@ type IRepository interface {
 	createComment(*models.DoctorComment) error
 	updateComment(*models.DoctorComment) error
 	removeComment(string) error
+	upsertMany(models.Doctors) error
+	search(string) (models.Doctors, error)
 }
 
 type IFilesService interface {
@@ -64,9 +76,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helpers.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helpers.Helper
+	queryFilter *httpHelper2.QueryFilter
 }
 
 type FilesService struct {
@@ -78,6 +91,11 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
+}
+
+func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor

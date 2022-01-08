@@ -41,7 +41,9 @@ func (item *Human) GetFullName() string {
 func (items Humans) GetContactInfos() ContactInfos {
 	itemsForGet := make(ContactInfos, len(items))
 	for i := range items {
-		itemsForGet[i] = items[i].ContactInfo
+		if items[i].ContactInfo != nil {
+			itemsForGet[i] = items[i].ContactInfo
+		}
 	}
 	return itemsForGet
 }

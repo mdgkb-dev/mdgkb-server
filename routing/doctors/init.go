@@ -9,7 +9,9 @@ import (
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/", h.GetAll)
-	r.GET("/:id", h.Get)
+	//r.GET("/create-slugs", h.CreateSlugs)
+	r.GET("/search", h.Search)
+	r.GET("/:slug", h.Get)
 	r.GET("/division/:id", h.GetByDivisionID)
 	r.POST("", h.Create)
 	r.DELETE("/:id", h.Delete)
