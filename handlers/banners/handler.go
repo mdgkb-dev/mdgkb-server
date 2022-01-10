@@ -34,7 +34,6 @@ func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
 func (h *Handler) GetAll(c *gin.Context) {
 	items, err := h.repository.getAll(c)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	c.JSON(200, items)
@@ -43,7 +42,6 @@ func (h *Handler) GetAll(c *gin.Context) {
 func (h *Handler) Get(c *gin.Context) {
 	item, err := h.repository.get(c, c.Param("id"))
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(500, err)
 	}
 	c.JSON(200, item)
@@ -54,19 +52,16 @@ func (h *Handler) Create(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	err := json.Unmarshal([]byte(form.Value["form"][0]), &item)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(500, err)
 	}
 
 	err = h.uploader.Upload(c, form.File["banners"][0], item.FileInfo.FileSystemPath)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(500, err)
 	}
 
 	err = h.repository.create(c, &item)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(500, err)
 	}
 

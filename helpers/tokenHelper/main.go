@@ -12,10 +12,11 @@ import (
 )
 
 type TokenHelper struct {
+	TokenSecret string
 }
 
-func NewTokenHelper() *TokenHelper {
-	return &TokenHelper{}
+func NewTokenHelper(tokenSecret string) *TokenHelper {
+	return &TokenHelper{TokenSecret: tokenSecret}
 }
 
 type AccessDetails struct {
@@ -34,7 +35,7 @@ type TokenDetails struct {
 
 func (h *TokenHelper) CreateToken(userID string) (*TokenDetails, error) {
 	td := &TokenDetails{}
-	td.AtExpires = time.Now().Add(time.Hour * 24).Unix()
+	td.AtExpires = time.Now().Add(time.Minute).Unix()
 	td.AccessUuid = uuid.NewString()
 
 	td.RtExpires = time.Now().Add(time.Hour * 24 * 7).Unix()
@@ -42,29 +43,95 @@ func (h *TokenHelper) CreateToken(userID string) (*TokenDetails, error) {
 
 	var err error
 	//Creating Access Token
-	os.Setenv("ACCESS_SECRET", "jdnfksdmfksd") //this should be in an env file
+	os.Setenv("ACCESS_SECRET", h.TokenSecret) //this should be in an env file
 	atClaims := jwt.MapClaims{}
 	atClaims["authorized"] = true
 	atClaims["access_uuid"] = td.AccessUuid
 	atClaims["user_id"] = userID
 	atClaims["exp"] = td.AtExpires
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
-	td.AccessToken, err = at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
+	td.AccessToken, err = at.SignedString([]byte(h.TokenSecret))
 	if err != nil {
 		return nil, err
 	}
 	//Creating Refresh Token
-	os.Setenv("REFRESH_SECRET", "mcmvmkmsdnfsdmfdsjf") //this should be in an env file
+	os.Setenv("REFRESH_SECRET", h.TokenSecret)
 	rtClaims := jwt.MapClaims{}
 	rtClaims["refresh_uuid"] = td.RefreshUuid
 	rtClaims["user_id"] = userID
 	rtClaims["exp"] = td.RtExpires
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
-	td.RefreshToken, err = rt.SignedString([]byte(os.Getenv("REFRESH_SECRET")))
+	td.RefreshToken, err = rt.SignedString([]byte(h.TokenSecret))
 	if err != nil {
 		return nil, err
 	}
 	return td, nil
+}
+func (h *TokenHelper) RefreshToken(refreshToken string) (*TokenDetails, error) {
+	token, err := h.VerifyToken(refreshToken)
+	claims, ok := token.Claims.(jwt.MapClaims)
+	var userID string
+	if ok && token.Valid {
+		userID, ok = claims["user_id"].(string)
+		if !ok {
+			return nil, err
+		}
+	}
+	return h.CreateToken(userID)
+}
+
+func (h *TokenHelper) GetUserID(c *gin.Context) (uuid.UUID, error) {
+	accessDetail, err := h.extractTokenMetadata(c.Request)
+	if err != nil {
+		return uuid.New(), err
+	}
+	uuidFromString, err := uuid.Parse(accessDetail.UserID)
+	return uuidFromString, err
+}
+
+func (h *TokenHelper) VerifyToken(tokenString string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(h.TokenSecret), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
+}
+
+func (h *TokenHelper) extractTokenMetadata(r *http.Request) (*AccessDetails, error) {
+	token, err := h.VerifyToken(h.extractToken(r))
+	if err != nil {
+		return nil, err
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if ok && token.Valid {
+		accessUuid, ok := claims["access_uuid"].(string)
+		if !ok {
+			return nil, err
+		}
+		userID, ok := claims["user_id"].(string)
+		if !ok {
+			return nil, err
+		}
+		return &AccessDetails{
+			AccessUuid: accessUuid,
+			UserID:     userID,
+		}, nil
+	}
+	return nil, err
+}
+
+func (h *TokenHelper) extractToken(r *http.Request) string {
+	bearToken := r.Header.Get("token")
+	strArr := strings.Split(bearToken, " ")
+	if len(strArr) == 2 {
+		return strArr[1]
+	}
+	return bearToken
 }
 
 //
@@ -111,59 +178,3 @@ func (h *TokenHelper) CreateToken(userID string) (*TokenDetails, error) {
 //	}
 //	return nil
 //}
-
-func (h *TokenHelper) GetUserID(c *gin.Context) (uuid.UUID, error) {
-	accessDetail, err := h.extractTokenMetadata(c.Request)
-	if err != nil {
-		return uuid.New(), err
-	}
-	uuidFromString, err := uuid.Parse(accessDetail.UserID)
-	return uuidFromString, err
-}
-
-func (h *TokenHelper) extractTokenMetadata(r *http.Request) (*AccessDetails, error) {
-	token, err := h.verifyToken(r)
-	if err != nil {
-		return nil, err
-	}
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if ok && token.Valid {
-		accessUuid, ok := claims["access_uuid"].(string)
-		if !ok {
-			return nil, err
-		}
-		userID, ok := claims["user_id"].(string)
-		if !ok {
-			return nil, err
-		}
-		return &AccessDetails{
-			AccessUuid: accessUuid,
-			UserID:     userID,
-		}, nil
-	}
-	return nil, err
-}
-
-func (h *TokenHelper) verifyToken(r *http.Request) (*jwt.Token, error) {
-	tokenString := h.extractToken(r)
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte("jdnfksdmfksd"), nil
-	})
-	if err != nil {
-		fmt.Println(err, err)
-		return nil, err
-	}
-	return token, nil
-}
-
-func (h *TokenHelper) extractToken(r *http.Request) string {
-	bearToken := r.Header.Get("token")
-	strArr := strings.Split(bearToken, " ")
-	if len(strArr) == 2 {
-		return strArr[1]
-	}
-	return bearToken
-}

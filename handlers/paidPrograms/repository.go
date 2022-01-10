@@ -44,7 +44,12 @@ func (r *Repository) get(id string) (*models.PaidProgram, error) {
 		Model(&item).
 		Relation("PaidProgramPackages.PaidProgramServicesGroups.PaidProgramServices").
 		Relation("PaidProgramPackages.PaidProgramPackagesOptions").
-		Relation("PaidProgramOptionsGroups.PaidProgramOptions").
+		Relation("PaidProgramOptionsGroups", func(query *bun.SelectQuery) *bun.SelectQuery {
+			return query.Order("item_order")
+		}).
+		Relation("PaidProgramOptionsGroups.PaidProgramOptions", func(query *bun.SelectQuery) *bun.SelectQuery {
+			return query.Order("item_order")
+		}).
 		Relation("PaidProgramsGroup").
 		Where("paid_programs.id = ?", id).
 		Scan(r.ctx)

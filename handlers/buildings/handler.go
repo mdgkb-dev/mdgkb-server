@@ -51,13 +51,11 @@ func (h *AHandler) GetAll(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
-	fmt.Println(buildings)
 	c.JSON(200, buildings)
 }
 
 func (h *AHandler) GetByFloorId(c *gin.Context) {
 	item, err := h.repository.getByFloorId(c, c.Param("id"))
-	fmt.Println(err)
 	if err != nil {
 		c.JSON(500, err)
 	}

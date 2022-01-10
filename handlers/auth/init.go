@@ -12,7 +12,8 @@ type IHandler interface {
 	Register(c *gin.Context)
 	Login(c *gin.Context)
 	Logout(c *gin.Context)
-	//Refresh(c *gin.Context)
+	RefreshToken(c *gin.Context)
+	RefreshPassword(c *gin.Context)
 }
 
 type IService interface {

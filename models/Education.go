@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -30,7 +29,6 @@ type Education struct {
 type Educations []*Education
 
 func (item *Education) SetForeignKeys() {
-	fmt.Println(item.EducationCertification)
 	if item.EducationCertification != nil {
 		item.EducationCertificationID = item.EducationCertification.ID
 	}

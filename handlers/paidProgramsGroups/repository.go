@@ -1,7 +1,6 @@
 package paidProgramsGroups
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 
@@ -21,7 +20,6 @@ func (r *Repository) create(item *models.PaidProgramsGroup) (err error) {
 
 func (r *Repository) getAll() (items models.PaidProgramsGroups, err error) {
 	err = r.db.NewSelect().Model(&items).Relation("PaidPrograms").Scan(r.ctx)
-	fmt.Println(items[0].PaidPrograms)
 	return items, err
 }
 

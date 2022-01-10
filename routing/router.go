@@ -80,10 +80,14 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	localUploader := helpers.NewLocalUploader(&config.UploadPath)
 	localUploaderNew := uploadHelper.NewLocalUploader(&config.UploadPath)
 	helper := helpers.NewHelper(config)
-	r.Static("/static", "./static/")
-	api := r.Group("/api/v1")
 
-	authRouter.Init(api.Group("/auth"), auth.CreateHandler(db, helper))
+	r.Static("/static", "./static/")
+	authGroup := r.Group("/api/v1/auth")
+	authRouter.Init(authGroup.Group(""), auth.CreateHandler(db, helper))
+
+	api := r.Group("/api/v1")
+	//m := middleware.CreateMiddleware(helper)
+	//api.Use(m.Authentication())
 	banners.Init(api.Group("/banners"), db, localUploader)
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, helper))

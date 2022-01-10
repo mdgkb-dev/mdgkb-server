@@ -5,6 +5,6 @@ import (
 )
 
 type TokensWithUser struct {
-	Token *tokenHelper.TokenDetails `json:"token"`
-	User  User                      `json:"user"`
+	Tokens *tokenHelper.TokenDetails `json:"tokens"`
+	User   User                      `json:"user"`
 }

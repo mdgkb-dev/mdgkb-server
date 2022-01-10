@@ -1,7 +1,6 @@
 package tags
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 
@@ -35,12 +34,10 @@ func (h *Handler) Create(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
-	fmt.Println(item)
 	err = h.repository.create(c, &item)
 	if err != nil {
 		c.JSON(500, err)
 	}
-	fmt.Println(item)
 	c.JSON(200, item)
 }
 

@@ -1,7 +1,6 @@
 package donorRules
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -11,8 +10,7 @@ import (
 
 func (h *Handler) GetAll(c *gin.Context) {
 	userID, err := h.helper.Token.GetUserID(c)
-	fmt.Println(userID)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
 		return
 	}
 	items, err := h.service.GetAll(userID)

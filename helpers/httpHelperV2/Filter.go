@@ -26,7 +26,6 @@ func CreateFilter(query *bun.SelectQuery, filterModels FilterModels) {
 		return
 	}
 	for _, filter := range filterModels {
-		fmt.Println(filter)
 		switch *filter.Type {
 		case SetType:
 			if len(filter.Set) == 0 {

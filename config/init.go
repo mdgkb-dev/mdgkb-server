@@ -19,9 +19,23 @@ type Config struct {
 
 	UploadPath    string `mapstructure:"UPLOAD_PATH"`
 	TemplatesPath string `mapstructure:"TEMPLATES_PATH"`
+
+	TokenSecret string `mapstructure:"TOKEN_SECRET"`
+
+	Email Email `mapstructure:",squash"`
+}
+
+type Email struct {
+	User     string `mapstructure:"EMAIL_USER"`
+	Password string `mapstructure:"EMAIL_PASSWORD"`
+	From     string `mapstructure:"EMAIL_FROM"`
+	Server   string `mapstructure:"EMAIL_SERVER"`
+	Port     string `mapstructure:"EMAIL_PORT"`
 }
 
 func LoadConfig() (config *Config, err error) {
+	//var result map[string]interface{}
+
 	viper.AddConfigPath(".")
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
@@ -34,5 +48,10 @@ func LoadConfig() (config *Config, err error) {
 	}
 
 	err = viper.Unmarshal(&config)
+	//decErr := mapstructure.Decode(result, &config)
+	//if decErr != nil {
+	//	return nil, decErr
+	//}
+	//fmt.Printf("config:%+v\n", config)
 	return config, err
 }

@@ -1,9 +1,11 @@
 package templater
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"mdgkb/mdgkb-server/config"
+	"path"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -27,4 +29,20 @@ func (i *Templater) Parse(templateName string, data interface{}) string {
 	_ = tmpl.Execute(&buf, data)
 	strTmpl := buf.String()
 	return strTmpl
+}
+
+// ParseTemplate func
+func (i *Templater) ParseTemplate(data interface{}, templates ...string) (string, error) {
+	templatesForParse := []string{}
+	templates = append(templates, "_footer.html", "_header.html") //добавляем хэдер и футер к шаблонам
+	for _, t := range templates {
+		templatesForParse = append(templatesForParse, path.Join(i.templatesPath, t)) //к каждому шаблону приблавляем путь
+	}
+	t := template.Must(template.ParseFiles(templatesForParse...))
+	buf := new(bytes.Buffer)
+	if err := t.Execute(buf, data); err != nil {
+		return "", err
+	}
+
+	return buf.String(), nil
 }

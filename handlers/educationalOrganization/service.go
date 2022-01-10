@@ -32,8 +32,8 @@ func (s *Service) Get() (*models.EducationalOrganization, error) {
 	if err != nil {
 		return nil, err
 	}
-	educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.repository.getDB())
-	item.EducationalOrganizationDocumentTypes, err = educationalOrganizationDocumentTypesService.GetAll()
+	//educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.repository.getDB())
+	//item.EducationalOrganizationDocumentTypes, err = educationalOrganizationDocumentTypesService.GetAll()
 	if err != nil {
 		return nil, err
 	}

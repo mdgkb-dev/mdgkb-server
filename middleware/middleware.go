@@ -7,13 +7,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Authentication() gin.HandlerFunc {
+type Middleware struct {
+	helper *helpers.Helper
+}
+
+func CreateMiddleware(helper *helpers.Helper) *Middleware {
+	return &Middleware{helper: helper}
+}
+
+func (m *Middleware) Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//Extract the access token metadata
-		_, err := helpers.ExtractTokenMetadata(c.Request)
+		_, err := m.helper.Token.GetUserID(c)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, "unauthorized")
+			c.JSON(http.StatusUnauthorized, err)
 			return
 		}
+		return
 	}
+
 }

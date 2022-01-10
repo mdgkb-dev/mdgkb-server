@@ -1,7 +1,6 @@
 package hospitalization
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +20,6 @@ func (h *Handler) PDF(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	fmt.Println("item =====>", item)
 	pdf, err := h.helper.PDF.GeneratePDF("hospitalizationDocList", item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

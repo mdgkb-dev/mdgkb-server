@@ -1,7 +1,8 @@
 package helpers
 
 import (
-	"mdgkb/mdgkb-server/config"
+	configPack "mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/helpers/emailHelper"
 	httpHelper "mdgkb/mdgkb-server/helpers/httpHelperV2"
 	"mdgkb/mdgkb-server/helpers/pdfHelper"
 	"mdgkb/mdgkb-server/helpers/sqlHelper"
@@ -15,13 +16,15 @@ type Helper struct {
 	Uploader uploadHelper.Uploader
 	SQL      *sqlHelper.SQLHelper
 	Token    *tokenHelper.TokenHelper
+	Email    *emailHelper.EmailHelper
 }
 
-func NewHelper(config config.Config) *Helper {
+func NewHelper(config configPack.Config) *Helper {
 	http := httpHelper.NewHTTPHelper()
 	pdf := pdfHelper.NewPDFHelper(config)
 	sql := sqlHelper.NewSQLHelper()
 	uploader := uploadHelper.NewLocalUploader(&config.UploadPath)
-	token := tokenHelper.NewTokenHelper()
-	return &Helper{HTTP: http, Uploader: uploader, PDF: pdf, SQL: sql, Token: token}
+	token := tokenHelper.NewTokenHelper(config.TokenSecret)
+	email := emailHelper.NewEmailHelper(config.Email)
+	return &Helper{HTTP: http, Uploader: uploader, PDF: pdf, SQL: sql, Token: token, Email: email}
 }

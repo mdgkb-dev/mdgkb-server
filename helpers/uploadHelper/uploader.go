@@ -2,7 +2,6 @@ package uploadHelper
 
 import (
 	"errors"
-	"fmt"
 	"math/rand"
 	"mime/multipart"
 	"os"
@@ -32,16 +31,12 @@ func NewLocalUploader(path *string) *LocalUploader {
 }
 
 func (u *LocalUploader) Upload(c *gin.Context, file []*multipart.FileHeader, path *string) (err error) {
-	fmt.Println(11)
 	if path == nil {
 		return errors.New("file does not relate to anything")
 	}
-	fmt.Println(22)
 	uploadPath := u.GetUploaderPath()
-	fmt.Println(*uploadPath)
 	fullPath := filepath.Join(*uploadPath, *path)
 	parts := strings.Split(fullPath, string(os.PathSeparator))
-	fmt.Println(parts)
 	err = os.MkdirAll("/"+filepath.Join(parts[:len(parts)-1]...), os.ModePerm)
 	if err != nil {
 		return err
@@ -60,7 +55,6 @@ func (u *LocalUploader) GetUploaderPath() *string {
 
 func (u *LocalUploader) GetFullPath(path *string) *string {
 	basePath := u.GetUploaderPath()
-	fmt.Println(basePath, path)
 	fullPath := filepath.Join(*basePath, *path)
 	return &fullPath
 }
