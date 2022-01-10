@@ -10,6 +10,7 @@ type EducationalOrganizationTeacher struct {
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 	DoctorID      uuid.UUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor   `bun:"rel:belongs-to" json:"doctor"`
+	Position      string    `json:"position"`
 }
 
 type EducationalOrganizationTeachers []*EducationalOrganizationTeacher

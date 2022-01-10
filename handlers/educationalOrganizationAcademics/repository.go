@@ -12,7 +12,10 @@ func (r *Repository) getDB() *bun.DB {
 
 func (r *Repository) getAll() (models.EducationalOrganizationAcademics, error) {
 	items := make(models.EducationalOrganizationAcademics, 0)
-	err := r.db.NewSelect().Model(&items).Relation("Doctor.Human").Scan(r.ctx)
+	err := r.db.NewSelect().Model(&items).
+		Relation("Doctor.Human").
+		Relation("Doctor.Division").
+		Scan(r.ctx)
 	return items, err
 }
 
