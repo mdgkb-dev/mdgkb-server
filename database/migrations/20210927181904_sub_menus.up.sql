@@ -6,7 +6,7 @@ CREATE TABLE sub_menus
     color varchar,
     link VARCHAR,
     page_id uuid  ,
-    sub_menu_order int not null default 1,
+    sub_menu_order int not null default 0,
     svg text,
     icon_id uuid ,
     menu_id uuid  REFERENCES menus (id) ON UPDATE CASCADE ON DELETE CASCADE

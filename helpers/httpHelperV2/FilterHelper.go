@@ -76,7 +76,16 @@ func CreatePagination(c *gin.Context) (*Pagination, error) {
 	if err != nil {
 		return nil, err
 	}
-	offsetNumber = offsetNumber * 25
-	limit := 25
-	return &Pagination{Offset: &offsetNumber, Limit: &limit}, nil
+
+	limit := c.Query("limit")
+	if offset == "" {
+		return nil, nil
+	}
+	limitNumber, err := strconv.Atoi(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	offsetNumber = offsetNumber * limitNumber
+	return &Pagination{Offset: &offsetNumber, Limit: &limitNumber}, nil
 }

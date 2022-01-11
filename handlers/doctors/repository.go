@@ -24,7 +24,7 @@ func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCoun
 		Relation("FileInfo").
 		Order("human.surname")
 
-	if r.queryFilter != nil {
+	if r.queryFilter != nil && r.queryFilter.Pagination != nil {
 		r.helper.HTTP.CreatePaginationQuery(query, r.queryFilter.Pagination)
 	}
 	//r.helper.HTTP.CreateFilter(query, r.queryFilter.FilterModels)

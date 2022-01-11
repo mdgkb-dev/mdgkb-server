@@ -4,7 +4,7 @@ CREATE TABLE menus
     name varchar,
     top boolean,
     side boolean,
-    menu_order int not null default 1,
+    menu_order int not null default 0,
     link VARCHAR,
     icon_id uuid ,
     page_id uuid
