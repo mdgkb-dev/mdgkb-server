@@ -4,6 +4,7 @@ import (
 	"context"
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
 
@@ -16,7 +17,7 @@ func (r *Repository) create(item *models.DocumentType) (err error) {
 	return err
 }
 
-func (r *Repository) getAll(params models.DocumentsParams) (items models.DocumentsTypes, err error) {
+func (r *Repository) getAll(params models.DocumentsParams) (items models.DocumentTypes, err error) {
 	query := r.db.NewSelect().Model(&items).Relation("DocumentTypeFields.ValueType")
 	params.CreateJoin(query)
 	err = query.Scan(r.ctx)
@@ -39,5 +40,21 @@ func (r *Repository) delete(id *string) (err error) {
 
 func (r *Repository) update(item *models.DocumentType) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) upsertMany(items models.DocumentTypes) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(&items).
+		Set("name = EXCLUDED.name").
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
+	_, err = r.db.NewDelete().
+		Model((*models.DocumentType)(nil)).
+		Where("id IN (?)", bun.In(idPool)).
+		Exec(r.ctx)
 	return err
 }
