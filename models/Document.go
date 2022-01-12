@@ -1,20 +1,23 @@
 package models
 
 import (
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 type Document struct {
 	bun.BaseModel `bun:"documents,alias:documents"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	Name          string    `json:"name"`
 
 	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
 	DocumentTypeID uuid.UUID     `bun:"type:uuid" json:"documentTypeId"`
 
-	DocumentsScans       DocumentsScans      `bun:"rel:has-many" json:"documentsScans"`
-	DocumentFieldsValues DocumentFieldValues `bun:"rel:has-many" json:"documentFields"`
+	DocumentsScans          DocumentsScans      `bun:"rel:has-many" json:"documentsScans"`
+	DocumentsScansForDelete []uuid.UUID         `bun:"-" json:"documentsScansForDelete"`
+	DocumentFieldsValues    DocumentFieldValues `bun:"rel:has-many" json:"documentFields"`
 }
 
 type Documents []*Document
@@ -41,6 +44,14 @@ func (items Documents) GetDocumentsScans() DocumentsScans {
 		//itemsForGet = append(itemsForGet, item.Scan)
 	}
 	return itemsForGet
+}
+
+func (items Documents) GetDocumentsScansIdForDelete() []uuid.UUID {
+	idPool := make([]uuid.UUID, 0)
+	for _, item := range items {
+		idPool = append(idPool, item.DocumentsScansForDelete...)
+	}
+	return idPool
 }
 
 func (item *Document) SetFilePath(fileID *string) *string {

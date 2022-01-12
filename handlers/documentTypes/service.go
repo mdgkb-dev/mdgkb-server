@@ -2,8 +2,11 @@ package documentTypes
 
 import (
 	"mdgkb/mdgkb-server/handlers/documentTypeFields"
+	"mdgkb/mdgkb-server/handlers/documents"
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/schema"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) Create(item *models.DocumentType) error {
@@ -58,4 +61,32 @@ func (s *Service) Delete(id *string) error {
 
 func (s *Service) GetDocumentsTypesForTablesNames() map[string]string {
 	return schema.GetDocumentTypesForTablesNames()
+}
+
+func (s *Service) UpsertMany(items models.DocumentTypes) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	items.SetIdForChildren()
+	documentService := documents.CreateService(s.repository.getDB())
+	err = documentService.DeleteMany(items.GetDocumentsIdForDelete())
+	if err != nil {
+		return err
+	}
+	err = documentService.UpsertMany(items.GetDocuments())
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+	if len(idPool) == 0 {
+		return nil
+	}
+	return s.repository.deleteMany(idPool)
 }

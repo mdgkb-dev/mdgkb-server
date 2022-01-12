@@ -1,4 +1,4 @@
-package partners
+package publicDocumentTypes
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -17,7 +17,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 
 func (h *Handler) Get(c *gin.Context) {
 	id := c.Param("id")
-	item, err := h.service.Get(&id)
+	item, err := h.service.Get(id)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -25,7 +25,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.Partner
+	var item models.PublicDocumentType
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -42,7 +42,7 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.Partner
+	var item models.PublicDocumentType
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -60,7 +60,7 @@ func (h *Handler) Update(c *gin.Context) {
 
 func (h *Handler) Delete(c *gin.Context) {
 	id := c.Param("id")
-	err := h.service.Delete(&id)
+	err := h.service.Delete(id)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

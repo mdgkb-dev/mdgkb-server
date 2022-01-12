@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
 
@@ -24,6 +25,8 @@ type IService interface {
 	Create(*models.DocumentType) error
 	Update(*models.DocumentType) error
 	Delete(*string) error
+	UpsertMany(models.DocumentTypes) error
+	DeleteMany([]uuid.UUID) error
 
 	GetDocumentsTypesForTablesNames() map[string]string
 }
@@ -31,10 +34,12 @@ type IService interface {
 type IRepository interface {
 	getDB() *bun.DB
 	create(*models.DocumentType) error
-	getAll(params models.DocumentsParams) (models.DocumentsTypes, error)
+	getAll(params models.DocumentsParams) (models.DocumentTypes, error)
 	get(*string) (*models.DocumentType, error)
 	update(*models.DocumentType) error
 	delete(*string) error
+	upsertMany(models.DocumentTypes) error
+	deleteMany([]uuid.UUID) error
 }
 
 type Handler struct {
@@ -54,6 +59,11 @@ func CreateHandler(db *bun.DB) *Handler {
 	repo := NewRepository(db)
 	service := NewService(repo)
 	return NewHandler(service)
+}
+
+func CreateService(db *bun.DB) *Service {
+	repo := NewRepository(db)
+	return NewService(repo)
 }
 
 // NewHandler constructor
