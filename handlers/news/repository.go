@@ -77,7 +77,7 @@ func (r *Repository) getAll(newsParams *newsParams) (news []models.News, err err
 	}
 	if newsParams.FilterTags != "" && newsParams.OrderByView != "" && newsParams.Limit != 0 {
 		query = query.
-			Join("	JOIN news_to_tags ON news_to_tags.news_id = news.id and news_to_tags.tag_id in (?)", bun.In(strings.Split(newsParams.FilterTags, ","))).
+			Join("JOIN news_to_tags ON news_to_tags.news_id = news.id and news_to_tags.tag_id in (?)", bun.In(strings.Split(newsParams.FilterTags, ","))).
 			Join("LEFT JOIN news_views ON news_views.news_id = news.id").
 			Group("news.id", "file_info.id").
 			OrderExpr("count (news_to_tags.id)").
