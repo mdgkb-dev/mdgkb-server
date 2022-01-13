@@ -1,6 +1,7 @@
 package news
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/newsImages"
@@ -43,6 +44,14 @@ func (s *Service) Create(item *models.News) error {
 
 func (s *Service) GetAll(params *newsParams) ([]models.News, error) {
 	return s.repository.getAll(params)
+}
+
+func (s *Service) GetAllAdmin() (models.NewsWithCount, error) {
+	return s.repository.getAllAdmin()
+}
+
+func (s *Service) GetAllRelationsNews(params *newsParams) ([]models.News, error) {
+	return s.repository.getAllRelationsNews(params)
 }
 
 func (s *Service) GetByMonth(params *monthParams) ([]models.News, error) {
@@ -117,4 +126,9 @@ func (s *Service) Update(item *models.News) error {
 }
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

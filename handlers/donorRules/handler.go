@@ -50,7 +50,7 @@ func (h *Handler) AddToUser(c *gin.Context) {
 		return
 	}
 	item.UserID, err = h.helper.Token.GetUserID(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
 		return
 	}
 	err = h.service.AddToUser(&item)
@@ -68,7 +68,7 @@ func (h *Handler) DeleteFromUser(c *gin.Context) {
 	}
 	item.DonorRuleID = donorRuleID
 	item.UserID, err = h.helper.Token.GetUserID(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
 		return
 	}
 	err = h.service.DeleteFromUser(&item)
