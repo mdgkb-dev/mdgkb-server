@@ -1,6 +1,7 @@
 package news
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"strings"
 
@@ -75,27 +76,72 @@ func (r *Repository) getAll(newsParams *newsParams) (news []models.News, err err
 		}
 	}
 	if newsParams.FilterTags != "" && newsParams.OrderByView != "" && newsParams.Limit != 0 {
-		query = query.Join("JOIN news_to_tags ON news_to_tags.news_id = news.id").
+		query = query.
+			Join("	JOIN news_to_tags ON news_to_tags.news_id = news.id and news_to_tags.tag_id in (?)", bun.In(strings.Split(newsParams.FilterTags, ","))).
 			Join("LEFT JOIN news_views ON news_views.news_id = news.id").
-			Where("news_to_tags.tag_id in (?)", bun.In(strings.Split(newsParams.FilterTags, ","))).
 			Group("news.id", "file_info.id").
 			OrderExpr("count (news_to_tags.id)").
 			OrderExpr("count (news_views.id)").
 			Limit(newsParams.Limit)
-		if len(news) == 0 {
-			query = r.db.NewSelect().Model(&news).Relation("NewsViews").
-				Join("LEFT JOIN news_views ON news_views.news_id = news.id").
-				Group("news.id").
-				Order("published_on DESC").
-				OrderExpr("count (news_views.id)").
-				Limit(newsParams.Limit)
-		}
 	}
 	if newsParams.Events {
 		query = query.Join("JOIN events ON events.id = news.event_id")
 	}
 	err = query.Scan(r.ctx)
 	return news, err
+}
+
+func (r *Repository) getAllRelationsNews(newsParams *newsParams) (news []models.News, err error) {
+	query := r.db.NewSelect().Model(&news).
+		Relation("NewsToCategories.Category").
+		Relation("NewsToTags.Tag").
+		Relation("FileInfo").
+		Relation("NewsLikes").
+		Relation("NewsViews")
+
+	if newsParams.Limit != 0 {
+		query = query.Order("published_on DESC").Limit(newsParams.Limit)
+	}
+	if newsParams.PublishedOn != nil {
+		query = query.Where("published_on < ?", newsParams.PublishedOn)
+	}
+	if newsParams.FilterTags != "" && newsParams.OrderByView == "" {
+		for _, tagId := range strings.Split(newsParams.FilterTags, ",") {
+			query = query.Where("exists (select * from news_to_tags as ntt where ntt.news_id = news.id and ntt.tag_id = ?)", tagId)
+		}
+	}
+	if newsParams.FilterTags != "" && newsParams.OrderByView != "" && newsParams.Limit != 0 {
+		query = query.
+			Join("	JOIN news_to_tags ON news_to_tags.news_id = news.id and news_to_tags.tag_id in (?)", bun.In(strings.Split(newsParams.FilterTags, ","))).
+			Join("LEFT JOIN news_views ON news_views.news_id = news.id").
+			Group("news.id", "file_info.id").
+			OrderExpr("count (news_to_tags.id)").
+			OrderExpr("count (news_views.id)").
+			Limit(newsParams.Limit)
+	}
+	if newsParams.Events {
+		query = query.Join("JOIN events ON events.id = news.event_id")
+	}
+	err = query.Scan(r.ctx)
+	return news, err
+}
+
+func (r *Repository) getAllAdmin() (items models.NewsWithCount, err error) {
+	query := r.db.NewSelect().Model(&items.News).
+		Relation("NewsToCategories.Category").
+		Relation("NewsToTags.Tag").
+		Relation("FileInfo").
+		Relation("NewsLikes").
+		Relation("NewsViews").
+		Order("published_on DESC")
+
+	if r.queryFilter != nil && r.queryFilter.Pagination != nil {
+		r.helper.HTTP.CreatePaginationQuery(query, r.queryFilter.Pagination)
+	}
+	//r.helper.HTTP.CreateFilter(query, r.queryFilter.FilterModels)
+
+	items.Count, err = query.ScanAndCount(r.ctx)
+	return items, err
 }
 
 func (r *Repository) getBySlug(slug string) (*models.News, error) {
@@ -136,4 +182,12 @@ func (r *Repository) getByMonth(monthParams *monthParams) (news []models.News, e
 func (r *Repository) createViewOfNews(newsView *models.NewsView) (err error) {
 	_, err = r.db.NewInsert().Model(newsView).On("CONFLICT (ip_address, news_id) DO NOTHING").Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.HTTP.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }

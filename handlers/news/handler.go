@@ -92,6 +92,36 @@ func (h *Handler) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, news)
 }
 
+func (h *Handler) GetAllAdmin(c *gin.Context) {
+	err := h.service.setQueryFilter(c)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+
+	news, err := h.service.GetAllAdmin()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, news)
+}
+
+func (h *Handler) GetAllRelationsNews(c *gin.Context) {
+	var newsParams newsParams
+	err := c.BindQuery(&newsParams)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+
+	news, err := h.service.GetAllRelationsNews(&newsParams)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	for i := range news {
+		news[i].ViewsCount = len(news[i].NewsViews)
+	}
+	c.JSON(http.StatusOK, news)
+}
+
 func (h *Handler) Update(c *gin.Context) {
 	var item models.News
 	files, err := httpHelper.GetForm(c, &item)

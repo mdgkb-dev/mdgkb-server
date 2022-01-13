@@ -3,6 +3,7 @@ package news
 import (
 	"context"
 	"mdgkb/mdgkb-server/helpers"
+	httpHelper2 "mdgkb/mdgkb-server/helpers/httpHelperV2"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -12,6 +13,8 @@ import (
 
 type IHandler interface {
 	GetAll(c *gin.Context)
+	GetAllAdmin(c *gin.Context)
+	GetAllRelationsNews(c *gin.Context)
 	GetBySLug(c *gin.Context)
 	GetByMonth(c *gin.Context)
 	Create(c *gin.Context)
@@ -27,6 +30,8 @@ type IHandler interface {
 }
 
 type IService interface {
+	setQueryFilter(*gin.Context) error
+
 	Create(*models.News) error
 	Update(*models.News) error
 	CreateLike(*models.NewsLike) error
@@ -36,6 +41,8 @@ type IService interface {
 	UpdateComment(*models.NewsComment) error
 	RemoveComment(string) error
 	GetAll(*newsParams) ([]models.News, error)
+	GetAllAdmin() (models.NewsWithCount, error)
+	GetAllRelationsNews(*newsParams) ([]models.News, error)
 	Delete(string) error
 	DeleteLike(string) error
 	GetBySlug(string) (*models.News, error)
@@ -44,6 +51,8 @@ type IService interface {
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
+
 	getDB() *bun.DB
 	create(*models.News) error
 	update(*models.News) error
@@ -54,6 +63,8 @@ type IRepository interface {
 	updateComment(*models.NewsComment) error
 	removeComment(string) error
 	getAll(*newsParams) ([]models.News, error)
+	getAllAdmin() (models.NewsWithCount, error)
+	getAllRelationsNews(*newsParams) ([]models.News, error)
 	delete(string) error
 	deleteLike(string) error
 	getBySlug(string) (*models.News, error)
@@ -77,9 +88,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helpers.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helpers.Helper
+	queryFilter *httpHelper2.QueryFilter
 }
 
 type FilesService struct {
