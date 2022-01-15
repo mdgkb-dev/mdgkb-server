@@ -40,7 +40,7 @@ type IService interface {
 	CreateComment(*models.NewsComment) error
 	UpdateComment(*models.NewsComment) error
 	RemoveComment(string) error
-	GetAll(*newsParams) ([]models.News, error)
+	GetAll(*newsParams) ([]*models.News, error)
 	GetAllAdmin() (models.NewsWithCount, error)
 	GetAllRelationsNews(*newsParams) ([]models.News, error)
 	Delete(string) error
@@ -62,7 +62,7 @@ type IRepository interface {
 	createComment(*models.NewsComment) error
 	updateComment(*models.NewsComment) error
 	removeComment(string) error
-	getAll(*newsParams) ([]models.News, error)
+	getAll(*newsParams) ([]*models.News, error)
 	getAllAdmin() (models.NewsWithCount, error)
 	getAllRelationsNews(*newsParams) ([]models.News, error)
 	delete(string) error

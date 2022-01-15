@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/newsDoctors"
 	"mdgkb/mdgkb-server/handlers/newsImages"
 	"mdgkb/mdgkb-server/handlers/newsToCategories"
 	"mdgkb/mdgkb-server/handlers/newsToTags"
@@ -39,10 +40,14 @@ func (s *Service) Create(item *models.News) error {
 	if err != nil {
 		return err
 	}
+	err = newsDoctors.CreateService(s.repository.getDB()).CreateMany(item.NewsDoctors)
+	if err != nil {
+		return err
+	}
 	return err
 }
 
-func (s *Service) GetAll(params *newsParams) ([]models.News, error) {
+func (s *Service) GetAll(params *newsParams) ([]*models.News, error) {
 	return s.repository.getAll(params)
 }
 
@@ -119,6 +124,15 @@ func (s *Service) Update(item *models.News) error {
 		return err
 	}
 	err = newsImages.CreateService(s.repository.getDB()).UpsertMany(item.NewsImages)
+	if err != nil {
+		return err
+	}
+	newsDoctorsService := newsDoctors.CreateService(s.repository.getDB())
+	err = newsDoctorsService.UpsertMany(item.NewsDoctors)
+	if err != nil {
+		return err
+	}
+	err = newsDoctorsService.DeleteMany(item.NewsDoctorsForDelete)
 	if err != nil {
 		return err
 	}

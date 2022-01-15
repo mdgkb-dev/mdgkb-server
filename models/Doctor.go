@@ -18,6 +18,7 @@ type Doctor struct {
 	FileInfo       *FileInfo      `bun:"rel:belongs-to" json:"fileInfo"`
 	FileInfoId     uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
 	DoctorComments DoctorComments `bun:"rel:has-many" json:"doctorComments"`
+	NewsDoctors    NewsDoctors    `bun:"rel:has-many" json:"newsDoctors"`
 
 	AcademicDegree    string      `json:"academicDegree"`
 	AcademicRank      string      `json:"academicRank"`

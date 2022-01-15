@@ -1,0 +1,17 @@
+package models
+
+import (
+	"github.com/google/uuid"
+	"github.com/uptrace/bun"
+)
+
+type NewsDoctor struct {
+	bun.BaseModel `bun:"news_doctors,alias:news_doctors"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	DoctorID      uuid.UUID `bun:"type:uuid" json:"doctorId"`
+	Doctor        *Doctor   `bun:"rel:belongs-to" json:"doctor"`
+	News          *News     `bun:"rel:belongs-to" json:"news"`
+	NewsID        uuid.UUID `bun:"type:uuid" json:"newsId"`
+}
+
+type NewsDoctors []*NewsDoctor

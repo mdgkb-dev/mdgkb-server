@@ -29,12 +29,14 @@ type News struct {
 	Event               *Event        `bun:"rel:belongs-to" json:"event"`
 	EventID             uuid.NullUUID `bun:"type:uuid" json:"eventId"`
 
-	NewsToCategories NewsToCategories `bun:"rel:has-many" json:"newsToCategories"`
-	NewsToTags       NewsToTags       `bun:"rel:has-many" json:"newsToTags"`
-	NewsViews        NewsViews        `bun:"rel:has-many" json:"newsViews"`
-	NewsLikes        NewsLikes        `bun:"rel:has-many" json:"newsLikes"`
-	NewsComments     NewsComments     `bun:"rel:has-many" json:"newsComments"`
-	NewsImages       NewsImages       `bun:"rel:has-many" json:"newsImages"`
+	NewsToCategories     NewsToCategories `bun:"rel:has-many" json:"newsToCategories"`
+	NewsToTags           NewsToTags       `bun:"rel:has-many" json:"newsToTags"`
+	NewsDoctors          NewsDoctors      `bun:"rel:has-many" json:"newsDoctors"`
+	NewsDoctorsForDelete []uuid.UUID      `bun:"-" json:"newsDoctorsForDelete"`
+	NewsViews            NewsViews        `bun:"rel:has-many" json:"newsViews"`
+	NewsLikes            NewsLikes        `bun:"rel:has-many" json:"newsLikes"`
+	NewsComments         NewsComments     `bun:"rel:has-many" json:"newsComments"`
+	NewsImages           NewsImages       `bun:"rel:has-many" json:"newsImages"`
 }
 
 func (item *News) SetFilePath(fileID *string) *string {
@@ -80,6 +82,9 @@ func (item *News) SetIdForChildren() {
 	}
 	for i := range item.NewsImages {
 		item.NewsImages[i].NewsID = item.ID
+	}
+	for i := range item.NewsDoctors {
+		item.NewsDoctors[i].NewsID = item.ID
 	}
 }
 

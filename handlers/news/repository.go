@@ -56,8 +56,9 @@ func (r *Repository) removeComment(id string) error {
 	return err
 }
 
-func (r *Repository) getAll(newsParams *newsParams) (news []models.News, err error) {
-	query := r.db.NewSelect().Model(&news).
+func (r *Repository) getAll(newsParams *newsParams) ([]*models.News, error) {
+	items := make([]*models.News, 0)
+	query := r.db.NewSelect().Model(&items).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
 		Relation("FileInfo").
@@ -87,8 +88,8 @@ func (r *Repository) getAll(newsParams *newsParams) (news []models.News, err err
 	if newsParams.Events {
 		query = query.Join("JOIN events ON events.id = news.event_id")
 	}
-	err = query.Scan(r.ctx)
-	return news, err
+	err := query.Scan(r.ctx)
+	return items, err
 }
 
 func (r *Repository) getAllRelationsNews(newsParams *newsParams) (news []models.News, err error) {
@@ -158,6 +159,7 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		Relation("Event.EventApplications.User").
 		Relation("NewsComments.Comment.User").
 		Relation("NewsImages.FileInfo").
+		Relation("NewsDoctors.Doctor.Human").
 		Where("news.slug = ?", slug).Scan(r.ctx)
 	return item, err
 }
