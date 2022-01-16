@@ -3,6 +3,7 @@ package doctors
 import (
 	"github.com/gin-gonic/gin"
 	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
+	"mdgkb/mdgkb-server/handlers/doctorPaidServices"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
@@ -45,6 +46,10 @@ func (s *Service) Create(item *models.Doctor) error {
 		return err
 	}
 	err = certificates.CreateService(s.repository.getDB()).CreateMany(item.Certificates)
+	if err != nil {
+		return err
+	}
+	err = doctorPaidServices.CreateService(s.repository.getDB()).CreateMany(item.DoctorPaidServices)
 	if err != nil {
 		return err
 	}
@@ -103,6 +108,16 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 	err = certificatesService.DeleteMany(item.CertificatesForDelete)
+	if err != nil {
+		return err
+	}
+
+	doctorPaidServicesService := doctorPaidServices.CreateService(s.repository.getDB())
+	err = doctorPaidServicesService.UpsertMany(item.DoctorPaidServices)
+	if err != nil {
+		return err
+	}
+	err = doctorPaidServicesService.DeleteMany(item.DoctorPaidServicesForDelete)
 	if err != nil {
 		return err
 	}

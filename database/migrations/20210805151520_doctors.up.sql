@@ -7,6 +7,7 @@ CREATE TABLE doctors
     education         VARCHAR,
     medical_profile_id uuid  REFERENCES medical_profiles (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
     mos_doctor_link varchar,
+    item_order int default 0,
     schedule          VARCHAR,
     position          VARCHAR,
     tags              VARCHAR,

@@ -19,6 +19,9 @@ type Division struct {
 	Vacancies               Vacancies     `bun:"rel:has-many" json:"vacancies"`
 	Show                    bool          `json:"show"`
 
+	DivisionPaidServices          DivisionPaidServices `bun:"rel:has-many" json:"divisionPaidServices"`
+	DivisionPaidServicesForDelete []uuid.UUID          `bun:"-" json:"divisionPaidServicesForDelete"`
+
 	Entrance                *Entrance        `bun:"rel:belongs-to" json:"entrance"`
 	EntranceId              uuid.NullUUID    `bun:"type:uuid" json:"entranceId"`
 	FloorId                 uuid.NullUUID    `bun:"type:uuid" json:"floorId"`

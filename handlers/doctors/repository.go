@@ -22,6 +22,7 @@ func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCoun
 		Relation("Human").
 		Relation("Division").
 		Relation("FileInfo").
+		Relation("MedicalProfile").
 		Order("human.surname")
 
 	if r.queryFilter != nil && r.queryFilter.Pagination != nil {
@@ -41,6 +42,8 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		Relation("Division.Timetable.TimetableDays.Weekday").
 		Relation("Regalias").
 		Relation("Experiences").
+		Relation("DoctorPaidServices.PaidService").
+		Relation("MedicalProfile").
 		Relation("Certificates.Scan").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Timetable.TimetableDays.BreakPeriods").

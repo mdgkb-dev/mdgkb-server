@@ -36,6 +36,7 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Schedule.ScheduleItems").
 		Relation("DivisionImages.FileInfo").
+		Relation("DivisionPaidServices.PaidService").
 		Relation("DivisionComments.Comment.User").
 		Relation("Timetable.TimetableDays.BreakPeriods")
 	if onlyShowed {
