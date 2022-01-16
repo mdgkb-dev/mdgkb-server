@@ -5,6 +5,7 @@ CREATE TABLE doctors
     division_id uuid  REFERENCES divisions (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
     show boolean default false,
     education         VARCHAR,
+    mos_doctor_link varchar,
     schedule          VARCHAR,
     position          VARCHAR,
     tags              VARCHAR,

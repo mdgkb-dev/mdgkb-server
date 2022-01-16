@@ -89,7 +89,7 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 	experiencesService := experiences.CreateService(s.repository.getDB())
-	err = experiencesService.CreateMany(item.Experiences)
+	err = experiencesService.UpsertMany(item.Experiences)
 	if err != nil {
 		return err
 	}
@@ -98,7 +98,7 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 	certificatesService := certificates.CreateService(s.repository.getDB())
-	err = certificatesService.CreateMany(item.Certificates)
+	err = certificatesService.UpsertMany(item.Certificates)
 	if err != nil {
 		return err
 	}

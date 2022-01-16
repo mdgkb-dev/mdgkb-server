@@ -40,6 +40,8 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		Relation("FileInfo").
 		Relation("Division.Timetable.TimetableDays.Weekday").
 		Relation("Regalias").
+		Relation("Experiences").
+		Relation("Certificates.Scan").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("Educations.EducationCertification").

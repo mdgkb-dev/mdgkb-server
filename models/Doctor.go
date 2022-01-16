@@ -1,8 +1,10 @@
 package models
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 type Doctor struct {
@@ -41,6 +43,31 @@ type Doctor struct {
 
 type Doctors []*Doctor
 
+func (item *Doctor) SetFilePath(fileID *string) *string {
+	fmt.Println(item.Certificates)
+	fmt.Println(item.Certificates)
+	fmt.Println(item.Certificates)
+	fmt.Println(item.Certificates)
+	for i := range item.Certificates {
+		fmt.Println(item.Certificates[i].Scan.ID, *fileID)
+		fmt.Println(item.Certificates[i].Scan.ID, *fileID)
+		fmt.Println(item.Certificates[i].Scan.ID, *fileID)
+		fmt.Println(item.Certificates[i].Scan.ID, *fileID)
+		fmt.Println(item.Certificates[i].Scan.ID, *fileID)
+		fmt.Println(item.Certificates[i].Scan.ID, *fileID)
+		fmt.Println(item.Certificates[i].Scan.ID, *fileID)
+		if item.Certificates[i].Scan.ID.UUID.String() == *fileID {
+			item.Certificates[i].Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
+			return &item.Certificates[i].Scan.FileSystemPath
+		}
+	}
+	if item.FileInfo.ID.UUID.String() == *fileID {
+		item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
+		return &item.FileInfo.FileSystemPath
+	}
+	return nil
+}
+
 func (item *Doctor) SetForeignKeys() {
 	if item.FileInfo != nil {
 		item.FileInfoId = item.FileInfo.ID.UUID
@@ -57,10 +84,10 @@ func (item *Doctor) SetIdForChildren() {
 	for i := range item.Educations {
 		item.Educations[i].DoctorID = item.ID
 	}
-	for i := range item.Educations {
+	for i := range item.Experiences {
 		item.Experiences[i].DoctorID = item.ID
 	}
-	for i := range item.Educations {
+	for i := range item.Certificates {
 		item.Certificates[i].DoctorID = item.ID
 	}
 	for i := range item.Regalias {

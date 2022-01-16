@@ -14,11 +14,11 @@ type doctorsParams struct {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Doctor
-	_, err := httpHelper.GetForm(c, &item)
-	//if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
-	//	return
-	//}
-	//err = h.filesService.Upload(c, &item, files)
+	files, err := httpHelper.GetForm(c, &item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.Upload(c, &item, files)
 
 	err = h.service.Create(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
@@ -71,10 +71,11 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Doctor
-	files, err := httpHelper.GetForm(c, &item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+
 	err = h.filesService.Upload(c, &item, files)
 
 	err = h.service.Update(&item)
