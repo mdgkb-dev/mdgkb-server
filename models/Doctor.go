@@ -8,15 +8,18 @@ import (
 )
 
 type Doctor struct {
-	bun.BaseModel     `bun:"doctors,select:doctors_view,alias:doctors_view"`
-	ID                uuid.NullUUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Division          *Division      `bun:"rel:belongs-to" json:"division"`
-	DivisionId        uuid.NullUUID  `bun:"type:uuid" json:"divisionId,omitempty"`
-	Human             *Human         `bun:"rel:belongs-to" json:"human"`
-	HumanId           uuid.UUID      `bun:"type:uuid" json:"humanId"`
-	Schedule          string         `json:"schedule"`
-	Position          string         `json:"position"`
-	Tags              string         `json:"tags"`
+	bun.BaseModel    `bun:"doctors,select:doctors_view,alias:doctors_view"`
+	ID               uuid.NullUUID   `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Division         *Division       `bun:"rel:belongs-to" json:"division"`
+	DivisionId       uuid.NullUUID   `bun:"type:uuid" json:"divisionId,omitempty"`
+	Human            *Human          `bun:"rel:belongs-to" json:"human"`
+	HumanId          uuid.UUID       `bun:"type:uuid" json:"humanId"`
+	Schedule         string          `json:"schedule"`
+	Position         string          `json:"position"`
+	Tags             string          `json:"tags"`
+	MedicalProfile   *MedicalProfile `bun:"rel:belongs-to" json:"medicalProfile"`
+	MedicalProfileID uuid.UUID       `bun:"type:uuid" json:"medicalProfileId"`
+
 	FileInfo          *FileInfo      `bun:"rel:belongs-to" json:"fileInfo"`
 	FileInfoId        uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
 	DoctorComments    DoctorComments `bun:"rel:has-many" json:"doctorComments"`
