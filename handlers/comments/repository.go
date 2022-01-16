@@ -28,6 +28,7 @@ func (r *Repository) upsertMany(items models.Comments) (err error) {
 		Model(&items).
 		Set("user_id = EXCLUDED.user_id").
 		Set("text = EXCLUDED.user_id").
+		Set("rating = EXCLUDED.rating").
 		Set("published_on = EXCLUDED.published_on").
 		Exec(r.ctx)
 	return err

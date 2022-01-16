@@ -19,15 +19,16 @@ type News struct {
 	PublishedOn   time.Time `json:"publishedOn"`
 	Description   string    `json:"description"`
 
-	NewsImagesForDelete []string      `bun:"-" json:"newsImagesForDelete"`
-	NewsImagesNames     []string      `bun:"-" json:"newsImagesNames"`
-	FileInfo            *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoID          uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
-	MainImage           *FileInfo     `bun:"rel:belongs-to" json:"mainImage"`
-	MainImageID         uuid.NullUUID `bun:"type:uuid" json:"mainImageId"`
-	ViewsCount          int           `bun:"-" json:"viewsCount"`
-	Event               *Event        `bun:"rel:belongs-to" json:"event"`
-	EventID             uuid.NullUUID `bun:"type:uuid" json:"eventId"`
+	NewsImagesForDelete  []string      `bun:"-" json:"newsImagesForDelete"`
+	NewsImagesNames      []string      `bun:"-" json:"newsImagesNames"`
+	FileInfo             *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
+	FileInfoID           uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
+	MainImage            *FileInfo     `bun:"rel:belongs-to" json:"mainImage"`
+	MainImageID          uuid.NullUUID `bun:"type:uuid" json:"mainImageId"`
+	MainImageDescription uuid.NullUUID `bun:"type:uuid" json:"mainImageDescription"`
+	ViewsCount           int           `bun:"-" json:"viewsCount"`
+	Event                *Event        `bun:"rel:belongs-to" json:"event"`
+	EventID              uuid.NullUUID `bun:"type:uuid" json:"eventId"`
 
 	NewsToCategories     NewsToCategories `bun:"rel:has-many" json:"newsToCategories"`
 	NewsToTags           NewsToTags       `bun:"rel:has-many" json:"newsToTags"`

@@ -6,28 +6,34 @@ import (
 )
 
 type Doctor struct {
-	bun.BaseModel  `bun:"doctors,select:doctors_view,alias:doctors_view"`
-	ID             uuid.NullUUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Division       *Division      `bun:"rel:belongs-to" json:"division"`
-	DivisionId     uuid.NullUUID  `bun:"type:uuid" json:"divisionId,omitempty"`
-	Human          *Human         `bun:"rel:belongs-to" json:"human"`
-	HumanId        uuid.UUID      `bun:"type:uuid" json:"humanId"`
-	Schedule       string         `json:"schedule"`
-	Position       string         `json:"position"`
-	Tags           string         `json:"tags"`
-	FileInfo       *FileInfo      `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoId     uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
-	DoctorComments DoctorComments `bun:"rel:has-many" json:"doctorComments"`
-	NewsDoctors    NewsDoctors    `bun:"rel:has-many" json:"newsDoctors"`
-
-	AcademicDegree    string      `json:"academicDegree"`
-	AcademicRank      string      `json:"academicRank"`
-	Show              bool        `json:"show"`
-	Regalias          Regalias    `bun:"rel:has-many" json:"regalias"`
-	RegaliasForDelete []uuid.UUID `bun:"-" json:"regaliasForDelete"`
+	bun.BaseModel     `bun:"doctors,select:doctors_view,alias:doctors_view"`
+	ID                uuid.NullUUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Division          *Division      `bun:"rel:belongs-to" json:"division"`
+	DivisionId        uuid.NullUUID  `bun:"type:uuid" json:"divisionId,omitempty"`
+	Human             *Human         `bun:"rel:belongs-to" json:"human"`
+	HumanId           uuid.UUID      `bun:"type:uuid" json:"humanId"`
+	Schedule          string         `json:"schedule"`
+	Position          string         `json:"position"`
+	Tags              string         `json:"tags"`
+	FileInfo          *FileInfo      `bun:"rel:belongs-to" json:"fileInfo"`
+	FileInfoId        uuid.UUID      `bun:"type:uuid" json:"fileInfoId"`
+	DoctorComments    DoctorComments `bun:"rel:has-many" json:"doctorComments"`
+	NewsDoctors       NewsDoctors    `bun:"rel:has-many" json:"newsDoctors"`
+	MosDoctorLink     string         `json:"mosDoctorLink"`
+	AcademicDegree    string         `json:"academicDegree"`
+	AcademicRank      string         `json:"academicRank"`
+	Show              bool           `json:"show"`
+	Regalias          Regalias       `bun:"rel:has-many" json:"regalias"`
+	RegaliasForDelete []uuid.UUID    `bun:"-" json:"regaliasForDelete"`
 
 	Educations          Educations  `bun:"rel:has-many" json:"educations"`
 	EducationsForDelete []uuid.UUID `bun:"-" json:"educationsForDelete"`
+
+	Experiences          Experiences `bun:"rel:has-many" json:"experiences"`
+	ExperiencesForDelete []uuid.UUID `bun:"-" json:"experiencesForDelete"`
+
+	Certificates          Certificates `bun:"rel:has-many" json:"certificates"`
+	CertificatesForDelete []uuid.UUID  `bun:"-" json:"certificatesForDelete"`
 
 	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
 	TimetableId uuid.UUID  `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
@@ -50,6 +56,12 @@ func (item *Doctor) SetForeignKeys() {
 func (item *Doctor) SetIdForChildren() {
 	for i := range item.Educations {
 		item.Educations[i].DoctorID = item.ID
+	}
+	for i := range item.Educations {
+		item.Experiences[i].DoctorID = item.ID
+	}
+	for i := range item.Educations {
+		item.Certificates[i].DoctorID = item.ID
 	}
 	for i := range item.Regalias {
 		item.Regalias[i].DoctorID = item.ID

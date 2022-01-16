@@ -5,13 +5,15 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type DoctorComment struct {
+type Experience struct {
 	bun.BaseModel `bun:"doctor_comments,alias:doctor_comments"`
 	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	DoctorID      uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor       `bun:"rel:belongs-to" json:"doctor"`
-	CommentId     uuid.UUID     `bun:"type:uuid" json:"commentId"`
-	Comment       *Comment      `bun:"rel:belongs-to" json:"comment"`
+	Start         int           `bun:"experience_start" json:"start"`
+	End           int           `bun:"experience_end" json:"end"`
+	Place         string        `json:"place"`
+	Position      string        `json:"position"`
 }
 
-type DoctorComments []*DoctorComment
+type Experiences []*Experience

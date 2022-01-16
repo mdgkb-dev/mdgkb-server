@@ -2,7 +2,9 @@ package doctors
 
 import (
 	"github.com/gin-gonic/gin"
+	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
 	"mdgkb/mdgkb-server/handlers/educations"
+	"mdgkb/mdgkb-server/handlers/experiences"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/regalias"
@@ -35,6 +37,14 @@ func (s *Service) Create(item *models.Doctor) error {
 		return err
 	}
 	err = educations.CreateService(s.repository.getDB()).CreateMany(item.Educations)
+	if err != nil {
+		return err
+	}
+	err = experiences.CreateService(s.repository.getDB()).CreateMany(item.Experiences)
+	if err != nil {
+		return err
+	}
+	err = certificates.CreateService(s.repository.getDB()).CreateMany(item.Certificates)
 	if err != nil {
 		return err
 	}
@@ -75,6 +85,24 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 	err = educationsService.DeleteMany(item.EducationsForDelete)
+	if err != nil {
+		return err
+	}
+	experiencesService := experiences.CreateService(s.repository.getDB())
+	err = experiencesService.CreateMany(item.Experiences)
+	if err != nil {
+		return err
+	}
+	err = experiencesService.DeleteMany(item.ExperiencesForDelete)
+	if err != nil {
+		return err
+	}
+	certificatesService := certificates.CreateService(s.repository.getDB())
+	err = certificatesService.CreateMany(item.Certificates)
+	if err != nil {
+		return err
+	}
+	err = certificatesService.DeleteMany(item.CertificatesForDelete)
 	if err != nil {
 		return err
 	}
