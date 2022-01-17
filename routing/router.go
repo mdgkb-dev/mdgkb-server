@@ -18,10 +18,12 @@ import (
 	"mdgkb/mdgkb-server/handlers/pages"
 	"mdgkb/mdgkb-server/handlers/paidPrograms"
 	paidProgramsGroups "mdgkb/mdgkb-server/handlers/paidProgramsGroups"
+	"mdgkb/mdgkb-server/handlers/paidServices"
 	"mdgkb/mdgkb-server/handlers/partnerTypes"
 	"mdgkb/mdgkb-server/handlers/partners"
 	"mdgkb/mdgkb-server/handlers/preparations"
 	"mdgkb/mdgkb-server/handlers/projects"
+	"mdgkb/mdgkb-server/handlers/publicDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/timetablePatterns"
@@ -32,7 +34,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
-	"mdgkb/mdgkb-server/handlers/publicDocumentTypes"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
@@ -55,10 +56,12 @@ import (
 	pagesRouter "mdgkb/mdgkb-server/routing/pages"
 	paidProgramsRouter "mdgkb/mdgkb-server/routing/paidPrograms"
 	paidProgramsGroupsRouter "mdgkb/mdgkb-server/routing/paidProgramsGroups"
+	paidServicesRouter "mdgkb/mdgkb-server/routing/paidServices"
 	partnerTypesRouter "mdgkb/mdgkb-server/routing/partnerTypes"
 	partnersRouter "mdgkb/mdgkb-server/routing/partners"
 	preparationsRouter "mdgkb/mdgkb-server/routing/preparations"
 	projectsRouter "mdgkb/mdgkb-server/routing/projects"
+	publicDocumentTypesRouter "mdgkb/mdgkb-server/routing/publicDocumentTypes"
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 	searchRouter "mdgkb/mdgkb-server/routing/search"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
@@ -68,7 +71,6 @@ import (
 	usersRouter "mdgkb/mdgkb-server/routing/users"
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
-	publicDocumentTypesRouter "mdgkb/mdgkb-server/routing/publicDocumentTypes"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
 
@@ -130,4 +132,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(db, helper))
 	donorRulesRouter.Init(api.Group("/donor-rules"), donorRules.CreateHandler(db, helper))
 	metaRouter.Init(api.Group("/meta"), meta.CreateHandler(db, helper))
+	paidServicesRouter.Init(api.Group("/paid-services"), paidServices.CreateHandler(db, helper))
 }

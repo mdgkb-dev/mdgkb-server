@@ -38,8 +38,8 @@ func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
 	items := make(models.Comments, 0)
 	query := r.db.NewSelect().Model(&items).
 		Relation("NewsComment.News").
-		Relation("DoctorComment.Doctor.Human").
-		Relation("DivisionComment.Division").
+		Relation("DoctorComments.Doctor.Human").
+		//Relation("DivisionComments.Division").
 		Relation("User").
 		Order("published_on DESC")
 	if params.Limit != 0 {
