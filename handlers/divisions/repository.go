@@ -39,14 +39,17 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("DivisionPaidServices.PaidService").
 		Relation("DivisionComments.Comment.User").
 		Relation("Timetable.TimetableDays.BreakPeriods")
-	if onlyShowed {
-		q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
-			return query.Where("doctors_view.show = true")
-		})
-	}
+	//if onlyShowed {
+	q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
+		return query.
+			Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true").
+			Order("positions.item_order")
+	})
+	//}
 
 	err := q.Relation("Doctors.FileInfo").
 		Relation("Doctors.Human").
+		Relation("Doctors.Position").
 		Relation("Vacancies").
 		Relation("VisitingRules").
 		Where("divisions.id = ?", slug).

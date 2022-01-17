@@ -22,6 +22,7 @@ func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCoun
 		Relation("Human").
 		Relation("Division").
 		Relation("FileInfo").
+		Relation("Position").
 		Relation("MedicalProfile").
 		Order("human.surname")
 
@@ -42,6 +43,7 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		Relation("Division.Timetable.TimetableDays.Weekday").
 		Relation("Regalias").
 		Relation("Experiences").
+		Relation("Position").
 		Relation("DoctorPaidServices.PaidService").
 		Relation("MedicalProfile").
 		Relation("Certificates.Scan").

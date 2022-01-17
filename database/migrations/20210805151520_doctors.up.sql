@@ -6,10 +6,10 @@ CREATE TABLE doctors
     show boolean default false,
     education         VARCHAR,
     medical_profile_id uuid  REFERENCES medical_profiles (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
+    position_id uuid  REFERENCES positions (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
     mos_doctor_link varchar,
     item_order int default 0,
     schedule          VARCHAR,
-    position          VARCHAR,
     tags              VARCHAR,
     file_info_id uuid  REFERENCES file_infos(id) ON UPDATE CASCADE ON DELETE CASCADE
 );

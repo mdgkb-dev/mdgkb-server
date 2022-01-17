@@ -12,6 +12,7 @@ type Comment struct {
 	Text            string           `json:"text"`
 	ModChecked      bool             `json:"modChecked"`
 	Positive        bool             `json:"positive"`
+	Answer          string           `json:"answer"`
 	PublishedOn     time.Time        `bun:"default:current_timestamp" json:"publishedOn"`
 	User            *User            `bun:"rel:belongs-to" json:"user"`
 	Rating          float32          `json:"rating"`

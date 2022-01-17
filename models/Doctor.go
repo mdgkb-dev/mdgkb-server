@@ -13,8 +13,9 @@ type Doctor struct {
 	DivisionId        uuid.NullUUID   `bun:"type:uuid" json:"divisionId,omitempty"`
 	Human             *Human          `bun:"rel:belongs-to" json:"human"`
 	HumanId           uuid.UUID       `bun:"type:uuid" json:"humanId"`
+	Position          *Position       `bun:"rel:belongs-to" json:"position"`
+	PositionID        uuid.UUID       `bun:"type:uuid" json:"positionId"`
 	Schedule          string          `json:"schedule"`
-	Position          string          `json:"position"`
 	Tags              string          `json:"tags"`
 	MedicalProfile    *MedicalProfile `bun:"rel:belongs-to" json:"medicalProfile"`
 	MedicalProfileID  uuid.UUID       `bun:"type:uuid" json:"medicalProfileId"`

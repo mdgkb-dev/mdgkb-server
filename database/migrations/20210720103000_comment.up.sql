@@ -3,6 +3,7 @@ CREATE TABLE comments (
   user_id uuid constraint comments_user_id_fk REFERENCES users,
   text TEXT,
   rating float,
+  answer varchar,
   mod_checked boolean,
   positive boolean,
   published_on timestamp default current_timestamp
