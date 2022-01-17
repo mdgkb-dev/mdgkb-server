@@ -13,7 +13,7 @@ type News struct {
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Status        string    `json:"status"`
 	Title         string    `json:"title"`
-	PreviewText   string    `json:"preview_text"`
+	PreviewText   string    `json:"previewText"`
 	Content       string    `json:"content"`
 	Slug          string    `json:"slug"`
 	PublishedOn   time.Time `json:"publishedOn"`
@@ -25,7 +25,7 @@ type News struct {
 	FileInfoID           uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
 	MainImage            *FileInfo     `bun:"rel:belongs-to" json:"mainImage"`
 	MainImageID          uuid.NullUUID `bun:"type:uuid" json:"mainImageId"`
-	MainImageDescription uuid.NullUUID `bun:"type:uuid" json:"mainImageDescription"`
+	MainImageDescription string        `bun:"type:uuid" json:"mainImageDescription"`
 	ViewsCount           int           `bun:"-" json:"viewsCount"`
 	Event                *Event        `bun:"rel:belongs-to" json:"event"`
 	EventID              uuid.NullUUID `bun:"type:uuid" json:"eventId"`
