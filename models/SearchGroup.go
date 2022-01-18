@@ -9,13 +9,14 @@ import (
 type SearchGroup struct {
 	bun.BaseModel `bun:"search_groups,alias:search_groups"`
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	Key           string    `json:"key"`
 	Label         string    `json:"label"`
 	Order         int       `bun:"search_group_order" json:"order"`
 	Route         string    `json:"route"`
 	Table         string    `bun:"search_group_table" json:"table"`
 	SearchColumn  string    `json:"searchColumn"`
 	LabelColumn   string    `json:"labelColumn"`
-	ValueColumn   string    `json:"valueColumnColumn"`
+	ValueColumn   string    `json:"valueColumn"`
 
 	SearchElements SearchElements `bun:"-" json:"options"`
 }

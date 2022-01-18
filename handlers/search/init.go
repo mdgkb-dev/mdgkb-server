@@ -16,7 +16,8 @@ type IHandler interface {
 }
 
 type IService interface {
-	Search(*models.SearchModel) error
+	MainSearch(*models.SearchModel) error
+	SearchObjects(*models.SearchModel) error
 	SearchGroups() (models.SearchGroups, error)
 }
 

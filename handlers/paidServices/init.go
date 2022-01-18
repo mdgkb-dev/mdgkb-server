@@ -25,7 +25,6 @@ type IService interface {
 	Create(*models.PaidService) error
 	Update(*models.PaidService) error
 	Delete(*string) error
-
 	GetBySlug(*string) (*models.PaidService, error)
 }
 
@@ -36,7 +35,6 @@ type IRepository interface {
 	get(*string) (*models.PaidService, error)
 	update(*models.PaidService) error
 	delete(*string) error
-
 	getBySlug(*string) (*models.PaidService, error)
 }
 

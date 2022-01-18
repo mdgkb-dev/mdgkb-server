@@ -4,7 +4,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-func (s *Service) Search(searchModel *models.SearchModel) (err error) {
+func (s *Service) MainSearch(searchModel *models.SearchModel) (err error) {
 	searchModel.SearchGroups, err = s.repository.getGroups(searchModel.SearchGroupID)
 	if err != nil {
 		return err
@@ -22,4 +22,17 @@ func (s *Service) Search(searchModel *models.SearchModel) (err error) {
 
 func (s *Service) SearchGroups() (models.SearchGroups, error) {
 	return s.repository.getGroups("")
+}
+
+func (s *Service) SearchObjects(searchModel *models.SearchModel) (err error) {
+	searchModel.SearchGroups, err = s.repository.getGroups(searchModel.SearchGroupID)
+	if err != nil {
+		return err
+	}
+	search := s.helper.TranslitToRu(searchModel.Query)
+	err = s.repository.search(searchModel.SearchGroup, search)
+	if err != nil {
+		return err
+	}
+	return nil
 }
