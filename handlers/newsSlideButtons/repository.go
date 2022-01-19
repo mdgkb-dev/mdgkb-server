@@ -32,6 +32,8 @@ func (r *Repository) upsertMany(items models.NewsSlideButtons) (err error) {
 		Set("news_slide_button_order = EXCLUDED.news_slide_button_order").
 		Set("background_color = EXCLUDED.background_color").
 		Set("news_slide_id = EXCLUDED.news_slide_id").
+		Set("border_color = EXCLUDED.border_color").
+		Set("shadow = EXCLUDED.shadow").
 		Exec(r.ctx)
 	return err
 }

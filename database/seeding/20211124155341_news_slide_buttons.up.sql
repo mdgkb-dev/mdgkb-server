@@ -1,2 +1,3 @@
-INSERT INTO public.news_slide_buttons (id, name, color, background_color, news_slide_button_order, link, news_slide_id) VALUES ('31209309-b553-4576-9f81-9c8e55270e3d', 'Подробнее', '#8283B5', '#CBBBED', 1, '/news/shefy-ryadom-podvedeny-itogi-donorskoy-aktsii-v-morozovskoy-bolnitse', '5f10f41b-f59d-44dd-839c-7647bed815e0');
-INSERT INTO public.news_slide_buttons (id, name, color, background_color, news_slide_button_order, link, news_slide_id) VALUES ('0e8a7a92-38f3-4e7e-b3a0-997697b63866', 'Подробнее', '#000000', '#FF0000', 1, '/news/o-vaktsinatsii-protiv-covid-19', '5dfa6351-fd45-4de0-a878-9e3b7d47a851');
+insert into public.news_slide_buttons (id, name, color, background_color, news_slide_button_order, link, news_slide_id, shadow, border_color)
+values  ('acc50e69-95e7-48c7-adeb-680290dec785', 'Принять участие', '#FFFFFF', '#4CE1AA', 1, '/educations/ordinature', '3de810ea-4f76-4493-afc5-020c2de81ab9', true, null),
+        ('0955dc2d-56ab-4e4a-b941-6b00df48a6f0', 'Узнать подробнее', '#FFFFFF', '#a2aed4', 1, '/educations/ordinature', '3de810ea-4f76-4493-afc5-020c2de81ab9', false, '#FFFFFF');
