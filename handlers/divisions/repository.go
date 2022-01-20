@@ -50,6 +50,8 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 	err := q.Relation("Doctors.FileInfo").
 		Relation("Doctors.Human").
 		Relation("Doctors.Position").
+		Relation("Doctors.Division").
+		Relation("Doctors.MedicalProfile").
 		Relation("Vacancies").
 		Relation("VisitingRules").
 		Where("divisions.id = ?", slug).
