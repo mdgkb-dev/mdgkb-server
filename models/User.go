@@ -19,6 +19,7 @@ type User struct {
 	ChildrenForDelete []uuid.UUID `bun:"-" json:"childrenForDelete"`
 
 	DonorRulesUsers          DonorRulesUsers `bun:"rel:has-many" json:"donorRulesUsers"`
+	DoctorsUsers             DoctorsUsers    `bun:"rel:has-many" json:"doctorsUsers"`
 	DonorRulesUsersForDelete []uuid.UUID     `bun:"-" json:"donorRulesUsersForDelete"`
 }
 

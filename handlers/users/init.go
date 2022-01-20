@@ -15,6 +15,8 @@ type IHandler interface {
 	Get(c *gin.Context)
 	GetByEmail(c *gin.Context)
 	Update(c *gin.Context)
+	AddToUser(c *gin.Context)
+	RemoveFromUser(c *gin.Context)
 }
 
 type IService interface {
@@ -22,7 +24,9 @@ type IService interface {
 	Get(string) (*models.User, error)
 	GetByEmail(string) (*models.User, error)
 	EmailExists(string) (bool, error)
+	AddToUser(map[string]interface{}, string) error
 	Update(*models.User) error
+	RemoveFromUser(map[string]interface{}, string) error
 }
 
 type IRepository interface {
@@ -33,6 +37,9 @@ type IRepository interface {
 	getByEmail(string) (*models.User, error)
 	emailExists(string) (bool, error)
 	update(*models.User) error
+
+	addToUser(map[string]interface{}, string) error
+	removeFromUser(map[string]interface{}, string) error
 }
 
 type IFilesService interface {

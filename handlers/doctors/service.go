@@ -18,6 +18,10 @@ func (s *Service) Create(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
+	err = fileInfos.CreateService(s.repository.getDB()).Create(item.PhotoMini)
+	if err != nil {
+		return err
+	}
 	err = human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
 	if err != nil {
 		return err
@@ -58,6 +62,10 @@ func (s *Service) Create(item *models.Doctor) error {
 
 func (s *Service) Update(item *models.Doctor) error {
 	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.FileInfo)
+	if err != nil {
+		return err
+	}
+	err = fileInfos.CreateService(s.repository.getDB()).Upsert(item.PhotoMini)
 	if err != nil {
 		return err
 	}

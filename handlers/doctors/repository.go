@@ -22,6 +22,7 @@ func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCoun
 		Relation("Human").
 		Relation("Division").
 		Relation("FileInfo").
+		Relation("PhotoMini").
 		Relation("Position").
 		Relation("MedicalProfile").
 		Relation("Regalias").
@@ -50,6 +51,7 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 	err := r.db.NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
 		Relation("Human").
 		Relation("FileInfo").
+		Relation("PhotoMini").
 		Relation("Division.Timetable.TimetableDays.Weekday").
 		Relation("Regalias").
 		Relation("Experiences").

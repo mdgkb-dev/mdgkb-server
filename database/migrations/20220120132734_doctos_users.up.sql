@@ -1,0 +1,6 @@
+CREATE TABLE doctors_users
+(
+    id uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
+    doctor_id uuid REFERENCES doctors (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
+    user_id uuid REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL
+);

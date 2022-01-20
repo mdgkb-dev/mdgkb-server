@@ -79,3 +79,19 @@ func (s *Service) EmailExists(email string) (bool, error) {
 	}
 	return item, nil
 }
+
+func (s *Service) AddToUser(values map[string]interface{}, table string) error {
+	err := s.repository.addToUser(values, table)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Service) RemoveFromUser(values map[string]interface{}, table string) error {
+	err := s.repository.removeFromUser(values, table)
+	if err != nil {
+		return err
+	}
+	return nil
+}

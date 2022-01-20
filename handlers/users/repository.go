@@ -1,10 +1,10 @@
 package users
 
 import (
+	"fmt"
+	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
-
-	_ "github.com/go-pg/pg/v10/orm"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -25,6 +25,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("Questions").
 		Relation("DonorRulesUsers.DonorRule.Image").
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
+		Relation("DoctorsUsers.Doctor").
 		Relation("Children.Human").
 		Where("users.id = ?", id).
 		Scan(r.ctx)
@@ -33,7 +34,14 @@ func (r *Repository) get(id string) (*models.User, error) {
 
 func (r *Repository) getByEmail(id string) (*models.User, error) {
 	item := models.User{}
-	err := r.db.NewSelect().Model(&item).Where("users.email = ?", id).Scan(r.ctx)
+	err := r.db.NewSelect().Model(&item).
+		Relation("Human").
+		Relation("Questions").
+		Relation("DonorRulesUsers.DonorRule.Image").
+		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
+		Relation("Children.Human").
+		Relation("DoctorsUsers").
+		Where("users.email = ?", id).Scan(r.ctx)
 	return &item, err
 }
 
@@ -54,5 +62,19 @@ func (r *Repository) update(item *models.User) (err error) {
 
 func (r *Repository) upsert(item *models.User) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) addToUser(values map[string]interface{}, table string) error {
+	_, err := r.db.NewInsert().Model(&values).TableExpr(table).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) removeFromUser(values map[string]interface{}, table string) error {
+	q := r.db.NewDelete().Table(table)
+	for key, value := range values {
+		q = q.Where(fmt.Sprintf("%s = ?", key), value)
+	}
+	_, err := q.Exec(r.ctx)
 	return err
 }

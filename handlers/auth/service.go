@@ -30,7 +30,6 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	if !findedUser.CompareWithHashPassword(&item.Password) {
 		return nil, err
 	}

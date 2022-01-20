@@ -11,5 +11,6 @@ CREATE TABLE doctors
     item_order int default 0,
     schedule          VARCHAR,
     tags              VARCHAR,
-    file_info_id uuid  REFERENCES file_infos(id) ON UPDATE CASCADE ON DELETE CASCADE
+    file_info_id uuid  REFERENCES file_infos(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    photo_mini_id uuid  REFERENCES file_infos(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
