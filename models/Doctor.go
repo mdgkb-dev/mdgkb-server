@@ -27,6 +27,8 @@ type Doctor struct {
 	MosDoctorLink     string          `json:"mosDoctorLink"`
 	AcademicDegree    string          `json:"academicDegree"`
 	AcademicRank      string          `json:"academicRank"`
+	RegaliasCount     int             `json:"regaliasCount"`
+	CommentsCount     int             `json:"commentsCount"`
 	Show              bool            `json:"show"`
 	Regalias          Regalias        `bun:"rel:has-many" json:"regalias"`
 	RegaliasForDelete []uuid.UUID     `bun:"-" json:"regaliasForDelete"`

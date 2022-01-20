@@ -26,7 +26,15 @@ func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCoun
 		Relation("MedicalProfile").
 		Relation("Regalias").
 		Relation("DoctorComments.Comment").
-		Order("human.surname")
+		Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
+
+	if params.Main {
+		query = query.Order("doctors_view.regalias_count DESC", "doctors_view.comments_count DESC")
+		query = query.Where("doctors_view.file_info_id is not null")
+		query = query.Where("doctors_view.mos_doctor_link is not null and doctors_view.mos_doctor_link != '' ")
+	} else {
+		query = query.Order("human.surname")
+	}
 
 	if r.queryFilter != nil && r.queryFilter.Pagination != nil {
 		r.helper.HTTP.CreatePaginationQuery(query, r.queryFilter.Pagination)
