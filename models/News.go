@@ -9,16 +9,17 @@ import (
 )
 
 type News struct {
-	bun.BaseModel `bun:"news,alias:news"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Status        string    `json:"status"`
-	Title         string    `json:"title"`
-	PreviewText   string    `json:"previewText"`
-	Content       string    `json:"content"`
-	Slug          string    `json:"slug"`
-	PublishedOn   time.Time `json:"publishedOn"`
-	Description   string    `json:"description"`
-
+	bun.BaseModel        `bun:"news,alias:news"`
+	ID                   uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Status               string        `json:"status"`
+	Title                string        `json:"title"`
+	PreviewText          string        `json:"previewText"`
+	Content              string        `json:"content"`
+	Slug                 string        `json:"slug"`
+	PublishedOn          time.Time     `json:"publishedOn"`
+	Description          string        `json:"description"`
+	Main                 bool          `json:"main"`
+	SubMain              bool          `json:"subMain"`
 	NewsImagesForDelete  []string      `bun:"-" json:"newsImagesForDelete"`
 	NewsImagesNames      []string      `bun:"-" json:"newsImagesNames"`
 	FileInfo             *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`

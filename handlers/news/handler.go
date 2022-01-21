@@ -73,6 +73,7 @@ type newsParams struct {
 	FilterTags  string     `form:"filterTags"`
 	OrderByView string     `form:"orderByView"`
 	Events      bool       `form:"events"`
+	Main        bool       `form:"main"`
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -99,6 +100,14 @@ func (h *Handler) GetAllAdmin(c *gin.Context) {
 	}
 
 	news, err := h.service.GetAllAdmin()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, news)
+}
+
+func (h *Handler) GetAllMain(c *gin.Context) {
+	news, err := h.service.GetAllMain()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

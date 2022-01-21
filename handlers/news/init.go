@@ -14,6 +14,7 @@ import (
 type IHandler interface {
 	GetAll(c *gin.Context)
 	GetAllAdmin(c *gin.Context)
+	GetAllMain(c *gin.Context)
 	GetAllRelationsNews(c *gin.Context)
 	GetBySLug(c *gin.Context)
 	GetByMonth(c *gin.Context)
@@ -42,6 +43,7 @@ type IService interface {
 	RemoveComment(string) error
 	GetAll(*newsParams) ([]*models.News, error)
 	GetAllAdmin() (models.NewsWithCount, error)
+	GetAllMain() ([]*models.News, error)
 	GetAllRelationsNews(*newsParams) ([]models.News, error)
 	Delete(string) error
 	DeleteLike(string) error
@@ -63,6 +65,7 @@ type IRepository interface {
 	updateComment(*models.NewsComment) error
 	removeComment(string) error
 	getAll(*newsParams) ([]*models.News, error)
+	getAllMain() ([]*models.News, error)
 	getAllAdmin() (models.NewsWithCount, error)
 	getAllRelationsNews(*newsParams) ([]models.News, error)
 	delete(string) error

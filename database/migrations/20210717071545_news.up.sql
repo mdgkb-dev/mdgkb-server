@@ -15,6 +15,8 @@ CREATE TABLE news
     content        text,
     slug           VARCHAR,
     published_on   timestamp,
+    main boolean default false,
+    sub_main boolean default false,
     description    VARCHAR,
     file_info_id uuid  REFERENCES file_infos(id) ON UPDATE CASCADE ON DELETE CASCADE
 );

@@ -6,6 +6,10 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
+func (s *Service) GetAll() (models.Certificates, error) {
+	return s.repository.getAll()
+}
+
 func (s *Service) CreateMany(items models.Certificates) error {
 	if len(items) == 0 {
 		return nil

@@ -48,11 +48,17 @@ func (s *Service) Create(item *models.News) error {
 }
 
 func (s *Service) GetAll(params *newsParams) ([]*models.News, error) {
+	if params.Main {
+		return s.repository.getAllMain()
+	}
 	return s.repository.getAll(params)
 }
 
 func (s *Service) GetAllAdmin() (models.NewsWithCount, error) {
 	return s.repository.getAllAdmin()
+}
+func (s *Service) GetAllMain() ([]*models.News, error) {
+	return s.repository.getAllMain()
 }
 
 func (s *Service) GetAllRelationsNews(params *newsParams) ([]models.News, error) {

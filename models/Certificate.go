@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/helpers/uploadHelper"
 )
 
 type Certificate struct {
@@ -16,6 +17,16 @@ type Certificate struct {
 }
 
 type Certificates []*Certificate
+
+func (items Certificates) SetFilePath(fileID string) *string {
+	for i := range items {
+		if items[i].Scan.ID.UUID.String() == fileID {
+			items[i].Scan.FileSystemPath = uploadHelper.BuildPath(&fileID)
+			return &items[i].Scan.FileSystemPath
+		}
+	}
+	return nil
+}
 
 func (items Certificates) GetFileInfos() FileInfos {
 	itemsForGet := make(FileInfos, 0)

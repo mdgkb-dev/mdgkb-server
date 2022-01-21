@@ -10,6 +10,7 @@ import (
 func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/relation-news", h.GetAll)
 	r.GET("/admin", h.GetAllAdmin)
+	r.GET("/main", h.GetAllMain)
 	r.GET("/", h.GetAll)
 	r.GET("/:slug", h.GetBySLug)
 	r.GET("/month", h.GetByMonth)

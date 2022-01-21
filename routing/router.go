@@ -3,6 +3,7 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/auth"
+	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
@@ -37,6 +38,7 @@ import (
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
+	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
@@ -131,6 +133,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	partnersRouter.Init(api.Group("/partners"), partners.CreateHandler(db, helper))
 	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(db, helper))
 	donorRulesRouter.Init(api.Group("/donor-rules"), donorRules.CreateHandler(db, helper))
+	certificatesRouter.Init(api.Group("/certificates"), certificates.CreateHandler(db, helper))
 	metaRouter.Init(api.Group("/meta"), meta.CreateHandler(db, helper))
 	paidServicesRouter.Init(api.Group("/paid-services"), paidServices.CreateHandler(db, helper))
 }

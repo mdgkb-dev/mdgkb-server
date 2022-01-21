@@ -11,6 +11,16 @@ func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
+func (r *Repository) getAll() (models.Certificates, error) {
+	items := make(models.Certificates, 0)
+	err := r.db.NewSelect().
+		Model(&items).
+		Relation("Scan").
+		Where("doctor_id is null").
+		Scan(r.ctx)
+	return items, err
+}
+
 func (r *Repository) createMany(items models.Certificates) (err error) {
 	_, err = r.db.NewInsert().Model(&items).Exec(r.ctx)
 	return err

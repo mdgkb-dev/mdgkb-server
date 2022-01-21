@@ -92,6 +92,42 @@ func (r *Repository) getAll(newsParams *newsParams) ([]*models.News, error) {
 	return items, err
 }
 
+func (r *Repository) getAllMain() ([]*models.News, error) {
+	items := make([]*models.News, 0)
+	queryForRecent := r.db.NewSelect().Model(&items).
+		Relation("NewsLikes").
+		Relation("NewsViews").
+		Relation("FileInfo").
+		Where("news.main != true and news.sub_main != true").
+		Order("news.published_on desc").
+		Limit(6)
+
+	queryForSub := r.db.NewSelect().Model(&items).
+		Relation("NewsLikes").
+		Relation("NewsViews").
+		Relation("NewsToCategories.Category").
+		Relation("NewsToTags.Tag").
+		Relation("FileInfo").
+		Relation("NewsLikes").
+		Relation("NewsViews").
+		Where("news.sub_main = true")
+
+	err := r.db.NewSelect().Model(&items).
+		Relation("NewsLikes").
+		Relation("NewsViews").
+		Relation("NewsToCategories.Category").
+		Relation("NewsToTags.Tag").
+		Relation("FileInfo").
+		Relation("NewsLikes").
+		Relation("NewsViews").
+		Where("news.main = true").
+		UnionAll(queryForRecent).
+		UnionAll(queryForSub).
+		Order("news.main desc", "news.sub_main desc").
+		Scan(r.ctx)
+	return items, err
+}
+
 func (r *Repository) getAllRelationsNews(newsParams *newsParams) (news []models.News, err error) {
 	query := r.db.NewSelect().Model(&news).
 		Relation("NewsToCategories.Category").
