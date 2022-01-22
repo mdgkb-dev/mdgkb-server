@@ -18,3 +18,7 @@ func (h *Handler) GetCount(c *gin.Context) {
 func (h *Handler) GetSchema(c *gin.Context) {
 	c.JSON(http.StatusOK, h.service.GetSchema())
 }
+
+func (h *Handler) GetSocial(c *gin.Context) {
+	c.JSON(http.StatusOK, h.helper.Social.GetWebFeed())
+}

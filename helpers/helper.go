@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/helpers/emailHelper"
 	httpHelper "mdgkb/mdgkb-server/helpers/httpHelperV2"
 	"mdgkb/mdgkb-server/helpers/pdfHelper"
+	"mdgkb/mdgkb-server/helpers/socialHelper"
 	"mdgkb/mdgkb-server/helpers/sqlHelper"
 	"mdgkb/mdgkb-server/helpers/tokenHelper"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
@@ -17,6 +18,7 @@ type Helper struct {
 	SQL      *sqlHelper.SQLHelper
 	Token    *tokenHelper.TokenHelper
 	Email    *emailHelper.EmailHelper
+	Social   *socialHelper.Social
 }
 
 func NewHelper(config configPack.Config) *Helper {
@@ -26,5 +28,6 @@ func NewHelper(config configPack.Config) *Helper {
 	uploader := uploadHelper.NewLocalUploader(&config.UploadPath)
 	token := tokenHelper.NewTokenHelper(config.TokenSecret)
 	email := emailHelper.NewEmailHelper(config.Email)
-	return &Helper{HTTP: http, Uploader: uploader, PDF: pdf, SQL: sql, Token: token, Email: email}
+	social := socialHelper.NewSocial(config.Social)
+	return &Helper{HTTP: http, Uploader: uploader, PDF: pdf, SQL: sql, Token: token, Email: email, Social: social}
 }

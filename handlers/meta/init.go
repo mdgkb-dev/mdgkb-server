@@ -12,6 +12,7 @@ import (
 type IHandler interface {
 	GetCount(c *gin.Context)
 	GetSchema(c *gin.Context)
+	GetSocial(c *gin.Context)
 }
 
 type IService interface {

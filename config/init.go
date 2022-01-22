@@ -22,7 +22,8 @@ type Config struct {
 
 	TokenSecret string `mapstructure:"TOKEN_SECRET"`
 
-	Email Email `mapstructure:",squash"`
+	Email  Email  `mapstructure:",squash"`
+	Social Social `mapstructure:",squash"`
 }
 
 type Email struct {
@@ -31,6 +32,11 @@ type Email struct {
 	From     string `mapstructure:"EMAIL_FROM"`
 	Server   string `mapstructure:"EMAIL_SERVER"`
 	Port     string `mapstructure:"EMAIL_PORT"`
+}
+
+type Social struct {
+	InstagramToken string `mapstructure:"INSTAGRAM_TOKEN"`
+	InstagramID    string `mapstructure:"INSTAGRAM_ID"`
 }
 
 func LoadConfig() (config *Config, err error) {
@@ -48,10 +54,5 @@ func LoadConfig() (config *Config, err error) {
 	}
 
 	err = viper.Unmarshal(&config)
-	//decErr := mapstructure.Decode(result, &config)
-	//if decErr != nil {
-	//	return nil, decErr
-	//}
-	//fmt.Printf("config:%+v\n", config)
 	return config, err
 }
