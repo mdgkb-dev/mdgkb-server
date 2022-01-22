@@ -20,6 +20,8 @@ type News struct {
 	Description          string        `json:"description"`
 	Main                 bool          `json:"main"`
 	SubMain              bool          `json:"subMain"`
+	ArticleLink          string        `json:"article_link"`
+	IsArticle            bool          `json:"is_article"`
 	NewsImagesForDelete  []string      `bun:"-" json:"newsImagesForDelete"`
 	NewsImagesNames      []string      `bun:"-" json:"newsImagesNames"`
 	FileInfo             *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
@@ -31,14 +33,16 @@ type News struct {
 	Event                *Event        `bun:"rel:belongs-to" json:"event"`
 	EventID              uuid.NullUUID `bun:"type:uuid" json:"eventId"`
 
-	NewsToCategories     NewsToCategories `bun:"rel:has-many" json:"newsToCategories"`
-	NewsToTags           NewsToTags       `bun:"rel:has-many" json:"newsToTags"`
-	NewsDoctors          NewsDoctors      `bun:"rel:has-many" json:"newsDoctors"`
-	NewsDoctorsForDelete []uuid.UUID      `bun:"-" json:"newsDoctorsForDelete"`
-	NewsViews            NewsViews        `bun:"rel:has-many" json:"newsViews"`
-	NewsLikes            NewsLikes        `bun:"rel:has-many" json:"newsLikes"`
-	NewsComments         NewsComments     `bun:"rel:has-many" json:"newsComments"`
-	NewsImages           NewsImages       `bun:"rel:has-many" json:"newsImages"`
+	NewsToCategories       NewsToCategories `bun:"rel:has-many" json:"newsToCategories"`
+	NewsToTags             NewsToTags       `bun:"rel:has-many" json:"newsToTags"`
+	NewsDoctors            NewsDoctors      `bun:"rel:has-many" json:"newsDoctors"`
+	NewsDoctorsForDelete   []uuid.UUID      `bun:"-" json:"newsDoctorsForDelete"`
+	NewsDivisions          NewsDivisions    `bun:"rel:has-many" json:"newsDivisions"`
+	NewsDivisionsForDelete []uuid.UUID      `bun:"-" json:"newsDoctorsForDeleteForDelete"`
+	NewsViews              NewsViews        `bun:"rel:has-many" json:"newsViews"`
+	NewsLikes              NewsLikes        `bun:"rel:has-many" json:"newsLikes"`
+	NewsComments           NewsComments     `bun:"rel:has-many" json:"newsComments"`
+	NewsImages             NewsImages       `bun:"rel:has-many" json:"newsImages"`
 }
 
 func (item *News) SetFilePath(fileID *string) *string {
@@ -87,6 +91,9 @@ func (item *News) SetIdForChildren() {
 	}
 	for i := range item.NewsDoctors {
 		item.NewsDoctors[i].NewsID = item.ID
+	}
+	for i := range item.NewsDivisions {
+		item.NewsDivisions[i].NewsID = item.ID
 	}
 }
 
