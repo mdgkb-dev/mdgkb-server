@@ -12,6 +12,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/heads"
+	"mdgkb/mdgkb-server/handlers/medicalProfiles"
 	"mdgkb/mdgkb-server/handlers/menus"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/news"
@@ -49,6 +50,7 @@ import (
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
+	medicalProfilesRouter "mdgkb/mdgkb-server/routing/medicalProfiles"
 	menusRouter "mdgkb/mdgkb-server/routing/menus"
 	metaRouter "mdgkb/mdgkb-server/routing/meta"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
@@ -136,4 +138,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	certificatesRouter.Init(api.Group("/certificates"), certificates.CreateHandler(db, helper))
 	metaRouter.Init(api.Group("/meta"), meta.CreateHandler(db, helper))
 	paidServicesRouter.Init(api.Group("/paid-services"), paidServices.CreateHandler(db, helper))
+	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalProfiles.CreateHandler(db, helper))
 }
