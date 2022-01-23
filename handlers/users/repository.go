@@ -22,7 +22,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 	err := r.db.NewSelect().
 		Model(&item).
 		Relation("Human").
-		Relation("Questions").
+		//Relation("Questions").
 		Relation("DonorRulesUsers.DonorRule.Image").
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
 		Relation("DoctorsUsers.Doctor").
@@ -36,7 +36,7 @@ func (r *Repository) getByEmail(id string) (*models.User, error) {
 	item := models.User{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("Human").
-		Relation("Questions").
+		//Relation("Questions").
 		Relation("DonorRulesUsers.DonorRule.Image").
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
 		Relation("Children.Human").
