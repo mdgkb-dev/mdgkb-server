@@ -27,6 +27,7 @@ type Doctor struct {
 	DoctorComments    DoctorComments  `bun:"rel:has-many" json:"doctorComments"`
 	NewsDoctors       NewsDoctors     `bun:"rel:has-many" json:"newsDoctors"`
 	MosDoctorLink     string          `json:"mosDoctorLink"`
+	OnlineDoctorID    string          `json:"onlineDoctorId"`
 	AcademicDegree    string          `json:"academicDegree"`
 	AcademicRank      string          `json:"academicRank"`
 	RegaliasCount     int             `bun:"-" json:"regaliasCount"`

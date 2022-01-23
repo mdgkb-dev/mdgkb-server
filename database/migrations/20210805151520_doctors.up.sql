@@ -8,6 +8,7 @@ CREATE TABLE doctors
     medical_profile_id uuid  REFERENCES medical_profiles (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
     position_id uuid  REFERENCES positions (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
     mos_doctor_link varchar,
+    online_doctor_id varchar,
     item_order int default 0,
     schedule          VARCHAR,
     tags              VARCHAR,
