@@ -20,7 +20,7 @@ func (r *Repository) create(item *models.Doctor) (err error) {
 func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCount, err error) {
 	query := r.db.NewSelect().Model(&items.Doctors).
 		Relation("Human").
-		Relation("Division").
+		Relation("Division.Floor").
 		Relation("FileInfo").
 		Relation("PhotoMini").
 		Relation("Position").
@@ -42,7 +42,7 @@ func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCoun
 	}
 	//r.helper.HTTP.CreateFilter(query, r.queryFilter.FilterModels)
 
-	items.Count, err = query.ScanAndCount(r.ctx)
+	items.Count, err = query.Limit(20).ScanAndCount(r.ctx)
 	return items, err
 }
 

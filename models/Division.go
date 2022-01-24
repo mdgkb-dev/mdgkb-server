@@ -25,6 +25,7 @@ type Division struct {
 	Entrance                *Entrance        `bun:"rel:belongs-to" json:"entrance"`
 	EntranceId              uuid.NullUUID    `bun:"type:uuid" json:"entranceId"`
 	FloorId                 uuid.NullUUID    `bun:"type:uuid" json:"floorId"`
+	Floor                   *Floor           `bun:"rel:belongs-to" json:"floor"`
 	Timetable               *Timetable       `bun:"rel:belongs-to" json:"timetable"`
 	TimetableId             uuid.UUID        `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 	Schedule                *Schedule        `bun:"rel:belongs-to" json:"schedule"`
