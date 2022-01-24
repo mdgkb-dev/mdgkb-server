@@ -21,6 +21,10 @@ func (h *Handler) GetAll(c *gin.Context) {
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	err = h.service.setQueryFilter(c)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	comments, err := h.service.GetAll(&commentsParams)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return

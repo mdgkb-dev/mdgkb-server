@@ -3,6 +3,7 @@ package questions
 import (
 	"context"
 	"mdgkb/mdgkb-server/helpers"
+	httpHelper2 "mdgkb/mdgkb-server/helpers/httpHelperV2"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -23,6 +24,8 @@ type IHandler interface {
 }
 
 type IService interface {
+	setQueryFilter(*gin.Context) error
+
 	GetAll(bool) (models.Questions, error)
 	Get(string) (*models.Question, error)
 	Create(*models.Question) error
@@ -35,6 +38,8 @@ type IService interface {
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
+
 	getDB() *bun.DB
 	create(*models.Question) error
 	getAll(bool) (models.Questions, error)
@@ -63,9 +68,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helpers.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helpers.Helper
+	queryFilter *httpHelper2.QueryFilter
 }
 
 type FilesService struct {

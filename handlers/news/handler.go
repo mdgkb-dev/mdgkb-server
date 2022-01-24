@@ -82,7 +82,6 @@ func (h *Handler) GetAll(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-
 	news, err := h.service.GetAll(&newsParams)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

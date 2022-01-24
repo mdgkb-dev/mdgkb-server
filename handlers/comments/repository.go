@@ -1,6 +1,7 @@
 package comments
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -51,11 +52,21 @@ func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
 	if params.Positive != nil {
 		query = query.Where("comment.positive = ?", params.Positive)
 	}
+	r.queryFilter.Pagination.CreatePagination(query)
 	err := query.Scan(r.ctx)
+
 	return items, err
 }
 
 func (r *Repository) updateOne(item *models.Comment) error {
 	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.HTTP.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }

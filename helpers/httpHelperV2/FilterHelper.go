@@ -1,8 +1,6 @@
 package httpHelper
 
 import (
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,11 +9,6 @@ type QueryFilter struct {
 	FilterModels FilterModels
 	SortModels   SortModels
 	Pagination   *Pagination
-}
-
-type Pagination struct {
-	Offset *int
-	Limit  *int
 }
 
 func (i *HTTPHelper) CreateQueryFilter(c *gin.Context) (*QueryFilter, error) {
@@ -65,27 +58,4 @@ func CreateFilterModels(c *gin.Context) (FilterModels, error) {
 	}
 
 	return filterModels, nil
-}
-
-func CreatePagination(c *gin.Context) (*Pagination, error) {
-	offset := c.Query("offset")
-	if offset == "" {
-		return nil, nil
-	}
-	offsetNumber, err := strconv.Atoi(offset)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := c.Query("limit")
-	if offset == "" {
-		return nil, nil
-	}
-	limitNumber, err := strconv.Atoi(limit)
-	if err != nil {
-		return nil, err
-	}
-
-	offsetNumber = offsetNumber * limitNumber
-	return &Pagination{Offset: &offsetNumber, Limit: &limitNumber}, nil
 }

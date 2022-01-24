@@ -104,7 +104,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(db, helper))
 	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(db, helper))
 
-	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(db))
+	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(db, helper))
 	newsRouter.Init(api.Group("/news"), news.CreateHandler(db, helper))
 	normativeDocumentTypes.Init(api.Group("/normative-document-types"), db, localUploader)
 	normativeDocuments.Init(api.Group("/normative-documents"), db, localUploader)

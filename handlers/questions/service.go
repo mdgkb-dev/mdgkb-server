@@ -1,6 +1,7 @@
 package questions
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/models"
 )
@@ -52,4 +53,9 @@ func (s *Service) ReadAnswers(userID string) error {
 
 func (s *Service) Publish(id string) error {
 	return s.repository.publish(id)
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

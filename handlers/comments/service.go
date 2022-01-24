@@ -1,6 +1,7 @@
 package comments
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -44,4 +45,9 @@ func (s *Service) GetAll(params *commentsParams) (models.Comments, error) {
 
 func (s *Service) UpdateOne(item *models.Comment) error {
 	return s.repository.updateOne(item)
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

@@ -1,6 +1,7 @@
 package questions
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -18,10 +19,10 @@ func (r *Repository) create(item *models.Question) (err error) {
 func (r *Repository) getAll(published bool) (models.Questions, error) {
 	items := make(models.Questions, 0)
 	query := r.db.NewSelect().Model(&items).Order("question_date DESC").Order("is_new DESC")
-	if published {
-		query = query.Where("published = true")
-	}
-	err := query.Limit(100).Scan(r.ctx)
+	r.queryFilter.Pagination.Cursor.Column = "question_date"
+	r.queryFilter.Pagination.CreatePagination(query)
+
+	err := query.Scan(r.ctx)
 	return items, err
 }
 
@@ -64,4 +65,12 @@ func (r *Repository) publish(id string) (err error) {
 		Where("id = ?", id).
 		Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.HTTP.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }

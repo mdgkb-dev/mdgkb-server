@@ -22,11 +22,15 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	published, err := strconv.ParseBool(c.Query("published"))
+	err := h.service.setQueryFilter(c)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	items, err := h.service.GetAll(published)
+	//published, err := strconv.ParseBool(c.Query("published"))
+	//if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	//	return
+	//}
+	items, err := h.service.GetAll(true)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

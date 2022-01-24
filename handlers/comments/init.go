@@ -2,6 +2,8 @@ package comments
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/helpers"
+	httpHelper2 "mdgkb/mdgkb-server/helpers/httpHelperV2"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -14,12 +16,14 @@ type IHandler interface {
 }
 
 type IService interface {
+	setQueryFilter(*gin.Context) error
 	CreateMany(comments models.Comments) error
 	GetAll(*commentsParams) (models.Comments, error)
 	UpdateOne(*models.Comment) error
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	createMany(comments models.Comments) error
 	upsertMany(comments models.Comments) error
@@ -30,36 +34,40 @@ type IRepository interface {
 
 type Handler struct {
 	service IService
+	helper  *helpers.Helper
 }
 
 type Service struct {
 	repository IRepository
+	helper     *helpers.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helpers.Helper
+	queryFilter *httpHelper2.QueryFilter
 }
 
-func CreateHandler(db *bun.DB) *Handler {
-	repo := NewRepository(db)
-	service := NewService(repo)
-	return NewHandler(service)
+func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
+	repo := NewRepository(db, helper)
+	service := NewService(repo, helper)
+	return NewHandler(service, helper)
+}
+func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
 
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
+// NewHandler constructor
+func NewHandler(s IService, helper *helpers.Helper) *Handler {
+	return &Handler{service: s, helper: helper}
 }
 
-func NewHandler(service IService) *Handler {
-	return &Handler{service: service}
+func NewService(repository IRepository, helper *helpers.Helper) *Service {
+	return &Service{repository: repository, helper: helper}
 }
 
-func NewService(repository IRepository) *Service {
-	return &Service{repository: repository}
-}
-
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
+	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }
