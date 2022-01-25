@@ -64,6 +64,14 @@ func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
 	return items, err
 }
 
+func (r *Repository) getAllMain() (models.Comments, error) {
+	items := make(models.Comments, 0)
+	query := r.db.NewSelect().Model(&items).Where("comment.positive = true").Order("published_on desc").Limit(4)
+	err := query.Scan(r.ctx)
+
+	return items, err
+}
+
 func (r *Repository) updateOne(item *models.Comment) error {
 	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err

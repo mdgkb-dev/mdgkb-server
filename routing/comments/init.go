@@ -6,6 +6,7 @@ import (
 )
 
 func Init(r *gin.RouterGroup, h handler.IHandler) {
+	r.GET("/main", h.GetAllMain)
 	r.GET("/", h.GetAll)
 	r.PUT("/:id", h.UpdateOne)
 }

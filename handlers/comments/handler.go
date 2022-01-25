@@ -32,6 +32,14 @@ func (h *Handler) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, comments)
 }
 
+func (h *Handler) GetAllMain(c *gin.Context) {
+	comments, err := h.service.GetAllMain()
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, comments)
+}
+
 func (h *Handler) UpdateOne(c *gin.Context) {
 	var item models.Comment
 	err := c.Bind(&item)

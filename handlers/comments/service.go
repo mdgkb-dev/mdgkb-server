@@ -43,6 +43,10 @@ func (s *Service) GetAll(params *commentsParams) (models.Comments, error) {
 	return items, nil
 }
 
+func (s *Service) GetAllMain() (models.Comments, error) {
+	return s.repository.getAllMain()
+}
+
 func (s *Service) UpdateOne(item *models.Comment) error {
 	return s.repository.updateOne(item)
 }

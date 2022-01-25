@@ -12,6 +12,7 @@ import (
 
 type IHandler interface {
 	GetAll(c *gin.Context)
+	GetAllMain(c *gin.Context)
 	UpdateOne(c *gin.Context)
 }
 
@@ -19,6 +20,7 @@ type IService interface {
 	setQueryFilter(*gin.Context) error
 	CreateMany(comments models.Comments) error
 	GetAll(*commentsParams) (models.Comments, error)
+	GetAllMain() (models.Comments, error)
 	UpdateOne(*models.Comment) error
 }
 
@@ -29,6 +31,7 @@ type IRepository interface {
 	upsertMany(comments models.Comments) error
 	deleteMany([]string) error
 	getAll(*commentsParams) (models.Comments, error)
+	getAllMain() (models.Comments, error)
 	updateOne(*models.Comment) error
 }
 
