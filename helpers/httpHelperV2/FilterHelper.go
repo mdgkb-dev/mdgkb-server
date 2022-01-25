@@ -2,6 +2,7 @@ package httpHelper
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 )
 
 type QueryFilter struct {
@@ -11,16 +12,20 @@ type QueryFilter struct {
 	Pagination   *Pagination
 }
 
+func (i *QueryFilter) CreateFilter(query *bun.SelectQuery) {
+	createFilter(query, i.FilterModels)
+}
+
 func (i *HTTPHelper) CreateQueryFilter(c *gin.Context) (*QueryFilter, error) {
-	filterModels, err := CreateFilterModels(c)
+	filterModels, err := createFilterModels(c)
 	if err != nil {
 		return nil, err
 	}
-	sortModels, err := CreateSortModels(c)
+	sortModels, err := createSortModels(c)
 	if err != nil {
 		return nil, err
 	}
-	pagination, err := CreatePagination(c)
+	pagination, err := createPagination(c)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +33,7 @@ func (i *HTTPHelper) CreateQueryFilter(c *gin.Context) (*QueryFilter, error) {
 	return &QueryFilter{ID: &id, FilterModels: filterModels, SortModels: sortModels, Pagination: pagination}, nil
 }
 
-func CreateSortModels(c *gin.Context) (SortModels, error) {
+func createSortModels(c *gin.Context) (SortModels, error) {
 	sortModels := make(SortModels, 0)
 	if c.Query("sortModel") == "" {
 		return nil, nil
@@ -44,7 +49,7 @@ func CreateSortModels(c *gin.Context) (SortModels, error) {
 	return sortModels, nil
 }
 
-func CreateFilterModels(c *gin.Context) (FilterModels, error) {
+func createFilterModels(c *gin.Context) (FilterModels, error) {
 	filterModels := make(FilterModels, 0)
 	if c.Query("filterModel") == "" {
 		return nil, nil
@@ -58,4 +63,8 @@ func CreateFilterModels(c *gin.Context) (FilterModels, error) {
 	}
 
 	return filterModels, nil
+}
+
+func createPagination(c *gin.Context) (*Pagination, error) {
+	return parseJSONToPagination(c.Query("pagination"))
 }

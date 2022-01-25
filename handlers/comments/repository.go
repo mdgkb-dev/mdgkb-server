@@ -1,6 +1,7 @@
 package comments
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
@@ -43,16 +44,21 @@ func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
 		Relation("DivisionComments.Division").
 		Relation("User").
 		Order("published_on DESC")
-	if params.Limit != 0 {
-		query = query.Limit(params.Limit)
+	//if params.Limit != 0 {
+	//	query = query.Limit(params.Limit)
+	//}
+	//if params.ModChecked != nil {
+	//	query = query.Where("comment.mod_checked = ?", params.ModChecked)
+	//}
+	//if params.Positive != nil {
+	//	query = query.Where("comment.positive = ?", params.Positive)
+	//}
+	if r.queryFilter.FilterModels != nil {
+		fmt.Println(r.queryFilter.FilterModels[0])
 	}
-	if params.ModChecked != nil {
-		query = query.Where("comment.mod_checked = ?", params.ModChecked)
-	}
-	if params.Positive != nil {
-		query = query.Where("comment.positive = ?", params.Positive)
-	}
+	r.queryFilter.Pagination.Cursor.Column = "comment.published_on"
 	r.queryFilter.Pagination.CreatePagination(query)
+	r.queryFilter.CreateFilter(query)
 	err := query.Scan(r.ctx)
 
 	return items, err

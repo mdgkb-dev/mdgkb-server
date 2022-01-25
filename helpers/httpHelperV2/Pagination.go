@@ -2,7 +2,6 @@ package httpHelper
 
 import (
 	"encoding/json"
-	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
@@ -29,8 +28,4 @@ func (p *Pagination) CreatePagination(query *bun.SelectQuery) {
 		query = query.Offset(*p.Offset)
 	}
 	query = query.Limit(*p.Limit)
-}
-
-func CreatePagination(c *gin.Context) (*Pagination, error) {
-	return parseJSONToPagination(c.Query("pagination"))
 }

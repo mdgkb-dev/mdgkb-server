@@ -21,11 +21,15 @@ func CreateOrder(query *bun.SelectQuery, sortModels SortModels, defaultSort []st
 }
 
 // CreateFilter func
-func CreateFilter(query *bun.SelectQuery, filterModels FilterModels) {
+func createFilter(query *bun.SelectQuery, filterModels FilterModels) {
 	if len(filterModels) == 0 {
 		return
 	}
 	for _, filter := range filterModels {
+		fmt.Println(*filter.Type)
+		fmt.Println(*filter.Type)
+		fmt.Println(*filter.Type)
+		fmt.Println(*filter.Type)
 		switch *filter.Type {
 		case SetType:
 			if len(filter.Set) == 0 {
@@ -64,6 +68,10 @@ func constructWhere(query *bun.SelectQuery, filter *FilterModel) {
 	if filter.IsBetween() {
 		q = fmt.Sprintf("%s %s '%s' and '%s'", filter.GetTableAndCol(), *filter.Operator, filter.Value1, filter.Value2)
 	}
+	fmt.Println(q)
+	fmt.Println(q)
+	fmt.Println(q)
+	fmt.Println(q)
 	query = query.Where(q)
 }
 
