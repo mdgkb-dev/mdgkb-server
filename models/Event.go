@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"time"
 )
 
 type Event struct {
@@ -11,6 +12,9 @@ type Event struct {
 	EventApplications EventApplications `bun:"rel:has-many" json:"eventApplications"`
 
 	News *News `bun:"rel:has-one" json:"news"`
+
+	StartDate time.Time `json:"startDate"`
+	EndDate   time.Time `json:"endDate"`
 
 	Form   *Form     `bun:"rel:belongs-to" json:"form"`
 	FormID uuid.UUID `bun:"type:uuid" json:"formId"`

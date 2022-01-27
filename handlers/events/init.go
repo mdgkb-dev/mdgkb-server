@@ -13,11 +13,13 @@ import (
 type IHandler interface {
 	CreateEventApplication(c *gin.Context)
 	EventApplicationsPDF(c *gin.Context)
+	GetAllForMain(c *gin.Context)
 }
 
 type IService interface {
 	Create(info *models.Event) error
 	Get(string) (*models.Event, error)
+	GetAllForMain() (models.Events, error)
 	Update(info *models.Event) error
 	Upsert(info *models.Event) error
 	UpsertMany(infos models.Events) error
@@ -28,6 +30,7 @@ type IRepository interface {
 	getDB() *bun.DB
 	create(info *models.Event) error
 	get(string) (*models.Event, error)
+	getAllForMain() (models.Events, error)
 	update(info *models.Event) error
 	upsert(info *models.Event) error
 	upsertMany(infos models.Events) error

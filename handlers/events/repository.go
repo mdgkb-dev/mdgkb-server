@@ -34,8 +34,9 @@ func (r *Repository) update(item *models.Event) (err error) {
 func (r *Repository) upsertMany(items models.Events) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
-		Set("original_name = EXCLUDED.original_name").
-		Set("file_system_path = EXCLUDED.file_system_path").
+		Set("start_date = EXCLUDED.start_date").
+		Set("end_date = EXCLUDED.end_date").
+		Set("form_id = EXCLUDED.form_id").
 		Exec(r.ctx)
 	return err
 }
@@ -44,6 +45,9 @@ func (r *Repository) upsert(item *models.Event) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(item).
 		Set("id = EXCLUDED.id").
+		Set("start_date = EXCLUDED.start_date").
+		Set("end_date = EXCLUDED.end_date").
+		Set("form_id = EXCLUDED.form_id").
 		Exec(r.ctx)
 	return err
 }
@@ -59,4 +63,16 @@ func (r *Repository) upsert(item *models.Event) (err error) {
 func (r *Repository) createEventApplication(item *models.EventApplication) error {
 	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) getAllForMain() (models.Events, error) {
+	items := make(models.Events, 0)
+	err := r.db.NewSelect().Model(&items).
+		Relation("News").
+		//Relation("Event").
+		//Join("JOIN events on news.event_id = event.id").
+		Order("news.published_on DESC").
+		Limit(12).
+		Scan(r.ctx)
+	return items, err
 }

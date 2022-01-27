@@ -33,3 +33,11 @@ func (h *Handler) EventApplicationsPDF(c *gin.Context) {
 	h.helper.HTTP.SetFileHeaders(c, "Заявки на мероприятие")
 	c.Data(http.StatusOK, "application/pdf", pdf)
 }
+
+func (h *Handler) GetAllForMain(c *gin.Context) {
+	items, err := h.service.GetAllForMain()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}

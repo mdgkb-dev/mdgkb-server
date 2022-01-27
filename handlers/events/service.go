@@ -91,3 +91,7 @@ func (s *Service) CreateEventApplication(item *models.EventApplication) error {
 	}
 	return nil
 }
+
+func (s *Service) GetAllForMain() (models.Events, error) {
+	return s.repository.getAllForMain()
+}
