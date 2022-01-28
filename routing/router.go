@@ -3,6 +3,7 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/auth"
+	"mdgkb/mdgkb-server/handlers/callbackRequests"
 	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisions"
@@ -39,6 +40,7 @@ import (
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	"mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
+	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackRequests"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
@@ -139,4 +141,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	metaRouter.Init(api.Group("/meta"), meta.CreateHandler(db, helper))
 	paidServicesRouter.Init(api.Group("/paid-services"), paidServices.CreateHandler(db, helper))
 	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalProfiles.CreateHandler(db, helper))
+	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackRequests.CreateHandler(db, helper))
 }
