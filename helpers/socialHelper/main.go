@@ -2,7 +2,6 @@ package socialHelper
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"mdgkb/mdgkb-server/config"
@@ -11,23 +10,34 @@ import (
 )
 
 type Social struct {
-	InstagramToken string
-	InstagramID    string
-}
-
-const InstagramApi = "https://graph.instagram.com"
-
-func NewSocial(config config.Social) *Social {
-	return &Social{InstagramToken: config.InstagramToken, InstagramID: config.InstagramID}
+	config.Social
 }
 
 func (i *Social) buildInstagramURL() string {
-	return fmt.Sprintf("%s/%s/media?fields=id,media_url,media_type,thumbnail_url,permalink,caption&access_token=%s", InstagramApi, i.InstagramID, i.InstagramToken)
+	instagramApi := "https://graph.instagram.com"
+	fields := "id,media_url,media_type,thumbnail_url,permalink,caption"
+	return fmt.Sprintf("%s/%s/media?fields=%s&access_token=%s", instagramApi, i.InstagramID, fields, i.InstagramToken)
 }
 
-func (i *Social) GetWebFeed() models.Socials {
+func (i *Social) buildYouTubeURL() string {
+	const youTubeApi = "https://www.googleapis.com/youtube/v3/search"
+	options := "&part=snippet&maxResults=6&order=date&type=video"
+	return fmt.Sprintf("%s?key=%s&channelId=%s%s", youTubeApi, i.YouTubeApiKey, i.YouTubeChannelID, options)
+}
+
+type SocialType string
+
+const (
+	Instagram SocialType = "Instagram"
+)
+
+func NewSocial(config config.Social) *Social {
+	return &Social{config}
+}
+
+func (i *Social) sendRequest(url string) *http.Response {
 	ctx := context.Background()
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, i.buildInstagramURL(), nil)
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -36,16 +46,14 @@ func (i *Social) GetWebFeed() models.Socials {
 	if err != nil {
 		log.Println(err)
 	}
+	return resp
+}
 
-	defer resp.Body.Close()
-
-	data := models.SocialData{}
-	err = json.NewDecoder(resp.Body).Decode(&data)
-	if err != nil {
-		log.Println(err)
-	}
-	for i := range data.Socials {
-		data.Socials[i].SetMediaSRC()
-	}
-	return data.Socials
+func (i *Social) GetWebFeed() models.Socials {
+	//instagram := instagramStruct{}
+	//resp := i.sendRequest(i.buildInstagramURL())
+	//instagram.decode(resp)
+	youTube := youTubeStruct{}
+	socials := youTube.getWebFeed(i.sendRequest(i.buildYouTubeURL()))
+	return socials
 }

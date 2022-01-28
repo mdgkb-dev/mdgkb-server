@@ -37,6 +37,9 @@ type Email struct {
 type Social struct {
 	InstagramToken string `mapstructure:"INSTAGRAM_TOKEN"`
 	InstagramID    string `mapstructure:"INSTAGRAM_ID"`
+
+	YouTubeApiKey    string `mapstructure:"YOUTUBE_API_KEY"`
+	YouTubeChannelID string `mapstructure:"YOUTUBE_CHANNEL_ID"`
 }
 
 func LoadConfig() (config *Config, err error) {
