@@ -20,8 +20,8 @@ type News struct {
 	Description          string        `json:"description"`
 	Main                 bool          `json:"main"`
 	SubMain              bool          `json:"subMain"`
-	ArticleLink          string        `json:"article_link"`
-	IsArticle            bool          `json:"is_article"`
+	ArticleLink          string        `json:"articleLink"`
+	IsArticle            bool          `json:"isArticle"`
 	NewsImagesForDelete  []string      `bun:"-" json:"newsImagesForDelete"`
 	NewsImagesNames      []string      `bun:"-" json:"newsImagesNames"`
 	FileInfo             *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
