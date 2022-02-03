@@ -1,6 +1,7 @@
 package heads
 
 import (
+	"mdgkb/mdgkb-server/handlers/contactInfo"
 	"mdgkb/mdgkb-server/handlers/departments"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/human"
@@ -11,6 +12,10 @@ import (
 
 func (s *Service) Create(item *models.Head) error {
 	err := fileInfos.CreateService(s.repository.getDB()).Create(item.Photo)
+	if err != nil {
+		return err
+	}
+	err = contactInfo.CreateService(s.repository.getDB()).Create(item.ContactInfo)
 	if err != nil {
 		return err
 	}
@@ -42,6 +47,10 @@ func (s *Service) Create(item *models.Head) error {
 
 func (s *Service) Update(item *models.Head) error {
 	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.Photo)
+	if err != nil {
+		return err
+	}
+	err = contactInfo.CreateService(s.repository.getDB()).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}

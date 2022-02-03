@@ -26,6 +26,9 @@ type Head struct {
 
 	Departments          Departments `bun:"rel:has-many" json:"departments"`
 	DepartmentsForDelete []uuid.UUID `bun:"-" json:"departmentsForDelete"`
+
+	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
+	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
 }
 
 type Heads []*Head
@@ -39,6 +42,9 @@ func (item *Head) SetForeignKeys() {
 	}
 	if item.Timetable != nil {
 		item.TimetableId = item.Timetable.ID
+	}
+	if item.ContactInfo != nil {
+		item.ContactInfoID = item.ContactInfo.ID
 	}
 }
 

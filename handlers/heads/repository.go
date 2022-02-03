@@ -21,6 +21,13 @@ func (r *Repository) getAll() (models.Heads, error) {
 	query := r.db.NewSelect().Model(&items).
 		Relation("Human").
 		Relation("Photo").
+		Relation("Departments.Division").
+		Relation("Timetable.TimetableDays.Weekday").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.PostAddresses").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactInfo.Websites").
 		Order("human.surname")
 	err := query.Scan(r.ctx)
 	return items, err
@@ -32,8 +39,13 @@ func (r *Repository) get(id string) (*models.Head, error) {
 		Relation("Human").
 		Relation("Photo").
 		Relation("Regalias").
-		Relation("Departments").
+		Relation("Departments.Division").
 		Relation("Timetable.TimetableDays.Weekday").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.PostAddresses").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactInfo.Websites").
 		Scan(r.ctx)
 	return &item, err
 }

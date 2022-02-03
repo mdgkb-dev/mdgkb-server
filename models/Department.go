@@ -10,6 +10,10 @@ type Department struct {
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Head          *Head         `bun:"rel:belongs-to" json:"head"`
 	HeadID        uuid.NullUUID `bun:"type:uuid" json:"headId"`
+	IsDivision    bool          `json:"isDivision"`
+
+	Division   *Division     `bun:"rel:belongs-to" json:"division"`
+	DivisionId uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
 
 	Name string `json:"name"`
 }
