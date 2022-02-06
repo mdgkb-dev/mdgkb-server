@@ -75,12 +75,14 @@ type FilterModels []*FilterModel
 type Operator string
 
 const (
-	Eq   Operator = "="
-	Gt            = ">"
-	Ge            = "<"
-	Btw           = "between"
-	Like          = "like"
-	In            = "in"
+	Eq         Operator = "="
+	Gt                  = ">"
+	Ge                  = "<"
+	Btw                 = "between"
+	Like                = "like"
+	In                  = "in"
+	NotNull             = "IS NULL"
+	NotNotNull          = "IS NOT NULL"
 )
 
 type DataType string

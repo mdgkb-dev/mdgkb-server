@@ -3,6 +3,7 @@ package meta
 import (
 	"context"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/schema"
 
 	"github.com/gin-gonic/gin"
@@ -13,15 +14,18 @@ type IHandler interface {
 	GetCount(c *gin.Context)
 	GetSchema(c *gin.Context)
 	GetSocial(c *gin.Context)
+	GetOptions(c *gin.Context)
 }
 
 type IService interface {
 	GetCount(*string) (*int, error)
 	GetSchema() schema.Schema
+	GetOptions(*models.OptionModel) (models.Options, error)
 }
 
 type IRepository interface {
 	getCount(*string) (*int, error)
+	getOptions(*models.OptionModel) (models.Options, error)
 }
 
 type Handler struct {

@@ -132,8 +132,16 @@ func (s *Service) Update(item *models.Doctor) error {
 	return nil
 }
 
-func (s *Service) GetAll(params *doctorsParams) (models.DoctorsWithCount, error) {
-	return s.repository.getAll(params)
+func (s *Service) GetAll() (models.Doctors, error) {
+	return s.repository.getAll()
+}
+
+func (s *Service) GetAllAdmin() (models.DoctorsWithCount, error) {
+	return s.repository.getAllAdmin()
+}
+
+func (s *Service) GetAllMain() (models.Doctors, error) {
+	return s.repository.getAllMain()
 }
 
 func (s *Service) Get(slug string) (*models.Doctor, error) {
@@ -172,7 +180,7 @@ func (s *Service) UpsertMany(items models.Doctors) error {
 }
 
 func (s *Service) CreateSlugs() error {
-	_, err := s.repository.getAll(nil)
+	_, err := s.repository.getAll()
 	if err != nil {
 		return err
 	}

@@ -2,6 +2,7 @@ package meta
 
 import (
 	"fmt"
+	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) getCount(table *string) (res *int, err error) {
@@ -9,4 +10,12 @@ func (r *Repository) getCount(table *string) (res *int, err error) {
 	query := fmt.Sprintf("SELECT COUNT (id) FROM %s", *table)
 	err = r.db.QueryRow(query).Scan(&num)
 	return &num, err
+}
+
+func (r *Repository) getOptions(optionModel *models.OptionModel) (models.Options, error) {
+	options := make(models.Options, 0)
+	query := fmt.Sprintf("SELECT %s::varchar as value, %s as label FROM %s", optionModel.Value, optionModel.Label, optionModel.TableName)
+	queryContext, err := r.db.QueryContext(r.ctx, query)
+	err = r.db.ScanRows(r.ctx, queryContext, &options)
+	return options, err
 }

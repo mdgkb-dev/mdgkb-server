@@ -1,15 +1,16 @@
-package httpHelper
+package paginator
 
 import (
 	"fmt"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/helpers/sqlHelper/filter"
 )
 
 type Cursor struct {
-	Operator Operator `json:"operation"`
-	Column   string   `json:"column"`
-	Value    string   `json:"value"`
-	Initial  bool     `json:"initial"`
+	Operator filter.Operator `json:"operation"`
+	Column   string          `json:"column"`
+	Value    string          `json:"value"`
+	Initial  bool            `json:"initial"`
 }
 
 func (c *Cursor) createPagination(query *bun.SelectQuery) {

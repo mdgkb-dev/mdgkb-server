@@ -17,7 +17,44 @@ func (r *Repository) create(item *models.Doctor) (err error) {
 	return err
 }
 
-func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCount, err error) {
+func (r *Repository) getAllMain() (items models.Doctors, err error) {
+	err = r.db.NewSelect().Model(&items).
+		Relation("Human").
+		Relation("Division.Floor").
+		Relation("FileInfo").
+		Relation("PhotoMini").
+		Relation("Position").
+		Relation("MedicalProfile").
+		Relation("Regalias").
+		Relation("DoctorComments.Comment").
+		Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true").
+		Order("doctors_view.regalias_count DESC", "doctors_view.comments_count DESC").
+		Where("doctors_view.file_info_id is not null").
+		Where("doctors_view.mos_doctor_link is not null and doctors_view.mos_doctor_link != '' ").
+		Limit(20).Scan(r.ctx)
+	return items, err
+}
+
+func (r *Repository) getAll() (items models.Doctors, err error) {
+	query := r.db.NewSelect().Model(&items).
+		Relation("Human").
+		Relation("Division.Floor").
+		Relation("FileInfo").
+		Relation("PhotoMini").
+		Relation("Position").
+		Relation("MedicalProfile").
+		Relation("Regalias").
+		Relation("DoctorComments.Comment").
+		Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
+
+	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Filter.CreateFilter(query)
+	r.queryFilter.Sorter.CreateOrder(query)
+	err = query.Scan(r.ctx)
+	return items, err
+}
+
+func (r *Repository) getAllAdmin() (items models.DoctorsWithCount, err error) {
 	query := r.db.NewSelect().Model(&items.Doctors).
 		Relation("Human").
 		Relation("Division.Floor").
@@ -29,19 +66,8 @@ func (r *Repository) getAll(params *doctorsParams) (items models.DoctorsWithCoun
 		Relation("DoctorComments.Comment").
 		Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
 
-	if params.Main {
-		query = query.Order("doctors_view.regalias_count DESC", "doctors_view.comments_count DESC")
-		query = query.Where("doctors_view.file_info_id is not null")
-		query = query.Where("doctors_view.mos_doctor_link is not null and doctors_view.mos_doctor_link != '' ")
-	} else {
-		query = query.Order("human.surname")
-	}
-
-	if r.queryFilter != nil && r.queryFilter.Pagination != nil {
-		r.helper.HTTP.CreatePaginationQuery(query, r.queryFilter.Pagination)
-	}
-	//r.helper.HTTP.CreateFilter(query, r.queryFilter.FilterModels)
-
+	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Filter.CreateFilter(query)
 	items.Count, err = query.Limit(20).ScanAndCount(r.ctx)
 	return items, err
 }
@@ -118,7 +144,7 @@ func (r *Repository) upsertMany(items models.Doctors) (err error) {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.HTTP.CreateQueryFilter(c)
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}

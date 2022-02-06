@@ -3,7 +3,7 @@ package doctors
 import (
 	"context"
 	"mdgkb/mdgkb-server/helpers"
-	httpHelper2 "mdgkb/mdgkb-server/helpers/httpHelperV2"
+	"mdgkb/mdgkb-server/helpers/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -13,6 +13,8 @@ import (
 
 type IHandler interface {
 	GetAll(c *gin.Context)
+	GetAllMain(c *gin.Context)
+	GetAllAdmin(c *gin.Context)
 	Get(c *gin.Context)
 	GetByDivisionID(c *gin.Context)
 	Create(c *gin.Context)
@@ -29,7 +31,9 @@ type IService interface {
 	setQueryFilter(*gin.Context) error
 
 	Create(*models.Doctor) error
-	GetAll(*doctorsParams) (models.DoctorsWithCount, error)
+	GetAll() (models.Doctors, error)
+	GetAllAdmin() (models.DoctorsWithCount, error)
+	GetAllMain() (models.Doctors, error)
 	Get(string) (*models.Doctor, error)
 	Delete(string) error
 	Update(*models.Doctor) error
@@ -48,7 +52,9 @@ type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	create(*models.Doctor) error
-	getAll(*doctorsParams) (models.DoctorsWithCount, error)
+	getAll() (models.Doctors, error)
+	getAllAdmin() (models.DoctorsWithCount, error)
+	getAllMain() (models.Doctors, error)
 	get(string) (*models.Doctor, error)
 	getByDivisionID(string) (models.Doctors, error)
 	delete(string) error
@@ -79,7 +85,7 @@ type Repository struct {
 	db          *bun.DB
 	ctx         context.Context
 	helper      *helpers.Helper
-	queryFilter *httpHelper2.QueryFilter
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

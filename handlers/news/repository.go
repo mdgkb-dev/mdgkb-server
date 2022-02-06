@@ -172,8 +172,8 @@ func (r *Repository) getAllAdmin() (items models.NewsWithCount, err error) {
 		Relation("NewsViews").
 		Order("published_on DESC")
 
-	if r.queryFilter != nil && r.queryFilter.Pagination != nil {
-		r.helper.HTTP.CreatePaginationQuery(query, r.queryFilter.Pagination)
+	if r.queryFilter != nil && r.queryFilter.Paginator != nil {
+		r.queryFilter.Paginator.CreatePagination(query)
 	}
 	//r.helper.HTTP.CreateFilter(query, r.queryFilter.FilterModels)
 
@@ -225,7 +225,7 @@ func (r *Repository) createViewOfNews(newsView *models.NewsView) (err error) {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.HTTP.CreateQueryFilter(c)
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}

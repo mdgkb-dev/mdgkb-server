@@ -7,10 +7,14 @@ import (
 )
 
 type Doctor struct {
-	bun.BaseModel     `bun:"doctors,select:doctors_view,alias:doctors_view"`
-	ID                uuid.NullUUID   `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Division          *Division       `bun:"rel:belongs-to" json:"division"`
-	DivisionId        uuid.NullUUID   `bun:"type:uuid" json:"divisionId,omitempty"`
+	bun.BaseModel `bun:"doctors,select:doctors_view,alias:doctors_view"`
+	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Division      *Division     `bun:"rel:belongs-to" json:"division"`
+	DivisionId    uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
+
+	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
+	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId,omitempty"`
+
 	Human             *Human          `bun:"rel:belongs-to" json:"human"`
 	HumanId           uuid.UUID       `bun:"type:uuid" json:"humanId"`
 	Position          *Position       `bun:"rel:belongs-to" json:"position"`

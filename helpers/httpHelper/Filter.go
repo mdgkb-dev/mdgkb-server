@@ -46,7 +46,7 @@ func CreateFilter(query *bun.SelectQuery, filterModels FilterModels) {
 		//	if filterOperator == "" {
 		//		tbl = constructTextWhere(tbl, field, filterOperator, filter)
 		//	} else {
-		//		tbl = constructTextWhere(tbl, field, filterOperator, filter.Condition1.Filter, filter.Condition2.Filter)
+		//		tbl = constructTextWhere(tbl, field, filterOperator, filter.Condition1.filter, filter.Condition2.filter)
 		//	}
 		default:
 			//log.Println("unknown number filterType: " + *filter.FilterType)
@@ -77,7 +77,7 @@ func constructWhereIn(query *bun.SelectQuery, filter *FilterModel) {
 }
 
 //
-//func constructTextWhere(tbl *bun.SelectQuery, field string, operator string, options ...models.Filter) *bun.SelectQuery {
+//func constructTextWhere(tbl *bun.SelectQuery, field string, operator string, options ...models.filter) *bun.SelectQuery {
 //	operators := map[string]string{
 //		"equals":      "%s = ?",
 //		"notEqual":    "%s <> ?",
@@ -87,9 +87,9 @@ func constructWhereIn(query *bun.SelectQuery, filter *FilterModel) {
 //		"endsWith":    "%s LIKE ?",
 //	}
 //	if operator == "" {
-//		tbl = constructQuery(tbl, operators[*options[0].Type], "", field, operator, likeMix(*options[0].Type, fmt.Sprintf("%v", *options[0].Filter)))
+//		tbl = constructQuery(tbl, operators[*options[0].Type], "", field, operator, likeMix(*options[0].Type, fmt.Sprintf("%v", *options[0].filter)))
 //	} else {
-//		tbl = constructQuery(tbl, operators[*options[0].Type], operators[*options[1].Type], field, operator, likeMix(*options[0].Type, (*options[0].Filter).(string)), likeMix(*options[1].Type, (*options[1].Filter).(string)))
+//		tbl = constructQuery(tbl, operators[*options[0].Type], operators[*options[1].Type], field, operator, likeMix(*options[0].Type, (*options[0].filter).(string)), likeMix(*options[1].Type, (*options[1].filter).(string)))
 //	}
 //	return tbl
 //}

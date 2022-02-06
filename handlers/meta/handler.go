@@ -1,6 +1,7 @@
 package meta
 
 import (
+	"mdgkb/mdgkb-server/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,4 +22,20 @@ func (h *Handler) GetSchema(c *gin.Context) {
 
 func (h *Handler) GetSocial(c *gin.Context) {
 	c.JSON(http.StatusOK, h.helper.Social.GetWebFeed())
+}
+
+func (h *Handler) GetOptions(c *gin.Context) {
+	var optionModel models.OptionModel
+	err := c.BindQuery(&optionModel)
+	optionModel.TableName = c.Query("tableName")
+	optionModel.Label = c.Query("label")
+	optionModel.Value = c.Query("value")
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	items, err := h.service.GetOptions(&optionModel)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
 }

@@ -1,7 +1,6 @@
 package comments
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
@@ -53,12 +52,9 @@ func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
 	//if params.Positive != nil {
 	//	query = query.Where("comment.positive = ?", params.Positive)
 	//}
-	if r.queryFilter.FilterModels != nil {
-		fmt.Println(r.queryFilter.FilterModels[0])
-	}
-	r.queryFilter.Pagination.Cursor.Column = "comment.published_on"
-	r.queryFilter.Pagination.CreatePagination(query)
-	r.queryFilter.CreateFilter(query)
+	r.queryFilter.Paginator.Cursor.Column = "comment.published_on"
+	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Paginator.CreatePagination(query)
 	err := query.Scan(r.ctx)
 
 	return items, err
@@ -78,7 +74,7 @@ func (r *Repository) updateOne(item *models.Comment) error {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.HTTP.CreateQueryFilter(c)
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}

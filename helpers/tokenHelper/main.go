@@ -69,6 +69,10 @@ func (h *TokenHelper) CreateToken(userID string) (*TokenDetails, error) {
 }
 func (h *TokenHelper) RefreshToken(refreshToken string) (*TokenDetails, error) {
 	token, err := h.VerifyToken(refreshToken)
+	fmt.Println(err)
+	if err != nil {
+		return nil, err
+	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	var userID string
 	if ok && token.Valid {

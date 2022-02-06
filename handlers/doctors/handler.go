@@ -20,26 +20,42 @@ func (h *Handler) Create(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Create(&item)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	var doctorsParams doctorsParams
-	err := c.BindQuery(&doctorsParams)
+	err := h.service.setQueryFilter(c)
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.service.setQueryFilter(c)
+	items, err := h.service.GetAll()
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	items, err := h.service.GetAll(&doctorsParams)
+	c.JSON(http.StatusOK, items)
+}
+
+func (h *Handler) GetAllAdmin(c *gin.Context) {
+	err := h.service.setQueryFilter(c)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	items, err := h.service.GetAll()
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}
+
+func (h *Handler) GetAllMain(c *gin.Context) {
+	items, err := h.service.GetAllMain()
 	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

@@ -3,7 +3,7 @@ package questions
 import (
 	"context"
 	"mdgkb/mdgkb-server/helpers"
-	httpHelper2 "mdgkb/mdgkb-server/helpers/httpHelperV2"
+	httpHelper2 "mdgkb/mdgkb-server/helpers/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
