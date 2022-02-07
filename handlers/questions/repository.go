@@ -18,7 +18,7 @@ func (r *Repository) create(item *models.Question) (err error) {
 
 func (r *Repository) getAll(published bool) (models.Questions, error) {
 	items := make(models.Questions, 0)
-	query := r.db.NewSelect().Model(&items).Order("question_date DESC").Order("is_new DESC")
+	query := r.db.NewSelect().Model(&items).Relation("User.Human").Order("question_date DESC").Order("is_new DESC")
 	r.queryFilter.Paginator.Cursor.Column = "question_date"
 	r.queryFilter.Paginator.CreatePagination(query)
 
