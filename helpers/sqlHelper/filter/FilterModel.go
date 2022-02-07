@@ -8,13 +8,13 @@ import (
 
 // FilterModel model
 type FilterModel struct {
-	Table      *string   `json:"table"`
-	Col        *string   `json:"col"`
-	FilterType *string   `json:"filterType,omitempty"`
-	Type       *DataType `json:"type,omitempty"`
-	Operator   *Operator `json:"operator,omitempty"`
-	Date1      time.Time `json:"date1,omitempty"`
-	Date2      time.Time `json:"date2,omitempty"`
+	Table *string `json:"table"`
+	Col   *string `json:"col"`
+
+	Type     *DataType `json:"type,omitempty"`
+	Operator *Operator `json:"operator,omitempty"`
+	Date1    time.Time `json:"date1,omitempty"`
+	Date2    time.Time `json:"date2,omitempty"`
 
 	Value1 string `json:"value1,omitempty"`
 	Value2 string `json:"value2,omitempty"`
@@ -50,6 +50,7 @@ const (
 	StringType           = "string"
 	BooleanType          = "boolean"
 	SetType              = "set"
+	JoinType             = "join"
 )
 
 func (f *FilterModel) constructWhere(query *bun.SelectQuery) {
