@@ -43,17 +43,9 @@ func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
 		Relation("DivisionComments.Division").
 		Relation("User").
 		Order("published_on DESC")
-	//if params.Limit != 0 {
-	//	query = query.Limit(params.Limit)
-	//}
-	//if params.ModChecked != nil {
-	//	query = query.Where("comment.mod_checked = ?", params.ModChecked)
-	//}
-	//if params.Positive != nil {
-	//	query = query.Where("comment.positive = ?", params.Positive)
-	//}
+
 	r.queryFilter.Paginator.Cursor.Column = "comment.published_on"
-	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Filter.CreateFilter(query)
 	r.queryFilter.Paginator.CreatePagination(query)
 	err := query.Scan(r.ctx)
 

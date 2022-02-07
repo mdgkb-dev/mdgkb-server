@@ -8,8 +8,8 @@ import (
 
 // FilterModel model
 type FilterModel struct {
-	Table *string `json:"table"`
-	Col   *string `json:"col"`
+	Table string `json:"table"`
+	Col   string `json:"col"`
 
 	Type     *DataType `json:"type,omitempty"`
 	Operator *Operator `json:"operator,omitempty"`
@@ -21,9 +21,11 @@ type FilterModel struct {
 
 	Set []string `json:"set"`
 
-	JoinTable   *string `json:"joinTable"`
-	JoinTableFK *string `json:"joinTableFK"`
-	JoinTablePK *string `json:"joinTablePK"`
+	JoinTable      string `json:"joinTable"`
+	JoinTableFK    string `json:"joinTableFK"`
+	JoinTablePK    string `json:"joinTablePK"`
+	JoinTableID    string `json:"joinTableId"`
+	JoinTableIDCol string `json:"joinTableIdCol"`
 }
 
 // FilterModels model
@@ -55,6 +57,7 @@ const (
 
 func (f *FilterModel) constructWhere(query *bun.SelectQuery) {
 	q := ""
+	fmt.Println(f.Value1)
 	if f.isUnary() {
 		q = fmt.Sprintf("%s %s '%s'", f.getTableAndCol(), *f.Operator, f.Value1)
 	}
@@ -68,12 +71,24 @@ func (f *FilterModel) constructWhere(query *bun.SelectQuery) {
 }
 
 func (f *FilterModel) constructWhereIn(query *bun.SelectQuery) {
-	if *f.JoinTable == "" {
+	if f.JoinTable == "" {
 		query = query.Where(fmt.Sprintf("%s %s (?)", f.getTableAndCol(), *f.Operator), bun.In(f.Set))
 		return
 	}
 	q := fmt.Sprintf("EXISTS (SELECT NULL from patient_diagnosis where %s and %s in (?))", f.getJoinCondition(), f.getTableAndCol())
 	query = query.Where(q, bun.In(f.Set))
+}
+
+func (f *FilterModel) constructJoin(query *bun.SelectQuery) {
+	if f.JoinTableID != "" {
+		join := fmt.Sprintf("JOIN %s ON %s ", f.JoinTable, f.getJoinCondition())
+		query = query.Join(join)
+		where := fmt.Sprintf("%s.%s = '%s' ", f.JoinTable, f.JoinTableIDCol, f.JoinTableID)
+		query = query.Where(where)
+		return
+	}
+	join := fmt.Sprintf("JOIN %s ON %s", f.JoinTable, f.getJoinCondition())
+	query = query.Join(join)
 }
 
 //
@@ -140,11 +155,11 @@ func (f *FilterModel) likeToString() {
 }
 
 func (f *FilterModel) getTableAndCol() string {
-	return fmt.Sprintf("%s.%s", *f.Table, *f.Col)
+	return fmt.Sprintf("%s.%s", f.Table, f.Col)
 }
 
 func (f *FilterModel) getJoinCondition() string {
-	return fmt.Sprintf("%s.%s = %s.%s", *f.Table, *f.JoinTableFK, *f.JoinTable, *f.JoinTablePK)
+	return fmt.Sprintf("%s.%s = %s.%s", f.Table, f.JoinTablePK, f.JoinTable, f.JoinTableFK)
 }
 
 func (f *FilterModel) isUnary() bool {

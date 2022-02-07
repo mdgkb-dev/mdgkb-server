@@ -34,6 +34,7 @@ func createCommentsSchema() map[string]string {
 		"tableName":   "comment",
 		"publishedOn": "publishedOn",
 		"positive":    "positive",
+		"userId":      "user_id",
 	}
 }
 
@@ -75,5 +76,6 @@ func createDoctorUserSchema() map[string]string {
 		"tableName": "doctors_users",
 		"id":        "id",
 		"userId":    "user_id",
+		"doctorId":  "doctor_id",
 	}
 }

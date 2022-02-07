@@ -24,6 +24,8 @@ func (i *Filter) CreateFilter(query *bun.SelectQuery) {
 				filterModel.likeToString()
 			}
 			filterModel.constructWhere(query)
+		case JoinType:
+			filterModel.constructJoin(query)
 		//case "number":
 		//	tbl = constructNumberWhere(tbl, field, filter)
 		//case "text":
