@@ -3,6 +3,7 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/auth"
+	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
 	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
 	"mdgkb/mdgkb-server/handlers/comments"
@@ -38,7 +39,7 @@ import (
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
-	"mdgkb/mdgkb-server/routing/banners"
+	bannersRouter "mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
 	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackRequests"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
@@ -98,7 +99,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	api := r.Group("/api/v1")
 	//m := middleware.CreateMiddleware(helper)
 	//api.Use(m.Authentication())
-	banners.Init(api.Group("/banners"), db, localUploader)
+	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(db, helper))
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, helper))
 	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, helper)

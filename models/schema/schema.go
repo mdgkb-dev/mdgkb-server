@@ -32,7 +32,7 @@ func createHumanSchema() map[string]string {
 func createCommentsSchema() map[string]string {
 	return map[string]string{
 		"tableName":   "comment",
-		"publishedOn": "publishedOn",
+		"publishedOn": "published_on",
 		"positive":    "positive",
 		"userId":      "user_id",
 	}
