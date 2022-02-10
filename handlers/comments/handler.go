@@ -52,3 +52,16 @@ func (h *Handler) UpdateOne(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, item)
 }
+
+func (h *Handler) UpsertOne(c *gin.Context) {
+	var item models.Comment
+	err := c.Bind(&item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.UpsertOne(&item)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}
