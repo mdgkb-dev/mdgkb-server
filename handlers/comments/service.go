@@ -51,6 +51,10 @@ func (s *Service) UpdateOne(item *models.Comment) error {
 	return s.repository.updateOne(item)
 }
 
+func (s *Service) UpsertOne(item *models.Comment) error {
+	return s.repository.upsertOne(item)
+}
+
 func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 	err = s.repository.setQueryFilter(c)
 	return err

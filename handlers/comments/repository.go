@@ -28,7 +28,7 @@ func (r *Repository) upsertMany(items models.Comments) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("user_id = EXCLUDED.user_id").
-		Set("text = EXCLUDED.user_id").
+		Set("text = EXCLUDED.text").
 		Set("rating = EXCLUDED.rating").
 		Set("published_on = EXCLUDED.published_on").
 		Exec(r.ctx)
@@ -62,6 +62,17 @@ func (r *Repository) getAllMain() (models.Comments, error) {
 
 func (r *Repository) updateOne(item *models.Comment) error {
 	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) upsertOne(item *models.Comment) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(item).
+		Set("user_id = EXCLUDED.user_id").
+		Set("text = EXCLUDED.text").
+		Set("rating = EXCLUDED.rating").
+		Set("published_on = EXCLUDED.published_on").
+		Exec(r.ctx)
 	return err
 }
 

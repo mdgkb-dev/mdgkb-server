@@ -14,6 +14,7 @@ type IHandler interface {
 	GetAll(c *gin.Context)
 	GetAllMain(c *gin.Context)
 	UpdateOne(c *gin.Context)
+	UpsertOne(c *gin.Context)
 }
 
 type IService interface {
@@ -22,6 +23,7 @@ type IService interface {
 	GetAll(*commentsParams) (models.Comments, error)
 	GetAllMain() (models.Comments, error)
 	UpdateOne(*models.Comment) error
+	UpsertOne(*models.Comment) error
 }
 
 type IRepository interface {
@@ -33,6 +35,7 @@ type IRepository interface {
 	getAll(*commentsParams) (models.Comments, error)
 	getAllMain() (models.Comments, error)
 	updateOne(*models.Comment) error
+	upsertOne(*models.Comment) error
 }
 
 type Handler struct {
