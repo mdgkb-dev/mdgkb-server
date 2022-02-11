@@ -61,7 +61,9 @@ func (r *Repository) update(item *models.User) (err error) {
 }
 
 func (r *Repository) upsert(item *models.User) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db.NewUpdate().Model(item).
+		Where("id = ?", item.ID).
+		Exec(r.ctx)
 	return err
 }
 

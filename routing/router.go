@@ -2,6 +2,7 @@ package routing
 
 import (
 	"mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
@@ -38,6 +39,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
+	applicationsCarsRouter "mdgkb/mdgkb-server/routing/applicationsCars"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
@@ -143,4 +145,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	paidServicesRouter.Init(api.Group("/paid-services"), paidServices.CreateHandler(db, helper))
 	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalProfiles.CreateHandler(db, helper))
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackRequests.CreateHandler(db, helper))
+	applicationsCarsRouter.Init(api.Group("/applications-cars"), applicationsCars.CreateHandler(db, helper))
 }

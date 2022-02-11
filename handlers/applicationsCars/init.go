@@ -1,4 +1,4 @@
-package users
+package applicationsCars
 
 import (
 	"context"
@@ -13,39 +13,30 @@ import (
 type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
-	GetByEmail(c *gin.Context)
+	Create(c *gin.Context)
 	Update(c *gin.Context)
-	AddToUser(c *gin.Context)
-	RemoveFromUser(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
 type IService interface {
-	GetAll() (models.Users, error)
-	Get(string) (*models.User, error)
-	GetByEmail(string) (*models.User, error)
-	EmailExists(string) (bool, error)
-	AddToUser(map[string]interface{}, string) error
-	Update(*models.User) error
-	Upsert(*models.User) error
-	RemoveFromUser(map[string]interface{}, string) error
+	GetAll() (models.ApplicationsCars, error)
+	Get(*string) (*models.ApplicationCar, error)
+	Create(*models.ApplicationCar) error
+	Update(*models.ApplicationCar) error
+	Delete(*string) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	create(*models.User) error
-	getAll() (models.Users, error)
-	get(string) (*models.User, error)
-	getByEmail(string) (*models.User, error)
-	emailExists(string) (bool, error)
-	update(*models.User) error
-	upsert(*models.User) error
-
-	addToUser(map[string]interface{}, string) error
-	removeFromUser(map[string]interface{}, string) error
+	getAll() (models.ApplicationsCars, error)
+	get(*string) (*models.ApplicationCar, error)
+	create(*models.ApplicationCar) error
+	update(*models.ApplicationCar) error
+	delete(*string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.User, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.ApplicationCar, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -74,11 +65,6 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
-}
-
-func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
-	repo := NewRepository(db, helper)
-	return NewService(repo, helper)
 }
 
 // NewHandler constructor

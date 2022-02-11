@@ -52,6 +52,29 @@ func (s *Service) Update(item *models.User) error {
 	return nil
 }
 
+func (s *Service) Upsert(item *models.User) error {
+	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	item.SetIdForChildren()
+	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	err = childrenService.UpsertMany(item.Children)
+	if err != nil {
+		return err
+	}
+	err = childrenService.DeleteMany(item.ChildrenForDelete)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Service) GetAll() (models.Users, error) {
 	return s.repository.getAll()
 }

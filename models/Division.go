@@ -36,6 +36,14 @@ type Division struct {
 	DivisionComments        DivisionComments `bun:"rel:has-many" json:"divisionComments"`
 	VisitingRules           VisitingRules    `bun:"rel:has-many" json:"visitingRules"`
 	VisitingRulesForDelete  []uuid.UUID      `bun:"-" json:"visitingRulesForDelete"`
+
+	HospitalizationContactInfoId uuid.UUID    `bun:"type:uuid" json:"hospitalizationContactInfoId"`
+	HospitalizationContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"hospitalizationContactInfo"`
+
+	HospitalizationDoctorID uuid.NullUUID `bun:"type:uuid" json:"hospitalizationDoctorId"`
+	HospitalizationDoctor   *Doctor       `bun:"rel:belongs-to" json:"hospitalizationDoctor"`
+
+	MedicalProfilesDivisions MedicalProfilesDivisions `bun:"rel:has-many" json:"medicalProfilesDivisions"`
 }
 
 type Divisions []*Division
@@ -46,6 +54,11 @@ func (i Division) SetFilePath(fileID *string) *string {
 		return path
 	}
 	return nil
+}
+
+func (i *Division) SetForeignKeys() {
+	i.HospitalizationContactInfoId = i.HospitalizationContactInfo.ID
+	i.HospitalizationDoctorID = i.HospitalizationDoctor.ID
 }
 
 func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {
