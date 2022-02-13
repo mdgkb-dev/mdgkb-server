@@ -38,7 +38,10 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("DivisionImages.FileInfo").
 		Relation("DivisionPaidServices.PaidService").
 		Relation("DivisionComments.Comment.User").
-		Relation("Timetable.TimetableDays.BreakPeriods")
+		Relation("Timetable.TimetableDays.BreakPeriods").
+		Relation("HospitalizationContactInfo.Emails").
+		Relation("HospitalizationContactInfo.TelephoneNumbers").
+		Relation("HospitalizationDoctor.Human")
 	//if onlyShowed {
 	q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
 		return query.
