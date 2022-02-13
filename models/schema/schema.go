@@ -34,6 +34,7 @@ func createCommentsSchema() map[string]string {
 		"tableName":   "comment",
 		"publishedOn": "published_on",
 		"positive":    "positive",
+		"rating":      "rating",
 		"userId":      "user_id",
 	}
 }
