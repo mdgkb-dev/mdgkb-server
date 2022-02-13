@@ -30,6 +30,7 @@ func (h *Handler) GetOptions(c *gin.Context) {
 	optionModel.TableName = c.Query("tableName")
 	optionModel.Label = c.Query("label")
 	optionModel.Value = c.Query("value")
+	optionModel.SortColumn = c.Query("sortColumn")
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

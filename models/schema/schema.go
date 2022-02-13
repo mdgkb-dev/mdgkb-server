@@ -55,19 +55,21 @@ func createDoctorsSchema() map[string]string {
 
 func createDivisionSchema() map[string]string {
 	return map[string]string{
-		"tableName": "divisions",
-		"key":       "division",
-		"value":     "id",
-		"label":     "name",
+		"tableName":  "divisions",
+		"sortColumn": "name",
+		"key":        "division",
+		"value":      "id",
+		"label":      "name",
 	}
 }
 
 func createMedicalProfileSchema() map[string]string {
 	return map[string]string{
-		"tableName": "medical_profiles",
-		"key":       "medicalProfile",
-		"value":     "id",
-		"label":     "name",
+		"tableName":  "medical_profiles",
+		"key":        "medicalProfile",
+		"sortColumn": "name",
+		"value":      "id",
+		"label":      "name",
 	}
 }
 

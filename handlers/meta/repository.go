@@ -14,7 +14,7 @@ func (r *Repository) getCount(table *string) (res *int, err error) {
 
 func (r *Repository) getOptions(optionModel *models.OptionModel) (models.Options, error) {
 	options := make(models.Options, 0)
-	query := fmt.Sprintf("SELECT %s::varchar as value, %s as label FROM %s", optionModel.Value, optionModel.Label, optionModel.TableName)
+	query := fmt.Sprintf("SELECT %s::varchar as value, %s as label FROM %s ORDER BY %s", optionModel.Value, optionModel.Label, optionModel.TableName, optionModel.SortColumn)
 	queryContext, err := r.db.QueryContext(r.ctx, query)
 	err = r.db.ScanRows(r.ctx, queryContext, &options)
 	return options, err
