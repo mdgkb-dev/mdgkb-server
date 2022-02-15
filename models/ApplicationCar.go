@@ -7,13 +7,13 @@ import (
 )
 
 type ApplicationCar struct {
-	bun.BaseModel `bun:"banners,alias:banners"`
+	bun.BaseModel `bun:"applications_cars,alias:applications_cars"`
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	CarNumber     string        `json:"carNumber"`
 	CarBrand      string        `json:"carBrand"`
 
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`
-	DivisionId uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
+	DivisionId uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
 
 	Date time.Time `bun:"hospitalization_date" json:"date"`
 
