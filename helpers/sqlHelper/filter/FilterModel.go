@@ -57,7 +57,6 @@ const (
 
 func (f *FilterModel) constructWhere(query *bun.SelectQuery) {
 	q := ""
-	fmt.Println(f.Value1)
 	if f.isUnary() {
 		q = fmt.Sprintf("%s %s '%s'", f.getTableAndCol(), *f.Operator, f.Value1)
 	}

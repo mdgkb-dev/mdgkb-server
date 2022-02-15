@@ -11,7 +11,7 @@ type MedicalProfile struct {
 	Name                     string                   `json:"name"`
 	Description              string                   `json:"description"`
 	Icon                     *FileInfo                `bun:"rel:belongs-to" json:"icon"`
-	IconId                   uuid.UUID                `bun:"type:uuid" json:"iconId"`
+	IconId                   uuid.NullUUID            `bun:"type:uuid" json:"iconId"`
 	MedicalProfilesDivisions MedicalProfilesDivisions `bun:"rel:has-many" json:"medicalProfilesDivisions"`
 	MedicalProfilesNews      MedicalProfilesNews      `bun:"rel:has-many" json:"medicalProfilesNews"`
 }
