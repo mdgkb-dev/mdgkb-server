@@ -1,6 +1,7 @@
 package divisions
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -18,13 +19,16 @@ func (r *Repository) create(item *models.Division) (err error) {
 }
 
 func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error) {
-	q := r.db.NewSelect().Model(&items).
+	query := r.db.NewSelect().Model(&items).
 		Relation("Entrance.Building").
 		Relation("DivisionImages.FileInfo")
 	if onlyShowed {
-		q = q.Where("divisions.show = true")
+		query = query.Where("divisions.show = true")
 	}
-	err = q.Order("name").Scan(r.ctx)
+	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Filter.CreateFilter(query)
+	r.queryFilter.Sorter.CreateOrder(query)
+	err = query.Scan(r.ctx)
 	return items, err
 }
 
@@ -100,4 +104,12 @@ func (r *Repository) getBySearch(search string) (models.Divisions, error) {
 		Where(r.helper.SQL.WhereLikeWithLowerTranslit("divisions.name", search)).
 		Scan(r.ctx)
 	return items, err
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }

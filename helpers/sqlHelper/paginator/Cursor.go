@@ -7,16 +7,17 @@ import (
 )
 
 type Cursor struct {
-	Operator filter.Operator `json:"operation"`
-	Column   string          `json:"column"`
-	Value    string          `json:"value"`
-	Initial  bool            `json:"initial"`
+	Operator  filter.Operator `json:"operation"`
+	Column    string          `json:"column"`
+	Value     string          `json:"value"`
+	Initial   bool            `json:"initial"`
+	TableName string          `json:"tableName"`
 }
 
 func (c *Cursor) createPagination(query *bun.SelectQuery) {
 	if c.Initial {
 		return
 	}
-	q := fmt.Sprintf("%s %s '%s'", c.Column, c.Operator, c.Value)
+	q := fmt.Sprintf("%s.%s %s '%s'", c.TableName, c.Column, c.Operator, c.Value)
 	query = query.Where(q)
 }

@@ -1,6 +1,7 @@
 package divisions
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/divisionImages"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/schedules"
@@ -121,4 +122,9 @@ func (s *Service) RemoveComment(id string) error {
 
 func (s *Service) GetBySearch(search string) (models.Divisions, error) {
 	return s.repository.getBySearch(search)
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

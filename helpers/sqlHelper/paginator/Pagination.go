@@ -9,6 +9,7 @@ type Paginator struct {
 	Limit      *int    `json:"limit"`
 	CursorMode bool    `json:"cursorMode"`
 	Cursor     *Cursor `json:"cursor"`
+	TableName  string  `json:"tableName"`
 }
 
 func (i *Paginator) CreatePagination(query *bun.SelectQuery) {
