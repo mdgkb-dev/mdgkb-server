@@ -31,6 +31,7 @@ func (r *Repository) get(id string) (*models.MedicalProfile, error) {
 	err := r.db.NewSelect().Model(&item).
 		Relation("MedicalProfilesDivisions.Division").
 		Relation("MedicalProfilesNews.News.FileInfo").
+		Relation("MedicalProfilesNews.News.NewsViews").
 		Where("medical_profiles.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
