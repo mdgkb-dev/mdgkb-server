@@ -18,6 +18,11 @@ func (c *Cursor) createPagination(query *bun.SelectQuery) {
 	if c.Initial {
 		return
 	}
-	q := fmt.Sprintf("%s.%s %s '%s'", c.TableName, c.Column, c.Operator, c.Value)
+	q := ""
+	if len(c.TableName) > 0 {
+		q = fmt.Sprintf("%s.%s %s '%s'", c.TableName, c.Column, c.Operator, c.Value)
+	} else {
+		q = fmt.Sprintf("%s %s '%s'", c.Column, c.Operator, c.Value)
+	}
 	query = query.Where(q)
 }
