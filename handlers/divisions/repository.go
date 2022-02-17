@@ -21,7 +21,9 @@ func (r *Repository) create(item *models.Division) (err error) {
 func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error) {
 	query := r.db.NewSelect().Model(&items).
 		Relation("Entrance.Building").
-		Relation("DivisionImages.FileInfo")
+		Relation("DivisionImages.FileInfo").
+		Relation("MedicalProfilesDivisions.MedicalProfile")
+
 	if onlyShowed {
 		query = query.Where("divisions.show = true")
 	}
@@ -45,7 +47,8 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("HospitalizationContactInfo.Emails").
 		Relation("HospitalizationContactInfo.TelephoneNumbers").
-		Relation("HospitalizationDoctor.Human")
+		Relation("HospitalizationDoctor.Human").
+		Relation("MedicalProfilesDivisions.MedicalProfile")
 	//if onlyShowed {
 	q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
 		return query.

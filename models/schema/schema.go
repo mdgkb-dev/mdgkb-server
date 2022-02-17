@@ -58,12 +58,13 @@ func createDoctorsSchema() map[string]string {
 
 func createDivisionSchema() map[string]string {
 	return map[string]string{
-		"tableName":  "divisions",
-		"sortColumn": "name",
-		"key":        "division",
-		"name":       "name",
-		"value":      "id",
-		"label":      "name",
+		"tableName":                    "divisions",
+		"sortColumn":                   "name",
+		"key":                          "division",
+		"name":                         "name",
+		"value":                        "id",
+		"label":                        "name",
+		"hospitalizationContactInfoId": "hospitalization_contact_info_id",
 	}
 }
 
