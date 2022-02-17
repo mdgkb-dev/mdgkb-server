@@ -7,6 +7,7 @@ type Schema struct {
 	MedicalProfile map[string]string `json:"medicalProfile"`
 	Division       map[string]string `json:"division"`
 	DoctorUser     map[string]string `json:"doctorUser"`
+	Center         map[string]string `json:"center"`
 }
 
 func CreateSchema() Schema {
@@ -17,6 +18,7 @@ func CreateSchema() Schema {
 		Division:       createDivisionSchema(),
 		MedicalProfile: createMedicalProfileSchema(),
 		DoctorUser:     createDoctorUserSchema(),
+		Center:         createCenterSchema(),
 	}
 }
 
@@ -59,6 +61,7 @@ func createDivisionSchema() map[string]string {
 		"tableName":  "divisions",
 		"sortColumn": "name",
 		"key":        "division",
+		"name":       "name",
 		"value":      "id",
 		"label":      "name",
 	}
@@ -80,5 +83,15 @@ func createDoctorUserSchema() map[string]string {
 		"id":        "id",
 		"userId":    "user_id",
 		"doctorId":  "doctor_id",
+	}
+}
+
+func createCenterSchema() map[string]string {
+	return map[string]string{
+		"tableName":  "centers",
+		"sortColumn": "name",
+		"key":        "center",
+		"value":      "id",
+		"label":      "name",
 	}
 }

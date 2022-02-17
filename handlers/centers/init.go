@@ -1,10 +1,9 @@
-package divisions
+package centers
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/helpers"
-	"mdgkb/mdgkb-server/helpers/sqlHelper"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -16,44 +15,30 @@ type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
 	Create(c *gin.Context)
-	Delete(c *gin.Context)
 	Update(c *gin.Context)
-	CreateComment(c *gin.Context)
-	UpdateComment(c *gin.Context)
-	RemoveComment(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
 type IService interface {
-	setQueryFilter(*gin.Context) error
-
-	Create(*models.Division) error
-	GetAll(bool) (models.Divisions, error)
-	Get(string, bool) (*models.Division, error)
+	GetAll() (models.Centers, error)
+	Get(string) (*models.Center, error)
+	Create(*models.Center) error
+	Update(item *models.Center) error
 	Delete(string) error
-	Update(*models.Division) error
-	CreateComment(*models.DivisionComment) error
-	UpdateComment(*models.DivisionComment) error
-	RemoveComment(string) error
-	GetBySearch(string) (models.Divisions, error)
 }
 
 type IRepository interface {
-	setQueryFilter(*gin.Context) error
-
 	getDB() *bun.DB
-	create(*models.Division) error
-	getAll(bool) (models.Divisions, error)
-	get(string, bool) (*models.Division, error)
+	create(*models.Center) error
+	getAll() (models.Centers, error)
+	get(string) (*models.Center, error)
+	deleteMany([]uuid.UUID) error
+	update(item *models.Center) error
 	delete(string) error
-	update(*models.Division) error
-	createComment(*models.DivisionComment) error
-	updateComment(*models.DivisionComment) error
-	removeComment(string) error
-	getBySearch(string) (models.Divisions, error)
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.Division, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.Center, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -68,15 +53,13 @@ type Service struct {
 }
 
 type Repository struct {
-	db          *bun.DB
-	ctx         context.Context
-	helper      *helpers.Helper
-	queryFilter *sqlHelper.QueryFilter
+	db     *bun.DB
+	ctx    context.Context
+	helper *helpers.Helper
 }
 
 type FilesService struct {
-	uploader uploadHelper.Uploader
-	helper   *helpers.Helper
+	helper *helpers.Helper
 }
 
 func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
@@ -84,11 +67,6 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
-}
-
-func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
-	repo := NewRepository(db, helper)
-	return NewService(repo, helper)
 }
 
 // NewHandler constructor

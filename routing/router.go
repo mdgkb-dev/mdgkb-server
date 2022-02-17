@@ -6,6 +6,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
+	"mdgkb/mdgkb-server/handlers/centers"
 	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisions"
@@ -44,6 +45,7 @@ import (
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
 	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackRequests"
+	centersRouter "mdgkb/mdgkb-server/routing/centers"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
@@ -146,4 +148,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalProfiles.CreateHandler(db, helper))
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackRequests.CreateHandler(db, helper))
 	applicationsCarsRouter.Init(api.Group("/applications-cars"), applicationsCars.CreateHandler(db, helper))
+	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
 }
