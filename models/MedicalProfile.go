@@ -10,8 +10,9 @@ type MedicalProfile struct {
 	ID                       uuid.UUID                `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name                     string                   `json:"name"`
 	Description              string                   `json:"description"`
-	Icon                     *FileInfo                `bun:"rel:belongs-to" json:"icon"`
+	Icon                     string                   `json:"icon"`
 	IconId                   uuid.NullUUID            `bun:"type:uuid" json:"iconId"`
+	SvgCode                  string                   `json:"svgCode"`
 	MedicalProfilesDivisions MedicalProfilesDivisions `bun:"rel:has-many" json:"medicalProfilesDivisions"`
 	MedicalProfilesNews      MedicalProfilesNews      `bun:"rel:has-many" json:"medicalProfilesNews"`
 }
