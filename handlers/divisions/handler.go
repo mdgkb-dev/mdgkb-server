@@ -30,7 +30,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 		showedAll = true
 	}
 	err := h.service.setQueryFilter(c)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	items, err := h.service.GetAll(showedAll)

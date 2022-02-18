@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/helpers/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -20,6 +21,7 @@ type IHandler interface {
 }
 
 type IService interface {
+	setQueryFilter(*gin.Context) error
 	GetAll() (models.Centers, error)
 	Get(string) (*models.Center, error)
 	Create(*models.Center) error
@@ -28,6 +30,7 @@ type IService interface {
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	create(*models.Center) error
 	getAll() (models.Centers, error)
@@ -53,9 +56,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helpers.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helpers.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

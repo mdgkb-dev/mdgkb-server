@@ -95,5 +95,6 @@ func createCenterSchema() map[string]string {
 		"key":        "center",
 		"value":      "id",
 		"label":      "name",
+		"name":       "name",
 	}
 }

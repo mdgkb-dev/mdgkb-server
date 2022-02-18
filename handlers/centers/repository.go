@@ -1,6 +1,7 @@
 package centers
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 
@@ -18,7 +19,11 @@ func (r *Repository) create(item *models.Center) (err error) {
 
 func (r *Repository) getAll() (models.Centers, error) {
 	items := make(models.Centers, 0)
-	err := r.db.NewSelect().Model(&items).Scan(r.ctx)
+	query := r.db.NewSelect().Model(&items)
+	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Filter.CreateFilter(query)
+	r.queryFilter.Sorter.CreateOrder(query)
+	err := query.Scan(r.ctx)
 	return items, err
 }
 
@@ -54,4 +59,12 @@ func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 func (r *Repository) update(item *models.Center) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }
