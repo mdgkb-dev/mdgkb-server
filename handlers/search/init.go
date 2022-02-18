@@ -12,11 +12,12 @@ import (
 
 type IHandler interface {
 	Search(c *gin.Context)
+	SearchMain(c *gin.Context)
 	SearchGroups(c *gin.Context)
 }
 
 type IService interface {
-	MainSearch(*models.SearchModel) error
+	SearchMain(*models.SearchModel) error
 	SearchObjects(*models.SearchModel) error
 	SearchGroups() (models.SearchGroups, error)
 }

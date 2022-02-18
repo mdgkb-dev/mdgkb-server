@@ -6,18 +6,20 @@ import (
 )
 
 type Division struct {
-	bun.BaseModel           `bun:"divisions,alias:divisions"`
-	ID                      uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name                    string        `json:"name"`
-	Info                    string        `json:"info"`
-	Phone                   string        `json:"phone"`
-	Email                   string        `json:"email"`
-	Address                 string        `json:"address"`
-	Slug                    string        `json:"slug"`
-	ShowCommonVisitingRules bool          `bun:"default:true" json:"showCommonVisitingRules"`
-	Doctors                 Doctors       `bun:"rel:has-many" json:"doctors"`
-	Vacancies               Vacancies     `bun:"rel:has-many" json:"vacancies"`
-	Show                    bool          `json:"show"`
+	bun.BaseModel `bun:"divisions,select:divisions_view,alias:divisions_view"`
+	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name          string        `json:"name"`
+	Info          string        `json:"info"`
+
+	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
+	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
+
+	Address                 string    `json:"address"`
+	Slug                    string    `json:"slug"`
+	ShowCommonVisitingRules bool      `bun:"default:true" json:"showCommonVisitingRules"`
+	Doctors                 Doctors   `bun:"rel:has-many" json:"doctors"`
+	Vacancies               Vacancies `bun:"rel:has-many" json:"vacancies"`
+	Show                    bool      `json:"show"`
 
 	DivisionPaidServices          DivisionPaidServices `bun:"rel:has-many" json:"divisionPaidServices"`
 	DivisionPaidServicesForDelete []uuid.UUID          `bun:"-" json:"divisionPaidServicesForDelete"`
@@ -58,7 +60,10 @@ func (i Division) SetFilePath(fileID *string) *string {
 
 func (i *Division) SetForeignKeys() {
 	i.HospitalizationContactInfoId = i.HospitalizationContactInfo.ID
+	i.ContactInfoID = i.ContactInfo.ID
 	i.HospitalizationDoctorID = i.HospitalizationDoctor.ID
+	i.TimetableId = i.Timetable.ID
+	i.ScheduleId = i.Schedule.ID
 }
 
 func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {

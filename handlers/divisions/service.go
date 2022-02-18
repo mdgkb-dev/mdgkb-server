@@ -2,6 +2,7 @@ package divisions
 
 import (
 	"github.com/gin-gonic/gin"
+	"mdgkb/mdgkb-server/handlers/contactInfo"
 	"mdgkb/mdgkb-server/handlers/divisionImages"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/schedules"
@@ -13,7 +14,6 @@ import (
 func (s *Service) Create(item *models.Division) error {
 	timetableService := timetables.CreateService(s.repository.getDB())
 	err := timetableService.Create(item.Timetable)
-	item.TimetableId = item.Timetable.ID
 	if err != nil {
 		return err
 	}
@@ -22,8 +22,14 @@ func (s *Service) Create(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	item.ScheduleId = item.Schedule.ID
 	item.Slug = s.helper.MakeSlug(item.Name)
+
+	contactInfoService := contactInfo.CreateService(s.repository.getDB())
+	err = contactInfoService.Create(item.ContactInfo)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 
 	doctorsService := doctors.CreateService(s.repository.getDB(), s.helper)
 	err = doctorsService.UpsertMany(item.Doctors)
@@ -55,14 +61,19 @@ func (s *Service) Update(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	item.TimetableId = item.Timetable.ID
 
 	schedulesService := schedules.CreateService(s.repository.getDB())
 	err = schedulesService.Upsert(item.Schedule)
 	if err != nil {
 		return err
 	}
-	item.ScheduleId = item.Schedule.ID
+
+	contactInfoService := contactInfo.CreateService(s.repository.getDB())
+	err = contactInfoService.Create(item.ContactInfo)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 
 	doctorsService := doctors.CreateService(s.repository.getDB(), s.helper)
 	err = doctorsService.UpsertMany(item.Doctors)

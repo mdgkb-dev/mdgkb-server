@@ -14,22 +14,24 @@ func (h *Handler) Search(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	if item.Mode == models.SearchModeMain {
-		err = h.service.MainSearch(&item)
-		if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-			return
-		}
-		c.JSON(http.StatusOK, item)
-		return
-	}
 	err = h.service.SearchObjects(&item)
-	if item.Mode == models.SearchModeObjects {
-		if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-			return
-		}
-		c.JSON(http.StatusOK, item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) SearchMain(c *gin.Context) {
+	var item models.SearchModel
+	err := json.Unmarshal([]byte(c.Query("searchModel")), &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.SearchMain(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) SearchGroups(c *gin.Context) {

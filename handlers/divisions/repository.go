@@ -22,10 +22,14 @@ func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error)
 	query := r.db.NewSelect().Model(&items).
 		Relation("Entrance.Building").
 		Relation("DivisionImages.FileInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.PostAddresses").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactInfo.Websites").
 		Relation("MedicalProfilesDivisions.MedicalProfile")
 
 	if onlyShowed {
-		query = query.Where("divisions.show = true")
+		query = query.Where("divisions_view.show = true")
 	}
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -47,6 +51,10 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("HospitalizationContactInfo.Emails").
 		Relation("HospitalizationContactInfo.TelephoneNumbers").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.PostAddresses").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactInfo.Websites").
 		Relation("HospitalizationDoctor.Human").
 		Relation("MedicalProfilesDivisions.MedicalProfile")
 	//if onlyShowed {
@@ -64,7 +72,7 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("Doctors.MedicalProfile").
 		Relation("Vacancies").
 		Relation("VisitingRules").
-		Where("divisions.id = ?", slug).
+		Where("divisions_view.id = ?", slug).
 		Scan(r.ctx)
 
 	return &item, err
@@ -103,8 +111,8 @@ func (r *Repository) getBySearch(search string) (models.Divisions, error) {
 
 	err := r.db.NewSelect().
 		Model(&items).
-		Column("divisions.id", "divisions.name", "divisions.slug").
-		Where(r.helper.SQL.WhereLikeWithLowerTranslit("divisions.name", search)).
+		Column("divisions_view.id", "divisions_view.name", "divisions_view.slug").
+		Where(r.helper.SQL.WhereLikeWithLowerTranslit("divisions_view.name", search)).
 		Scan(r.ctx)
 	return items, err
 }
