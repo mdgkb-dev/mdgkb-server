@@ -9,7 +9,7 @@ type Head struct {
 	bun.BaseModel `bun:"heads,select:heads,alias:heads"`
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Human         *Human        `bun:"rel:belongs-to" json:"human"`
-	HumanId       uuid.UUID     `bun:"type:uuid" json:"humanId"`
+	HumanId       uuid.NullUUID `bun:"type:uuid" json:"humanId"`
 	Position      string        `json:"position"`
 	Tags          string        `json:"tags"`
 	Photo         *FileInfo     `bun:"rel:belongs-to" json:"photo"`

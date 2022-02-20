@@ -75,6 +75,14 @@ func (s *Service) Upsert(item *models.User) error {
 	return nil
 }
 
+func (s *Service) UpsertEmail(item *models.User) error {
+	err := s.repository.upsertEmail(item)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Service) GetAll() (models.Users, error) {
 	return s.repository.getAll()
 }

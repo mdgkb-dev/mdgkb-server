@@ -28,6 +28,7 @@ type IService interface {
 	Update(*models.User) error
 	Upsert(*models.User) error
 	RemoveFromUser(map[string]interface{}, string) error
+	UpsertEmail(*models.User) error
 }
 
 type IRepository interface {
@@ -39,6 +40,7 @@ type IRepository interface {
 	emailExists(string) (bool, error)
 	update(*models.User) error
 	upsert(*models.User) error
+	upsertEmail(*models.User) error
 
 	addToUser(map[string]interface{}, string) error
 	removeFromUser(map[string]interface{}, string) error

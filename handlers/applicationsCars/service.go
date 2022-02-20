@@ -18,7 +18,7 @@ func (s *Service) Get(id *string) (*models.ApplicationCar, error) {
 }
 
 func (s *Service) Create(item *models.ApplicationCar) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).Upsert(item.User)
+	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
 	if err != nil {
 		return err
 	}

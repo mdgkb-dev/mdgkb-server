@@ -10,13 +10,13 @@ import (
 
 type Human struct {
 	bun.BaseModel `bun:"humans,alias:humans"`
-	ID            uuid.UUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name          string     `json:"name"`
-	Surname       string     `json:"surname"`
-	Patronymic    string     `json:"patronymic"`
-	IsMale        bool       `json:"isMale"`
-	DateBirth     *time.Time `json:"dateBirth,omitempty"`
-	Slug          string     `json:"slug"`
+	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name          string        `json:"name"`
+	Surname       string        `json:"surname"`
+	Patronymic    string        `json:"patronymic"`
+	IsMale        bool          `json:"isMale"`
+	DateBirth     *time.Time    `json:"dateBirth,omitempty"`
+	Slug          string        `json:"slug"`
 
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`

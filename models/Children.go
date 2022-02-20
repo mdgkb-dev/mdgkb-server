@@ -7,9 +7,9 @@ import (
 
 type Child struct {
 	bun.BaseModel `bun:"children,alias:children"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Human         *Human    `bun:"rel:belongs-to" json:"human"`
-	HumanID       uuid.UUID `bun:"type:uuid" json:"humanId"`
+	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Human         *Human        `bun:"rel:belongs-to" json:"human"`
+	HumanID       uuid.NullUUID `bun:"type:uuid" json:"humanId"`
 
 	User   *User     `bun:"rel:belongs-to" json:"user"`
 	UserID uuid.UUID `bun:"type:uuid" json:"userId"`

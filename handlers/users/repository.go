@@ -67,6 +67,13 @@ func (r *Repository) upsert(item *models.User) (err error) {
 	return err
 }
 
+func (r *Repository) upsertEmail(item *models.User) (err error) {
+	_, err = r.db.NewInsert().On("conflict (email) do update").
+		Model(item).
+		Exec(r.ctx)
+	return err
+}
+
 func (r *Repository) addToUser(values map[string]interface{}, table string) error {
 	_, err := r.db.NewInsert().Model(&values).TableExpr(table).Exec(r.ctx)
 	return err

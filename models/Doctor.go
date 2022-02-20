@@ -16,7 +16,7 @@ type Doctor struct {
 	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId,omitempty"`
 
 	Human             *Human          `bun:"rel:belongs-to" json:"human"`
-	HumanId           uuid.UUID       `bun:"type:uuid" json:"humanId"`
+	HumanID           uuid.NullUUID   `bun:"type:uuid" json:"humanId"`
 	Position          *Position       `bun:"rel:belongs-to" json:"position"`
 	PositionID        uuid.UUID       `bun:"type:uuid" json:"positionId"`
 	Schedule          string          `json:"schedule"`
@@ -81,7 +81,7 @@ func (item *Doctor) SetForeignKeys() {
 		item.FileInfoId = item.FileInfo.ID.UUID
 	}
 	if item.Human != nil {
-		item.HumanId = item.Human.ID
+		item.HumanID = item.Human.ID
 	}
 	if item.PhotoMini != nil {
 		item.PhotoMiniID = item.PhotoMini.ID.UUID
