@@ -12,6 +12,14 @@ func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *Repository) create(item *models.Doctor) (err error) {
 	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
@@ -141,14 +149,6 @@ func (r *Repository) upsertMany(items models.Doctors) (err error) {
 		Model(&items).
 		Exec(r.ctx)
 	return err
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func (r *Repository) search(search string) (models.Doctors, error) {

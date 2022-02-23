@@ -13,6 +13,9 @@ type Paginator struct {
 }
 
 func (i *Paginator) CreatePagination(query *bun.SelectQuery) {
+	if i == nil {
+		return
+	}
 	if i.CursorMode {
 		i.Cursor.createPagination(query)
 	} else {

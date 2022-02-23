@@ -5,7 +5,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationProperties"
-	"mdgkb/mdgkb-server/handlers/educationalOrganizationTeachers"
+	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -22,7 +22,7 @@ func (s *Service) Get() (*models.EducationalOrganization, error) {
 	if err != nil {
 		return nil, err
 	}
-	teachersService := educationalOrganizationTeachers.CreateService(s.repository.getDB())
+	teachersService := teachers.CreateService(s.repository.getDB(), s.helper)
 	item.EducationalOrganizationTeachers, err = teachersService.GetAll()
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 		return err
 	}
 
-	teachersService := educationalOrganizationTeachers.CreateService(s.repository.getDB())
+	teachersService := teachers.CreateService(s.repository.getDB(), s.helper)
 	err = teachersService.DeleteMany(item.EducationalOrganizationTeachersForDelete)
 	if err != nil {
 		return err

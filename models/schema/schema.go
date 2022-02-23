@@ -8,6 +8,9 @@ type Schema struct {
 	Division       map[string]string `json:"division"`
 	DoctorUser     map[string]string `json:"doctorUser"`
 	Center         map[string]string `json:"center"`
+	Teacher        map[string]string `json:"teacher"`
+	DpoCourse      map[string]string `json:"dpoCourse"`
+	DpoBaseCourse  map[string]string `json:"dpoBaseCourse"`
 }
 
 func CreateSchema() Schema {
@@ -19,6 +22,9 @@ func CreateSchema() Schema {
 		MedicalProfile: createMedicalProfileSchema(),
 		DoctorUser:     createDoctorUserSchema(),
 		Center:         createCenterSchema(),
+		Teacher:        createTeacherSchema(),
+		DpoCourse:      createDpoCourseSchema(),
+		DpoBaseCourse:  createDpoBaseCourseSchema(),
 	}
 }
 
@@ -96,5 +102,40 @@ func createCenterSchema() map[string]string {
 		"value":      "id",
 		"label":      "name",
 		"name":       "name",
+	}
+}
+
+func createTeacherSchema() map[string]string {
+	return map[string]string{
+		"tableName": "teachers_view",
+		"key":       "teacher",
+		"id":        "id",
+		"fullName":  "full_name",
+	}
+}
+
+func createDpoCourseSchema() map[string]string {
+	return map[string]string{
+		"tableName": "dpo_courses",
+		"key":       "dpoCourse",
+		"id":        "id",
+		"name":      "name",
+		"hours":     "hours",
+		"teacherId": "teacher_id",
+		"listeners": "listeners",
+		"start":     "dpo_course_start",
+	}
+}
+
+func createDpoBaseCourseSchema() map[string]string {
+	return map[string]string{
+		"tableName": "dpo_base_courses",
+		"key":       "dpoCourse",
+		"id":        "id",
+		"name":      "name",
+		"hours":     "hours",
+		"teacherId": "teacher_id",
+		"listeners": "listeners",
+		"start":     "dpo_course_start",
 	}
 }

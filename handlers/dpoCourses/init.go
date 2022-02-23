@@ -1,8 +1,9 @@
-package educationalOrganization
+package dpoCourses
 
 import (
 	"context"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/helpers/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -11,21 +12,34 @@ import (
 )
 
 type IHandler interface {
+	GetAll(c *gin.Context)
 	Get(c *gin.Context)
+	Create(c *gin.Context)
 	Update(c *gin.Context)
-}
-
-type IFilesService interface {
-	Upload(*gin.Context, *models.EducationalOrganization, map[string][]*multipart.FileHeader) error
+	Delete(c *gin.Context)
 }
 
 type IService interface {
-	Get() (*models.EducationalOrganization, error)
-	Update(*models.EducationalOrganization) error
+	setQueryFilter(*gin.Context) error
+	GetAll() (models.DpoCourses, error)
+	Get(*string) (*models.DpoCourse, error)
+	Create(*models.DpoCourse) error
+	Update(*models.DpoCourse) error
+	Delete(*string) error
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
+	getAll() (models.DpoCourses, error)
+	get(*string) (*models.DpoCourse, error)
+	create(*models.DpoCourse) error
+	update(*models.DpoCourse) error
+	delete(*string) error
+}
+
+type IFilesService interface {
+	Upload(*gin.Context, *models.DpoCourse, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -40,9 +54,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helpers.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helpers.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

@@ -1,4 +1,4 @@
-insert into public.educational_organization_teachers (id, doctor_id, position)
+insert into public.teachers (id, doctor_id, position)
 values  ('0c8cb75a-c7ae-4451-8f0c-8beff0d6b031', 'c29944a3-2fde-42fd-87e5-b2792f6bc181', 'Старший преподаватель'),
         ('d8c55c97-ba49-4cb4-8c16-f4e8d218ac2b', 'a5cba2d5-6af1-4a02-a461-0ef6963907df', 'Старший преподаватель'),
         ('fffbb07d-09d4-4215-9115-ba4dab891cc6', '4deb6c6a-eeb0-4609-8f6c-6137e86eae91', 'Преподаватель'),

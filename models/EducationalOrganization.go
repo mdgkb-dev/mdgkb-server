@@ -7,8 +7,8 @@ type EducationalOrganization struct {
 	EducationalOrganizationManagers          EducationalOrganizationManagers `json:"educationalOrganizationManagers"`
 	EducationalOrganizationManagersForDelete []string                        `json:"educationalOrganizationManagersForDelete"`
 
-	EducationalOrganizationTeachers          EducationalOrganizationTeachers `json:"educationalOrganizationTeachers"`
-	EducationalOrganizationTeachersForDelete []string                        `json:"educationalOrganizationTeachersForDelete"`
+	EducationalOrganizationTeachers          Teachers `json:"teachers"`
+	EducationalOrganizationTeachersForDelete []string `json:"educationalOrganizationTeachersForDelete"`
 
 	EducationalOrganizationAcademics          EducationalOrganizationAcademics `json:"educationalOrganizationAcademics"`
 	EducationalOrganizationAcademicsForDelete []string                         `json:"educationalOrganizationAcademicsForDelete"`

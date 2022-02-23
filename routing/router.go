@@ -13,6 +13,10 @@ import (
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/donorRules"
+	"mdgkb/mdgkb-server/handlers/dpoBaseCourses"
+	"mdgkb/mdgkb-server/handlers/dpoCourses"
+	"mdgkb/mdgkb-server/handlers/educationalOrganization"
+	"mdgkb/mdgkb-server/handlers/entrances"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/heads"
@@ -32,6 +36,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/publicDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/search"
+	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/handlers/timetablePatterns"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
@@ -39,7 +44,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/helpers"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	applicationsCarsRouter "mdgkb/mdgkb-server/routing/applicationsCars"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
@@ -52,7 +56,10 @@ import (
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
-	"mdgkb/mdgkb-server/routing/educationalOraganization"
+	dpoBaseCoursesRouter "mdgkb/mdgkb-server/routing/dpoBaseCourses"
+	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
+	educationalOraganizationRouter "mdgkb/mdgkb-server/routing/educationalOraganization"
+	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
@@ -77,6 +84,7 @@ import (
 	searchRouter "mdgkb/mdgkb-server/routing/search"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
 	"mdgkb/mdgkb-server/routing/tags"
+	teachersRouter "mdgkb/mdgkb-server/routing/teachers"
 	timetablePatternsRouter "mdgkb/mdgkb-server/routing/timetablePatterns"
 	"mdgkb/mdgkb-server/routing/timetables"
 	usersRouter "mdgkb/mdgkb-server/routing/users"
@@ -84,8 +92,6 @@ import (
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
-	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
-	"mdgkb/mdgkb-server/handlers/entrances"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -95,7 +101,6 @@ import (
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Config) {
 	localUploader := helpers.NewLocalUploader(&config.UploadPath)
-	localUploaderNew := uploadHelper.NewLocalUploader(&config.UploadPath)
 	helper := helpers.NewHelper(config)
 
 	r.Static("/static", "./static/")
@@ -122,7 +127,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	usersRouter.Init(api.Group("/users"), users.CreateHandler(db, helper))
 	timetables.Init(api.Group("/timetables"), db)
 
-	educationalOraganization.Init(api.Group("/educational-organization"), db, localUploaderNew)
+	educationalOraganizationRouter.Init(api.Group("/educational-organization"), educationalOrganization.CreateHandler(db, helper))
 	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(db, helper))
 	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(db, helper))
 	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(db, helper))
@@ -152,4 +157,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackRequests.CreateHandler(db, helper))
 	applicationsCarsRouter.Init(api.Group("/applications-cars"), applicationsCars.CreateHandler(db, helper))
 	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
+	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
+	dpoBaseCoursesRouter.Init(api.Group("/dpo-base-courses"), dpoBaseCourses.CreateHandler(db, helper))
+	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(db, helper))
 }

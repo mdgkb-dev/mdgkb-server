@@ -16,15 +16,15 @@ type doctorsParams struct {
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Doctor
 	files, err := httpHelper.GetForm(c, &item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.Create(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
@@ -32,11 +32,11 @@ func (h *Handler) Create(c *gin.Context) {
 
 func (h *Handler) GetAll(c *gin.Context) {
 	err := h.service.setQueryFilter(c)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	items, err := h.service.GetAll()
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
@@ -44,11 +44,11 @@ func (h *Handler) GetAll(c *gin.Context) {
 
 func (h *Handler) GetAllAdmin(c *gin.Context) {
 	err := h.service.setQueryFilter(c)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	items, err := h.service.GetAll()
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
@@ -56,7 +56,7 @@ func (h *Handler) GetAllAdmin(c *gin.Context) {
 
 func (h *Handler) GetAllMain(c *gin.Context) {
 	items, err := h.service.GetAllMain()
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
@@ -64,7 +64,7 @@ func (h *Handler) GetAllMain(c *gin.Context) {
 
 func (h *Handler) Get(c *gin.Context) {
 	item, err := h.service.Get(c.Param("slug"))
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
@@ -72,7 +72,7 @@ func (h *Handler) Get(c *gin.Context) {
 
 func (h *Handler) GetByDivisionID(c *gin.Context) {
 	item, err := h.service.GetByDivisionID(c.Param("divisionId"))
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
@@ -80,7 +80,7 @@ func (h *Handler) GetByDivisionID(c *gin.Context) {
 
 func (h *Handler) Delete(c *gin.Context) {
 	err := h.service.Delete(c.Param("id"))
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
@@ -89,14 +89,14 @@ func (h *Handler) Delete(c *gin.Context) {
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Doctor
 	files, err := h.helper.HTTP.GetForm(c, &item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
 	err = h.filesService.Upload(c, &item, files)
 
 	err = h.service.Update(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 
@@ -138,7 +138,7 @@ func (h *Handler) RemoveComment(c *gin.Context) {
 
 func (h *Handler) CreateSlugs(c *gin.Context) {
 	err := h.service.CreateSlugs()
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, nil)
@@ -148,7 +148,7 @@ func (h *Handler) Search(c *gin.Context) {
 	query := c.Query("query")
 	if query != "" {
 		items, err := h.service.Search(query)
-		if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 			return
 		}
 		c.JSON(http.StatusOK, items)

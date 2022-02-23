@@ -12,6 +12,7 @@ type EducationalOrganizationProperty struct {
 	Value                                 string                               `json:"value"`
 	EducationalOrganizationPropertyType   *EducationalOrganizationPropertyType `bun:"rel:belongs-to" json:"educationalOrganizationPropertyType"`
 	EducationalOrganizationPropertyTypeID uuid.UUID                            `bun:"type:uuid,nullzero,default:NULL" json:"educationalOrganizationPropertyTypeId,omitempty"`
+	Order                                 uint                                 `bun:"educational_organization_property_order" json:"order"`
 }
 
 type EducationalOrganizationProperties []*EducationalOrganizationProperty

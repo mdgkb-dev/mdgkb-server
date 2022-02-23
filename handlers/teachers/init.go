@@ -1,31 +1,47 @@
-package educationalOrganization
+package teachers
 
 import (
 	"context"
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
-	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
+	GetAll(c *gin.Context)
 	Get(c *gin.Context)
+	Create(c *gin.Context)
 	Update(c *gin.Context)
-}
-
-type IFilesService interface {
-	Upload(*gin.Context, *models.EducationalOrganization, map[string][]*multipart.FileHeader) error
+	Delete(c *gin.Context)
 }
 
 type IService interface {
-	Get() (*models.EducationalOrganization, error)
-	Update(*models.EducationalOrganization) error
+	GetAll() (models.Teachers, error)
+	Get(*string) (*models.Teacher, error)
+	Create(*models.Teacher) error
+	Update(*models.Teacher) error
+	Delete(*string) error
+	UpsertMany(models.Teachers) error
+	DeleteMany([]string) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
+	getAll() (models.Teachers, error)
+	get(*string) (*models.Teacher, error)
+	create(*models.Teacher) error
+	update(*models.Teacher) error
+	delete(*string) error
+
+	upsertMany(models.Teachers) error
+	deleteMany([]string) error
+}
+
+type IFilesService interface {
+	Upload(*gin.Context, *models.Teacher, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -54,6 +70,11 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
+}
+
+func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor
