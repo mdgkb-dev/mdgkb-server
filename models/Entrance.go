@@ -9,3 +9,5 @@ type Entrance struct {
 	Number     int           `bun:"type:integer" json:"number"`
 	Divisions  []*Division   `bun:"rel:has-many" json:"divisions"`
 }
+
+type Entrances []*Entrance
