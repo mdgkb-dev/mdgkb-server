@@ -84,6 +84,8 @@ import (
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
+	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
+	"mdgkb/mdgkb-server/handlers/entrances"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -124,6 +126,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(db, helper))
 	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(db, helper))
 	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(db, helper))
+	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(db, helper))
 	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, helper))
 	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(db, helper))
 	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
