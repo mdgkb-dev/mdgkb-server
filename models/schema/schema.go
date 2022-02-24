@@ -1,30 +1,32 @@
 package schema
 
 type Schema struct {
-	Human          map[string]string `json:"human"`
-	Comment        map[string]string `json:"comment"`
-	Doctors        map[string]string `json:"doctor"`
-	MedicalProfile map[string]string `json:"medicalProfile"`
-	Division       map[string]string `json:"division"`
-	DoctorUser     map[string]string `json:"doctorUser"`
-	Center         map[string]string `json:"center"`
-	Teacher        map[string]string `json:"teacher"`
-	DpoCourse      map[string]string `json:"dpoCourse"`
-	DpoBaseCourse  map[string]string `json:"dpoBaseCourse"`
+	Human              map[string]string `json:"human"`
+	Comment            map[string]string `json:"comment"`
+	Doctors            map[string]string `json:"doctor"`
+	MedicalProfile     map[string]string `json:"medicalProfile"`
+	Division           map[string]string `json:"division"`
+	DoctorUser         map[string]string `json:"doctorUser"`
+	Center             map[string]string `json:"center"`
+	Teacher            map[string]string `json:"teacher"`
+	DpoCourse          map[string]string `json:"dpoCourse"`
+	DpoBaseCourse      map[string]string `json:"dpoBaseCourse"`
+	EducationalManager map[string]string `json:"educationalManager"`
 }
 
 func CreateSchema() Schema {
 	return Schema{
-		Human:          createHumanSchema(),
-		Comment:        createCommentsSchema(),
-		Doctors:        createDoctorsSchema(),
-		Division:       createDivisionSchema(),
-		MedicalProfile: createMedicalProfileSchema(),
-		DoctorUser:     createDoctorUserSchema(),
-		Center:         createCenterSchema(),
-		Teacher:        createTeacherSchema(),
-		DpoCourse:      createDpoCourseSchema(),
-		DpoBaseCourse:  createDpoBaseCourseSchema(),
+		Human:              createHumanSchema(),
+		Comment:            createCommentsSchema(),
+		Doctors:            createDoctorsSchema(),
+		Division:           createDivisionSchema(),
+		MedicalProfile:     createMedicalProfileSchema(),
+		DoctorUser:         createDoctorUserSchema(),
+		Center:             createCenterSchema(),
+		Teacher:            createTeacherSchema(),
+		DpoCourse:          createDpoCourseSchema(),
+		DpoBaseCourse:      createDpoBaseCourseSchema(),
+		EducationalManager: createEducationalManagerSchema(),
 	}
 }
 
@@ -137,5 +139,15 @@ func createDpoBaseCourseSchema() map[string]string {
 		"teacherId": "teacher_id",
 		"listeners": "listeners",
 		"start":     "dpo_course_start",
+	}
+}
+
+func createEducationalManagerSchema() map[string]string {
+	return map[string]string{
+		"tableName": "educational_managers_view",
+		"key":       "educationalManager",
+		"order":     "educational_managers",
+		"id":        "id",
+		"fullName":  "fullName",
 	}
 }

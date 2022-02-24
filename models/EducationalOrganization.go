@@ -4,8 +4,8 @@ type EducationalOrganization struct {
 	EducationalOrganizationProperties          EducationalOrganizationProperties `json:"educationalOrganizationProperties"`
 	EducationalOrganizationPropertiesForDelete []string                          `json:"educationalOrganizationPropertiesForDelete"`
 
-	EducationalOrganizationManagers          EducationalOrganizationManagers `json:"educationalOrganizationManagers"`
-	EducationalOrganizationManagersForDelete []string                        `json:"educationalOrganizationManagersForDelete"`
+	EducationalOrganizationManagers          EducationalManagers `json:"educationalOrganizationManagers"`
+	EducationalOrganizationManagersForDelete []string            `json:"educationalOrganizationManagersForDelete"`
 
 	EducationalOrganizationTeachers          Teachers `json:"teachers"`
 	EducationalOrganizationTeachersForDelete []string `json:"educationalOrganizationTeachersForDelete"`

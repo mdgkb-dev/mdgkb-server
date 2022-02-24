@@ -5,13 +5,13 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type EducationalOrganizationManager struct {
-	bun.BaseModel `bun:"educational_organization_managers,alias:educational_organization_managers"`
+type EducationalManager struct {
+	bun.BaseModel `bun:"educational_managers_view,alias:educational_managers_view"`
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 	DoctorID      uuid.UUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor   `bun:"rel:belongs-to" json:"doctor"`
 	Role          *string   `json:"role"`
-	ManagerOrder  *int      `json:"managerOrder"`
+	Order         *int      `bun:"educational_manager_order" json:"order"`
 }
 
-type EducationalOrganizationManagers []*EducationalOrganizationManager
+type EducationalManagers []*EducationalManager

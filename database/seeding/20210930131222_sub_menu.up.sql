@@ -1,12 +1,12 @@
 INSERT INTO public.sub_menus (id, name, link, page_id, sub_menu_order, svg, icon_id, menu_id)
 VALUES
-       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b90', 'Ординатура', '/educational-organization/ordinatura', NULL, 0, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
-       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b91', 'Аспирантура', '/educational-organization/aspirantura', NULL, 1, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
+       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b90', 'Ординатура', '/ordinatura', NULL, 0, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
+       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b91', 'Аспирантура', '/aspirantura', NULL, 1, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b92', 'Дополнительное профессиональное образование', '/dpo/base-courses', NULL, 2, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
-       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b93', 'Педагогический состав', '/educational-organization/teachers', NULL, 3, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
-       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b94', 'Члены учёного совета', '/educational-organization/academics', NULL, 4, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
+       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b93', 'Педагогический состав и руководство', '/teachers', NULL, 3, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
+--        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b94', 'Члены учёного совета', '/educational-organization/academics', NULL, 4, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
 --        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b95', 'Структура и руководство', '/educational-organization/structure', NULL, 5, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
-       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b96', 'Сведения об образовательной организации', '/educational-organization/info', NULL, 6, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
+       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b96', 'Сведения об образовательной организации', '/educational-info', NULL, 6, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
 --        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b97', 'Вакантные места для приёма', '/educational-organization/places', NULL, 7, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
 --        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b98', 'Документы', '/educational-organization/documents', NULL, 8, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
         ('dc2c21fa-9962-4352-b22f-4065626fa052', 'Данные о медицинской организации', '/medical-organization', NULL, 1, NULL, 'f6a16253-5040-4db4-8e23-e26f98205428', 'd147efe7-7ab5-4d37-99f2-11a47a4d1e24'),
