@@ -1,7 +1,6 @@
 package children
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/models"
@@ -40,10 +39,16 @@ func (s *Service) UpsertMany(items models.Children) error {
 	return nil
 }
 
+func (s *Service) Upsert(item *models.Child) error {
+	if item == nil {
+		return nil
+	}
+	return s.repository.upsert(item)
+}
+
 func (s *Service) DeleteMany(idPool []uuid.UUID) error {
 	if len(idPool) == 0 {
 		return nil
 	}
-	fmt.Println(idPool)
 	return s.repository.deleteMany(idPool)
 }

@@ -3,6 +3,7 @@ package routing
 import (
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
+	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
@@ -46,6 +47,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/helpers"
 	applicationsCarsRouter "mdgkb/mdgkb-server/routing/applicationsCars"
+	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
 	"mdgkb/mdgkb-server/routing/buildings"
@@ -163,4 +165,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	dpoBaseCoursesRouter.Init(api.Group("/dpo-base-courses"), dpoBaseCourses.CreateHandler(db, helper))
 	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(db, helper))
 	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalManagers.CreateHandler(db, helper))
+	appointmentsRouter.Init(api.Group("/appointments"), appointments.CreateHandler(db, helper))
 }

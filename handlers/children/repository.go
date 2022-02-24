@@ -31,3 +31,10 @@ func (r *Repository) upsertMany(items models.Children) (err error) {
 		Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) upsert(item *models.Child) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(item).
+		Exec(r.ctx)
+	return err
+}

@@ -12,12 +12,14 @@ import (
 type IService interface {
 	CreateMany(menus models.Children) error
 	DeleteMany([]uuid.UUID) error
+	Upsert(*models.Child) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
 	createMany(menus models.Children) error
 	upsertMany(menus models.Children) error
+	upsert(child *models.Child) error
 	deleteMany([]uuid.UUID) error
 }
 

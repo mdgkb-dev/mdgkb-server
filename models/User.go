@@ -52,7 +52,10 @@ func (i *User) SetIdForChildren() {
 	for index := range i.Children {
 		i.Children[index].UserID = i.ID
 	}
-	for index := range i.Children {
-		i.DonorRulesUsers[index].UserID = i.ID
+	if len(i.DonorRulesUsers) > 0 {
+		for index := range i.Children {
+			i.DonorRulesUsers[index].UserID = i.ID
+		}
 	}
+
 }
