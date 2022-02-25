@@ -6,6 +6,20 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
+func (s *Service) Create(item *models.Child) error {
+	err := human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
+	if err != nil {
+		return err
+	}
+	//items.SetIdForChildren()
+	return nil
+}
+
 func (s *Service) CreateMany(items models.Children) error {
 	if len(items) == 0 {
 		return nil

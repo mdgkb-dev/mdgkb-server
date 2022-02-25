@@ -9,6 +9,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
 	"mdgkb/mdgkb-server/handlers/centers"
 	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
+	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
@@ -54,6 +55,7 @@ import (
 	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackRequests"
 	centersRouter "mdgkb/mdgkb-server/routing/centers"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
+	childrenRouter "mdgkb/mdgkb-server/routing/children"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
@@ -166,4 +168,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(db, helper))
 	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalManagers.CreateHandler(db, helper))
 	appointmentsRouter.Init(api.Group("/appointments"), appointments.CreateHandler(db, helper))
+	childrenRouter.Init(api.Group("/children"), children.CreateHandler(db, helper))
 }

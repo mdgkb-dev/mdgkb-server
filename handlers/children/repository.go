@@ -11,6 +11,11 @@ func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
+func (r *Repository) create(item *models.Child) (err error) {
+	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	return err
+}
+
 func (r *Repository) createMany(items models.Children) (err error) {
 	_, err = r.db.NewInsert().Model(&items).Exec(r.ctx)
 	return err
