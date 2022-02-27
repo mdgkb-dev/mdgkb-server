@@ -13,6 +13,7 @@ type Schema struct {
 	DpoBaseCourse      map[string]string `json:"dpoBaseCourse"`
 	EducationalManager map[string]string `json:"educationalManager"`
 	Specialization     map[string]string `json:"specialization"`
+	Vacancy            map[string]string `json:"vacancy"`
 }
 
 func CreateSchema() Schema {
@@ -29,6 +30,7 @@ func CreateSchema() Schema {
 		DpoBaseCourse:      createDpoBaseCourseSchema(),
 		EducationalManager: createEducationalManagerSchema(),
 		Specialization:     createSpecializationSchema(),
+		Vacancy:            createVacancySchema(),
 	}
 }
 
@@ -164,5 +166,19 @@ func createSpecializationSchema() map[string]string {
 		"value":      "id",
 		"sortColumn": "name",
 		"label":      "name",
+	}
+}
+
+func createVacancySchema() map[string]string {
+	return map[string]string{
+		"tableName":  "vacancies",
+		"key":        "vacancy",
+		"title":      "title",
+		"minSalary":  "min_salary",
+		"divisionId": "division_id",
+		"slug":       "slug",
+		"value":      "slug",
+		"maxSalary":  "max_salary",
+		"sortColumn": "title",
 	}
 }
