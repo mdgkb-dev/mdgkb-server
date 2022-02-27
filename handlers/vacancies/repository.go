@@ -17,7 +17,16 @@ func (r *Repository) create(item *models.Vacancy) (err error) {
 
 func (r *Repository) getAll() (models.Vacancies, error) {
 	items := make(models.Vacancies, 0)
-	err := r.db.NewSelect().Model(&items).Where("vacancies.archived = false").Scan(r.ctx)
+	err := r.db.NewSelect().Model(&items).
+		Relation("VacancyResponses").
+		Relation("Division").
+		Relation("VacancyDuties").
+		Relation("VacancyRequirements").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactDoctor.Human").
+		Where("vacancies.archived = false").Scan(r.ctx)
 	return items, err
 }
 
@@ -25,8 +34,13 @@ func (r *Repository) getAllWithResponses() (models.Vacancies, error) {
 	items := make(models.Vacancies, 0)
 	err := r.db.NewSelect().
 		Model(&items).
-		Relation("VacancyResponses").
 		Relation("Division").
+		Relation("VacancyDuties").
+		Relation("VacancyRequirements").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactDoctor.Human").
 		Relation("VacancyResponses.Human.ContactInfo.Emails").
 		Relation("VacancyResponses.Human.ContactInfo.TelephoneNumbers").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
@@ -38,11 +52,38 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 	item := models.Vacancy{}
 	err := r.db.NewSelect().
 		Model(&item).
-		Relation("VacancyResponses.Human.ContactInfo.Emails").
-		Relation("VacancyResponses.Human.ContactInfo.TelephoneNumbers").
+		Relation("Division").
+		Relation("VacancyDuties").
+		Relation("VacancyRequirements").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactDoctor.Human").
+		Relation("VacancyResponses.User.Human.ContactInfo.Emails").
+		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentType").
-		Where("id = ?", *id).
+		Where("vacancies.id = ?", *id).
+		Scan(r.ctx)
+	return &item, err
+}
+
+func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
+	item := models.Vacancy{}
+	err := r.db.NewSelect().
+		Model(&item).
+		Relation("Division").
+		Relation("VacancyDuties").
+		Relation("VacancyRequirements").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactDoctor.Human").
+		Relation("VacancyResponses.User.Human.ContactInfo.Emails").
+		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
+		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
+		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentType").
+		Where("vacancies.slug = ?", *slug).
 		Scan(r.ctx)
 	return &item, err
 }

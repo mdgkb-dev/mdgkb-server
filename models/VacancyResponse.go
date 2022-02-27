@@ -17,14 +17,14 @@ type VacancyResponse struct {
 	Viewed                      bool                        `json:"viewed"`
 	VacancyResponsesToDocuments VacancyResponsesToDocuments `bun:"rel:has-many" json:"vacancyResponsesToDocuments"`
 
-	Human   *Human        `bun:"rel:belongs-to" json:"human"`
-	HumanID uuid.NullUUID `bun:"type:uuid" json:"humanID"`
+	User   *User     `bun:"rel:belongs-to" json:"user"`
+	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
 }
 
 type VacancyResponses []*VacancyResponse
 
 func (item *VacancyResponse) SetForeignKeys() {
-	item.HumanID = item.Human.ID
+	item.UserID = item.User.ID
 }
 
 func (item *VacancyResponse) SetIdForChildren() {

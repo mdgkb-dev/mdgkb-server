@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
 
 	"github.com/google/uuid"
@@ -56,11 +57,16 @@ func (items Documents) GetDocumentsScansIdForDelete() []uuid.UUID {
 
 func (item *Document) SetFilePath(fileID *string) *string {
 	for i, documentScan := range item.DocumentsScans {
+		fmt.Println(documentScan.Scan.ID.UUID.String())
+		fmt.Println(*fileID)
+		fmt.Println(documentScan.Scan.ID.UUID.String() == *fileID)
+		fmt.Println(i)
 		if documentScan.Scan.ID.UUID.String() == *fileID {
 			item.DocumentsScans[i].Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
 			return &item.DocumentsScans[i].Scan.FileSystemPath
 		}
 	}
+	fmt.Println("len", len(item.DocumentsScans))
 	return nil
 }
 

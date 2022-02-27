@@ -5,5 +5,5 @@ CREATE TABLE vacancy_responses (
     viewed boolean,
     vacancy_id uuid  REFERENCES vacancies (id) ON UPDATE CASCADE ON DELETE CASCADE,
     contact_info_id uuid references contact_infos(id) on update cascade on delete cascade,
-    human_id uuid
+    user_id uuid references users(id) on update cascade on delete cascade
 );

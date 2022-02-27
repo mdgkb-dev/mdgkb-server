@@ -58,7 +58,10 @@ func (item *VacancyResponseToDocument) SetFilePath(fileID *string) *string {
 
 func (items VacancyResponsesToDocuments) SetFilePath(fileID *string) *string {
 	for i := range items {
-		return items[i].SetFilePath(fileID)
+		path := items[i].SetFilePath(fileID)
+		if path != nil {
+			return path
+		}
 	}
 	return nil
 }

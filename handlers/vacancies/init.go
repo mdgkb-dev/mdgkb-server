@@ -13,6 +13,7 @@ import (
 type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
+	GetBySlug(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
@@ -24,6 +25,7 @@ type IService interface {
 	GetAll() (models.Vacancies, error)
 	GetAllWithResponses() (models.Vacancies, error)
 	Get(*string) (*models.Vacancy, error)
+	GetBySlug(*string) (*models.Vacancy, error)
 	Create(*models.Vacancy) error
 	Update(*models.Vacancy) error
 	Delete(*string) error
@@ -35,6 +37,7 @@ type IRepository interface {
 	getDB() *bun.DB
 	create(*models.Vacancy) error
 	getAll() (models.Vacancies, error)
+	getBySlug(*string) (*models.Vacancy, error)
 	getAllWithResponses() (models.Vacancies, error)
 	get(*string) (*models.Vacancy, error)
 	update(*models.Vacancy) error

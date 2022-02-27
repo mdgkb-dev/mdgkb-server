@@ -45,6 +45,15 @@ func (h *Handler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
+func (h *Handler) GetBySlug(c *gin.Context) {
+	id := c.Param("slug")
+	item, err := h.service.GetBySlug(&id)
+	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}
+
 func (h *Handler) Delete(c *gin.Context) {
 	id := c.Param("id")
 	err := h.service.Delete(&id)

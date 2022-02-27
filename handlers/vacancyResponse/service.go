@@ -1,13 +1,13 @@
 package vacancyResponse
 
 import (
-	"mdgkb/mdgkb-server/handlers/human"
+	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancyResponsesToDocuments"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.VacancyResponse) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
+	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
 	if err != nil {
 		return err
 	}

@@ -76,7 +76,12 @@ func (s *Service) Upsert(item *models.User) error {
 }
 
 func (s *Service) UpsertEmail(item *models.User) error {
-	err := s.repository.upsertEmail(item)
+	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.upsertEmail(item)
 	if err != nil {
 		return err
 	}
