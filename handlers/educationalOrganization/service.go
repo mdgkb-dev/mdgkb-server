@@ -17,18 +17,18 @@ func (s *Service) Get() (*models.EducationalOrganization, error) {
 	if err != nil {
 		return nil, err
 	}
-	managersService := educationalOrganizationManagers.CreateService(s.repository.getDB())
-	item.EducationalOrganizationManagers, err = managersService.GetAll()
-	if err != nil {
-		return nil, err
-	}
-	teachersService := teachers.CreateService(s.repository.getDB(), s.helper)
-	item.EducationalOrganizationTeachers, err = teachersService.GetAll()
-	if err != nil {
-		return nil, err
-	}
-	academicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB())
-	item.EducationalOrganizationAcademics, err = academicsService.GetAll()
+	//managersService := educationalOrganizationManagers.CreateService(s.repository.getDB())
+	//item.EducationalOrganizationManagers, err = managersService.GetAll()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//teachersService := teachers.CreateService(s.repository.getDB(), s.helper)
+	//item.EducationalOrganizationTeachers, err = teachersService.GetAll()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//academicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB())
+	//item.EducationalOrganizationAcademics, err = academicsService.GetAll()
 	if err != nil {
 		return nil, err
 	}
