@@ -21,6 +21,8 @@ type SubMenu struct {
 	PageId        uuid.NullUUID `bun:"type:uuid" json:"PageId"`
 	Icon          *FileInfo     `bun:"rel:belongs-to" json:"icon"`
 	IconId        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
+	IconName      string        `json:"iconName"`
+	SvgCode       string        `json:"svgCode"`
 }
 
 type SubMenus []*SubMenu
