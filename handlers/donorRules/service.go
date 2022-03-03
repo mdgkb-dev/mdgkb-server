@@ -6,7 +6,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-func (s *Service) GetAll(userId uuid.UUID) (models.DonorRules, error) {
+func (s *Service) GetAll(userId *uuid.UUID) (models.DonorRules, error) {
 	return s.repository.getAll(userId)
 }
 

@@ -11,15 +11,17 @@ func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
-func (r *Repository) getAll(userID uuid.UUID) (models.DonorRules, error) {
+func (r *Repository) getAll(userID *uuid.UUID) (models.DonorRules, error) {
 	items := make(models.DonorRules, 0)
-	err := r.db.NewSelect().
+	q := r.db.NewSelect().
 		Model(&items).
-		Relation("Image").
-		Relation("DonorRulesUsers", func(q *bun.SelectQuery) *bun.SelectQuery {
+		Relation("Image")
+	if userID != nil {
+		q = q.Relation("DonorRulesUsers", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Where("user_id = ?", userID)
-		}).
-		Order("donor_rules.donor_rule_order").
+		})
+	}
+	err := q.Order("donor_rules.donor_rule_order").
 		Scan(r.ctx)
 	return items, err
 }

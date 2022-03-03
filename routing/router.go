@@ -47,6 +47,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/middleware"
 	applicationsCarsRouter "mdgkb/mdgkb-server/routing/applicationsCars"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
@@ -114,8 +115,8 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	authRouter.Init(authGroup.Group(""), auth.CreateHandler(db, helper))
 
 	api := r.Group("/api/v1")
-	//m := middleware.CreateMiddleware(helper)
-	//api.Use(m.Authentication())
+	m := middleware.CreateMiddleware(helper)
+	api.Use(m.Authentication())
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(db, helper))
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, helper))

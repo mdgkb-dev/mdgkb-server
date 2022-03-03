@@ -9,11 +9,11 @@ import (
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
-	userID, err := h.helper.Token.GetUserID(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
-		return
-	}
-	items, err := h.service.GetAll(userID)
+	id, _ := h.helper.Token.GetUserID(c)
+	//if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
+	//	return
+	//}
+	items, err := h.service.GetAll(id)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -49,10 +49,12 @@ func (h *Handler) AddToUser(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	item.UserID, err = h.helper.Token.GetUserID(c)
+	userID, err := h.helper.Token.GetUserID(c)
 	if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
+
 		return
 	}
+	item.UserID = *userID
 	err = h.service.AddToUser(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -67,10 +69,11 @@ func (h *Handler) DeleteFromUser(c *gin.Context) {
 		return
 	}
 	item.DonorRuleID = donorRuleID
-	item.UserID, err = h.helper.Token.GetUserID(c)
+	userID, err := h.helper.Token.GetUserID(c)
 	if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
 		return
 	}
+	item.UserID = *userID
 	err = h.service.DeleteFromUser(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

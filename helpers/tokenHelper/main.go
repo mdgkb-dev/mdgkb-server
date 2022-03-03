@@ -35,10 +35,10 @@ type TokenDetails struct {
 
 func (h *TokenHelper) CreateToken(userID string) (*TokenDetails, error) {
 	td := &TokenDetails{}
-	td.AtExpires = time.Now().Add(time.Minute).Unix()
+	td.AtExpires = time.Now().Add(time.Second).Unix()
 	td.AccessUuid = uuid.NewString()
 
-	td.RtExpires = time.Now().Add(time.Hour * 24 * 7).Unix()
+	td.RtExpires = time.Now().Add(time.Minute).Unix()
 	td.RefreshUuid = td.AccessUuid + "++" + userID
 
 	var err error
@@ -84,13 +84,13 @@ func (h *TokenHelper) RefreshToken(refreshToken string) (*TokenDetails, error) {
 	return h.CreateToken(userID)
 }
 
-func (h *TokenHelper) GetUserID(c *gin.Context) (uuid.UUID, error) {
+func (h *TokenHelper) GetUserID(c *gin.Context) (*uuid.UUID, error) {
 	accessDetail, err := h.extractTokenMetadata(c.Request)
 	if err != nil {
-		return uuid.New(), err
+		return nil, err
 	}
 	uuidFromString, err := uuid.Parse(accessDetail.UserID)
-	return uuidFromString, err
+	return &uuidFromString, err
 }
 
 func (h *TokenHelper) VerifyToken(tokenString string) (*jwt.Token, error) {

@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -57,7 +56,6 @@ func (h *Handler) RefreshToken(c *gin.Context) {
 		return
 	}
 	tokens, err := h.helper.Token.RefreshToken(t.RefreshToken)
-	fmt.Println(err)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

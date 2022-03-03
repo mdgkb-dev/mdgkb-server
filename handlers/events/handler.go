@@ -12,8 +12,9 @@ func (h *Handler) CreateEventApplication(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	item.UserID, err = h.helper.Token.GetUserID(c)
+	userID, err := h.helper.Token.GetUserID(c)
 	err = h.service.CreateEventApplication(&item)
+	item.UserID = *userID
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
