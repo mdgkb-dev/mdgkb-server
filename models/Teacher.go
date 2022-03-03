@@ -11,7 +11,7 @@ type Teacher struct {
 	DoctorID      uuid.UUID  `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor    `bun:"rel:belongs-to" json:"doctor"`
 	Position      string     `json:"position"`
-	DpoCourses    DpoCourses `bun:"rel:has-many" json:"dpoBaseCourses"`
+	DpoCourses    DpoCourses `bun:"rel:has-many" json:"dpoCourses"`
 }
 
 type Teachers []*Teacher
