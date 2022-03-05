@@ -1,4 +1,4 @@
-package appointments
+package gates
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -8,6 +8,10 @@ import (
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
+	err := h.service.setQueryFilter(c)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	items, err := h.service.GetAll()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -25,12 +29,12 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.Appointment
-	files, err := h.helper.HTTP.GetForm(c, &item)
+	var item models.Gate
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	//err = h.filesService.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -42,12 +46,12 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.Appointment
-	files, err := h.helper.HTTP.GetForm(c, &item)
+	var item models.Gate
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	//err = h.filesService.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -65,12 +69,4 @@ func (h *Handler) Delete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
-}
-
-func (h *Handler) Init(c *gin.Context) {
-	err := h.service.Init()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, nil)
 }

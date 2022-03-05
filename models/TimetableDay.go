@@ -2,6 +2,8 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"log"
+	"time"
 )
 
 type TimetableDay struct {
@@ -20,9 +22,47 @@ type TimetableDay struct {
 	TimetableID           uuid.UUID         `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 	BreakPeriods          TimePeriods       `bun:"rel:has-many" json:"breakPeriods"`
 	BreakPeriodsForDelete []string          `bun:"-" json:"breakPeriodsForDelete"`
+	AppointmentsSlots     []string          `bun:"-"`
 }
 
 type TimetableDays []*TimetableDay
+
+func (item *TimetableDay) GetPeriod() (time.Time, time.Time) {
+	startTime, err := time.Parse("15:04:05", item.StartTime)
+	if err != nil {
+		log.Println(err)
+	}
+	endTime, err := time.Parse("15:04:05", item.EndTime)
+	if err != nil {
+		log.Println(err)
+	}
+	return startTime, endTime
+}
+
+func (item *TimetableDay) InitAppointmentsSlots() {
+	if item.IsWeekend {
+		return
+	}
+	step := time.Minute * 15
+
+	startTime, endTime := item.GetPeriod()
+	endTimeString := endTime.Format("15:04")
+	slotTimeString := ""
+	for {
+		slotTimeString = startTime.Format("15:04")
+		startTime = startTime.Add(step)
+		if slotTimeString == endTimeString {
+			break
+		}
+		item.AppointmentsSlots = append(item.AppointmentsSlots, slotTimeString)
+	}
+}
+
+func (items TimetableDays) InitAppointmentsSlots() {
+	for i := range items {
+		items[i].InitAppointmentsSlots()
+	}
+}
 
 func (item *TimetableDay) SetIdForChildren() {
 	if len(item.BreakPeriods) == 0 {

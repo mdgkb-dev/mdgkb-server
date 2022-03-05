@@ -13,7 +13,10 @@ type ApplicationCar struct {
 	CarBrand      string        `json:"carBrand"`
 
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`
-	DivisionId uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
+	DivisionID uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
+
+	Gate   *Gate         `bun:"rel:belongs-to" json:"gate"`
+	GateID uuid.NullUUID `bun:"type:uuid" json:"gateId,omitempty"`
 
 	Date time.Time `bun:"hospitalization_date" json:"date"`
 

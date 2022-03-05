@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/helpers/uploadHelper"
+	"time"
 )
 
 type Doctor struct {
@@ -107,4 +108,43 @@ func (item *Doctor) SetIdForChildren() {
 	for i := range item.DoctorPaidServices {
 		item.DoctorPaidServices[i].DoctorID = item.ID
 	}
+}
+
+func (item *Doctor) InitAppointmentsSlots() {
+	if item.Timetable != nil {
+		item.Timetable.InitAppointmentsSlots()
+	}
+}
+
+func (items Doctors) InitAppointmentsSlots() {
+	for i := range items {
+		items[i].InitAppointmentsSlots()
+	}
+}
+
+func (item *Doctor) InitAppointments(days []time.Time) Appointments {
+	appointments := make(Appointments, 0)
+	if item.Timetable == nil {
+		return appointments
+	}
+	//for _, day := range days {
+	//	for _, weekday := range item.Timetable.TimetableDays {
+	//		for _, slot := range weekday.AppointmentsSlots {
+	//			apointment := Appointment{}
+	//timeToAppointment, _ := time.Parse("2006-01-02 15:04", day.Format("2006-01-02")+" "+slot)
+	//apointment.Time = timeToAppointment
+	//apointment.DoctorID = item.ID
+	//appointments = append(appointments, &apointment)
+	//}
+	//}
+	//}
+	return appointments
+}
+
+func (items Doctors) InitAppointments(days []time.Time) Appointments {
+	appointments := make(Appointments, 0)
+	for i := range items {
+		appointments = append(appointments, items[i].InitAppointments(days)...)
+	}
+	return appointments
 }

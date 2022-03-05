@@ -136,6 +136,10 @@ func (s *Service) GetAll() (models.Doctors, error) {
 	return s.repository.getAll()
 }
 
+func (s *Service) GetAllTimetables() (models.Doctors, error) {
+	return s.repository.getAllTimetables()
+}
+
 func (s *Service) GetAllAdmin() (models.DoctorsWithCount, error) {
 	return s.repository.getAllAdmin()
 }

@@ -20,7 +20,7 @@ type Appointment struct {
 	FormScanID uuid.NullUUID `bun:"type:uuid" json:"formScanId"`
 
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
-	SpecializationID uuid.UUID       `bun:"type:uuid" json:"specializationId"`
+	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId"`
 
 	DoctorID uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Doctor   *Doctor       `bun:"rel:belongs-to" json:"doctor"`
@@ -30,18 +30,13 @@ type Appointment struct {
 	MrtZone       string `json:"mrtZone"`
 	MrtAnesthesia bool   `json:"mrtAnesthesia"`
 
-	User    *User     `bun:"rel:belongs-to" json:"user"`
-	UserID  uuid.UUID `bun:"type:uuid" json:"userId"`
-	Child   *Child    `bun:"rel:belongs-to" json:"child"`
-	ChildID uuid.UUID `bun:"type:uuid" json:"childId"`
+	Child   *Child        `bun:"rel:belongs-to" json:"child"`
+	ChildID uuid.NullUUID `bun:"type:uuid" json:"childId"`
 }
 
-type Appointments []*ApplicationCar
+type Appointments []*Appointment
 
 func (item *Appointment) SetForeignKeys() {
-	if item.User != nil {
-		item.UserID = item.User.ID
-	}
 	if item.Child != nil {
 		item.ChildID = item.Child.ID
 	}

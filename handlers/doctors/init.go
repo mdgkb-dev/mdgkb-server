@@ -34,6 +34,7 @@ type IService interface {
 	GetAll() (models.Doctors, error)
 	GetAllAdmin() (models.DoctorsWithCount, error)
 	GetAllMain() (models.Doctors, error)
+	GetAllTimetables() (models.Doctors, error)
 	Get(string) (*models.Doctor, error)
 	Delete(string) error
 	Update(*models.Doctor) error
@@ -53,6 +54,7 @@ type IRepository interface {
 	getDB() *bun.DB
 	create(*models.Doctor) error
 	getAll() (models.Doctors, error)
+	getAllTimetables() (models.Doctors, error)
 	getAllAdmin() (models.DoctorsWithCount, error)
 	getAllMain() (models.Doctors, error)
 	get(string) (*models.Doctor, error)

@@ -182,3 +182,17 @@ func createVacancySchema() map[string]string {
 		"sortColumn": "title",
 	}
 }
+
+func createAppointmentSchema() map[string]string {
+	return map[string]string{
+		"tableName":        "appointments",
+		"time":             "appointment_time",
+		"clinicName":       "clinic_name",
+		"specializationId": "specialization_id",
+		"doctorId":         "doctor_id",
+		"oms":              "oms",
+		"mrt":              "mrt",
+		"mrtZone":          "mrtZone",
+		"sortColumn":       "title",
+	}
+}

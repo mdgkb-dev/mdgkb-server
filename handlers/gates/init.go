@@ -1,12 +1,13 @@
-package appointments
+package gates
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/helpers/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
@@ -16,34 +17,29 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
-	Init(c *gin.Context)
 }
 
 type IService interface {
-	GetAll() (models.Appointments, error)
-	Get(*string) (*models.Appointment, error)
-	Create(*models.Appointment) error
-	Update(*models.Appointment) error
+	setQueryFilter(*gin.Context) error
+	GetAll() (models.Gates, error)
+	Get(*string) (*models.Gate, error)
+	Create(*models.Gate) error
+	Update(*models.Gate) error
 	Delete(*string) error
-	UpsertMany(models.Appointments) error
-	DeleteMany([]string) error
-	Init() error
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
-	getAll() (models.Appointments, error)
-	get(*string) (*models.Appointment, error)
-	create(*models.Appointment) error
-	update(*models.Appointment) error
+	getAll() (models.Gates, error)
+	get(*string) (*models.Gate, error)
+	create(*models.Gate) error
+	update(*models.Gate) error
 	delete(*string) error
-
-	upsertMany(models.Appointments) error
-	deleteMany([]string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.Appointment, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.Gates, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -58,9 +54,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helpers.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helpers.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
@@ -72,11 +69,6 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
-}
-
-func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
-	repo := NewRepository(db, helper)
-	return NewService(repo, helper)
 }
 
 // NewHandler constructor

@@ -2,7 +2,7 @@ package appointments
 
 import (
 	"mdgkb/mdgkb-server/handlers/children"
-	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -27,10 +27,6 @@ func (s *Service) Create(item *models.Appointment) error {
 	if err != nil {
 		return err
 	}
-	err = users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
-	if err != nil {
-		return err
-	}
 	item.SetForeignKeys()
 	err = s.repository.create(item)
 	if err != nil {
@@ -41,10 +37,6 @@ func (s *Service) Create(item *models.Appointment) error {
 
 func (s *Service) Update(item *models.Appointment) error {
 	err := children.CreateService(s.repository.getDB(), s.helper).Upsert(item.Child)
-	if err != nil {
-		return err
-	}
-	err = users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
 	if err != nil {
 		return err
 	}
@@ -72,4 +64,19 @@ func (s *Service) DeleteMany(id []string) error {
 		return nil
 	}
 	return s.repository.deleteMany(id)
+}
+
+func (s *Service) Init() error {
+	doctorsWithTimetable, err := doctors.CreateService(s.repository.getDB(), s.helper).GetAllTimetables()
+	if err != nil {
+		return err
+	}
+	doctorsWithTimetable.InitAppointmentsSlots()
+	days := s.helper.GetMonthDays()
+	appointmentsToInsert := doctorsWithTimetable.InitAppointments(days)
+	err = s.repository.upsertMany(appointmentsToInsert)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -80,6 +80,15 @@ func (r *Repository) getAllAdmin() (items models.DoctorsWithCount, err error) {
 	return items, err
 }
 
+func (r *Repository) getAllTimetables() (models.Doctors, error) {
+	items := make(models.Doctors, 0)
+	err := r.db.NewSelect().Model(&items).
+		Relation("Timetable.TimetableDays.Weekday").
+		Relation("Timetable.TimetableDays.BreakPeriods").
+		Scan(r.ctx)
+	return items, err
+}
+
 func (r *Repository) get(slug string) (*models.Doctor, error) {
 	item := models.Doctor{}
 	err := r.db.NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
