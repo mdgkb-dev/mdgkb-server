@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type ApplicationCar struct {
@@ -20,8 +21,10 @@ type ApplicationCar struct {
 
 	Date time.Time `bun:"hospitalization_date" json:"date"`
 
-	User   *User     `bun:"rel:belongs-to" json:"user"`
-	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
+	User      *User     `bun:"rel:belongs-to" json:"user"`
+	UserID    uuid.UUID `bun:"type:uuid" json:"userId"`
+	Moved_in  bool      `json:"movedIn"`
+	Moved_out bool      `json:"movedOut"`
 }
 
 type ApplicationsCars []*ApplicationCar
