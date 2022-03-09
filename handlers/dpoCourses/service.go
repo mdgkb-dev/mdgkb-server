@@ -2,6 +2,9 @@ package dpoCourses
 
 import (
 	"github.com/gin-gonic/gin"
+	"mdgkb/mdgkb-server/handlers/dpoCourseDates"
+	"mdgkb/mdgkb-server/handlers/dpoCourseSpecializations"
+	"mdgkb/mdgkb-server/handlers/dpoCourseTeachers"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -22,11 +25,52 @@ func (s *Service) Create(item *models.DpoCourse) error {
 	if err != nil {
 		return err
 	}
+	item.SetIdForChildren()
+	err = dpoCourseTeachers.CreateService(s.repository.getDB()).UpsertMany(item.DpoCoursesTeachers)
+	if err != nil {
+		return err
+	}
+	err = dpoCourseDates.CreateService(s.repository.getDB()).UpsertMany(item.DpoCoursesDates)
+	if err != nil {
+		return err
+	}
+	err = dpoCourseSpecializations.CreateService(s.repository.getDB()).UpsertMany(item.DpoCoursesSpecializations)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (s *Service) Update(item *models.DpoCourse) error {
 	err := s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	item.SetIdForChildren()
+	dpoCourseTeachersService := dpoCourseTeachers.CreateService(s.repository.getDB())
+	err = dpoCourseTeachersService.UpsertMany(item.DpoCoursesTeachers)
+	if err != nil {
+		return err
+	}
+	err = dpoCourseTeachersService.DeleteMany(item.DpoCoursesTeachersForDelete)
+	if err != nil {
+		return err
+	}
+	dpoCourseDatesService := dpoCourseDates.CreateService(s.repository.getDB())
+	err = dpoCourseDatesService.UpsertMany(item.DpoCoursesDates)
+	if err != nil {
+		return err
+	}
+	err = dpoCourseDatesService.DeleteMany(item.DpoCoursesDatesForDelete)
+	if err != nil {
+		return err
+	}
+	dpoCourseSpecializationsService := dpoCourseSpecializations.CreateService(s.repository.getDB())
+	err = dpoCourseSpecializationsService.UpsertMany(item.DpoCoursesSpecializations)
+	if err != nil {
+		return err
+	}
+	err = dpoCourseSpecializationsService.DeleteMany(item.DpoCoursesSpecializationsForDelete)
 	if err != nil {
 		return err
 	}

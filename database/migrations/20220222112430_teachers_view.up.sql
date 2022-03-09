@@ -4,6 +4,7 @@ SELECT
     h.name,
     h.surname,
     h.patronymic,
+       h.slug,
     CONCAT_WS(' '::TEXT, h.surname, h.name, h.patronymic) AS full_name
 FROM teachers
          join doctors d on d.id = teachers.doctor_id

@@ -15,7 +15,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/donorRules"
-	"mdgkb/mdgkb-server/handlers/dpoBaseCourses"
 	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/dpoApplications"
 	"mdgkb/mdgkb-server/handlers/educationalManagers"
@@ -41,6 +40,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/publicDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/search"
+	"mdgkb/mdgkb-server/handlers/specializations"
 	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/handlers/timetablePatterns"
 	"mdgkb/mdgkb-server/handlers/users"
@@ -64,7 +64,6 @@ import (
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
-	dpoBaseCoursesRouter "mdgkb/mdgkb-server/routing/dpoBaseCourses"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalManagers"
@@ -94,6 +93,7 @@ import (
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 	searchRouter "mdgkb/mdgkb-server/routing/search"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
+	specializationsRouter "mdgkb/mdgkb-server/routing/specializations"
 	"mdgkb/mdgkb-server/routing/tags"
 	teachersRouter "mdgkb/mdgkb-server/routing/teachers"
 	timetablePatternsRouter "mdgkb/mdgkb-server/routing/timetablePatterns"
@@ -170,10 +170,10 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper))
-	dpoBaseCoursesRouter.Init(api.Group("/dpo-base-courses"), dpoBaseCourses.CreateHandler(db, helper))
 	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(db, helper))
 	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalManagers.CreateHandler(db, helper))
 	appointmentsRouter.Init(api.Group("/appointments"), appointments.CreateHandler(db, helper))
 	childrenRouter.Init(api.Group("/children"), children.CreateHandler(db, helper))
 	gatesRouter.Init(api.Group("/gates"), gates.CreateHandler(db, helper))
+	specializationsRouter.Init(api.Group("/specializations"), specializations.CreateHandler(db, helper))
 }

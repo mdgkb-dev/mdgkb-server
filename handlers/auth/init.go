@@ -14,6 +14,7 @@ type IHandler interface {
 	Logout(c *gin.Context)
 	RefreshToken(c *gin.Context)
 	RefreshPassword(c *gin.Context)
+	RestorePassword(c *gin.Context)
 }
 
 type IService interface {

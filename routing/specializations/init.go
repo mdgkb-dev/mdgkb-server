@@ -1,8 +1,8 @@
-package dpoBaseCourses
+package specializations
 
 import (
 	"github.com/gin-gonic/gin"
-	handler "mdgkb/mdgkb-server/handlers/dpoBaseCourses"
+	handler "mdgkb/mdgkb-server/handlers/dpoCourses"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )

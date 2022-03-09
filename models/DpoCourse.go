@@ -3,20 +3,37 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type DpoCourse struct {
-	bun.BaseModel `bun:"dpo_courses,alias:dpo_courses"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
-	Name          string    `json:"name"`
-	Description   string    `json:"description"`
-	Order         int       `bun:"dpo_course_order" json:"order"`
-	Start         time.Time `bun:"dpo_course_start" json:"start"`
-	Listeners     int       `json:"listeners"`
-	Hours         int       `json:"hours"`
-	TeacherID     uuid.UUID `bun:"type:uuid" json:"teacherId"`
-	Teacher       *Teacher  `bun:"rel:belongs-to" json:"teacher"`
+	bun.BaseModel                      `bun:"dpo_courses,alias:dpo_courses"`
+	ID                                 uuid.NullUUID             `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	Name                               string                    `json:"name"`
+	Description                        string                    `json:"description"`
+	Order                              int                       `bun:"dpo_course_order" json:"order"`
+	IsNmo                              bool                      `json:"isNmo"`
+	LinkNmo                            string                    `json:"linkNmo"`
+	Listeners                          int                       `json:"listeners"`
+	Hours                              int                       `json:"hours"`
+	Cost                               int                       `json:"cost"`
+	DpoCoursesSpecializations          DpoCoursesSpecializations `bun:"rel:has-many" json:"dpoCoursesSpecializations"`
+	DpoCoursesSpecializationsForDelete []uuid.UUID               `bun:"-" json:"dpoCoursesSpecializationsForDelete"`
+	DpoCoursesTeachers                 DpoCoursesTeachers        `bun:"rel:has-many" json:"dpoCoursesTeachers"`
+	DpoCoursesTeachersForDelete        []uuid.UUID               `bun:"-" json:"dpoCoursesForDelete"`
+	DpoCoursesDates                    DpoCoursesDates           `bun:"rel:has-many" json:"dpoCoursesDates"`
+	DpoCoursesDatesForDelete           []uuid.UUID               `bun:"-" json:"dpoCoursesDatesForDelete"`
 }
 
 type DpoCourses []*DpoCourse
+
+func (item *DpoCourse) SetIdForChildren() {
+	for i := range item.DpoCoursesTeachers {
+		item.DpoCoursesTeachers[i].DpoCourseID = item.ID
+	}
+	for i := range item.DpoCoursesSpecializations {
+		item.DpoCoursesSpecializations[i].DpoCourseID = item.ID
+	}
+	for i := range item.DpoCoursesDates {
+		item.DpoCoursesDates[i].DpoCourseID = item.ID
+	}
+}

@@ -1,7 +1,10 @@
 package auth
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/sendgrid/sendgrid-go"
+	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 )
@@ -69,5 +72,27 @@ func (h *Handler) RefreshPassword(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, nil)
+}
 
+func (h *Handler) RestorePassword(c *gin.Context) {
+	//var user *models.User
+	//err := c.Bind(&user)
+	//if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	//  return
+	//}
+	// res, err := h.service.Register(user),
+	//if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	//  return
+	//}
+	msg := "Тест просодействие"
+	from := mail.NewEmail("Просодействие", "pro-assistance@mail.ru")
+	subject := fmt.Sprintf("REMINDER -> %s", msg)
+	to := mail.NewEmail("lakkinzimusic@gmail.com", "lakkinzimusic@gmail.com")
+	message := mail.NewSingleEmail(from, subject, to, msg, msg)
+	client := sendgrid.NewSendClient("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")
+	res, err := client.Send(message)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, res)
 }
