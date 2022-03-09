@@ -16,6 +16,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/donorRules"
 	"mdgkb/mdgkb-server/handlers/dpoBaseCourses"
 	"mdgkb/mdgkb-server/handlers/dpoCourses"
+	"mdgkb/mdgkb-server/handlers/dpoApplications"
 	"mdgkb/mdgkb-server/handlers/educationalManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganization"
 	"mdgkb/mdgkb-server/handlers/entrances"
@@ -61,6 +62,7 @@ import (
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
 	dpoBaseCoursesRouter "mdgkb/mdgkb-server/routing/dpoBaseCourses"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
+	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalManagers"
 	educationalOraganizationRouter "mdgkb/mdgkb-server/routing/educationalOraganization"
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
@@ -162,6 +164,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	applicationsCarsRouter.Init(api.Group("/applications-cars"), applicationsCars.CreateHandler(db, helper))
 	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
+	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper))
 	dpoBaseCoursesRouter.Init(api.Group("/dpo-base-courses"), dpoBaseCourses.CreateHandler(db, helper))
 	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(db, helper))
 	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalManagers.CreateHandler(db, helper))

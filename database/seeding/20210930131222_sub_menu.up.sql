@@ -2,7 +2,7 @@ INSERT INTO public.sub_menus (id, name, link, page_id, sub_menu_order, svg, icon
 VALUES
        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b90', 'Ординатура', '/ordinatura', NULL, 0, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b91', 'Аспирантура', '/aspirantura', NULL, 1, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
-       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b92', 'Дополнительное профессиональное образование', '/dpo/base-courses', NULL, 2, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
+       ('d6017ef7-dbaa-4f88-8bb3-d59e87396b92', 'Дополнительное профессиональное образование', '/dpo/courses', NULL, 2, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b93', 'Педагогический состав и руководство', '/teachers', NULL, 3, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
 --        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b94', 'Члены учёного совета', '/educational-organization/academics', NULL, 4, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
 --        ('d6017ef7-dbaa-4f88-8bb3-d59e87396b95', 'Структура и руководство', '/educational-organization/structure', NULL, 5, NULL, NULL, '53a6dae5-f6ee-43ef-afa5-045cc74f204a'),
