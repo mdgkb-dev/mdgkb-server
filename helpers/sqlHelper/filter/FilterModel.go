@@ -16,10 +16,10 @@ type FilterModel struct {
 	Date1    time.Time `json:"date1,omitempty"`
 	Date2    time.Time `json:"date2,omitempty"`
 
-	Value1 string `json:"value1,omitempty"`
-	Value2 string `json:"value2,omitempty"`
-
-	Set []string `json:"set"`
+	Value1  string   `json:"value1,omitempty"`
+	Value2  string   `json:"value2,omitempty"`
+	Boolean bool     `json:"boolean"`
+	Set     []string `json:"set"`
 
 	JoinTable      string `json:"joinTable"`
 	JoinTableFK    string `json:"joinTableFK"`
@@ -58,7 +58,11 @@ const (
 func (f *FilterModel) constructWhere(query *bun.SelectQuery) {
 	q := ""
 	if f.isUnary() {
-		q = fmt.Sprintf("%s %s '%s'", f.getTableAndCol(), *f.Operator, f.Value1)
+		if *f.Type == BooleanType {
+			q = fmt.Sprintf("%s %s %t", f.getTableAndCol(), *f.Operator, f.Boolean)
+		} else {
+			q = fmt.Sprintf("%s %s '%s'", f.getTableAndCol(), *f.Operator, f.Value1)
+		}
 	}
 	if f.isBetween() {
 		q = fmt.Sprintf("%s %s '%s' and '%s'", f.getTableAndCol(), *f.Operator, f.Value1, f.Value2)
