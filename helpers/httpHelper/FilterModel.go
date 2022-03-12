@@ -50,7 +50,9 @@ func (f *FilterModel) GetTableAndCol() string {
 }
 
 func (f *FilterModel) GetJoinCondition() string {
-	return fmt.Sprintf("%s.%s = %s.%s", *f.Table, *f.JoinTableFK, *f.JoinTable, *f.JoinTablePK)
+	res := fmt.Sprintf("%s.%s = %s.%s", *f.Table, *f.JoinTableFK, *f.JoinTable, *f.JoinTablePK)
+	fmt.Println(res)
+	return res
 }
 
 func (f *FilterModel) IsUnary() bool {

@@ -1,36 +1,38 @@
 package schema
 
 type Schema struct {
-	Human              map[string]string `json:"human"`
-	Comment            map[string]string `json:"comment"`
-	Doctors            map[string]string `json:"doctor"`
-	MedicalProfile     map[string]string `json:"medicalProfile"`
-	Division           map[string]string `json:"division"`
-	DoctorUser         map[string]string `json:"doctorUser"`
-	Center             map[string]string `json:"center"`
-	Teacher            map[string]string `json:"teacher"`
-	DpoCourse          map[string]string `json:"dpoCourse"`
-	DpoBaseCourse      map[string]string `json:"dpoBaseCourse"`
-	EducationalManager map[string]string `json:"educationalManager"`
-	Specialization     map[string]string `json:"specialization"`
-	Vacancy            map[string]string `json:"vacancy"`
+	Human                   map[string]string `json:"human"`
+	Comment                 map[string]string `json:"comment"`
+	Doctors                 map[string]string `json:"doctor"`
+	MedicalProfile          map[string]string `json:"medicalProfile"`
+	Division                map[string]string `json:"division"`
+	DoctorUser              map[string]string `json:"doctorUser"`
+	Center                  map[string]string `json:"center"`
+	Teacher                 map[string]string `json:"teacher"`
+	DpoCourse               map[string]string `json:"dpoCourse"`
+	DpoBaseCourse           map[string]string `json:"dpoBaseCourse"`
+	EducationalManager      map[string]string `json:"educationalManager"`
+	Specialization          map[string]string `json:"specialization"`
+	Vacancy                 map[string]string `json:"vacancy"`
+	DpoCourseSpecialization map[string]string `json:"dpoCourseSpecialization"`
 }
 
 func CreateSchema() Schema {
 	return Schema{
-		Human:              createHumanSchema(),
-		Comment:            createCommentsSchema(),
-		Doctors:            createDoctorsSchema(),
-		Division:           createDivisionSchema(),
-		MedicalProfile:     createMedicalProfileSchema(),
-		DoctorUser:         createDoctorUserSchema(),
-		Center:             createCenterSchema(),
-		Teacher:            createTeacherSchema(),
-		DpoCourse:          createDpoCourseSchema(),
-		DpoBaseCourse:      createDpoBaseCourseSchema(),
-		EducationalManager: createEducationalManagerSchema(),
-		Specialization:     createSpecializationSchema(),
-		Vacancy:            createVacancySchema(),
+		Human:                   createHumanSchema(),
+		Comment:                 createCommentsSchema(),
+		Doctors:                 createDoctorsSchema(),
+		Division:                createDivisionSchema(),
+		MedicalProfile:          createMedicalProfileSchema(),
+		DoctorUser:              createDoctorUserSchema(),
+		Center:                  createCenterSchema(),
+		Teacher:                 createTeacherSchema(),
+		DpoCourse:               createDpoCourseSchema(),
+		DpoBaseCourse:           createDpoBaseCourseSchema(),
+		EducationalManager:      createEducationalManagerSchema(),
+		Specialization:          createSpecializationSchema(),
+		Vacancy:                 createVacancySchema(),
+		DpoCourseSpecialization: createDpoCourseSpecializationSchema(),
 	}
 }
 
@@ -122,15 +124,18 @@ func createTeacherSchema() map[string]string {
 
 func createDpoCourseSchema() map[string]string {
 	return map[string]string{
-		"tableName": "dpo_courses",
-		"key":       "dpoCourse",
-		"id":        "id",
-		"name":      "name",
-		"isNmo":     "is_nmo",
-		"hours":     "hours",
-		"teacherId": "teacher_id",
-		"listeners": "listeners",
-		"start":     "dpo_course_start",
+		"tableName":  "dpo_courses",
+		"key":        "dpoCourse",
+		"id":         "id",
+		"name":       "name",
+		"isNmo":      "is_nmo",
+		"hours":      "hours",
+		"value":      "id",
+		"label":      "name",
+		"sortColumn": "name",
+		"teacherId":  "teacher_id",
+		"listeners":  "listeners",
+		"start":      "dpo_course_start",
 	}
 }
 
@@ -154,6 +159,16 @@ func createEducationalManagerSchema() map[string]string {
 		"order":     "educational_managers",
 		"id":        "id",
 		"fullName":  "fullName",
+	}
+}
+
+func createDpoCourseSpecializationSchema() map[string]string {
+	return map[string]string{
+		"tableName":        "dpo_courses_specializations",
+		"key":              "dpoCourseSpecialization",
+		"id":               "id",
+		"dpoCourseId":      "dpo_course_id",
+		"specializationId": "specialization_id",
 	}
 }
 
@@ -194,6 +209,7 @@ func createAppointmentSchema() map[string]string {
 		"oms":              "oms",
 		"mrt":              "mrt",
 		"mrtZone":          "mrtZone",
+		"value":            "id",
 		"sortColumn":       "title",
 	}
 }
