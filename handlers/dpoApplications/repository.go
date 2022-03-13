@@ -23,7 +23,10 @@ func (r *Repository) getAll() (models.DpoApplications, error) {
 	items := make(models.DpoApplications, 0)
 	query := r.db.NewSelect().
 		Model(&items).
-		Relation("Teacher.Doctor.Human")
+		Relation("Application").
+		Relation("OrganizationApplication").
+		Relation("DpoCourse").
+		Relation("User.Human")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -35,8 +38,11 @@ func (r *Repository) getAll() (models.DpoApplications, error) {
 func (r *Repository) get(id *string) (*models.DpoApplication, error) {
 	item := models.DpoApplication{}
 	err := r.db.NewSelect().Model(&item).
-		// Relation("Teacher.Doctor.Human").
-		Where("dpo_courses.id = ?", *id).Scan(r.ctx)
+		Relation("Application").
+		Relation("OrganizationApplication").
+		Relation("DpoCourse").
+		Relation("User.Human").
+		Where("dpo_applications.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 
