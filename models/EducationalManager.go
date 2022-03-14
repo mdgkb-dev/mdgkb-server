@@ -6,7 +6,7 @@ import (
 )
 
 type EducationalManager struct {
-	bun.BaseModel `bun:"educational_managers_view,alias:educational_managers_view"`
+	bun.BaseModel `bun:"educational_managers,select:educational_managers_view,alias:educational_managers_view"`
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 	DoctorID      uuid.UUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor   `bun:"rel:belongs-to" json:"doctor"`

@@ -15,7 +15,7 @@ func (r *Repository) getAll() (models.EducationalManagers, error) {
 	err := r.db.NewSelect().Model(&items).
 		Relation("Doctor.Human").
 		Relation("Doctor.FileInfo").
-		Order("educational_managers.manager_order").Scan(r.ctx)
+		Order("educational_managers_view.educational_manager_order").Scan(r.ctx)
 	return items, err
 }
 

@@ -156,7 +156,7 @@ func createEducationalManagerSchema() map[string]string {
 	return map[string]string{
 		"tableName": "educational_managers_view",
 		"key":       "educationalManager",
-		"order":     "educational_managers",
+		"order":     "educational_managers_view",
 		"id":        "id",
 		"fullName":  "fullName",
 	}
