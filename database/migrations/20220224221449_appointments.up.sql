@@ -11,7 +11,7 @@ CREATE TABLE appointments
     oms boolean,
     mrt boolean,
     mrt_zone varchar,
-    mrt_anesthesia varchar,
+    mrt_anesthesia boolean,
     user_id uuid  REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
     child_id uuid  REFERENCES children (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
