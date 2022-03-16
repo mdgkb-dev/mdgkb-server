@@ -42,7 +42,8 @@ func main() {
 	db := connect.InitDB(conf)
 	defer db.Close()
 	redis := connect.InitRedis(conf)
-	routing.Init(router, db, redis, *conf)
+	elasticSearch := connect.InitElasticSearch(conf)
+	routing.Init(router, db, redis, elasticSearch, *conf)
 
 	err = http.ListenAndServe(fmt.Sprintf(":%s", conf.ServerPort), router)
 	if err != nil {

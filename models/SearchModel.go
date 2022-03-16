@@ -6,3 +6,7 @@ type SearchModel struct {
 	SearchGroups  SearchGroups `json:"searchGroups"`
 	SearchGroup   *SearchGroup `json:"searchGroup"`
 }
+
+func (item *SearchModel) ParseMap(re map[string]interface{}) {
+	item.SearchGroup.ParseMap(re)
+}

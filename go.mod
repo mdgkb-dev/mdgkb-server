@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.7.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/elastic/go-elasticsearch/v8 v8.1.0 // indirect
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/gin-gonic/gin v1.7.3
 	github.com/go-pg/pg/v10 v10.10.3

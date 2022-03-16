@@ -28,3 +28,23 @@ func (item *SearchGroup) BuildRoutes() {
 		item.SearchElements[i].Value = fmt.Sprintf("%s/%s", item.Route, item.SearchElements[i].Value)
 	}
 }
+
+func (item *SearchGroup) ParseMap(re map[string]interface{}) {
+	for _, hit := range re["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		searchElement := SearchElement{}
+		searchElement.Value = hit.(map[string]interface{})["_id"].(string)
+		searchElement.Label = hit.(map[string]interface{})["_source"].(map[string]interface{})["name"].(string)
+		searchElement.Description = hit.(map[string]interface{})["_source"].(map[string]interface{})["info"].(string)
+		item.SearchElements = append(item.SearchElements, &searchElement)
+	}
+}
+
+//func (items SearchGroups) ParseMap(re map[string]interface{}) {
+//
+//	for _, hit := range re["hits"].(map[string]interface{})["hits"].([]interface{}) {
+//		searchElement := SearchElement{}
+//		searchElement.Value = hit.(map[string]interface{})["_id"].(string)
+//		searchElement.Label = hit.(map[string]interface{})["_source"].(map[string]interface{})["name"].(string)
+//		item.SearchElements = append(item.SearchElements, &searchElement)
+//	}
+//}

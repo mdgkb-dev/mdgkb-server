@@ -1,7 +1,6 @@
 package educationalOrganization
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationAcademics"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationManagers"
@@ -67,12 +66,6 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 	}
 
 	teachersService := teachers.CreateService(s.repository.getDB(), s.helper)
-	fmt.Println(item.TeachersForDelete)
-	fmt.Println(item.TeachersForDelete)
-	fmt.Println(item.TeachersForDelete)
-	fmt.Println(item.TeachersForDelete)
-	fmt.Println(item.TeachersForDelete)
-	fmt.Println(item.TeachersForDelete)
 	err = teachersService.DeleteMany(item.TeachersForDelete)
 	if err != nil {
 		return err

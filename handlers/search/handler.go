@@ -14,7 +14,16 @@ func (h *Handler) Search(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.service.SearchObjects(&item)
+	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) ElasticSearch(c *gin.Context) {
+	var item models.SearchModel
+	err := json.Unmarshal([]byte(c.Query("searchModel")), &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.ElasticSearch(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

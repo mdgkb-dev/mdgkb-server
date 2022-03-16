@@ -36,3 +36,11 @@ func (s *Service) SearchObjects(searchModel *models.SearchModel) (err error) {
 func (s *Service) SearchGroups() (models.SearchGroups, error) {
 	return s.repository.getGroups("")
 }
+
+func (s *Service) ElasticSearch(model *models.SearchModel) error {
+	err := s.repository.elasticSearch(model)
+	if err != nil {
+		return err
+	}
+	return nil
+}

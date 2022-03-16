@@ -3,6 +3,7 @@ package connect
 import (
 	"database/sql"
 	"fmt"
+	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/uptrace/bun/extra/bundebug"
 	"mdgkb/mdgkb-server/models"
 
@@ -30,7 +31,21 @@ func recognizeModels(db *bun.DB) {
 	db.RegisterModel((*models.NewsToTag)(nil))
 }
 
-var client *redis.Client
+func InitElasticSearch(conf *config.Config) (client *elasticsearch.Client) {
+	cfg := elasticsearch.Config{
+		Addresses: []string{
+			conf.ElasticSearch.ElasticSearchURL,
+		},
+	}
+	if conf.ElasticSearch.ElasticSearchOn {
+		client, err := elasticsearch.NewClient(cfg)
+		if err != nil {
+			panic(err)
+		}
+		return client
+	}
+	return nil
+}
 
 func InitRedis(conf *config.Config) (client *redis.Client) {
 	client = redis.NewClient(&redis.Options{

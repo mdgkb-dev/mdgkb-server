@@ -1,8 +1,11 @@
 package search
 
 import (
+	"encoding/json"
 	"fmt"
 	"mdgkb/mdgkb-server/models"
+	"os"
+	"path/filepath"
 
 	"github.com/uptrace/bun"
 )
@@ -33,4 +36,36 @@ func (r *Repository) search(searchGroup *models.SearchGroup, search string) erro
 	}
 	err = r.db.ScanRows(r.ctx, rows, &searchGroup.SearchElements)
 	return err
+}
+
+func (r *Repository) elasticSearch(model *models.SearchModel) error {
+	var re map[string]interface{}
+	if r.helper.Search.On {
+		res, err := r.elasticsearch.Search(
+			r.elasticsearch.Search.WithIndex("divisions"),
+			r.elasticsearch.Search.WithPretty(),
+		)
+		defer res.Body.Close()
+		err = json.NewDecoder(res.Body).Decode(&re)
+		if err != nil {
+			return err
+		}
+	} else {
+		path, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+		path = filepath.Join(path, "dummy")
+		file, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+		err = json.NewDecoder(file).Decode(&re)
+		if err != nil {
+			return err
+		}
+	}
+	model.ParseMap(re)
+	return nil
 }

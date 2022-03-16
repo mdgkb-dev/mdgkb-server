@@ -2,6 +2,7 @@ package search
 
 import (
 	"context"
+	"github.com/elastic/go-elasticsearch/v8"
 	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
@@ -12,6 +13,7 @@ import (
 
 type IHandler interface {
 	Search(c *gin.Context)
+	ElasticSearch(c *gin.Context)
 	SearchMain(c *gin.Context)
 	SearchGroups(c *gin.Context)
 }
@@ -20,12 +22,14 @@ type IService interface {
 	SearchMain(*models.SearchModel) error
 	SearchObjects(*models.SearchModel) error
 	SearchGroups() (models.SearchGroups, error)
+	ElasticSearch(*models.SearchModel) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
 	getGroups(string) (models.SearchGroups, error)
 	search(*models.SearchGroup, string) error
+	elasticSearch(*models.SearchModel) error
 }
 
 type IFilesService interface {
@@ -44,17 +48,18 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helpers.Helper
+	db            *bun.DB
+	ctx           context.Context
+	helper        *helpers.Helper
+	elasticsearch *elasticsearch.Client
 }
 
 type FilesService struct {
 	helper *helpers.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
-	repo := NewRepository(db, helper)
+func CreateHandler(db *bun.DB, helper *helpers.Helper, elasticSearchClient *elasticsearch.Client) *Handler {
+	repo := NewRepository(db, helper, elasticSearchClient)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
@@ -69,8 +74,8 @@ func NewService(repository IRepository, helper *helpers.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper}
+func NewRepository(db *bun.DB, helper *helpers.Helper, elasticSearchClient *elasticsearch.Client) *Repository {
+	return &Repository{db: db, ctx: context.Background(), helper: helper, elasticsearch: elasticSearchClient}
 }
 
 func NewFilesService(helper *helpers.Helper) *FilesService {

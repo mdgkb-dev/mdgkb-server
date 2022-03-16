@@ -1,6 +1,7 @@
 package routing
 
 import (
+	"github.com/elastic/go-elasticsearch/v8"
 	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
@@ -15,8 +16,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/donorRules"
-	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/dpoApplications"
+	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/educationalManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganization"
 	"mdgkb/mdgkb-server/handlers/entrances"
@@ -64,8 +65,8 @@ import (
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
-	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
+	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalManagers"
 	educationalOraganizationRouter "mdgkb/mdgkb-server/routing/educationalOraganization"
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
@@ -110,7 +111,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Config) {
+func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, config config.Config) {
 	localUploader := helpers.NewLocalUploader(&config.UploadPath)
 	helper := helpers.NewHelper(config)
 
@@ -147,7 +148,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(db, helper))
 	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
 	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
-	searchRouter.Init(api.Group("/search"), search.CreateHandler(db, helper))
+	searchRouter.Init(api.Group("/search"), search.CreateHandler(db, helper, elasticSearchClient))
 	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(db, helper))
 	visitingRulesRouter.Init(api.Group("/visiting-rules"), visitingRules.CreateHandler(db, helper))
 	newsSlidesRouter.Init(api.Group("/news-slides"), newsSlides.CreateHandler(db, helper))

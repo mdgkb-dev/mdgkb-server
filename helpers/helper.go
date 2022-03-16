@@ -2,6 +2,7 @@ package helpers
 
 import (
 	configPack "mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/helpers/elasticSearchHelper"
 	"mdgkb/mdgkb-server/helpers/emailHelper"
 	httpHelper "mdgkb/mdgkb-server/helpers/httpHelperV2"
 	"mdgkb/mdgkb-server/helpers/pdfHelper"
@@ -13,6 +14,7 @@ import (
 
 type Helper struct {
 	HTTP     *httpHelper.HTTPHelper
+	Search   *elasticSearchHelper.ElasticSearchHelper
 	PDF      *pdfHelper.PDFHelper
 	Uploader uploadHelper.Uploader
 	SQL      *sqlHelper.SQLHelper
@@ -29,5 +31,6 @@ func NewHelper(config configPack.Config) *Helper {
 	token := tokenHelper.NewTokenHelper(config.TokenSecret)
 	email := emailHelper.NewEmailHelper(config.Email)
 	social := socialHelper.NewSocial(config.Social)
-	return &Helper{HTTP: http, Uploader: uploader, PDF: pdf, SQL: sql, Token: token, Email: email, Social: social}
+	search := elasticSearchHelper.NewElasticSearchHelper(config.ElasticSearch.ElasticSearchOn)
+	return &Helper{HTTP: http, Uploader: uploader, PDF: pdf, SQL: sql, Token: token, Email: email, Social: social, Search: search}
 }

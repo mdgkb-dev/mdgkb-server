@@ -22,8 +22,9 @@ type Config struct {
 
 	TokenSecret string `mapstructure:"TOKEN_SECRET"`
 
-	Email  Email  `mapstructure:",squash"`
-	Social Social `mapstructure:",squash"`
+	Email         Email         `mapstructure:",squash"`
+	Social        Social        `mapstructure:",squash"`
+	ElasticSearch ElasticSearch `mapstructure:",squash"`
 }
 
 type Email struct {
@@ -40,6 +41,11 @@ type Social struct {
 
 	YouTubeApiKey    string `mapstructure:"YOUTUBE_API_KEY"`
 	YouTubeChannelID string `mapstructure:"YOUTUBE_CHANNEL_ID"`
+}
+
+type ElasticSearch struct {
+	ElasticSearchURL string `mapstructure:"ELASTIC_SEARCH_URL"`
+	ElasticSearchOn  bool   `mapstructure:"ELASTIC_SEARCH_ON"`
 }
 
 func LoadConfig() (config *Config, err error) {
