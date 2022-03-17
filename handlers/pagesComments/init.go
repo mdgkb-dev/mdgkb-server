@@ -2,6 +2,7 @@ package pagesComments
 
 import (
 	"context"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -26,22 +27,24 @@ type Handler struct {
 
 type Service struct {
 	repository IRepository
+	helper     *helper.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	db     *bun.DB
+	ctx    context.Context
+	helper *helper.Helper
 }
 
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
+func CreateService(db *bun.DB, h *helper.Helper) *Service {
+	repo := NewRepository(db, h)
+	return NewService(repo, h)
 }
 
-func NewService(repository IRepository) *Service {
-	return &Service{repository: repository}
+func NewService(repository IRepository, h *helper.Helper) *Service {
+	return &Service{repository: repository, helper: h}
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(db *bun.DB, h *helper.Helper) *Repository {
+	return &Repository{db: db, ctx: context.Background(), helper: h}
 }

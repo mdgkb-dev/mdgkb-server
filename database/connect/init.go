@@ -15,7 +15,7 @@ import (
 	"github.com/pro-assistance/pro-assister/config"
 )
 
-func InitDB(conf *config.DB) *bun.DB {
+func InitDB(conf config.DB) *bun.DB {
 	dsn := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable", conf.DB, conf.User, conf.Password, conf.Host, conf.Port, conf.Name)
 	conn := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(conn, sqlitedialect.New())

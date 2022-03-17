@@ -37,7 +37,7 @@ func main() {
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 
-	db := connect.InitDB(&conf.DB)
+	db := connect.InitDB(conf.DB)
 	defer db.Close()
 	redis := connect.InitRedis(conf)
 	elasticSearch := connect.InitElasticSearch(conf)

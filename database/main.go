@@ -60,5 +60,5 @@ func getDb() *bun.DB {
 		log.Fatal("cannot load config:", err)
 	}
 
-	return connect.InitDB(conf)
+	return connect.InitDB(conf.DB)
 }

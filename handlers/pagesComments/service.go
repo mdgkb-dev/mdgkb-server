@@ -9,7 +9,7 @@ func (s *Service) CreateMany(items models.PageComments) error {
 	if len(items) == 0 {
 		return nil
 	}
-	commentsService := comments.CreateService(s.repository.getDB())
+	commentsService := comments.CreateService(s.repository.getDB(), s.helper)
 	err := commentsService.UpsertMany(items.GetComments())
 	if err != nil {
 		return err
@@ -27,7 +27,7 @@ func (s *Service) UpsertMany(items models.PageComments) error {
 	if len(items) == 0 {
 		return nil
 	}
-	commentsService := comments.CreateService(s.repository.getDB())
+	commentsService := comments.CreateService(s.repository.getDB(), s.helper)
 	err := commentsService.UpsertMany(items.GetComments())
 	if err != nil {
 		return err
