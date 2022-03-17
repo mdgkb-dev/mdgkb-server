@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"log"
-	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/database/connect"
+	"mdgkb/mdgkb-server/helpers/config"
 	"mdgkb/mdgkb-server/routing"
 	"net/http"
 

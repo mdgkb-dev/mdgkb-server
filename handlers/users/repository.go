@@ -87,3 +87,21 @@ func (r *Repository) removeFromUser(values map[string]interface{}, table string)
 	_, err := q.Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) dropUUID(item *models.User) (err error) {
+	_, err = r.db.NewUpdate().
+		Model(item).
+		Set("uuid = uuid_generate_v4()").
+		Where("id = ?", item.ID).
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) updatePassword(item *models.User) (err error) {
+	_, err = r.db.NewUpdate().
+		Model(item).
+		Set("password = ?", item.Password).
+		Where("id = ?", item.ID).
+		Exec(r.ctx)
+	return err
+}

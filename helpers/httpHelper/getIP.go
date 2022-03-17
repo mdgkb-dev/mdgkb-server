@@ -11,7 +11,7 @@ import (
 
 // GetClientIPHelper gets the client IP using a mixture of techniques.
 // This is how it is with golang at the moment.
-func GetClientIPHelper(req *http.Request) (ipResult string, errResult error) {
+func (i *HTTPHelper) GetClientIPHelper(req *http.Request) (ipResult string, errResult error) {
 
 	// Try lots of ways :) Order is important.
 
@@ -91,9 +91,7 @@ func getClientIPByHeaders(req *http.Request) (ip string, err error) {
 
 }
 
-// getMyInterfaceAddr gets this private network IP. Basically the Servers IP.
-func getMyInterfaceAddr() (net.IP, error) {
-
+func (i *HTTPHelper) GetMyIP() (net.IP, error) {
 	ifaces, err := net.Interfaces()
 	if err != nil {
 		return nil, err

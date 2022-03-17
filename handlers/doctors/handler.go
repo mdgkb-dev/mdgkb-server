@@ -1,7 +1,6 @@
 package doctors
 
 import (
-	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -15,7 +14,7 @@ type doctorsParams struct {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Doctor
-	files, err := httpHelper.GetForm(c, &item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

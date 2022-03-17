@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
-	"mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/helpers/config"
 	"path"
 	"path/filepath"
 	"strings"

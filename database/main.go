@@ -5,10 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/database/connect"
 	"mdgkb/mdgkb-server/database/migrations"
 	"mdgkb/mdgkb-server/database/seeding"
+	"mdgkb/mdgkb-server/helpers/config"
 
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/migrate"

@@ -1,7 +1,6 @@
 package children
 
 import (
-	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -10,12 +9,12 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Child
-	_, err := httpHelper.GetForm(c, &item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	_, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.Create(&item)
-	if httpHelper.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)

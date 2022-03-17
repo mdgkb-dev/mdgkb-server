@@ -1,7 +1,6 @@
 package news
 
 import (
-	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 	"time"
@@ -11,7 +10,7 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.News
-	files, err := httpHelper.GetForm(c, &item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -132,7 +131,7 @@ func (h *Handler) GetAllRelationsNews(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.News
-	files, err := httpHelper.GetForm(c, &item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -202,7 +201,7 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 		return
 	}
 	item.ViewsCount = len(item.NewsViews)
-	ip, err := httpHelper.GetClientIPHelper(c.Request)
+	ip, err := h.helper.HTTP.GetClientIPHelper(c.Request)
 	newsView := models.NewsView{IPAddress: ip, NewsID: item.ID}
 	err = h.service.CreateViewOfNews(&newsView)
 

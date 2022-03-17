@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"encoding/base64"
 	"fmt"
-	"mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/helpers/config"
 	"net"
 	"net/smtp"
 	"strings"

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/helpers/config"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 )

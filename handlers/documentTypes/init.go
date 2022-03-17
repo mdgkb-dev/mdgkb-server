@@ -2,6 +2,7 @@ package documentTypes
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -44,37 +45,40 @@ type IRepository interface {
 
 type Handler struct {
 	service IService
+	helper  *helpers.Helper
 }
 
 type Service struct {
 	repository IRepository
+	helper     *helpers.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	db     *bun.DB
+	ctx    context.Context
+	helper *helpers.Helper
 }
 
-func CreateHandler(db *bun.DB) *Handler {
-	repo := NewRepository(db)
-	service := NewService(repo)
-	return NewHandler(service)
+func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
+	repo := NewRepository(db, helper)
+	service := NewService(repo, helper)
+	return NewHandler(service, helper)
 }
 
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
+func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor
-func NewHandler(s IService) *Handler {
-	return &Handler{service: s}
+func NewHandler(s IService, helper *helpers.Helper) *Handler {
+	return &Handler{service: s, helper: helper}
 }
 
-func NewService(repository IRepository) *Service {
-	return &Service{repository: repository}
+func NewService(repository IRepository, helper *helpers.Helper) *Service {
+	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
+	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }

@@ -1,7 +1,6 @@
 package paidPrograms
 
 import (
-	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,9 +8,8 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-
 func (h *Handler) Get(c *gin.Context) {
-	item, err := h.service.Get(httpHelper.GetID(c))
+	item, err := h.service.Get(c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

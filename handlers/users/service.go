@@ -131,3 +131,11 @@ func (s *Service) RemoveFromUser(values map[string]interface{}, table string) er
 	}
 	return nil
 }
+
+func (s *Service) DropUUID(item *models.User) error {
+	return s.repository.dropUUID(item)
+}
+
+func (s *Service) UpdatePassword(item *models.User) error {
+	return s.repository.updatePassword(item)
+}

@@ -12,11 +12,11 @@ import (
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/pgdriver"
 
-	"mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/helpers/config"
 )
 
 func InitDB(conf *config.Config) *bun.DB {
-	dsn := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable", conf.DbDb, conf.DbUser, conf.DbPassword, conf.DbHost, conf.DbPort, conf.DbName)
+	dsn := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable", conf.DB.DB, conf.DB.DB, conf.DB.Password, conf.DB.Host, conf.DB.Port, conf.DB.Name)
 	conn := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(conn, sqlitedialect.New())
 	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose()))

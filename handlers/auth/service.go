@@ -46,3 +46,27 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 
 	return &models.TokensWithUser{Tokens: ts, User: *findedUser}, nil
 }
+
+func (s *Service) FindUserByEmail(email string) (*models.User, error) {
+	findedUser, err := users.CreateService(s.repository.getDB(), s.helper).GetByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+	return findedUser, nil
+}
+
+func (s *Service) GetUserByID(id string) (*models.User, error) {
+	return users.CreateService(s.repository.getDB(), s.helper).Get(id)
+}
+
+func (s *Service) DropUUID(item *models.User) error {
+	return users.CreateService(s.repository.getDB(), s.helper).DropUUID(item)
+}
+
+func (s *Service) UpdatePassword(item *models.User) error {
+	err := item.GenerateHashPassword()
+	if err != nil {
+		return err
+	}
+	return users.CreateService(s.repository.getDB(), s.helper).UpdatePassword(item)
+}

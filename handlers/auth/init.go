@@ -20,6 +20,10 @@ type IHandler interface {
 type IService interface {
 	Register(user *models.User) (*models.TokensWithUser, error)
 	Login(user *models.User) (*models.TokensWithUser, error)
+	FindUserByEmail(email string) (*models.User, error)
+	GetUserByID(id string) (*models.User, error)
+	DropUUID(*models.User) error
+	UpdatePassword(*models.User) error
 }
 
 type IRepository interface {

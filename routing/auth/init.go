@@ -14,7 +14,7 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.POST("/refresh-token", h.RefreshToken)
 	r.GET("/refresh-password", h.RefreshPassword)
 	r.POST("/logout", h.Logout)
-	r.GET("/restore", h.RestorePassword)
+	r.POST("/restore", h.RestorePassword)
 	//r.POST("/check-email", handler.CheckEmail)
 	//r.GET("/logout", handler.Logout)
 }

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"log"
-	"mdgkb/mdgkb-server/config"
+	"mdgkb/mdgkb-server/helpers/config"
 	"mdgkb/mdgkb-server/helpers/templater"
 )
 

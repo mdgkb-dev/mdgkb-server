@@ -29,6 +29,8 @@ type IService interface {
 	Upsert(*models.User) error
 	RemoveFromUser(map[string]interface{}, string) error
 	UpsertEmail(*models.User) error
+	DropUUID(*models.User) error
+	UpdatePassword(*models.User) error
 }
 
 type IRepository interface {
@@ -44,6 +46,8 @@ type IRepository interface {
 
 	addToUser(map[string]interface{}, string) error
 	removeFromUser(map[string]interface{}, string) error
+	dropUUID(*models.User) error
+	updatePassword(*models.User) error
 }
 
 type IFilesService interface {

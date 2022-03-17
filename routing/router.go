@@ -2,7 +2,6 @@ package routing
 
 import (
 	"github.com/elastic/go-elasticsearch/v8"
-	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -50,6 +49,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/helpers"
+	"mdgkb/mdgkb-server/helpers/config"
 	"mdgkb/mdgkb-server/middleware"
 	applicationsCarsRouter "mdgkb/mdgkb-server/routing/applicationsCars"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
@@ -146,8 +146,8 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(db, helper))
 	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, helper))
 	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(db, helper))
-	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db))
-	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db))
+	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db, helper))
+	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db, helper))
 	searchRouter.Init(api.Group("/search"), search.CreateHandler(db, helper, elasticSearchClient))
 	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(db, helper))
 	visitingRulesRouter.Init(api.Group("/visiting-rules"), visitingRules.CreateHandler(db, helper))

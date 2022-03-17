@@ -27,7 +27,7 @@ func (s *Service) Create(item *models.PublicDocumentType) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = documentTypes.CreateService(s.repository.getDB()).UpsertMany(item.DocumentTypes)
+	err = documentTypes.CreateService(s.repository.getDB(), s.helper).UpsertMany(item.DocumentTypes)
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func (s *Service) Update(item *models.PublicDocumentType) error {
 		return err
 	}
 	item.SetIdForChildren()
-	documentTypeService := documentTypes.CreateService(s.repository.getDB())
+	documentTypeService := documentTypes.CreateService(s.repository.getDB(), s.helper)
 	err = documentTypeService.DeleteMany(item.DocumentTypesForDelete)
 	if err != nil {
 		return err

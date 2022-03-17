@@ -1,10 +1,10 @@
 package helpers
 
 import (
-	configPack "mdgkb/mdgkb-server/config"
+	configPack "mdgkb/mdgkb-server/helpers/config"
 	"mdgkb/mdgkb-server/helpers/elasticSearchHelper"
 	"mdgkb/mdgkb-server/helpers/emailHelper"
-	httpHelper "mdgkb/mdgkb-server/helpers/httpHelperV2"
+	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"mdgkb/mdgkb-server/helpers/pdfHelper"
 	"mdgkb/mdgkb-server/helpers/socialHelper"
 	"mdgkb/mdgkb-server/helpers/sqlHelper"

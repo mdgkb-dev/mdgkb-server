@@ -1,7 +1,6 @@
 package paidProgramsGroups
 
 import (
-	"mdgkb/mdgkb-server/helpers/httpHelper"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +33,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	item, err := h.service.Get(httpHelper.GetID(c))
+	item, err := h.service.Get(c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -42,7 +41,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Delete(c *gin.Context) {
-	err := h.service.Delete(httpHelper.GetID(c))
+	err := h.service.Delete(c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
