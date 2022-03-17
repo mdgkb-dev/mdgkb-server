@@ -1,7 +1,7 @@
 package models
 
 import (
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
+	"github.com/pro-assistance/pro-assister/uploadHelper"
 
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"

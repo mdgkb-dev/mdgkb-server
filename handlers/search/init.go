@@ -3,7 +3,7 @@ package search
 import (
 	"context"
 	"github.com/elastic/go-elasticsearch/v8"
-	"mdgkb/mdgkb-server/helpers"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -39,26 +39,26 @@ type IFilesService interface {
 type Handler struct {
 	service      IService
 	filesService IFilesService
-	helper       *helpers.Helper
+	helper       *helper.Helper
 }
 
 type Service struct {
 	repository IRepository
-	helper     *helpers.Helper
+	helper     *helper.Helper
 }
 
 type Repository struct {
 	db            *bun.DB
 	ctx           context.Context
-	helper        *helpers.Helper
+	helper        *helper.Helper
 	elasticsearch *elasticsearch.Client
 }
 
 type FilesService struct {
-	helper *helpers.Helper
+	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helpers.Helper, elasticSearchClient *elasticsearch.Client) *Handler {
+func CreateHandler(db *bun.DB, helper *helper.Helper, elasticSearchClient *elasticsearch.Client) *Handler {
 	repo := NewRepository(db, helper, elasticSearchClient)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
@@ -66,18 +66,18 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper, elasticSearchClient *elas
 }
 
 // NewHandler constructor
-func NewHandler(s IService, filesService IFilesService, helper *helpers.Helper) *Handler {
+func NewHandler(s IService, filesService IFilesService, helper *helper.Helper) *Handler {
 	return &Handler{service: s, filesService: filesService, helper: helper}
 }
 
-func NewService(repository IRepository, helper *helpers.Helper) *Service {
+func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helpers.Helper, elasticSearchClient *elasticsearch.Client) *Repository {
+func NewRepository(db *bun.DB, helper *helper.Helper, elasticSearchClient *elasticsearch.Client) *Repository {
 	return &Repository{db: db, ctx: context.Background(), helper: helper, elasticsearch: elasticSearchClient}
 }
 
-func NewFilesService(helper *helpers.Helper) *FilesService {
+func NewFilesService(helper *helper.Helper) *FilesService {
 	return &FilesService{helper: helper}
 }

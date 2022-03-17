@@ -2,7 +2,7 @@ package buildings
 
 import (
 	"fmt"
-	"mdgkb/mdgkb-server/helpers"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -20,11 +20,11 @@ type Handler interface {
 
 type AHandler struct {
 	repository Repository
-	uploader   helpers.Uploader
+	uploader   helper.Uploader
 }
 
 // NewHandler constructor
-func NewHandler(repository Repository, uploader helpers.Uploader) *AHandler {
+func NewHandler(repository Repository, uploader helper.Uploader) *AHandler {
 	return &AHandler{
 		uploader:   uploader,
 		repository: repository,

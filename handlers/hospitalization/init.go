@@ -2,7 +2,7 @@ package hospitalization
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/helpers"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -25,32 +25,32 @@ type IRepository interface {
 
 type Handler struct {
 	service IService
-	helper  *helpers.Helper
+	helper  *helper.Helper
 }
 type Service struct {
 	repository IRepository
-	helper     *helpers.Helper
+	helper     *helper.Helper
 }
 type Repository struct {
 	db     *bun.DB
 	ctx    context.Context
-	helper *helpers.Helper
+	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
+func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
 	repo := NewRepository(db, helper)
 	service := NewService(repo, helper)
 	return NewHandler(service, helper)
 }
 
-func NewHandler(service IService, helper *helpers.Helper) *Handler {
+func NewHandler(service IService, helper *helper.Helper) *Handler {
 	return &Handler{service: service, helper: helper}
 }
 
-func NewService(repository IRepository, helper *helpers.Helper) *Service {
+func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
+func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
 	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }

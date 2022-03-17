@@ -2,14 +2,14 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"mdgkb/mdgkb-server/helpers"
+	"github.com/pro-assistance/pro-assister/helper"
 )
 
 type Middleware struct {
-	helper *helpers.Helper
+	helper *helper.Helper
 }
 
-func CreateMiddleware(helper *helpers.Helper) *Middleware {
+func CreateMiddleware(helper *helper.Helper) *Middleware {
 	return &Middleware{helper: helper}
 }
 

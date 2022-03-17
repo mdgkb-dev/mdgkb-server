@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
+	"github.com/pro-assistance/pro-assister/uploadHelper"
 )
 
 type NewsImage struct {

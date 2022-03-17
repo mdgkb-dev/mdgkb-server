@@ -1,7 +1,7 @@
 package models
 
 import (
-	"mdgkb/mdgkb-server/helpers/tokenHelper"
+	"github.com/pro-assistance/pro-assister/tokenHelper"
 )
 
 type TokensWithUser struct {

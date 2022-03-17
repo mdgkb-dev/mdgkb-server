@@ -1,8 +1,8 @@
 package tags
 
 import (
+	"github.com/pro-assistance/pro-assister/helper"
 	handler "mdgkb/mdgkb-server/handlers/tags"
-	"mdgkb/mdgkb-server/helpers"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -11,7 +11,7 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
+func Init(r *gin.RouterGroup, db *bun.DB, uploader helper.Uploader) {
 	var h = handler.NewHandler(handler.NewRepository(db), uploader)
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)

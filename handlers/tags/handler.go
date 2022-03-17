@@ -1,7 +1,7 @@
 package tags
 
 import (
-	"mdgkb/mdgkb-server/helpers"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -17,11 +17,11 @@ type IHandler interface {
 
 type Handler struct {
 	repository IRepository
-	uploader   helpers.Uploader
+	uploader   helper.Uploader
 }
 
 // NewHandler constructor
-func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
+func NewHandler(repository IRepository, uploader helper.Uploader) *Handler {
 	return &Handler{
 		uploader:   uploader,
 		repository: repository,

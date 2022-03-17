@@ -2,7 +2,7 @@ package projectItems
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/helpers"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
@@ -23,25 +23,25 @@ type IRepository interface {
 
 type Service struct {
 	repository IRepository
-	helper     *helpers.Helper
+	helper     *helper.Helper
 }
 
 type Repository struct {
 	db     *bun.DB
 	ctx    context.Context
-	helper *helpers.Helper
+	helper *helper.Helper
 }
 
-func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
+func CreateService(db *bun.DB, helper *helper.Helper) *Service {
 	repo := NewRepository(db, helper)
 	return NewService(repo, helper)
 }
 
 // NewHandler constructor
-func NewService(repository IRepository, helper *helpers.Helper) *Service {
+func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
+func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
 	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }

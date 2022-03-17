@@ -12,17 +12,17 @@ import (
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/pgdriver"
 
-	"mdgkb/mdgkb-server/helpers/config"
+	"github.com/pro-assistance/pro-assister/config"
 )
 
-func InitDB(conf *config.Config) *bun.DB {
-	dsn := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable", conf.DB.DB, conf.DB.DB, conf.DB.Password, conf.DB.Host, conf.DB.Port, conf.DB.Name)
+func InitDB(conf *config.DB) *bun.DB {
+	dsn := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable", conf.DB, conf.User, conf.Password, conf.Host, conf.Port, conf.Name)
 	conn := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(conn, sqlitedialect.New())
 	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose()))
 	_, _ = db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
 
-	recognizeModels(db)
+	//recognizeModels(db)
 	return db
 }
 

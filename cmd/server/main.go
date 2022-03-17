@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/gin-gonic/gin"
 
+	"github.com/pro-assistance/pro-assister/config"
 	"log"
 	"mdgkb/mdgkb-server/database/connect"
-	"mdgkb/mdgkb-server/helpers/config"
 	"mdgkb/mdgkb-server/routing"
 	"net/http"
 
@@ -35,11 +34,10 @@ func main() {
 	if err != nil {
 		log.Fatal("cannot load config:", err)
 	}
-
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 
-	db := connect.InitDB(conf)
+	db := connect.InitDB(&conf.DB)
 	defer db.Close()
 	redis := connect.InitRedis(conf)
 	elasticSearch := connect.InitElasticSearch(conf)

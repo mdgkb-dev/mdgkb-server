@@ -2,7 +2,7 @@ package human
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/helpers"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -27,29 +27,29 @@ type IRepository interface {
 
 type Handler struct {
 	service IService
-	helper  *helpers.Helper
+	helper  *helper.Helper
 }
 
 type Service struct {
 	repository IRepository
-	helper     *helpers.Helper
+	helper     *helper.Helper
 }
 
 type Repository struct {
 	db     *bun.DB
 	ctx    context.Context
-	helper *helpers.Helper
+	helper *helper.Helper
 }
 
-func CreateService(db *bun.DB, helper *helpers.Helper) *Service {
+func CreateService(db *bun.DB, helper *helper.Helper) *Service {
 	repo := NewRepository(db, helper)
 	return NewService(repo, helper)
 }
 
-func NewService(repository IRepository, helper *helpers.Helper) *Service {
+func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
+func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
 	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }

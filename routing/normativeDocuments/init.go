@@ -1,14 +1,14 @@
 package normativeDocuments
 
 import (
+	"github.com/pro-assistance/pro-assister/helper"
 	handler "mdgkb/mdgkb-server/handlers/normativeDocuments"
-	"mdgkb/mdgkb-server/helpers"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
-func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
+func Init(r *gin.RouterGroup, db *bun.DB, uploader helper.Uploader) {
 	var h = handler.NewHandler(handler.NewRepository(db), uploader)
 	r.POST("", h.Create)
 	r.GET("/", h.GetAll)

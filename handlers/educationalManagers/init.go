@@ -2,8 +2,8 @@ package educationalManagers
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/helpers"
-	"mdgkb/mdgkb-server/helpers/sqlHelper"
+	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -45,26 +45,26 @@ type IFilesService interface {
 type Handler struct {
 	service      IService
 	filesService IFilesService
-	helper       *helpers.Helper
+	helper       *helper.Helper
 }
 
 type Service struct {
 	repository IRepository
-	helper     *helpers.Helper
+	helper     *helper.Helper
 }
 
 type Repository struct {
 	db          *bun.DB
 	ctx         context.Context
-	helper      *helpers.Helper
+	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
-	helper *helpers.Helper
+	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
+func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
 	repo := NewRepository(db, helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
@@ -72,18 +72,18 @@ func CreateHandler(db *bun.DB, helper *helpers.Helper) *Handler {
 }
 
 // NewHandler constructor
-func NewHandler(s IService, filesService IFilesService, helper *helpers.Helper) *Handler {
+func NewHandler(s IService, filesService IFilesService, helper *helper.Helper) *Handler {
 	return &Handler{service: s, filesService: filesService, helper: helper}
 }
 
-func NewService(repository IRepository, helper *helpers.Helper) *Service {
+func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helpers.Helper) *Repository {
+func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
 	return &Repository{db: db, ctx: context.Background(), helper: helper}
 }
 
-func NewFilesService(helper *helpers.Helper) *FilesService {
+func NewFilesService(helper *helper.Helper) *FilesService {
 	return &FilesService{helper: helper}
 }

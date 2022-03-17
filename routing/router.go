@@ -2,6 +2,7 @@ package routing
 
 import (
 	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/pro-assistance/pro-assister/config"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -48,8 +49,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/vacancyResponse"
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/handlers/visitingRules"
-	"mdgkb/mdgkb-server/helpers"
-	"mdgkb/mdgkb-server/helpers/config"
 	"mdgkb/mdgkb-server/middleware"
 	applicationsCarsRouter "mdgkb/mdgkb-server/routing/applicationsCars"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
@@ -109,11 +108,13 @@ import (
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/go-redis/redis/v7"
 	"github.com/uptrace/bun"
+
+	helperPack "github.com/pro-assistance/pro-assister/helper"
 )
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, config config.Config) {
-	localUploader := helpers.NewLocalUploader(&config.UploadPath)
-	helper := helpers.NewHelper(config)
+	localUploader := helperPack.NewLocalUploader(&config.UploadPath)
+	helper := helperPack.NewHelper(config)
 
 	r.Static("/static", "./static/")
 	authGroup := r.Group("/api/v1/auth")

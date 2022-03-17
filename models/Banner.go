@@ -3,7 +3,7 @@ package models
 import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
+	"github.com/pro-assistance/pro-assister/uploadHelper"
 )
 
 type Banner struct {

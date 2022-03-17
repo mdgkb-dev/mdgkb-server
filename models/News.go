@@ -1,8 +1,8 @@
 package models
 
 import (
+	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/helpers/uploadHelper"
 	"time"
 
 	"github.com/google/uuid"
