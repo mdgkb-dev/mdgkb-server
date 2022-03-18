@@ -3,8 +3,8 @@ package auth
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -15,6 +15,7 @@ type IHandler interface {
 	RefreshToken(c *gin.Context)
 	RefreshPassword(c *gin.Context)
 	RestorePassword(c *gin.Context)
+	CheckUUID(c *gin.Context)
 }
 
 type IService interface {

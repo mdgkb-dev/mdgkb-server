@@ -97,8 +97,8 @@ func (h *Handler) RestorePassword(c *gin.Context) {
 	c.JSON(http.StatusOK, err)
 }
 
-func (h *Handler) checkUUID(c *gin.Context) {
-	findedUser, err := h.service.GetUserByID(c.Param("id"))
+func (h *Handler) CheckUUID(c *gin.Context) {
+	findedUser, err := h.service.GetUserByID(c.Param("user-id"))
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

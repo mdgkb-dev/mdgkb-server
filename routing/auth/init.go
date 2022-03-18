@@ -12,9 +12,9 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.POST("/login", h.Login)
 	r.POST("/register", h.Register)
 	r.POST("/refresh-token", h.RefreshToken)
-	r.GET("/refresh-password", h.RefreshPassword)
 	r.POST("/logout", h.Logout)
-	r.POST("/restore", h.RestorePassword)
-	//r.POST("/check-email", handler.CheckEmail)
+	r.POST("/restore-password", h.RestorePassword)
+	r.PUT("/refresh-password", h.RefreshPassword)
+	r.GET("/check-uuid/:user-id/:uuid", h.CheckUUID)
 	//r.GET("/logout", handler.Logout)
 }
