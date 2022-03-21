@@ -1,5 +1,4 @@
-CREATE TABLE dpo_courses
-(
+CREATE TABLE dpo_courses (
     id uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
     name varchar,
     description varchar,
@@ -8,5 +7,6 @@ CREATE TABLE dpo_courses
     cost int,
     dpo_course_order int default 0,
     listeners int default 0,
-    hours int default 0
+    hours int default 0,
+    form_pattern_id uuid references form_patterns on update cascade on delete cascade
 );

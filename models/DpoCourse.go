@@ -22,6 +22,8 @@ type DpoCourse struct {
 	DpoCoursesTeachersForDelete        []uuid.UUID               `bun:"-" json:"dpoCoursesForDelete"`
 	DpoCoursesDates                    DpoCoursesDates           `bun:"rel:has-many" json:"dpoCoursesDates"`
 	DpoCoursesDatesForDelete           []uuid.UUID               `bun:"-" json:"dpoCoursesDatesForDelete"`
+	FormPattern                        *FormPattern              `bun:"rel:belongs-to" json:"formPattern"`
+	FormPatternID                      uuid.NullUUID             `bun:"type:uuid" json:"formPatternId"`
 }
 
 type DpoCourses []*DpoCourse
@@ -36,4 +38,12 @@ func (item *DpoCourse) SetIdForChildren() {
 	for i := range item.DpoCoursesDates {
 		item.DpoCoursesDates[i].DpoCourseID = item.ID
 	}
+}
+
+func (item *DpoCourse) SetForeignKeys() {
+	item.FormPatternID = item.FormPattern.ID
+}
+
+func (item *DpoCourse) SetFilePath(fileID *string) *string {
+	return item.FormPattern.SetFilePath(fileID)
 }

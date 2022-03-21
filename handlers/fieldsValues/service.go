@@ -1,6 +1,7 @@
 package fieldsValues
 
 import (
+	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -22,7 +23,12 @@ func (s *Service) UpsertMany(items models.FieldValues) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.GetFileInfos())
+	if err != nil {
+		return err
+	}
+	items.SetForeignKeys()
+	err = s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}

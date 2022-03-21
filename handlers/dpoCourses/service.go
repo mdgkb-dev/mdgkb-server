@@ -1,11 +1,12 @@
 package dpoCourses
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/dpoCourseDates"
 	"mdgkb/mdgkb-server/handlers/dpoCourseSpecializations"
 	"mdgkb/mdgkb-server/handlers/dpoCourseTeachers"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) GetAll() (models.DpoCourses, error) {
@@ -21,6 +22,7 @@ func (s *Service) Get(id *string) (*models.DpoCourse, error) {
 }
 
 func (s *Service) Create(item *models.DpoCourse) error {
+	item.SetForeignKeys()
 	err := s.repository.create(item)
 	if err != nil {
 		return err
@@ -42,6 +44,7 @@ func (s *Service) Create(item *models.DpoCourse) error {
 }
 
 func (s *Service) Update(item *models.DpoCourse) error {
+	item.SetForeignKeys()
 	err := s.repository.update(item)
 	if err != nil {
 		return err

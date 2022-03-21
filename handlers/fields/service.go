@@ -1,10 +1,12 @@
 package fields
 
 import (
+	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.Field) error {
+	item.SetForeignKeys()
 	if item == nil {
 		return nil
 	}
@@ -12,6 +14,7 @@ func (s *Service) Create(item *models.Field) error {
 }
 
 func (s *Service) Update(item *models.Field) error {
+	item.SetForeignKeys()
 	if item == nil {
 		return nil
 	}
@@ -22,7 +25,15 @@ func (s *Service) UpsertMany(items models.Fields) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.GetFileInfos())
+	if err != nil {
+		return err
+	}
+	items.SetForeignKeys()
+	if len(items) == 0 {
+		return nil
+	}
+	err = s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}
@@ -30,6 +41,7 @@ func (s *Service) UpsertMany(items models.Fields) error {
 }
 
 func (s *Service) Upsert(item *models.Field) error {
+	item.SetForeignKeys()
 	if item == nil {
 		return nil
 	}

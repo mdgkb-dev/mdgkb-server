@@ -1,8 +1,7 @@
 package doctors
 
 import (
-	"github.com/gin-gonic/gin"
-	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
+	certificates "mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/doctorPaidServices"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
@@ -11,6 +10,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Doctor) error {
