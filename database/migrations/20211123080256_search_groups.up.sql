@@ -8,5 +8,6 @@ CREATE TABLE search_groups
     search_column varchar,
     label varchar,
     label_column varchar,
-    value_column varchar
+    value_column varchar,
+    description_column varchar
 );

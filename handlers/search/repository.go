@@ -1,13 +1,12 @@
 package search
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"mdgkb/mdgkb-server/models"
-	"os"
-	"path/filepath"
-
+	"github.com/elastic/go-elasticsearch/v8/esutil"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -16,7 +15,9 @@ func (r *Repository) getDB() *bun.DB {
 
 func (r *Repository) getGroups(groupID string) (models.SearchGroups, error) {
 	items := make(models.SearchGroups, 0)
-	query := r.db.NewSelect().Model(&items).Order("search_group_order")
+	query := r.db.NewSelect().Model(&items).
+		Relation("SearchGroupMetaColumns").
+		Order("search_group_order")
 
 	if groupID != "" {
 		query = query.Where("id = ?", groupID)
@@ -39,32 +40,54 @@ func (r *Repository) search(searchGroup *models.SearchGroup, search string) erro
 }
 
 func (r *Repository) elasticSearch(model *models.SearchModel) error {
+	var data map[string]interface{}
+	query, indexes := model.BuildQuery()
+	res, err := r.elasticsearch.Search(
+		r.elasticsearch.Search.WithIndex(indexes...),
+		r.elasticsearch.Search.WithBody(esutil.NewJSONReader(&query)),
+		r.elasticsearch.Search.WithPretty(),
+	)
+	defer res.Body.Close()
+	if err != nil {
+		return err
+	}
+	err = json.NewDecoder(res.Body).Decode(&data)
+	if err != nil {
+		return err
+	}
+	model.ParseMap(data)
+	return nil
+}
+
+func (r *Repository) elasticSuggester(model *models.SearchModel) error {
 	var re map[string]interface{}
-	if r.helper.Search.On {
-		res, err := r.elasticsearch.Search(
-			r.elasticsearch.Search.WithIndex("divisions"),
-			r.elasticsearch.Search.WithPretty(),
-		)
-		defer res.Body.Close()
-		err = json.NewDecoder(res.Body).Decode(&re)
-		if err != nil {
-			return err
-		}
-	} else {
-		path, err := os.Getwd()
-		if err != nil {
-			return err
-		}
-		path = filepath.Join(path, "dummy")
-		file, err := os.Open(path)
-		if err != nil {
-			return err
-		}
-		defer file.Close()
-		err = json.NewDecoder(file).Decode(&re)
-		if err != nil {
-			return err
-		}
+	//indexes := []string{}
+	//if model.SearchGroup != nil {
+	//	indexes = append(indexes, model.SearchGroup.Table)
+	//}
+	should := make([]interface{}, 0)
+	should = append(should, map[string]interface{}{
+		"prefix": map[string]interface{}{
+			"name": map[string]interface{}{
+				"value": model.Query,
+			},
+		},
+	})
+	var buf bytes.Buffer
+	query := map[string]interface{}{
+		"query": should[0],
+	}
+	_ = json.NewEncoder(&buf).Encode(query)
+	res, err := r.elasticsearch.Search(
+		//r.elasticsearch.Search.WithIndex(indexes...),
+		r.elasticsearch.Search.WithBody(&buf),
+		//r.elasticsearch.Get.
+		r.elasticsearch.Search.WithPretty(),
+	)
+	defer res.Body.Close()
+	err = json.NewDecoder(res.Body).Decode(&re)
+	if err != nil {
+		return err
 	}
 	model.ParseMap(re)
 	return nil

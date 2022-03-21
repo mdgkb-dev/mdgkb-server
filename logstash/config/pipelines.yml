@@ -1,2 +1,4 @@
-- pipeline.id: sync-posts-pipeline
+- pipeline.id: divisions
   path.config: "/usr/share/logstash/pipeline/sync-news.conf"
+- pipeline.id: positions
+  path.config: "/usr/share/logstash/pipeline/positions.conf"

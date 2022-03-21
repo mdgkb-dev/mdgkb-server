@@ -22,7 +22,7 @@ type IService interface {
 	SearchMain(*models.SearchModel) error
 	SearchObjects(*models.SearchModel) error
 	SearchGroups() (models.SearchGroups, error)
-	ElasticSearch(*models.SearchModel) error
+	Search(*models.SearchModel) error
 }
 
 type IRepository interface {
@@ -30,6 +30,7 @@ type IRepository interface {
 	getGroups(string) (models.SearchGroups, error)
 	search(*models.SearchGroup, string) error
 	elasticSearch(*models.SearchModel) error
+	elasticSuggester(*models.SearchModel) error
 }
 
 type IFilesService interface {

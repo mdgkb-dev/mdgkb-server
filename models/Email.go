@@ -10,6 +10,7 @@ type Email struct {
 	Description   string       `json:"description"`
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoId uuid.UUID    `bun:"type:uuid"`
+	Main          bool         `json:"main"`
 }
 
 type Emails []*Email

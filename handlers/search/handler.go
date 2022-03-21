@@ -23,7 +23,7 @@ func (h *Handler) ElasticSearch(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.service.ElasticSearch(&item)
+	err = h.service.Search(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
