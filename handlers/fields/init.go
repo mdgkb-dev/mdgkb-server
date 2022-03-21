@@ -3,7 +3,7 @@ package fields
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
-	"mdgkb/mdgkb-server/helpers"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
@@ -33,7 +33,7 @@ type IFilesService interface {
 type Handler struct {
 	service IService
 	filesService IFilesService
-	helper       *helpers.Helper
+	helper       *helper.Helper
 }
 
 type Service struct {
@@ -46,7 +46,7 @@ type Repository struct {
 }
 
 type FilesService struct {
-	helper *helpers.Helper
+	helper *helper.Helper
 }
 
 func CreateService(db *bun.DB) *Service {
