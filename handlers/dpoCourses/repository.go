@@ -40,6 +40,8 @@ func (r *Repository) get(id *string) (*models.DpoCourse, error) {
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
+		Relation("FormPattern.Fields.File").
+		Relation("FormPattern.Fields.ValueType").
 		Where("dpo_courses.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

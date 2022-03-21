@@ -7,7 +7,7 @@ import (
 
 type EventApplication struct {
 	bun.BaseModel `bun:"event_applications,alias:event_applications"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	Event   *Event        `bun:"rel:belongs-to" json:"event"`
 	EventID uuid.NullUUID `bun:"type:uuid" json:"eventId"`

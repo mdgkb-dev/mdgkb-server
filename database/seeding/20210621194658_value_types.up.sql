@@ -5,4 +5,5 @@ VALUES
     ('fc00cc5a-f7a5-4974-ad57-9432656d5e0e', 'radio', 'oneToMany'),
     ('47affcc5-5d32-4b1f-bf07-33382ed06cda', 'number', 'simple'),
     ('efdd456c-091b-49d9-ac32-d0d345f88e64', 'date', 'simple'),
+    ('9fa59e5f-b5f4-4dd0-821f-b9aa6eb25a10', 'file', 'simple'),
     ('6fe180c8-c40e-4d7a-8b0a-9d9e22ae9c61', 'text', 'simple');

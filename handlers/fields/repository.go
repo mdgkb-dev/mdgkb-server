@@ -26,7 +26,9 @@ func (r *Repository) upsertMany(items models.Fields) (err error) {
 		Set("name = EXCLUDED.name").
 		Set("field_order = EXCLUDED.field_order").
 		Set("form_id = EXCLUDED.form_id").
+		Set("form_pattern_id = EXCLUDED.form_pattern_id").
 		Set("value_type_id = EXCLUDED.value_type_id").
+		Set("file_id = EXCLUDED.file_id").
 		Exec(r.ctx)
 	return err
 }
@@ -37,7 +39,9 @@ func (r *Repository) upsert(item *models.Field) (err error) {
 		Set("name = EXCLUDED.name").
 		Set("field_order = EXCLUDED.field_order").
 		Set("form_id = EXCLUDED.form_id").
+		Set("form_pattern_id = EXCLUDED.form_pattern_id").
 		Set("value_type_id = EXCLUDED.value_type_id").
+		Set("file_id = EXCLUDED.file_id").
 		Exec(r.ctx)
 	return err
 }

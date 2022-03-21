@@ -17,7 +17,7 @@ type Event struct {
 	EndDate   time.Time `json:"endDate"`
 
 	Form   *Form     `bun:"rel:belongs-to" json:"form"`
-	FormID uuid.UUID `bun:"type:uuid" json:"formId"`
+	FormID uuid.NullUUID `bun:"type:uuid" json:"formId"`
 }
 
 type Events []*Event

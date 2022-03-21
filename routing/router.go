@@ -8,15 +8,15 @@ import (
 	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
 	"mdgkb/mdgkb-server/handlers/centers"
-	certificates "mdgkb/mdgkb-server/handlers/certifiactes"
+	certificates "mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/donorRules"
-	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/dpoApplications"
+	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/educationalManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganization"
 	"mdgkb/mdgkb-server/handlers/entrances"
@@ -43,6 +43,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/specializations"
 	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/handlers/timetablePatterns"
+	"mdgkb/mdgkb-server/handlers/formPatterns"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
 	"mdgkb/mdgkb-server/handlers/vacancyResponse"
@@ -64,8 +65,8 @@ import (
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
-	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
+	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalManagers"
 	educationalOraganizationRouter "mdgkb/mdgkb-server/routing/educationalOraganization"
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
@@ -97,6 +98,7 @@ import (
 	"mdgkb/mdgkb-server/routing/tags"
 	teachersRouter "mdgkb/mdgkb-server/routing/teachers"
 	timetablePatternsRouter "mdgkb/mdgkb-server/routing/timetablePatterns"
+	formPatternsRouter "mdgkb/mdgkb-server/routing/formPatterns"
 	"mdgkb/mdgkb-server/routing/timetables"
 	usersRouter "mdgkb/mdgkb-server/routing/users"
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
@@ -154,6 +156,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, config config.Co
 	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(db, helper))
 	eventsRouter.Init(api.Group("/events"), events.CreateHandler(db, helper))
 	timetablePatternsRouter.Init(api.Group("/timetable-patterns"), timetablePatterns.CreateHandler(db, helper))
+	formPatternsRouter.Init(api.Group("/form-patterns"), formPatterns.CreateHandler(db, helper))
 	paidProgramsRouter.Init(api.Group("/paid-programs"), paidPrograms.CreateHandler(db, helper))
 	paidProgramsGroupsRouter.Init(api.Group("/paid-programs-groups"), paidProgramsGroups.CreateHandler(db, helper))
 	partnerTypesRouter.Init(api.Group("/partner-types"), partnerTypes.CreateHandler(db, helper))

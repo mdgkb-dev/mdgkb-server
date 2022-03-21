@@ -1,17 +1,17 @@
-package dpoApplications
+package formPatterns
 
 import (
-	"mdgkb/mdgkb-server/handlers/fieldsValues"
+	"mdgkb/mdgkb-server/handlers/fields"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.DpoApplications, error) {
+func (s *Service) GetAll() (models.FormPatterns, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id *string) (*models.DpoApplication, error) {
+func (s *Service) Get(id *string) (*models.FormPattern, error) {
 	item, err := s.repository.get(id)
 	if err != nil {
 		return nil, err
@@ -19,22 +19,28 @@ func (s *Service) Get(id *string) (*models.DpoApplication, error) {
 	return item, nil
 }
 
-func (s *Service) Create(item *models.DpoApplication) error {
-	item.SetForeignKeys()
+func (s *Service) Create(item *models.FormPattern) error {
 	err := s.repository.create(item)
 	if err != nil {
 		return err
 	}
 	item.SetIdForChildren()
-	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
+
+	err = fields.CreateService(s.repository.getDB()).UpsertMany(item.Fields)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Update(item *models.DpoApplication) error {
+func (s *Service) Update(item *models.FormPattern) error {
 	err := s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	item.SetIdForChildren()
+
+	err = fields.CreateService(s.repository.getDB()).UpsertMany(item.Fields)
 	if err != nil {
 		return err
 	}
