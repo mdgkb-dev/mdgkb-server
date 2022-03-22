@@ -13,8 +13,6 @@ func (h *Handler) Register(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = user.GenerateHashPassword()
-
 	item, err := h.service.Register(user)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -86,7 +84,7 @@ func (h *Handler) RestorePassword(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	restoreLink, err := h.helper.HTTP.GetRestorePasswordURL(findedUser.ID.String(), findedUser.UUID.String())
+	restoreLink, err := h.helper.HTTP.GetRestorePasswordURL(findedUser.ID.String(), findedUser.UUID.UUID.String())
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

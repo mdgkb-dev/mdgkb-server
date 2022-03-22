@@ -1,4 +1,4 @@
-package dpoApplications
+package formPatterns
 
 import (
 	"github.com/gin-gonic/gin"
@@ -19,14 +19,12 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (models.DpoApplications, error) {
-	items := make(models.DpoApplications, 0)
+func (r *Repository) getAll() (models.FormPatterns, error) {
+	items := make(models.FormPatterns, 0)
 	query := r.db.NewSelect().
 		Model(&items).
-		Relation("DpoCourse").
-		Relation("FieldValues.File").
-		Relation("FieldValues.Field").
-		Relation("User.Human")
+		Relation("Fields.File").
+		Relation("Fields.ValueType")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -35,28 +33,26 @@ func (r *Repository) getAll() (models.DpoApplications, error) {
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.DpoApplication, error) {
-	item := models.DpoApplication{}
+func (r *Repository) get(id *string) (*models.FormPattern, error) {
+	item := models.FormPattern{}
 	err := r.db.NewSelect().Model(&item).
-		Relation("DpoCourse").
-		Relation("User.Human").
-		Relation("FieldValues.File").
-		Relation("FieldValues.Field").
-		Where("dpo_applications.id = ?", *id).Scan(r.ctx)
+	Relation("Fields.File").
+	Relation("Fields.ValueType").
+	Where("form_patterns.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 
-func (r *Repository) create(item *models.DpoApplication) (err error) {
+func (r *Repository) create(item *models.FormPattern) (err error) {
 	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.DpoApplication{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.db.NewDelete().Model(&models.FormPattern{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) update(item *models.DpoApplication) (err error) {
+func (r *Repository) update(item *models.FormPattern) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
