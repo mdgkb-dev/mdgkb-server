@@ -10,11 +10,13 @@ type User struct {
 	bun.BaseModel `bun:"users,alias:users"`
 	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Email         string        `json:"email"`
-	UUID          uuid.UUID     `json:"uuid"` // для восстановления пароля - обеспечивает уникальность страницы на фронте
+	UUID          uuid.NullUUID `json:"uuid"` // для восстановления пароля - обеспечивает уникальность страницы на фронте
 	Phone         string        `json:"phone"`
 	Password      string        `json:"password"`
 	Human         *Human        `bun:"rel:belongs-to" json:"human"`
 	HumanID       uuid.NullUUID `bun:"type:uuid" json:"humanId"`
+	Role          *Role         `bun:"rel:belongs-to" json:"role"`
+	RoleID        uuid.NullUUID `bun:"type:uuid" json:"roleId"`
 	Questions     Questions     `bun:"rel:has-many" json:"questions"`
 
 	Children          Children    `bun:"rel:has-many" json:"children"`
@@ -38,7 +40,7 @@ func (i *User) GenerateHashPassword() error {
 }
 
 func (i *User) CompareWithUUID(externalUUID string) bool {
-	return i.UUID.String() == externalUUID
+	return i.UUID.UUID.String() == externalUUID
 }
 
 func (i *User) CompareWithHashPassword(password *string) bool {
@@ -51,6 +53,9 @@ func (i *User) CompareWithHashPassword(password *string) bool {
 
 func (i *User) SetForeignKeys() {
 	i.HumanID = i.Human.ID
+	if i.Role != nil {
+		i.RoleID = i.Role.ID
+	}
 }
 
 func (i *User) SetIdForChildren() {
@@ -62,5 +67,4 @@ func (i *User) SetIdForChildren() {
 			i.DonorRulesUsers[index].UserID = i.ID
 		}
 	}
-
 }
