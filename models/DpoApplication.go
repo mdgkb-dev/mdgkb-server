@@ -7,7 +7,7 @@ import (
 )
 
 type DpoApplication struct {
-	bun.BaseModel `bun:"dpo_applications_view,alias:dpo_applications_view"`
+	bun.BaseModel `bun:"dpo_applications,select:dpo_applications_view,alias:dpo_applications_view"`
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	CreatedAt     time.Time     `json:"createdAt"`
 
@@ -18,6 +18,7 @@ type DpoApplication struct {
 	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
 
 	FieldValues FieldValues `bun:"rel:has-many" json:"fieldValues"`
+	IsNew       bool        `json:"isNew"`
 }
 
 type DpoApplications []*DpoApplication
