@@ -17,6 +17,7 @@ type FieldValue struct {
 	ValueString   string     `json:"valueString"`
 	ValueNumber   int        `json:"valueNumber"`
 	ValueDate     *time.Time `bun:",nullzero" json:"valueDate"`
+	ModChecked    bool       `json:"modChecked"`
 
 	Field   *Field    `bun:"rel:belongs-to" json:"field"`
 	FieldID uuid.UUID `bun:"type:uuid" json:"fieldId"`

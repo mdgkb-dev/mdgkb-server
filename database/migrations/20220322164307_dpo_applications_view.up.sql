@@ -1,4 +1,4 @@
-drop view dpo_applications_view;
+-- drop view dpo_applications_view;
 
 create or replace view dpo_applications_view as
 SELECT

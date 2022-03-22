@@ -38,6 +38,11 @@ func (s *Service) Update(item *models.DpoApplication) error {
 	if err != nil {
 		return err
 	}
+	item.SetIdForChildren()
+	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
