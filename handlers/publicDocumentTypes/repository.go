@@ -1,7 +1,6 @@
 package publicDocumentTypes
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -12,7 +11,6 @@ func (r *Repository) getDB() *bun.DB {
 }
 
 func (r *Repository) create(item *models.PublicDocumentType) (err error) {
-	fmt.Println("item", item.Name)
 	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }

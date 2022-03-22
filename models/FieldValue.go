@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/uptrace/bun"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/uptrace/bun"
 )
 
 type FieldValue struct {
@@ -16,13 +16,13 @@ type FieldValue struct {
 	ID            uuid.UUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	ValueString   string     `json:"valueString"`
 	ValueNumber   int        `json:"valueNumber"`
-	ValueDate     *time.Time `json:"valueDate"`
+	ValueDate     *time.Time `bun:",nullzero" json:"valueDate"`
 
 	Field   *Field    `bun:"rel:belongs-to" json:"field"`
 	FieldID uuid.UUID `bun:"type:uuid" json:"fieldId"`
 
 	EventApplication   *EventApplication `bun:"rel:belongs-to" json:"eventApplication"`
-	EventApplicationID uuid.NullUUID         `bun:"type:uuid,nullzero,default:NULL" json:"eventApplicationId"`
+	EventApplicationID uuid.NullUUID     `bun:"type:uuid,nullzero,default:NULL" json:"eventApplicationId"`
 
 	DpoApplication   *DpoApplication `bun:"rel:belongs-to" json:"dpoApplication"`
 	DpoApplicationID uuid.NullUUID   `bun:"type:uuid" json:"dpoApplicationId"`

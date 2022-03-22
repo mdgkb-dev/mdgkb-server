@@ -13,7 +13,7 @@ func (s *Service) Create(item *models.PaidProgramsGroup) error {
 	}
 	item.SetIdForChildren()
 
-	err = paidPrograms.CreateService(s.repository.getDB()).CreateMany(item.PaidPrograms)
+	err = paidPrograms.CreateService(s.repository.getDB(), s.helper).CreateMany(item.PaidPrograms)
 	if err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func (s *Service) Update(item *models.PaidProgramsGroup) error {
 	}
 	item.SetIdForChildren()
 
-	paidProgramsService := paidPrograms.CreateService(s.repository.getDB())
+	paidProgramsService := paidPrograms.CreateService(s.repository.getDB(), s.helper)
 	err = paidProgramsService.UpsertMany(item.PaidPrograms)
 	if err != nil {
 		return err
