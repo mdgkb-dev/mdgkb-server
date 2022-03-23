@@ -15,6 +15,7 @@ type Schema struct {
 	Specialization          map[string]string `json:"specialization"`
 	Vacancy                 map[string]string `json:"vacancy"`
 	DpoCourseSpecialization map[string]string `json:"dpoCourseSpecialization"`
+	DpoApplication          map[string]string `json:"dpoApplication"`
 }
 
 func CreateSchema() Schema {
@@ -33,6 +34,7 @@ func CreateSchema() Schema {
 		Specialization:          createSpecializationSchema(),
 		Vacancy:                 createVacancySchema(),
 		DpoCourseSpecialization: createDpoCourseSpecializationSchema(),
+		DpoApplication:          createDpoApplicationsSchema(),
 	}
 }
 
@@ -136,6 +138,16 @@ func createDpoCourseSchema() map[string]string {
 		"teacherId":  "teacher_id",
 		"listeners":  "listeners",
 		"start":      "dpo_course_start",
+	}
+}
+
+func createDpoApplicationsSchema() map[string]string {
+	return map[string]string{
+		"tableName": "dpo_applications_view",
+		"key":       "dpoApplication",
+		"id":        "id",
+		"createdAt": "created_at",
+		"isNmo":     "is_nmo",
 	}
 }
 

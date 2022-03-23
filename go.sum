@@ -350,8 +350,6 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndrE9hABlRI=
 github.com/posener/complete v1.2.3/go.mod h1:WZIdtGGp+qx0sLrYKtIRAruyNpv6hFCicSgv7Sy7s/s=
-github.com/pro-assistance/pro-assister v0.0.7 h1:/nX/KU9qw5LfhJ1kI+lYHc/JLjWbtjTtSIDOFUQ2Pvc=
-github.com/pro-assistance/pro-assister v0.0.7/go.mod h1:gqQd4eGgKF4ztP2t9MyoX9nHzBALJHrx5jnW3IG2NJc=
 github.com/pro-assistance/pro-assister v0.0.8 h1:8DMbFnjdQy8DSAXyV9Fy+5Cos/ecvtbTRL99nx36eN0=
 github.com/pro-assistance/pro-assister v0.0.8/go.mod h1:R5MHOcqxZYwAuOkfuWiPJ6v+4mSCVXeBXrEq4mRcn1w=
 github.com/prometheus/client_golang v0.9.1/go.mod h1:7SWBe2y4D6OKWSNQJUaRYU/AaXPKyh/dDVn+NZz0KFw=
@@ -412,8 +410,6 @@ github.com/uptrace/bun v0.1.1/go.mod h1:y7OgTXdMe3wrAyp1He4Sx1o41kzCQQ8TeBFZyQp3
 github.com/uptrace/bun v1.0.17/go.mod h1:rs7qARtH6aqLtcfmloWM6qn90iyY53N2ScLQssIrevw=
 github.com/uptrace/bun v1.0.20 h1:/T4p9C9tEN75U3cFMBr5njlP+rBfs4An8BmlQQPbcfE=
 github.com/uptrace/bun v1.0.20/go.mod h1:Uv7z0z+7dXnUS9P5hMF0hdiM/4M+xOUHQCrZpyDrpRc=
-github.com/uptrace/bun v1.0.22 h1:0asZNOcM4eLq5Pgzu+LpZyJRxlt3ops+HahVkWPqxww=
-github.com/uptrace/bun v1.0.22/go.mod h1:SkbOr4hdcYqqFPw4rbc1QAnLLvDLgq+X0w8OSllj1MU=
 github.com/uptrace/bun/dialect/sqlitedialect v1.0.17 h1:ca3c/YnkrL1fp/Ok0lDGNbpgF0t07WWGHdh2NAzwctM=
 github.com/uptrace/bun/dialect/sqlitedialect v1.0.17/go.mod h1:HH9VihgggYYA4igpgw/5qJEsC7UfpJPqfXgp5DvVJfU=
 github.com/uptrace/bun/driver/pgdriver v0.3.9 h1:fHK/NslM5/ZibuFj5wKt/IZp6QeRIP29IH6N5gxbxg0=

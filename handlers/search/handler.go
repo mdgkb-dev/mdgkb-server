@@ -14,6 +14,10 @@ func (h *Handler) Search(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	err = h.service.SearchObjects(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	c.JSON(http.StatusOK, item)
 }
 

@@ -5,6 +5,7 @@ CREATE TABLE field_values
     value_string varchar,
     value_number integer,
     value_date date DEFAULT NULL,
+    mod_checked boolean default false,
     field_id uuid not null references fields(id),
     event_application_id uuid references event_applications(id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
     dpo_application_id uuid references dpo_applications(id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
