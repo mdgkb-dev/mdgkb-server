@@ -1,8 +1,6 @@
 package routing
 
 import (
-	"github.com/elastic/go-elasticsearch/v8"
-	"github.com/pro-assistance/pro-assister/config"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -23,6 +21,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/entrances"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
+	"mdgkb/mdgkb-server/handlers/formPatterns"
 	"mdgkb/mdgkb-server/handlers/gates"
 	"mdgkb/mdgkb-server/handlers/heads"
 	"mdgkb/mdgkb-server/handlers/medicalProfiles"
@@ -36,6 +35,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/paidServices"
 	"mdgkb/mdgkb-server/handlers/partnerTypes"
 	"mdgkb/mdgkb-server/handlers/partners"
+	"mdgkb/mdgkb-server/handlers/postgraduateApplications"
+	"mdgkb/mdgkb-server/handlers/postgraduateCourses"
 	"mdgkb/mdgkb-server/handlers/preparations"
 	"mdgkb/mdgkb-server/handlers/projects"
 	"mdgkb/mdgkb-server/handlers/publicDocumentTypes"
@@ -44,7 +45,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/specializations"
 	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/handlers/timetablePatterns"
-	"mdgkb/mdgkb-server/handlers/formPatterns"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
 	"mdgkb/mdgkb-server/handlers/vacancyResponse"
@@ -72,6 +72,7 @@ import (
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
+	formPatternsRouter "mdgkb/mdgkb-server/routing/formPatterns"
 	gatesRouter "mdgkb/mdgkb-server/routing/gates"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
@@ -88,6 +89,8 @@ import (
 	paidServicesRouter "mdgkb/mdgkb-server/routing/paidServices"
 	partnerTypesRouter "mdgkb/mdgkb-server/routing/partnerTypes"
 	partnersRouter "mdgkb/mdgkb-server/routing/partners"
+	postgraduateApplicationsRouter "mdgkb/mdgkb-server/routing/postgraduateApplications"
+	postgraduateCoursesRouter "mdgkb/mdgkb-server/routing/postgraduateCourses"
 	preparationsRouter "mdgkb/mdgkb-server/routing/preparations"
 	projectsRouter "mdgkb/mdgkb-server/routing/projects"
 	publicDocumentTypesRouter "mdgkb/mdgkb-server/routing/publicDocumentTypes"
@@ -98,13 +101,15 @@ import (
 	"mdgkb/mdgkb-server/routing/tags"
 	teachersRouter "mdgkb/mdgkb-server/routing/teachers"
 	timetablePatternsRouter "mdgkb/mdgkb-server/routing/timetablePatterns"
-	formPatternsRouter "mdgkb/mdgkb-server/routing/formPatterns"
 	"mdgkb/mdgkb-server/routing/timetables"
 	usersRouter "mdgkb/mdgkb-server/routing/users"
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
+
+	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/pro-assistance/pro-assister/config"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
@@ -174,7 +179,9 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	applicationsCarsRouter.Init(api.Group("/applications-cars"), applicationsCars.CreateHandler(db, helper))
 	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
+	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduateCourses.CreateHandler(db, helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper))
+	postgraduateApplicationsRouter.Init(api.Group("/postgraduate-applications"), postgraduateApplications.CreateHandler(db, helper))
 	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(db, helper))
 	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalManagers.CreateHandler(db, helper))
 	appointmentsRouter.Init(api.Group("/appointments"), appointments.CreateHandler(db, helper))

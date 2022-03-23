@@ -28,6 +28,9 @@ type FieldValue struct {
 	DpoApplication   *DpoApplication `bun:"rel:belongs-to" json:"dpoApplication"`
 	DpoApplicationID uuid.NullUUID   `bun:"type:uuid" json:"dpoApplicationId"`
 
+	PostgraduateApplication   *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
+	PostgraduateApplicationID uuid.NullUUID            `bun:"type:uuid" json:"postgraduateApplicationId"`
+
 	File   *FileInfo     `bun:"rel:belongs-to" json:"file"`
 	FileID uuid.NullUUID `json:"fileId"`
 
