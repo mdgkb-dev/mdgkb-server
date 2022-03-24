@@ -3,6 +3,7 @@ package dpoApplications
 import (
 	"mdgkb/mdgkb-server/handlers/fieldsValues"
 	"mdgkb/mdgkb-server/models"
+	"mdgkb/mdgkb-server/handlers/users"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,8 +21,12 @@ func (s *Service) Get(id *string) (*models.DpoApplication, error) {
 }
 
 func (s *Service) Create(item *models.DpoApplication) error {
+	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	err := s.repository.create(item)
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
