@@ -20,9 +20,12 @@ func (r *Repository) getAll() (models.Teachers, error) {
 		Relation("Doctor.MedicalProfile").
 		Relation("Doctor.Regalias")
 
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	if r.queryFilter != nil {
+		r.queryFilter.Paginator.CreatePagination(query)
+		r.queryFilter.Filter.CreateFilter(query)
+		r.queryFilter.Sorter.CreateOrder(query)
+	}
+
 	err := query.Scan(r.ctx)
 	return items, err
 }
