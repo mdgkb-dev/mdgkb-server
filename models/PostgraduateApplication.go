@@ -40,7 +40,7 @@ func (item *PostgraduateApplication) SetFilePath(fileID *string) *string {
 }
 
 func (item *PostgraduateApplication) SetIdForChildren() {
-	for i := range item.FieldValues {
-		item.FieldValues[i].PostgraduateApplicationID = item.ID
-	}
+	// for i := range item.FieldValues {
+	// 	item.FieldValues[i].PostgraduateApplicationID = item.ID
+	// }
 }

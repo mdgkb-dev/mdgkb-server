@@ -26,10 +26,10 @@ type FieldValue struct {
 	EventApplicationID uuid.NullUUID     `bun:"type:uuid,nullzero,default:NULL" json:"eventApplicationId"`
 
 	DpoApplication   *DpoApplication `bun:"rel:belongs-to" json:"dpoApplication"`
-	DpoApplicationID uuid.NullUUID   `bun:"type:uuid" json:"dpoApplicationId"`
+	DpoApplicationID uuid.NullUUID   `bun:"type:uuid,nullzero,default:NULL" json:"dpoApplicationId"`
 
-	PostgraduateApplication   *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
-	PostgraduateApplicationID uuid.NullUUID            `bun:"type:uuid" json:"postgraduateApplicationId"`
+	// PostgraduateApplication   *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
+	// PostgraduateApplicationID uuid.NullUUID            `bun:"type:uuid,nullzero,default:NULL" json:"postgraduateApplicationId"`
 
 	File   *FileInfo     `bun:"rel:belongs-to" json:"file"`
 	FileID uuid.NullUUID `json:"fileId"`
