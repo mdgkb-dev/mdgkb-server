@@ -1,9 +1,10 @@
 package news
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
@@ -70,6 +71,9 @@ func (r *Repository) getAll(newsParams *newsParams) ([]*models.News, error) {
 	}
 	if newsParams.PublishedOn != nil {
 		query = query.Where("published_on < ?", newsParams.PublishedOn)
+	}
+	if newsParams.CreatedAt != nil {
+		query = query.Where("created_at < ?", newsParams.CreatedAt)
 	}
 	if newsParams.FilterTags != "" && newsParams.OrderByView == "" {
 		for _, tagId := range strings.Split(newsParams.FilterTags, ",") {
