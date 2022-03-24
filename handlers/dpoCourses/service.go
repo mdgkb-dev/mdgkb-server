@@ -1,6 +1,7 @@
 package dpoCourses
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/dpoCourseDates"
 	"mdgkb/mdgkb-server/handlers/dpoCourseSpecializations"
 	"mdgkb/mdgkb-server/handlers/dpoCourseTeachers"
@@ -57,13 +58,17 @@ func (s *Service) Update(item *models.DpoCourse) error {
 	}
 	err = dpoCourseTeachersService.DeleteMany(item.DpoCoursesTeachersForDelete)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
+	fmt.Println(1)
 	dpoCourseDatesService := dpoCourseDates.CreateService(s.repository.getDB())
 	err = dpoCourseDatesService.UpsertMany(item.DpoCoursesDates)
+	fmt.Println(2)
 	if err != nil {
 		return err
 	}
+	fmt.Println(3)
 	err = dpoCourseDatesService.DeleteMany(item.DpoCoursesDatesForDelete)
 	if err != nil {
 		return err

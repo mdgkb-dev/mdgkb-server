@@ -26,8 +26,8 @@ func (r *Repository) getAll() (models.PostgraduateCourses, error) {
 		Model(&items).
 		Relation("PostgraduateCoursesTeachers.Teacher.Doctor.Human").
 		Relation("PostgraduateCoursesSpecializations.Specialization").
-		Relation("PostgraduateCoursesDates")
-
+		Relation("PostgraduateCoursesDates").
+		Relation("QuestionsFile")
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
 	r.queryFilter.Sorter.CreateOrder(query)
@@ -41,6 +41,7 @@ func (r *Repository) get(id *string) (*models.PostgraduateCourse, error) {
 		Relation("PostgraduateCoursesTeachers.Teacher.Doctor.Human").
 		Relation("PostgraduateCoursesSpecializations.Specialization").
 		Relation("PostgraduateCoursesDates").
+		Relation("QuestionsFile").
 		Where("postgraduate_courses.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

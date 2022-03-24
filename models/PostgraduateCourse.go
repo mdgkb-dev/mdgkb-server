@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
 )
 
@@ -15,9 +16,16 @@ type PostgraduateCourse struct {
 	PostgraduateCoursesTeachersForDelete        []uuid.UUID                        `bun:"-" json:"postgraduateCoursesForDelete"`
 	PostgraduateCoursesDates                    PostgraduateCoursesDates           `bun:"rel:has-many" json:"postgraduateCoursesDates"`
 	PostgraduateCoursesDatesForDelete           []uuid.UUID                        `bun:"-" json:"postgraduateCoursesDatesForDelete"`
+
+	QuestionsFile   *FileInfo     `bun:"rel:belongs-to" json:"questionsFile"`
+	QuestionsFileID uuid.NullUUID `bun:"type:uuid" json:"questionsFileId"`
 }
 
 type PostgraduateCourses []*PostgraduateCourse
+
+func (item *PostgraduateCourse) SetForeignKeys() {
+	item.QuestionsFileID = item.QuestionsFile.ID
+}
 
 func (item *PostgraduateCourse) SetIdForChildren() {
 	for i := range item.PostgraduateCoursesTeachers {
@@ -29,4 +37,12 @@ func (item *PostgraduateCourse) SetIdForChildren() {
 	for i := range item.PostgraduateCoursesDates {
 		item.PostgraduateCoursesDates[i].PostgraduateCourseID = item.ID
 	}
+}
+
+func (item *PostgraduateCourse) SetFilePath(fileID string) *string {
+	if item.QuestionsFile.ID.UUID.String() == fileID {
+		item.QuestionsFile.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		return &item.QuestionsFile.FileSystemPath
+	}
+	return nil
 }

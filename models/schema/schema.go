@@ -126,18 +126,19 @@ func createTeacherSchema() map[string]string {
 
 func createDpoCourseSchema() map[string]string {
 	return map[string]string{
-		"tableName":  "dpo_courses",
-		"key":        "dpoCourse",
-		"id":         "id",
-		"name":       "name",
-		"isNmo":      "is_nmo",
-		"hours":      "hours",
-		"value":      "id",
-		"label":      "name",
-		"sortColumn": "name",
-		"teacherId":  "teacher_id",
-		"listeners":  "listeners",
-		"start":      "dpo_course_start",
+		"tableName":        "dpo_courses",
+		"key":              "dpoCourse",
+		"id":               "id",
+		"name":             "name",
+		"isNmo":            "is_nmo",
+		"specializationId": "specialization_id",
+		"hours":            "hours",
+		"value":            "id",
+		"label":            "name",
+		"sortColumn":       "name",
+		"teacherId":        "teacher_id",
+		"listeners":        "listeners",
+		"start":            "dpo_course_start",
 	}
 }
 

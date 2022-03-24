@@ -1,6 +1,7 @@
 package postgraduateCourses
 
 import (
+	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/postgraduateCourseDates"
 	"mdgkb/mdgkb-server/handlers/postgraduateCourseSpecializations"
 	"mdgkb/mdgkb-server/handlers/postgraduateCourseTeachers"
@@ -22,7 +23,12 @@ func (s *Service) Get(id *string) (*models.PostgraduateCourse, error) {
 }
 
 func (s *Service) Create(item *models.PostgraduateCourse) error {
-	err := s.repository.create(item)
+	err := fileInfos.CreateService(s.repository.getDB()).Create(item.QuestionsFile)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -43,7 +49,12 @@ func (s *Service) Create(item *models.PostgraduateCourse) error {
 }
 
 func (s *Service) Update(item *models.PostgraduateCourse) error {
-	err := s.repository.update(item)
+	err := fileInfos.CreateService(s.repository.getDB()).Create(item.QuestionsFile)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}

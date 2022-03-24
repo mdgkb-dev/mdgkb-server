@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -26,9 +27,11 @@ type IService interface {
 	Delete(*string) error
 	UpsertMany(models.Teachers) error
 	DeleteMany([]string) error
+	setQueryFilter(*gin.Context) error
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	getAll() (models.Teachers, error)
 	get(*string) (*models.Teacher, error)
@@ -56,9 +59,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helper.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

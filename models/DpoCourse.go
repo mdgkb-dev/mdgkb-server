@@ -21,7 +21,7 @@ type DpoCourse struct {
 	DpoCoursesSpecializations          DpoCoursesSpecializations `bun:"rel:has-many" json:"dpoCoursesSpecializations"`
 	DpoCoursesSpecializationsForDelete []uuid.UUID               `bun:"-" json:"dpoCoursesSpecializationsForDelete"`
 	DpoCoursesTeachers                 DpoCoursesTeachers        `bun:"rel:has-many" json:"dpoCoursesTeachers"`
-	DpoCoursesTeachersForDelete        []uuid.UUID               `bun:"-" json:"dpoCoursesForDelete"`
+	DpoCoursesTeachersForDelete        []uuid.UUID               `bun:"-" json:"dpoCoursesTeachersForDelete"`
 	DpoCoursesDates                    DpoCoursesDates           `bun:"rel:has-many" json:"dpoCoursesDates"`
 	DpoCoursesDatesForDelete           []uuid.UUID               `bun:"-" json:"dpoCoursesDatesForDelete"`
 	FormPattern                        *FormPattern              `bun:"rel:belongs-to" json:"formPattern"`
