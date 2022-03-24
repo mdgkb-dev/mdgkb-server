@@ -68,6 +68,7 @@ func (h *Handler) CreateLike(c *gin.Context) {
 
 type newsParams struct {
 	PublishedOn *time.Time `form:"publishedOn"`
+	CreatedAt   *time.Time `form:"createdAt"`
 	Limit       int        `form:"limit"`
 	FilterTags  string     `form:"filterTags"`
 	OrderByView string     `form:"orderByView"`

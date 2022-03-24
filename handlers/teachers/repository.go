@@ -1,6 +1,7 @@
 package teachers
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -12,13 +13,20 @@ func (r *Repository) getDB() *bun.DB {
 
 func (r *Repository) getAll() (models.Teachers, error) {
 	items := make(models.Teachers, 0)
-	err := r.db.NewSelect().Model(&items).
+	query := r.db.NewSelect().Model(&items).
 		Relation("DpoCourses").
 		Relation("Doctor.Human").
 		Relation("Doctor.Division").
 		Relation("Doctor.MedicalProfile").
-		Relation("Doctor.Regalias").
-		Scan(r.ctx)
+		Relation("Doctor.Regalias")
+
+	if r.queryFilter != nil {
+		r.queryFilter.Paginator.CreatePagination(query)
+		r.queryFilter.Filter.CreateFilter(query)
+		r.queryFilter.Sorter.CreateOrder(query)
+	}
+
+	err := query.Scan(r.ctx)
 	return items, err
 }
 
@@ -60,4 +68,12 @@ func (r *Repository) upsertMany(items models.Teachers) (err error) {
 		Model(&items).
 		Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }

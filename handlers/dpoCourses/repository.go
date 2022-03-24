@@ -25,7 +25,8 @@ func (r *Repository) getAll() (models.DpoCourses, error) {
 		Model(&items).
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
-		Relation("DpoCoursesDates")
+		Relation("DpoCoursesDates").
+		Relation("Specialization")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -42,6 +43,7 @@ func (r *Repository) get(id *string) (*models.DpoCourse, error) {
 		Relation("DpoCoursesDates").
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
+		Relation("Specialization").
 		Where("dpo_courses.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

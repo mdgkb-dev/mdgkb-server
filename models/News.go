@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -17,6 +18,7 @@ type News struct {
 	Content              string        `json:"content"`
 	Slug                 string        `json:"slug"`
 	PublishedOn          time.Time     `json:"publishedOn"`
+	CreatedAt            time.Time     `json:"createdAt"`
 	Description          string        `json:"description"`
 	Main                 bool          `json:"main"`
 	SubMain              bool          `json:"subMain"`

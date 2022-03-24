@@ -18,7 +18,7 @@ func (r *Repository) createMany(items models.DpoCoursesSpecializations) (err err
 
 func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.DpoCoursesSpecializations)(nil)).
+		Model((*models.DpoCourseSpecialization)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
