@@ -8,5 +8,6 @@ CREATE TABLE dpo_courses (
     dpo_course_order int default 0,
     listeners int default 0,
     hours int default 0,
+    specialization_id uuid  REFERENCES specializations (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL,
     form_pattern_id uuid references form_patterns on update cascade on delete cascade
 );

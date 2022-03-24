@@ -16,6 +16,8 @@ type DpoCourse struct {
 	Listeners                          int                       `json:"listeners"`
 	Hours                              int                       `json:"hours"`
 	Cost                               int                       `json:"cost"`
+	Specialization                     *Specialization           `bun:"rel:belongs-to" json:"specialization"`
+	SpecializationID                   uuid.NullUUID             `bun:"type:uuid" json:"specializationId,omitempty"`
 	DpoCoursesSpecializations          DpoCoursesSpecializations `bun:"rel:has-many" json:"dpoCoursesSpecializations"`
 	DpoCoursesSpecializationsForDelete []uuid.UUID               `bun:"-" json:"dpoCoursesSpecializationsForDelete"`
 	DpoCoursesTeachers                 DpoCoursesTeachers        `bun:"rel:has-many" json:"dpoCoursesTeachers"`
