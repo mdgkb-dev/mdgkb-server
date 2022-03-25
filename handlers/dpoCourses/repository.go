@@ -41,6 +41,9 @@ func (r *Repository) get(id *string) (*models.DpoCourse, error) {
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
+		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("Specialization").

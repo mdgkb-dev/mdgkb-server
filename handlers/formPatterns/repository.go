@@ -36,9 +36,12 @@ func (r *Repository) getAll() (models.FormPatterns, error) {
 func (r *Repository) get(id *string) (*models.FormPattern, error) {
 	item := models.FormPattern{}
 	err := r.db.NewSelect().Model(&item).
-	Relation("Fields.File").
-	Relation("Fields.ValueType").
-	Where("form_patterns.id = ?", *id).Scan(r.ctx)
+		Relation("Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("Fields.File").
+		Relation("Fields.ValueType").
+		Where("form_patterns.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 
