@@ -84,10 +84,7 @@ func (h *Handler) RestorePassword(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	restoreLink, err := h.helper.HTTP.GetRestorePasswordURL(findedUser.ID.String(), findedUser.UUID.UUID.String())
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
+	restoreLink := h.helper.HTTP.GetRestorePasswordURL(findedUser.ID.String(), findedUser.UUID.String())
 	err = h.helper.Email.SendEmail([]string{user.Email}, "Восстановление пароля для портала МДГКБ", restoreLink)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

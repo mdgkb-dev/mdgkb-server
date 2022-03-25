@@ -350,8 +350,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndrE9hABlRI=
 github.com/posener/complete v1.2.3/go.mod h1:WZIdtGGp+qx0sLrYKtIRAruyNpv6hFCicSgv7Sy7s/s=
-github.com/pro-assistance/pro-assister v0.0.8 h1:8DMbFnjdQy8DSAXyV9Fy+5Cos/ecvtbTRL99nx36eN0=
-github.com/pro-assistance/pro-assister v0.0.8/go.mod h1:R5MHOcqxZYwAuOkfuWiPJ6v+4mSCVXeBXrEq4mRcn1w=
+github.com/pro-assistance/pro-assister v0.0.11 h1:+Bhk6XZFPUdwrufsXrKjd0Ivv41Nn2zjj5FUpBkFgzc=
+github.com/pro-assistance/pro-assister v0.0.11/go.mod h1:R5MHOcqxZYwAuOkfuWiPJ6v+4mSCVXeBXrEq4mRcn1w=
 github.com/prometheus/client_golang v0.9.1/go.mod h1:7SWBe2y4D6OKWSNQJUaRYU/AaXPKyh/dDVn+NZz0KFw=
 github.com/prometheus/client_golang v1.0.0/go.mod h1:db9x61etRT2tGnBNRi70OPL5FsnadC4Ky3P0J6CfImo=
 github.com/prometheus/client_golang v1.4.0/go.mod h1:e9GMxYsXl05ICDXkRhurwBS4Q3OK1iX/F2sw+iXX5zU=

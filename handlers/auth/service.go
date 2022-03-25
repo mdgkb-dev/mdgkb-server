@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
 )
@@ -22,18 +23,19 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 }
 
 func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
-	err := item.GenerateHashPassword()
-	if err != nil {
-		return nil, err
-	}
+	//err := item.GenerateHashPassword()
+	//if err != nil {
+	//	return nil, err
+	//}
 	findedUser, err := users.CreateService(s.repository.getDB(), s.helper).GetByEmail(item.Email)
 	if err != nil {
 		return nil, err
 	}
-	if !findedUser.CompareWithHashPassword(&item.Password) {
+	if !findedUser.CompareWithHashPassword(item.Password) {
+		fmt.Println(findedUser.CompareWithHashPassword(item.Password))
 		return nil, err
 	}
-
+	//fmt.Println(item.Password)
 	ts, err := s.helper.Token.CreateToken(findedUser.ID.String())
 	if err != nil {
 		return nil, err

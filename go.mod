@@ -10,7 +10,7 @@ require (
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/google/uuid v1.3.0
 	github.com/kennygrant/sanitize v1.2.4
-	github.com/pro-assistance/pro-assister v0.0.8
+	github.com/pro-assistance/pro-assister v0.0.11
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/uptrace/bun v1.0.20
 	github.com/uptrace/bun/dialect/sqlitedialect v1.0.17
