@@ -3,6 +3,7 @@ package postgraduateCourses
 import (
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/postgraduateCourseDates"
+	"mdgkb/mdgkb-server/handlers/postgraduateCoursePlans"
 	"mdgkb/mdgkb-server/handlers/postgraduateCourseSpecializations"
 	"mdgkb/mdgkb-server/handlers/postgraduateCourseTeachers"
 	"mdgkb/mdgkb-server/models"
@@ -23,7 +24,16 @@ func (s *Service) Get(id *string) (*models.PostgraduateCourse, error) {
 }
 
 func (s *Service) Create(item *models.PostgraduateCourse) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Create(item.QuestionsFile)
+	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	err := fileInfosService.Create(item.QuestionsFile)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Create(item.ProgramFile)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Create(item.Calendar)
 	if err != nil {
 		return err
 	}
@@ -45,11 +55,25 @@ func (s *Service) Create(item *models.PostgraduateCourse) error {
 	if err != nil {
 		return err
 	}
+	postgraduateCoursePlansService := postgraduateCoursePlans.CreateService(s.repository.getDB())
+	err = postgraduateCoursePlansService.UpsertMany(item.PostgraduateCoursePlans)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (s *Service) Update(item *models.PostgraduateCourse) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Create(item.QuestionsFile)
+	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	err := fileInfosService.Upsert(item.QuestionsFile)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Upsert(item.ProgramFile)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Upsert(item.Calendar)
 	if err != nil {
 		return err
 	}
@@ -83,6 +107,15 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 		return err
 	}
 	err = postgraduateCourseSpecializationsService.DeleteMany(item.PostgraduateCoursesSpecializationsForDelete)
+	if err != nil {
+		return err
+	}
+	postgraduateCoursePlansService := postgraduateCoursePlans.CreateService(s.repository.getDB())
+	err = postgraduateCoursePlansService.UpsertMany(item.PostgraduateCoursePlans)
+	if err != nil {
+		return err
+	}
+	err = postgraduateCoursePlansService.DeleteMany(item.PostgraduateCoursePlansForDelete)
 	if err != nil {
 		return err
 	}

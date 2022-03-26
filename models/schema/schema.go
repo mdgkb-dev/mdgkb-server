@@ -16,6 +16,7 @@ type Schema struct {
 	Vacancy                 map[string]string `json:"vacancy"`
 	DpoCourseSpecialization map[string]string `json:"dpoCourseSpecialization"`
 	DpoApplication          map[string]string `json:"dpoApplication"`
+	PostgraduateCourse      map[string]string `json:"postgraduateCourse"`
 }
 
 func CreateSchema() Schema {

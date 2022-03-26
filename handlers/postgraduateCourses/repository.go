@@ -42,6 +42,10 @@ func (r *Repository) get(id *string) (*models.PostgraduateCourse, error) {
 		Relation("PostgraduateCoursesSpecializations.Specialization").
 		Relation("PostgraduateCoursesDates").
 		Relation("QuestionsFile").
+		Relation("ProgramFile").
+		Relation("Calendar").
+		Relation("PostgraduateCoursePlans.Plan").
+		Relation("FormPattern").
 		Where("postgraduate_courses.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
