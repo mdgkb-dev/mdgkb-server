@@ -24,6 +24,7 @@ func (r *Repository) upsertMany(items models.Fields) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("name = EXCLUDED.name").
+		Set("required = EXCLUDED.required").
 		Set("field_order = EXCLUDED.field_order").
 		Set("form_id = EXCLUDED.form_id").
 		Set("form_pattern_id = EXCLUDED.form_pattern_id").
@@ -37,6 +38,7 @@ func (r *Repository) upsert(item *models.Field) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(item).
 		Set("name = EXCLUDED.name").
+		Set("required = EXCLUDED.required").
 		Set("field_order = EXCLUDED.field_order").
 		Set("form_id = EXCLUDED.form_id").
 		Set("form_pattern_id = EXCLUDED.form_pattern_id").
