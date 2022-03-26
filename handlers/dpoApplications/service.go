@@ -2,8 +2,8 @@ package dpoApplications
 
 import (
 	"mdgkb/mdgkb-server/handlers/fieldsValues"
-	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,11 +39,22 @@ func (s *Service) Create(item *models.DpoApplication) error {
 }
 
 func (s *Service) Update(item *models.DpoApplication) error {
-	err := s.repository.update(item)
+	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}
 	item.SetIdForChildren()
+	if len(item.FieldValuesForDelete) > 0 {
+		err = fieldsValues.CreateService(s.repository.getDB()).DeleteMany(item.FieldValuesForDelete)
+		if err != nil {
+			return err
+		}
+	}
 	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
 	if err != nil {
 		return err

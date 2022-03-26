@@ -17,8 +17,9 @@ type DpoApplication struct {
 	User   *User     `bun:"rel:belongs-to" json:"user"`
 	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
 
-	FieldValues FieldValues `bun:"rel:has-many" json:"fieldValues"`
-	IsNew       bool        `json:"isNew"`
+	FieldValues           FieldValues `bun:"rel:has-many" json:"fieldValues"`
+	FieldValuesForDelete []uuid.UUID `bun:"-" json:"fieldValuesForDelete"`
+	IsNew                 bool        `json:"isNew"`
 }
 
 type DpoApplications []*DpoApplication

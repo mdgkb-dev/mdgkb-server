@@ -38,10 +38,11 @@ func (r *Repository) getAll() (models.DpoApplications, error) {
 func (r *Repository) get(id *string) (*models.DpoApplication, error) {
 	item := models.DpoApplication{}
 	err := r.db.NewSelect().Model(&item).
-		Relation("DpoCourse").
+		Relation("DpoCourse.FormPattern.Fields.File").
+		Relation("DpoCourse.FormPattern.Fields.ValueType").
 		Relation("User.Human").
 		Relation("FieldValues.File").
-		Relation("FieldValues.Field").
+		Relation("FieldValues.Field.ValueType").
 		Where("dpo_applications_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
