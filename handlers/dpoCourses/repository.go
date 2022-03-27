@@ -26,6 +26,8 @@ func (r *Repository) getAll() (models.DpoCourses, error) {
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
+		Relation("FormPattern.Fields.File").
+		Relation("FormPattern.Fields.ValueType").
 		Relation("Specialization")
 
 	r.queryFilter.Paginator.CreatePagination(query)

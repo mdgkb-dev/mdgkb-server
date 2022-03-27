@@ -4,6 +4,7 @@ import (
 	"context"
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
 
@@ -12,6 +13,7 @@ type IService interface {
 	Update(*models.FieldValue) error
 	Upsert(*models.FieldValue) error
 	UpsertMany(models.Fields) error
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
@@ -20,7 +22,7 @@ type IRepository interface {
 	update(*models.FieldValue) error
 	upsert(*models.FieldValue) error
 	upsertMany(models.FieldValues) error
-	//deleteMany([]string) error
+	deleteMany([]uuid.UUID) error
 }
 
 type Handler struct {

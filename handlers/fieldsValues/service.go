@@ -3,6 +3,8 @@ package fieldsValues
 import (
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) Create(item *models.FieldValue) error {
@@ -46,9 +48,9 @@ func (s *Service) Upsert(item *models.FieldValue) error {
 	return nil
 }
 
-//func (s *Service) DeleteMany(idPool []string) error {
-//	if len(idPool) == 0 {
-//		return nil
-//	}
-//	return s.repository.deleteMany(idPool)
-//}
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+	if len(idPool) == 0 {
+		return nil
+	}
+	return s.repository.deleteMany(idPool)
+}
