@@ -31,6 +31,9 @@ type FieldValue struct {
 	PostgraduateApplication   *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
 	PostgraduateApplicationID uuid.NullUUID            `bun:"type:uuid,nullzero,default:NULL" json:"postgraduateApplicationId"`
 
+	CandidateApplication   *CandidateApplication `bun:"rel:belongs-to" json:"candidateApplication"`
+	CandidateApplicationID uuid.NullUUID         `bun:"type:uuid,nullzero,default:NULL" json:"candidateApplicationId"`
+
 	File   *FileInfo     `bun:"rel:belongs-to" json:"file"`
 	FileID uuid.NullUUID `json:"fileId"`
 
@@ -113,6 +116,9 @@ func (items FieldValues) SetForeignKeys() {
 		}
 		if items[i].PostgraduateApplication != nil {
 			items[i].PostgraduateApplicationID = items[i].PostgraduateApplication.ID
+		}
+		if items[i].CandidateApplication != nil {
+			items[i].CandidateApplicationID = items[i].CandidateApplication.ID
 		}
 		if items[i].Field != nil {
 			items[i].FieldID = items[i].Field.ID

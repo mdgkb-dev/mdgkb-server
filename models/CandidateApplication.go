@@ -11,6 +11,9 @@ type CandidateApplication struct {
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	CreatedAt     time.Time     `json:"createdAt"`
 
+	CandidateExam   *CandidateExam `bun:"rel:belongs-to" json:"candidateExam"`
+	CandidateExamID uuid.NullUUID  `bun:"type:uuid,nullzero,default:NULL" json:"candidateExamId"`
+
 	CandidateApplicationSpecializations          CandidateApplicationSpecializations `bun:"rel:has-many" json:"candidateApplicationSpecializations"`
 	CandidateApplicationSpecializationsForDelete []uuid.UUID                         `bun:"-" json:"candidateApplicationSpecializationsForDelete"`
 
@@ -25,6 +28,7 @@ type CandidateApplications []*CandidateApplication
 
 func (item *CandidateApplication) SetForeignKeys() {
 	item.UserID = item.User.ID
+	item.CandidateExamID = item.CandidateExam.ID
 }
 
 func (item *CandidateApplication) SetFilePath(fileID *string) *string {
@@ -39,7 +43,7 @@ func (item *CandidateApplication) SetFilePath(fileID *string) *string {
 
 func (item *CandidateApplication) SetIdForChildren() {
 	for i := range item.FieldValues {
-		item.FieldValues[i].DpoApplicationID = item.ID
+		item.FieldValues[i].CandidateApplicationID = item.ID
 	}
 	for i := range item.CandidateApplicationSpecializations {
 		item.CandidateApplicationSpecializations[i].CandidateApplicationID = item.ID

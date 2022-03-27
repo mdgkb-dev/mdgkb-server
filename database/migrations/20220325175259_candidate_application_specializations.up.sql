@@ -1,4 +1,4 @@
-CREATE TABLE candidate_applications_specializations
+CREATE TABLE candidate_application_specializations
 (
     id uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
     main boolean,

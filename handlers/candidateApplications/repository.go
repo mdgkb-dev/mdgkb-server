@@ -23,7 +23,10 @@ func (r *Repository) getAll() (models.CandidateApplications, error) {
 	items := make(models.CandidateApplications, 0)
 	query := r.db.NewSelect().
 		Model(&items).
-		Relation("CandidateApplicationSpecializations.Specializations")
+		Relation("CandidateExam").
+		Relation("FieldValues.File").
+		Relation("FieldValues.Field").
+		Relation("CandidateApplicationSpecializations.Specialization")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -35,7 +38,12 @@ func (r *Repository) getAll() (models.CandidateApplications, error) {
 func (r *Repository) get(id *string) (*models.CandidateApplication, error) {
 	item := models.CandidateApplication{}
 	err := r.db.NewSelect().Model(&item).
-		Relation("CandidateApplicationSpecializations.Specializations").
+		Relation("CandidateApplicationSpecializations.Specialization").
+		Relation("CandidateExam.FormPattern.Fields.File").
+		Relation("CandidateExam.FormPattern.Fields.ValueType").
+		Relation("User.Human").
+		Relation("FieldValues.File").
+		Relation("FieldValues.Field.ValueType").
 		Where("candidate_applications.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
