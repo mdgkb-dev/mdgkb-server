@@ -28,8 +28,8 @@ type FieldValue struct {
 	DpoApplication   *DpoApplication `bun:"rel:belongs-to" json:"dpoApplication"`
 	DpoApplicationID uuid.NullUUID   `bun:"type:uuid,nullzero,default:NULL" json:"dpoApplicationId"`
 
-	// PostgraduateApplication   *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
-	// PostgraduateApplicationID uuid.NullUUID            `bun:"type:uuid,nullzero,default:NULL" json:"postgraduateApplicationId"`
+	PostgraduateApplication   *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
+	PostgraduateApplicationID uuid.NullUUID            `bun:"type:uuid,nullzero,default:NULL" json:"postgraduateApplicationId"`
 
 	File   *FileInfo     `bun:"rel:belongs-to" json:"file"`
 	FileID uuid.NullUUID `json:"fileId"`
@@ -110,6 +110,9 @@ func (items FieldValues) SetForeignKeys() {
 		}
 		if items[i].EventApplication != nil {
 			items[i].EventApplicationID = items[i].EventApplication.ID
+		}
+		if items[i].PostgraduateApplication != nil {
+			items[i].PostgraduateApplicationID = items[i].PostgraduateApplication.ID
 		}
 		if items[i].Field != nil {
 			items[i].FieldID = items[i].Field.ID

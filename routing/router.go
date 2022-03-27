@@ -7,6 +7,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
 	"mdgkb/mdgkb-server/handlers/candidateApplications"
+	"mdgkb/mdgkb-server/handlers/candidateExams"
 	"mdgkb/mdgkb-server/handlers/centers"
 	certificates "mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/children"
@@ -59,6 +60,7 @@ import (
 	"mdgkb/mdgkb-server/routing/buildings"
 	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackRequests"
 	candidateApplicationsRouter "mdgkb/mdgkb-server/routing/candidateApplications"
+	candidateExamsRouter "mdgkb/mdgkb-server/routing/candidateExams"
 	centersRouter "mdgkb/mdgkb-server/routing/centers"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
 	childrenRouter "mdgkb/mdgkb-server/routing/children"
@@ -191,4 +193,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	gatesRouter.Init(api.Group("/gates"), gates.CreateHandler(db, helper))
 	specializationsRouter.Init(api.Group("/specializations"), specializations.CreateHandler(db, helper))
 	candidateApplicationsRouter.Init(api.Group("/candidate-applications"), candidateApplications.CreateHandler(db, helper))
+	candidateExamsRouter.Init(api.Group("/candidate-exams"), candidateExams.CreateHandler(db, helper))
 }

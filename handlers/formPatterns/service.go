@@ -11,7 +11,7 @@ func (s *Service) GetAll() (models.FormPatterns, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id *string) (*models.FormPattern, error) {
+func (s *Service) Get(id string) (*models.FormPattern, error) {
 	item, err := s.repository.get(id)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (s *Service) Update(item *models.FormPattern) error {
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
+func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
 

@@ -1,4 +1,4 @@
-package formPatterns
+package candidateExams
 
 import (
 	"context"
@@ -21,25 +21,25 @@ type IHandler interface {
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
-	GetAll() (models.FormPatterns, error)
-	Get(string) (*models.FormPattern, error)
-	Create(*models.FormPattern) error
-	Update(*models.FormPattern) error
+	GetAll() (models.CandidateExams, error)
+	Get(string) (*models.CandidateExam, error)
+	Create(*models.CandidateExam) error
+	Update(*models.CandidateExam) error
 	Delete(string) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
-	getAll() (models.FormPatterns, error)
-	get(string) (*models.FormPattern, error)
-	create(*models.FormPattern) error
-	update(*models.FormPattern) error
+	getAll() (models.CandidateExams, error)
+	get(string) (*models.CandidateExam, error)
+	create(*models.CandidateExam) error
+	update(*models.CandidateExam) error
 	delete(string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.FormPattern, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.CandidateExam, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

@@ -8,7 +8,7 @@ import (
 )
 
 type PostgraduateApplication struct {
-	bun.BaseModel `bun:"postgraduate_applications,select:postgraduate_applications_view,alias:postgraduate_applications_view"`
+	bun.BaseModel `bun:"postgraduate_applications,select:postgraduate_applications,alias:postgraduate_applications"`
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	CreatedAt     time.Time     `json:"createdAt"`
 
@@ -40,7 +40,7 @@ func (item *PostgraduateApplication) SetFilePath(fileID *string) *string {
 }
 
 func (item *PostgraduateApplication) SetIdForChildren() {
-	// for i := range item.FieldValues {
-	// 	item.FieldValues[i].PostgraduateApplicationID = item.ID
-	// }
+	for i := range item.FieldValues {
+		item.FieldValues[i].PostgraduateApplicationID = item.ID
+	}
 }

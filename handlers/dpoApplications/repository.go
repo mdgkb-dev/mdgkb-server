@@ -41,7 +41,7 @@ func (r *Repository) get(id *string) (*models.DpoApplication, error) {
 		Relation("DpoCourse").
 		Relation("User.Human").
 		Relation("FieldValues.File").
-		Relation("FieldValues.Field").
+		Relation("FieldValues.Field.ValueType").
 		Where("dpo_applications_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

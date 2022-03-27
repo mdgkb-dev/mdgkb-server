@@ -1,4 +1,4 @@
-package formPatterns
+package candidateExams
 
 import (
 	"github.com/gin-gonic/gin"
@@ -19,12 +19,10 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (models.FormPatterns, error) {
-	items := make(models.FormPatterns, 0)
+func (r *Repository) getAll() (models.CandidateExams, error) {
+	items := make(models.CandidateExams, 0)
 	query := r.db.NewSelect().
-		Model(&items).
-		Relation("Fields.File").
-		Relation("Fields.ValueType")
+		Model(&items)
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -33,29 +31,29 @@ func (r *Repository) getAll() (models.FormPatterns, error) {
 	return items, err
 }
 
-func (r *Repository) get(id string) (*models.FormPattern, error) {
-	item := models.FormPattern{}
+func (r *Repository) get(id string) (*models.CandidateExam, error) {
+	item := models.CandidateExam{}
 	err := r.db.NewSelect().Model(&item).
-		Relation("Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
-		Relation("Fields.File").
-		Relation("Fields.ValueType").
-		Where("form_patterns.id = ?", id).Scan(r.ctx)
+		Relation("FormPattern.Fields.File").
+		Relation("FormPattern.Fields.ValueType").
+		Where("candidate_exams.id = '8800afcc-4139-4285-b552-b78e85d7f0dd'", id).Scan(r.ctx)
 	return &item, err
 }
 
-func (r *Repository) create(item *models.FormPattern) (err error) {
+func (r *Repository) create(item *models.CandidateExam) (err error) {
 	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.FormPattern{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.db.NewDelete().Model(&models.CandidateExam{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) update(item *models.FormPattern) (err error) {
+func (r *Repository) update(item *models.CandidateExam) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }

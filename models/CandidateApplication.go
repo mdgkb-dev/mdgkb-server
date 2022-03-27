@@ -7,7 +7,7 @@ import (
 )
 
 type CandidateApplication struct {
-	bun.BaseModel `bun:"candidate_minimum_applications,alias:candidate_minimum_applications"`
+	bun.BaseModel `bun:"candidate_applications,alias:candidate_applications"`
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	CreatedAt     time.Time     `json:"createdAt"`
 

@@ -24,7 +24,7 @@ func (r *Repository) getAll() (models.PostgraduateApplications, error) {
 	items := make(models.PostgraduateApplications, 0)
 	query := r.db.NewSelect().
 		Model(&items).
-		Relation("PostgraduateCourse").
+		Relation("PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
 		Relation("FieldValues.File").
 		Relation("FieldValues.Field").
 		Relation("User.Human")
@@ -39,11 +39,11 @@ func (r *Repository) getAll() (models.PostgraduateApplications, error) {
 func (r *Repository) get(id *string) (*models.PostgraduateApplication, error) {
 	item := models.PostgraduateApplication{}
 	err := r.db.NewSelect().Model(&item).
-		Relation("PostgraduateCourse").
+		Relation("PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
 		Relation("User.Human").
 		Relation("FieldValues.File").
-		Relation("FieldValues.Field").
-		Where("postgraduate_applications_view.id = ?", *id).Scan(r.ctx)
+		Relation("FieldValues.Field.ValueType").
+		Where("postgraduate_applications.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 

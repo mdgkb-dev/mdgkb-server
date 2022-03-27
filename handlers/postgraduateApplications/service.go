@@ -2,6 +2,7 @@ package postgraduateApplications
 
 import (
 	"mdgkb/mdgkb-server/handlers/fieldsValues"
+	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -20,8 +21,12 @@ func (s *Service) Get(id *string) (*models.PostgraduateApplication, error) {
 }
 
 func (s *Service) Create(item *models.PostgraduateApplication) error {
+	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	err := s.repository.create(item)
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}

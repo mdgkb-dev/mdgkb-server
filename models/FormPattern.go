@@ -5,6 +5,7 @@ import "github.com/uptrace/bun"
 type FormPattern struct {
 	bun.BaseModel `bun:"form_patterns,alias:form_patterns"`
 	Title         string `json:"title"`
+	Code          string `json:"code"`
 	Form
 }
 
