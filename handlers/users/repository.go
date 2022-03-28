@@ -40,6 +40,7 @@ func (r *Repository) getByEmail(id string) (*models.User, error) {
 		Relation("DonorRulesUsers.DonorRule.Image").
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
 		Relation("Children.Human").
+		Relation("Role").
 		Relation("DoctorsUsers").
 		Where("users.email = ?", id).Scan(r.ctx)
 	return &item, err

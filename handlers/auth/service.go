@@ -43,7 +43,7 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 		return nil, err
 	}
 	//fmt.Println(item.Password)
-	ts, err := s.helper.Token.CreateToken(findedUser.ID.String(), string(item.Role.Name))
+	ts, err := s.helper.Token.CreateToken(findedUser.ID.String(), string(findedUser.Role.Name))
 	if err != nil {
 		return nil, err
 	}
