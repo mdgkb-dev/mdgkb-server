@@ -13,7 +13,7 @@ type Document struct {
 	Name          string    `json:"name"`
 
 	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
-	DocumentTypeID uuid.UUID     `bun:"type:uuid" json:"documentTypeId"`
+	DocumentTypeID uuid.NullUUID `bun:"type:uuid" json:"documentTypeId"`
 
 	DocumentsScans          DocumentsScans      `bun:"rel:has-many" json:"documentsScans"`
 	DocumentsScansForDelete []uuid.UUID         `bun:"-" json:"documentsScansForDelete"`
