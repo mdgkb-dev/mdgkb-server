@@ -47,6 +47,13 @@ func (r *Repository) get(id *string) (*models.DpoApplication, error) {
 	return &item, err
 }
 
+func (r *Repository) emailExists(email string, courseId string) (bool, error) {
+	exists, err := r.db.NewSelect().Model((*models.DpoApplication)(nil)).
+	Join("JOIN users ON users.email = ?", email).
+	Where("dpo_applications_view.dpo_course_id = ?", courseId).Exists(r.ctx)
+	return exists, err
+}
+
 func (r *Repository) create(item *models.DpoApplication) (err error) {
 	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err

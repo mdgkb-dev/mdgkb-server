@@ -1,8 +1,8 @@
-package dpoApplications
+package dpoCourses
 
 import (
 	"github.com/gin-gonic/gin"
-	handler "mdgkb/mdgkb-server/handlers/dpoApplications"
+	handler "mdgkb/mdgkb-server/handlers/dpoCourses"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )
