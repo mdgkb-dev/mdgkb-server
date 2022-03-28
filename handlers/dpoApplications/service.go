@@ -20,6 +20,14 @@ func (s *Service) Get(id *string) (*models.DpoApplication, error) {
 	return item, nil
 }
 
+func (s *Service) EmailExists(email string, courseId string) (bool, error) {
+	item, err := s.repository.emailExists(email, courseId)
+	if err != nil {
+		return item, err
+	}
+	return item, nil
+}
+
 func (s *Service) Create(item *models.DpoApplication) error {
 	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
 	if err != nil {
