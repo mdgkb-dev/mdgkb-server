@@ -1,3 +1,3 @@
-insert into public.users (id, uuid, email, password, phone,  role_id)
-values('e8f93126-7c2e-4349-84d3-9ace59dc39ad', '2fd11d09-4408-4cf0-879d-0fc729784784', 'admin@gmail.com', '$2a$10$KefOSmwx7c0Z6H/LQ7ljLuRfMMzlFO5cKfCHkG9zn0gaqggBZcsQ6', '', '8dac3c71-43e1-476b-82fa-454313684685'),
-        ('67373571-5ace-4ca4-8b9a-8cfd44844d10', '499fcd3f-01d4-498d-872a-6e3c83d1cef4', 'user@gmail.com', '$2a$10$oQxY9nWZocyASHpyFkyFNe5N9KEQN5CooWNMosqw11yHcrdfo.bZa', '',  '8dac3c71-43e1-476b-82fa-454313684685');
+insert into public.users (id, uuid, email, password, phone, human_id, role_id)
+values  ('67373571-5ace-4ca4-8b9a-8cfd44844d10', '499fcd3f-01d4-498d-872a-6e3c83d1cef4', 'user@gmail.com', '$2a$10$oQxY9nWZocyASHpyFkyFNe5N9KEQN5CooWNMosqw11yHcrdfo.bZa', '', null, '8dac3c71-43e1-476b-82fa-454313684685'),
+        ('e8f93126-7c2e-4349-84d3-9ace59dc39ad', '2fd11d09-4408-4cf0-879d-0fc729784784', 'admin@gmail.com', '$2a$10$KefOSmwx7c0Z6H/LQ7ljLuRfMMzlFO5cKfCHkG9zn0gaqggBZcsQ6', '', null, '4f334a5f-9ce6-4440-ba3e-1b5a57cf904e');
