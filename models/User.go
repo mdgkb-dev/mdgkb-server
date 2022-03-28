@@ -10,7 +10,7 @@ type User struct {
 	bun.BaseModel `bun:"users,alias:users"`
 	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Email         string        `json:"email"`
-	UUID          uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()"  json:"uuid"` // для восстановления пароля - обеспечивает уникальность страницы на фронте
+	UUID          uuid.NullUUID `bun:"type:uuid,nullzero,notnull,default:uuid_generate_v4()"  json:"uuid"` // для восстановления пароля - обеспечивает уникальность страницы на фронте
 	Phone         string        `json:"phone"`
 	Password      string        `json:"password"`
 	Human         *Human        `bun:"rel:belongs-to" json:"human"`
@@ -39,7 +39,7 @@ func (i *User) GenerateHashPassword() error {
 }
 
 func (i *User) CompareWithUUID(externalUUID string) bool {
-	return i.UUID.String() == externalUUID
+	return i.UUID.UUID.String() == externalUUID
 }
 
 func (i *User) CompareWithHashPassword(password string) bool {

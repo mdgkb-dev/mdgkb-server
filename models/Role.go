@@ -16,6 +16,6 @@ type Roles []*Role
 type RoleName string
 
 const (
-	RoleNameUser  RoleName = "user"
-	RoleNameAdmin RoleName = "admin"
+	RoleNameUser  RoleName = "USER"
+	RoleNameAdmin RoleName = "ADMIN"
 )

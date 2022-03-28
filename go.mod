@@ -3,6 +3,9 @@ module mdgkb/mdgkb-server
 go 1.16
 
 require (
+	github.com/casbin/casbin-pg-adapter v1.0.4
+	github.com/casbin/casbin/v2 v2.43.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/elastic/go-elasticsearch/v8 v8.1.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-pg/pg/v10 v10.10.3
@@ -10,7 +13,8 @@ require (
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/google/uuid v1.3.0
 	github.com/kennygrant/sanitize v1.2.4
-	github.com/pro-assistance/pro-assister v0.0.11
+	github.com/mmcloughlin/meow v0.0.0-20181112033425-871e50784daf // indirect
+	github.com/pro-assistance/pro-assister v0.0.13
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/uptrace/bun v1.0.20
 	github.com/uptrace/bun/dialect/sqlitedialect v1.0.17

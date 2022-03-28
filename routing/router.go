@@ -1,6 +1,8 @@
 package routing
 
 import (
+	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/pro-assistance/pro-assister/config"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -9,7 +11,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/candidateApplications"
 	"mdgkb/mdgkb-server/handlers/candidateExams"
 	"mdgkb/mdgkb-server/handlers/centers"
-	certificates "mdgkb/mdgkb-server/handlers/certificates"
+	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisions"
@@ -33,7 +35,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/newsSlides"
 	"mdgkb/mdgkb-server/handlers/pages"
 	"mdgkb/mdgkb-server/handlers/paidPrograms"
-	paidProgramsGroups "mdgkb/mdgkb-server/handlers/paidProgramsGroups"
+	"mdgkb/mdgkb-server/handlers/paidProgramsGroups"
 	"mdgkb/mdgkb-server/handlers/paidServices"
 	"mdgkb/mdgkb-server/handlers/partnerTypes"
 	"mdgkb/mdgkb-server/handlers/partners"
@@ -112,9 +114,6 @@ import (
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
 
-	"github.com/elastic/go-elasticsearch/v8"
-	"github.com/pro-assistance/pro-assister/config"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/go-redis/redis/v7"
@@ -124,16 +123,22 @@ import (
 )
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, config config.Config) {
-	localUploader := helperPack.NewLocalUploader(&config.UploadPath)
 	helper := helperPack.NewHelper(config)
+	m := middleware.CreateMiddleware(helper, db)
+
+	r.Use(m.CORSMiddleware())
+	//r.Use(m.CheckPermission())
+	r.Use(gin.Logger())
+
+	localUploader := helperPack.NewLocalUploader(&config.UploadPath)
 
 	r.Static("/static", "./static/")
 	authGroup := r.Group("/api/v1/auth")
 	authRouter.Init(authGroup.Group(""), auth.CreateHandler(db, helper))
 
 	api := r.Group("/api/v1")
-	m := middleware.CreateMiddleware(helper)
-	api.Use(m.Authentication())
+	//api.Use(m.Authentication())
+	api.Use(m.CORSMiddleware())
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(db, helper))
 	buildings.Init(api.Group("/buildings"), db, localUploader)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, helper))
@@ -141,7 +146,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 
 	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(db, helper))
 	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(db, helper))
-
+	//
 	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(db, helper))
 	newsRouter.Init(api.Group("/news"), news.CreateHandler(db, helper))
 	normativeDocumentTypes.Init(api.Group("/normative-document-types"), db, localUploader)
@@ -150,7 +155,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	tags.Init(api.Group("/tags"), db, localUploader)
 	usersRouter.Init(api.Group("/users"), users.CreateHandler(db, helper))
 	timetables.Init(api.Group("/timetables"), db)
-
+	//
 	educationalOraganizationRouter.Init(api.Group("/educational-organization"), educationalOrganization.CreateHandler(db, helper))
 	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(db, helper))
 	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(db, helper))

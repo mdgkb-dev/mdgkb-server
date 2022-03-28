@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
 )
@@ -11,11 +12,17 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
+	role, err := roles.CreateService(s.repository.getDB(), s.helper).GetDefaultRole()
+	if err != nil {
+		return nil, err
+	}
+	item.Role = role
+	item.RoleID = role.ID
 	err = users.CreateService(s.repository.getDB(), s.helper).Create(item)
 	if err != nil {
 		return nil, err
 	}
-	ts, err := s.helper.Token.CreateToken(item.ID.String())
+	ts, err := s.helper.Token.CreateToken(item.ID.String(), string(item.Role.Name))
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +43,7 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 		return nil, err
 	}
 	//fmt.Println(item.Password)
-	ts, err := s.helper.Token.CreateToken(findedUser.ID.String())
+	ts, err := s.helper.Token.CreateToken(findedUser.ID.String(), string(item.Role.Name))
 	if err != nil {
 		return nil, err
 	}
