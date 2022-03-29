@@ -37,7 +37,9 @@ func (r *Repository) getAll() (models.DpoCourses, error) {
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.DpoCourse, error) {
+func (r *Repository) get() (*models.DpoCourse, error) {
+
+	//whereStmt := fmt.Sprintf("dpo_courses.%s = %s", r.queryFilter.Col, r.queryFilter.Value)
 	item := models.DpoCourse{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
@@ -49,7 +51,7 @@ func (r *Repository) get(id *string) (*models.DpoCourse, error) {
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("Specialization").
-		Where("dpo_courses.id = ?", *id).Scan(r.ctx)
+		Where("dpo_courses.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
 	return &item, err
 }
 

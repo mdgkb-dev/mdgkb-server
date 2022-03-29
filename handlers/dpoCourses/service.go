@@ -1,7 +1,6 @@
 package dpoCourses
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/dpoCourseDates"
 	"mdgkb/mdgkb-server/handlers/dpoCourseSpecializations"
 	"mdgkb/mdgkb-server/handlers/dpoCourseTeachers"
@@ -14,8 +13,8 @@ func (s *Service) GetAll() (models.DpoCourses, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id *string) (*models.DpoCourse, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get() (*models.DpoCourse, error) {
+	item, err := s.repository.get()
 	if err != nil {
 		return nil, err
 	}
@@ -24,6 +23,7 @@ func (s *Service) Get(id *string) (*models.DpoCourse, error) {
 
 func (s *Service) Create(item *models.DpoCourse) error {
 	item.SetForeignKeys()
+	item.Slug = s.helper.MakeSlug(item.Name)
 	err := s.repository.create(item)
 	if err != nil {
 		return err
@@ -46,6 +46,7 @@ func (s *Service) Create(item *models.DpoCourse) error {
 
 func (s *Service) Update(item *models.DpoCourse) error {
 	item.SetForeignKeys()
+	item.Slug = s.helper.MakeSlug(item.Name)
 	err := s.repository.update(item)
 	if err != nil {
 		return err
@@ -58,17 +59,13 @@ func (s *Service) Update(item *models.DpoCourse) error {
 	}
 	err = dpoCourseTeachersService.DeleteMany(item.DpoCoursesTeachersForDelete)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
-	fmt.Println(1)
 	dpoCourseDatesService := dpoCourseDates.CreateService(s.repository.getDB())
 	err = dpoCourseDatesService.UpsertMany(item.DpoCoursesDates)
-	fmt.Println(2)
 	if err != nil {
 		return err
 	}
-	fmt.Println(3)
 	err = dpoCourseDatesService.DeleteMany(item.DpoCoursesDatesForDelete)
 	if err != nil {
 		return err

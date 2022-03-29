@@ -22,7 +22,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	GetAll() (models.DpoCourses, error)
-	Get(*string) (*models.DpoCourse, error)
+	Get() (*models.DpoCourse, error)
 	Create(*models.DpoCourse) error
 	Update(*models.DpoCourse) error
 	Delete(*string) error
@@ -32,7 +32,7 @@ type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	getAll() (models.DpoCourses, error)
-	get(*string) (*models.DpoCourse, error)
+	get() (*models.DpoCourse, error)
 	create(*models.DpoCourse) error
 	update(*models.DpoCourse) error
 	delete(*string) error

@@ -131,6 +131,7 @@ func createDpoCourseSchema() map[string]string {
 		"key":              "dpoCourse",
 		"id":               "id",
 		"name":             "name",
+		"slug":             "slug",
 		"isNmo":            "is_nmo",
 		"specializationId": "specialization_id",
 		"hours":            "hours",
