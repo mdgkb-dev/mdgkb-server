@@ -26,15 +26,15 @@ type User struct {
 	DoctorsUsers             DoctorsUsers    `bun:"rel:has-many" json:"doctorsUsers"`
 	DonorRulesUsersForDelete []uuid.UUID     `bun:"-" json:"donorRulesUsersForDelete"`
 
-	DpoApplication           *DpoApplication `bun:"rel:belongs-to" json:"dpoApplication"`
+	DpoApplication           *DpoApplication `bun:"rel:has-many" json:"dpoApplication"`
 	DpoApplicationID         uuid.NullUUID   `bun:"type:uuid,nullzero,default:NULL" json:"dpoApplicationId"`
 	DpoApplicationsForDelete []uuid.UUID     `bun:"-" json:"dpoApplicationsForDelete"`
 
-	PostgraduateApplication           *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
+	PostgraduateApplication           *PostgraduateApplication `bun:"rel:has-many" json:"postgraduateApplication"`
 	PostgraduateApplicationID         uuid.NullUUID            `bun:"type:uuid,nullzero,default:NULL" json:"postgraduateApplicationId"`
 	PostgraduateApplicationsForDelete []uuid.UUID              `bun:"-" json:"postgraduateApplicationForDelete"`
 
-	CandidateApplication           *CandidateApplication `bun:"rel:belongs-to" json:"candidateApplication"`
+	CandidateApplication           *CandidateApplication `bun:"rel:has-many" json:"candidateApplication"`
 	CandidateApplicationID         uuid.NullUUID         `bun:"type:uuid,nullzero,default:NULL" json:"candidateApplicationId"`
 	CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationForDelete"`
 }
