@@ -1,41 +1,49 @@
-package auth
+package postgraduateDocumentTypes
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
+
+	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
-	Register(c *gin.Context)
-	Login(c *gin.Context)
-	Logout(c *gin.Context)
-	RefreshToken(c *gin.Context)
-	RefreshPassword(c *gin.Context)
-	RestorePassword(c *gin.Context)
-	CheckUUID(c *gin.Context)
-	SaveClientPermissions(c *gin.Context)
+	GetAll(c *gin.Context)
+	Get(c *gin.Context)
+	Create(c *gin.Context)
+	Update(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
 type IService interface {
-	Register(user *models.User) (*models.TokensWithUser, error)
-	Login(user *models.User) (*models.TokensWithUser, error)
-	FindUserByEmail(email string) (*models.User, error)
-	GetUserByID(id string) (*models.User, error)
-	DropUUID(*models.User) error
-	UpdatePassword(*models.User) error
-	SaveClientPermissions([]string) error
+	GetAll() (models.PostgraduateDocumentTypes, error)
+	Get(string) (*models.PostgraduateDocumentType, error)
+	Create(*models.PostgraduateDocumentType) error
+	Update(item *models.PostgraduateDocumentType) error
+	Delete(string) error
+
+	UpsertMany(item PostgraduateDocumentTypesWithDelete) error
+	DeleteMany(uuid []uuid.UUID) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	saveClientPermissions([]string) error
+	create(*models.PostgraduateDocumentType) error
+	getAll() (models.PostgraduateDocumentTypes, error)
+	get(string) (*models.PostgraduateDocumentType, error)
+	update(item *models.PostgraduateDocumentType) error
+	delete(string) error
+
+	upsertMany(item models.PostgraduateDocumentTypes) error
+	deleteMany(uuid []uuid.UUID) error
 }
 
 type IFilesService interface {
-	//Upload(*gin.Context, *models.VacancyResponse, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.PostgraduateDocumentTypes, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -64,6 +72,11 @@ func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
+}
+
+func CreateService(db *bun.DB, helper *helper.Helper) *Service {
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor

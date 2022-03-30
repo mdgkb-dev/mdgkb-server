@@ -109,3 +109,16 @@ func (h *Handler) CheckUUID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, nil)
 }
+
+func (h *Handler) SaveClientPermissions(c *gin.Context) {
+	var paths []string
+	err := c.Bind(&paths)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.SaveClientPermissions(paths)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, err)
+}

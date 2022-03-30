@@ -17,14 +17,6 @@ type DocumentType struct {
 
 	DocumentTypeFields      DocumentTypeFields `bun:"rel:has-many" json:"documentFields"`
 	DocumentFieldsForDelete []uuid.UUID        `bun:"-" json:"documentFieldsForDelete"`
-
-	// SingleScan    bool      `json:"singleScan"`
-
-	// Scan   *FileInfo     `bun:"rel:belongs-to" json:"scan,omitempty"`
-	// ScanID uuid.NullUUID `bun:"type:uuid" json:"scanId"`
-
-	// Scans          FileInfos `bun:"rel:has-many" json:"scans"`
-	// ScansForDelete []string  `bun:"-" json:"scansForDelete"`
 }
 
 type DocumentTypes []*DocumentType

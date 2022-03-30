@@ -79,3 +79,7 @@ func (s *Service) UpdatePassword(item *models.User) error {
 	}
 	return users.CreateService(s.repository.getDB(), s.helper).UpdatePassword(item)
 }
+
+func (s *Service) SaveClientPermissions(paths []string) error {
+	return s.repository.saveClientPermissions(paths)
+}
