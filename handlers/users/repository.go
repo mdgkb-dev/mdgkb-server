@@ -2,9 +2,10 @@ package users
 
 import (
 	"fmt"
+	"mdgkb/mdgkb-server/models"
+
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -27,6 +28,9 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
 		Relation("DoctorsUsers.Doctor").
 		Relation("Children.Human").
+		Relation("DpoApplications").
+		Relation("PostgraduateApplications").
+		Relation("CandidateApplications").
 		Where("users.id = ?", id).
 		Scan(r.ctx)
 	return &item, err

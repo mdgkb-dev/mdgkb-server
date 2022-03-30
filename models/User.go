@@ -26,17 +26,14 @@ type User struct {
 	DoctorsUsers             DoctorsUsers    `bun:"rel:has-many" json:"doctorsUsers"`
 	DonorRulesUsersForDelete []uuid.UUID     `bun:"-" json:"donorRulesUsersForDelete"`
 
-	DpoApplication           *DpoApplication `bun:"rel:has-many" json:"dpoApplication"`
-	DpoApplicationID         uuid.NullUUID   `bun:"type:uuid,nullzero,default:NULL" json:"dpoApplicationId"`
+	DpoApplications          DpoApplications `bun:"rel:has-many" json:"dpoApplications"`
 	DpoApplicationsForDelete []uuid.UUID     `bun:"-" json:"dpoApplicationsForDelete"`
 
-	PostgraduateApplication           *PostgraduateApplication `bun:"rel:has-many" json:"postgraduateApplication"`
-	PostgraduateApplicationID         uuid.NullUUID            `bun:"type:uuid,nullzero,default:NULL" json:"postgraduateApplicationId"`
-	PostgraduateApplicationsForDelete []uuid.UUID              `bun:"-" json:"postgraduateApplicationForDelete"`
+	PostgraduateApplications          PostgraduateApplications `bun:"rel:has-many" json:"postgraduateApplications"`
+	PostgraduateApplicationsForDelete []uuid.UUID              `bun:"-" json:"postgraduateApplicationsForDelete"`
 
-	CandidateApplication           *CandidateApplication `bun:"rel:has-many" json:"candidateApplication"`
-	CandidateApplicationID         uuid.NullUUID         `bun:"type:uuid,nullzero,default:NULL" json:"candidateApplicationId"`
-	CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationForDelete"`
+	CandidateApplications          CandidateApplications `bun:"rel:has-many" json:"candidateApplications"`
+	CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationsForDelete"`
 }
 
 type Users []*User
@@ -62,15 +59,6 @@ func (i *User) SetForeignKeys() {
 	i.HumanID = i.Human.ID
 	if i.Role != nil {
 		i.RoleID = i.Role.ID
-	}
-	if i.DpoApplication != nil {
-		i.DpoApplicationID = i.DpoApplication.ID
-	}
-	if i.PostgraduateApplication != nil {
-		i.PostgraduateApplicationID = i.PostgraduateApplication.ID
-	}
-	if i.CandidateApplication != nil {
-		i.CandidateApplicationID = i.CandidateApplication.ID
 	}
 }
 
