@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/casbin/casbin/v2/model"
 	"github.com/casbin/casbin/v2/persist"
+	"github.com/google/uuid"
 	"github.com/mmcloughlin/meow"
 	"github.com/uptrace/bun"
-	"strconv"
 	"strings"
 )
 
@@ -16,10 +16,10 @@ const DefaultTableName = "casbin_rules"
 // CasbinRule represents a rule in Casbin.
 type CasbinRule struct {
 	bun.BaseModel `bun:"casbin_rules,alias:casbin_rule"`
-	ID            int64 `bun:"id,pk,autoincrement"`
+	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Ptype         string
 	V0            string
-	V1            string
+	V1            string `bun:unique`
 	V2            string
 	V3            string
 	V4            string
@@ -157,8 +157,8 @@ func savePolicyLine(ptype string, rule []string) *CasbinRule {
 	if l > 5 {
 		line.V5 = rule[5]
 	}
-	res, _ := strconv.Atoi(policyID(ptype, rule))
-	line.ID = int64(res)
+	//res, _ := strconv.Atoi(policyID(ptype, rule))
+	//line.ID = int64(res)
 
 	return line
 }
