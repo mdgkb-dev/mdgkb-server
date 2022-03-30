@@ -25,6 +25,18 @@ type User struct {
 	DonorRulesUsers          DonorRulesUsers `bun:"rel:has-many" json:"donorRulesUsers"`
 	DoctorsUsers             DoctorsUsers    `bun:"rel:has-many" json:"doctorsUsers"`
 	DonorRulesUsersForDelete []uuid.UUID     `bun:"-" json:"donorRulesUsersForDelete"`
+
+	DpoApplication           *DpoApplication `bun:"rel:belongs-to" json:"dpoApplication"`
+	DpoApplicationID         uuid.NullUUID   `bun:"type:uuid,nullzero,default:NULL" json:"dpoApplicationId"`
+	DpoApplicationsForDelete []uuid.UUID     `bun:"-" json:"dpoApplicationsForDelete"`
+
+	PostgraduateApplication           *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
+	PostgraduateApplicationID         uuid.NullUUID            `bun:"type:uuid,nullzero,default:NULL" json:"postgraduateApplicationId"`
+	PostgraduateApplicationsForDelete []uuid.UUID              `bun:"-" json:"postgraduateApplicationForDelete"`
+
+	CandidateApplication           *CandidateApplication `bun:"rel:belongs-to" json:"candidateApplication"`
+	CandidateApplicationID         uuid.NullUUID         `bun:"type:uuid,nullzero,default:NULL" json:"candidateApplicationId"`
+	CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationForDelete"`
 }
 
 type Users []*User
@@ -50,6 +62,15 @@ func (i *User) SetForeignKeys() {
 	i.HumanID = i.Human.ID
 	if i.Role != nil {
 		i.RoleID = i.Role.ID
+	}
+	if i.DpoApplication != nil {
+		i.DpoApplicationID = i.DpoApplication.ID
+	}
+	if i.PostgraduateApplication != nil {
+		i.PostgraduateApplicationID = i.PostgraduateApplication.ID
+	}
+	if i.CandidateApplication != nil {
+		i.CandidateApplicationID = i.CandidateApplication.ID
 	}
 }
 
