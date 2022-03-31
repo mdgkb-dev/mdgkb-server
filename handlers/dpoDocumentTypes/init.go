@@ -1,44 +1,49 @@
-package auth
+package dpoDocumentTypes
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
+
+	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
-	Register(c *gin.Context)
-	Login(c *gin.Context)
-	Logout(c *gin.Context)
-	RefreshToken(c *gin.Context)
-	RefreshPassword(c *gin.Context)
-	RestorePassword(c *gin.Context)
-	CheckUUID(c *gin.Context)
-	SavePathPermissions(c *gin.Context)
-	GetAllPathPermissions(c *gin.Context)
+	GetAll(c *gin.Context)
+	Get(c *gin.Context)
+	Create(c *gin.Context)
+	Update(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
 type IService interface {
-	Register(user *models.User) (*models.TokensWithUser, error)
-	Login(user *models.User) (*models.TokensWithUser, error)
-	FindUserByEmail(email string) (*models.User, error)
-	GetUserByID(id string) (*models.User, error)
-	DropUUID(*models.User) error
-	UpdatePassword(*models.User) error
-	SavePathPermissions(models.PathPermissions) error
-	GetAllPathPermissions() (models.PathPermissions, error)
+	GetAll() (models.DpoDocumentTypes, error)
+	Get(string) (*models.DpoDocumentType, error)
+	Create(*models.DpoDocumentType) error
+	Update(item *models.DpoDocumentType) error
+	Delete(string) error
+
+	UpsertMany(item DpoDocumentTypesWithDelete) error
+	DeleteMany(uuid []uuid.UUID) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	savePathPermissions(models.PathPermissions) error
-	getAllPathPermissions() (models.PathPermissions, error)
+	create(*models.DpoDocumentType) error
+	getAll() (models.DpoDocumentTypes, error)
+	get(string) (*models.DpoDocumentType, error)
+	update(item *models.DpoDocumentType) error
+	delete(string) error
+
+	upsertMany(item models.DpoDocumentTypes) error
+	deleteMany(uuid []uuid.UUID) error
 }
 
 type IFilesService interface {
-	//Upload(*gin.Context, *models.VacancyResponse, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.DpoDocumentTypes, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -67,6 +72,11 @@ func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
+}
+
+func CreateService(db *bun.DB, helper *helper.Helper) *Service {
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor

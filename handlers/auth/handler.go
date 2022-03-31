@@ -110,15 +110,23 @@ func (h *Handler) CheckUUID(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
 
-func (h *Handler) SaveClientPermissions(c *gin.Context) {
-	var paths []string
-	err := c.Bind(&paths)
+func (h *Handler) SavePathPermissions(c *gin.Context) {
+	var items models.PathPermissions
+	err := c.Bind(&items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.service.SaveClientPermissions(paths)
+	err = h.service.SavePathPermissions(items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, err)
+}
+
+func (h *Handler) GetAllPathPermissions(c *gin.Context) {
+	items, err := h.service.GetAllPathPermissions()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
 }
