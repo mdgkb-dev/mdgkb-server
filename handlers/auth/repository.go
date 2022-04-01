@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
@@ -48,4 +49,14 @@ func (r *Repository) getAllPathPermissions() (models.PathPermissions, error) {
 		Relation("PathPermissionsRoles").
 		Scan(r.ctx)
 	return items, err
+}
+
+func (r *Repository) checkPathPermissions(path string, roleID string) error {
+	err := r.db.NewSelect().
+		Model(&models.PathPermission{}).
+		Join("JOIN path_permissions_roles ppr on ppr.path_permission_id = path_permissions.id and ppr.role_id = ?", roleID).
+		Where("path_permissions.resource = ?", path).
+		Scan(r.ctx)
+	fmt.Println(err)
+	return err
 }

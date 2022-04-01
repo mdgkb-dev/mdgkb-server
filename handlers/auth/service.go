@@ -22,7 +22,7 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	ts, err := s.helper.Token.CreateToken(item.ID.String(), string(item.Role.Name))
+	ts, err := s.helper.Token.CreateToken(item.ID.String(), string(item.Role.Name), item.Role.ID.UUID.String())
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 		return nil, err
 	}
 	//fmt.Println(item.Password)
-	ts, err := s.helper.Token.CreateToken(findedUser.ID.String(), string(findedUser.Role.Name))
+	ts, err := s.helper.Token.CreateToken(findedUser.ID.String(), string(findedUser.Role.Name), findedUser.Role.ID.UUID.String())
 	if err != nil {
 		return nil, err
 	}
@@ -100,4 +100,8 @@ func (s *Service) UpsertManyPathPermissions(paths models.PathPermissions) error 
 
 func (s *Service) GetAllPathPermissions() (models.PathPermissions, error) {
 	return s.repository.getAllPathPermissions()
+}
+
+func (s *Service) CheckPathPermissions(path string, roleID string) error {
+	return s.repository.checkPathPermissions(path, roleID)
 }

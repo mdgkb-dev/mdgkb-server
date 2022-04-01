@@ -19,6 +19,7 @@ type IHandler interface {
 	CheckUUID(c *gin.Context)
 	SavePathPermissions(c *gin.Context)
 	GetAllPathPermissions(c *gin.Context)
+	CheckPathPermissions(c *gin.Context)
 }
 
 type IService interface {
@@ -30,6 +31,7 @@ type IService interface {
 	UpdatePassword(*models.User) error
 	UpsertManyPathPermissions(models.PathPermissions) error
 	GetAllPathPermissions() (models.PathPermissions, error)
+	CheckPathPermissions(path string, roleID string) error
 }
 
 type IRepository interface {
@@ -39,6 +41,7 @@ type IRepository interface {
 	deleteManyPathPermissions(idPool []uuid.UUID) (err error)
 	upsertManyPathPermissionsRoles(items models.PathPermissionsRoles) (err error)
 	deleteManyPathPermissionsRoles(idPool []uuid.UUID) (err error)
+	checkPathPermissions(path string, roleID string) error
 }
 
 type IFilesService interface {
