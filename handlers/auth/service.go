@@ -30,10 +30,6 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 }
 
 func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
-	//err := item.GenerateHashPassword()
-	//if err != nil {
-	//	return nil, err
-	//}
 	findedUser, err := users.CreateService(s.repository.getDB(), s.helper).GetByEmail(item.Email)
 	if err != nil {
 		return nil, err
@@ -42,17 +38,10 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 		fmt.Println(findedUser.CompareWithHashPassword(item.Password))
 		return nil, err
 	}
-	//fmt.Println(item.Password)
 	ts, err := s.helper.Token.CreateToken(findedUser.ID.String(), string(findedUser.Role.Name), findedUser.Role.ID.UUID.String())
 	if err != nil {
 		return nil, err
 	}
-
-	//saveErr := helpers.CreateAuth(item.ID.String(), ts, s.redis)
-	//if saveErr != nil {
-	//	return nil, err
-	//}
-
 	return &models.TokensWithUser{Tokens: ts, User: *findedUser}, nil
 }
 
@@ -81,6 +70,9 @@ func (s *Service) UpdatePassword(item *models.User) error {
 }
 
 func (s *Service) UpsertManyPathPermissions(paths models.PathPermissions) error {
+	if len(paths) == 0 {
+		return nil
+	}
 	err := s.repository.upsertManyPathPermissions(paths)
 	if err != nil {
 		return err
@@ -91,10 +83,13 @@ func (s *Service) UpsertManyPathPermissions(paths models.PathPermissions) error 
 			return err
 		}
 	}
-	err = s.repository.upsertManyPathPermissionsRoles(paths.GetPathPermissionsRoles())
-	if err != nil {
-		return err
+	if len(paths.GetPathPermissionsRoles()) > 0 {
+		err = s.repository.upsertManyPathPermissionsRoles(paths.GetPathPermissionsRoles())
+		if err != nil {
+			return err
+		}
 	}
+
 	return nil
 }
 
