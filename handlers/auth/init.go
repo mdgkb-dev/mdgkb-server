@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
@@ -27,14 +28,17 @@ type IService interface {
 	GetUserByID(id string) (*models.User, error)
 	DropUUID(*models.User) error
 	UpdatePassword(*models.User) error
-	SavePathPermissions(models.PathPermissions) error
+	UpsertManyPathPermissions(models.PathPermissions) error
 	GetAllPathPermissions() (models.PathPermissions, error)
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	savePathPermissions(models.PathPermissions) error
 	getAllPathPermissions() (models.PathPermissions, error)
+	upsertManyPathPermissions(items models.PathPermissions) (err error)
+	deleteManyPathPermissions(idPool []uuid.UUID) (err error)
+	upsertManyPathPermissionsRoles(items models.PathPermissionsRoles) (err error)
+	deleteManyPathPermissionsRoles(idPool []uuid.UUID) (err error)
 }
 
 type IFilesService interface {

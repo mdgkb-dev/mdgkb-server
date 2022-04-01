@@ -116,7 +116,7 @@ func (h *Handler) SavePathPermissions(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.service.SavePathPermissions(items)
+	err = h.service.UpsertManyPathPermissions(items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

@@ -18,7 +18,7 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/check-uuid/:user-id/:uuid", h.CheckUUID)
 	r.GET("/check-path-permissions")
 
-	r.GET("/path-permissions", h.SavePathPermissions)
-	r.PUT("/path-permissions", h.GetAllPathPermissions)
+	r.GET("/path-permissions", h.GetAllPathPermissions)
+	r.PUT("/path-permissions", h.SavePathPermissions)
 	//r.GET("/logout", handler.Logout)
 }

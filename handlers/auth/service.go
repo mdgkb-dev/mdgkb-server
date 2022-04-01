@@ -80,8 +80,22 @@ func (s *Service) UpdatePassword(item *models.User) error {
 	return users.CreateService(s.repository.getDB(), s.helper).UpdatePassword(item)
 }
 
-func (s *Service) SavePathPermissions(paths models.PathPermissions) error {
-	return s.repository.savePathPermissions(paths)
+func (s *Service) UpsertManyPathPermissions(paths models.PathPermissions) error {
+	err := s.repository.upsertManyPathPermissions(paths)
+	if err != nil {
+		return err
+	}
+	if len(paths.GetPathPermissionsRolesForDelete()) > 0 {
+		err = s.repository.deleteManyPathPermissionsRoles(paths.GetPathPermissionsRolesForDelete())
+		if err != nil {
+			return err
+		}
+	}
+	err = s.repository.upsertManyPathPermissionsRoles(paths.GetPathPermissionsRoles())
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) GetAllPathPermissions() (models.PathPermissions, error) {
