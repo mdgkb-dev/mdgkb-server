@@ -9,6 +9,7 @@ type PathPermission struct {
 	bun.BaseModel                 `bun:"path_permissions,alias:path_permissions"`
 	ID                            uuid.NullUUID        `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	Resource                      string               `json:"resource"`
+	GuestAllow                    bool                 `json:"guestAllow"`
 	PathPermissionsRoles          PathPermissionsRoles `bun:"rel:has-many" json:"pathPermissionsRoles"`
 	PathPermissionsRolesForDelete []uuid.UUID          `bun:"-" json:"pathPermissionsRolesForDelete"`
 }

@@ -9,6 +9,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
 	"mdgkb/mdgkb-server/handlers/candidateApplications"
+	"mdgkb/mdgkb-server/handlers/candidateDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/candidateExams"
 	"mdgkb/mdgkb-server/handlers/centers"
 	"mdgkb/mdgkb-server/handlers/certificates"
@@ -65,6 +66,7 @@ import (
 	"mdgkb/mdgkb-server/routing/buildings"
 	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackRequests"
 	candidateApplicationsRouter "mdgkb/mdgkb-server/routing/candidateApplications"
+	candidateDocumentTypesRouter "mdgkb/mdgkb-server/routing/candidateDocumentTypes"
 	candidateExamsRouter "mdgkb/mdgkb-server/routing/candidateExams"
 	centersRouter "mdgkb/mdgkb-server/routing/centers"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
@@ -207,5 +209,6 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	candidateExamsRouter.Init(api.Group("/candidate-exams"), candidateExams.CreateHandler(db, helper))
 	postgraduateDocumentTypesRouter.Init(api.Group("/postgraduate-document-types"), postgraduateDocumentTypes.CreateHandler(db, helper))
 	dpoDocumentTypesRouter.Init(api.Group("/dpo-document-types"), dpoDocumentTypes.CreateHandler(db, helper))
+	candidateDocumentTypesRouter.Init(api.Group("/candidate-document-types"), candidateDocumentTypes.CreateHandler(db, helper))
 	rolesRouter.Init(api.Group("/roles"), roles.CreateHandler(db, helper))
 }

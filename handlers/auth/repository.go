@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
@@ -13,8 +12,9 @@ func (r *Repository) getDB() *bun.DB {
 }
 
 func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT DO NOTHING").
+	_, err = r.db.NewInsert().On("CONFLICT DO UPDATE").
 		Model(&items).
+		Set("guest_allow = EXCLUDED.guest_allow").
 		Exec(r.ctx)
 	return err
 }
@@ -56,7 +56,9 @@ func (r *Repository) checkPathPermissions(path string, roleID string) error {
 		Model(&models.PathPermission{}).
 		Join("JOIN path_permissions_roles ppr on ppr.path_permission_id = path_permissions.id and ppr.role_id = ?", roleID).
 		Where("path_permissions.resource = ?", path).
+		Union(r.db.NewSelect().
+			Model(&models.PathPermission{}).Where("path_permissions.guest_allow = true")).
 		Scan(r.ctx)
-	fmt.Println(err)
+
 	return err
 }
