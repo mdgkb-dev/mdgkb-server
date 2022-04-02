@@ -4,6 +4,7 @@ CREATE TABLE sub_menus
     name varchar,
     description varchar,
     color varchar,
+    hide boolean,
     link VARCHAR,
     page_id uuid  ,
     sub_menu_order int not null default 0,

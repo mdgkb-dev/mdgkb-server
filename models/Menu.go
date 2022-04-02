@@ -19,6 +19,7 @@ type Menu struct {
 	PageId        uuid.NullUUID `bun:"type:uuid" json:"pageId"`
 	Icon          *FileInfo     `bun:"rel:belongs-to" json:"icon"`
 	IconId        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
+	Hide          bool          `json:"hide"`
 
 	SubMenus          SubMenus    `bun:"rel:has-many" json:"subMenus"`
 	SubMenusForDelete []uuid.UUID `bun:"-" json:"subMenusForDelete"`

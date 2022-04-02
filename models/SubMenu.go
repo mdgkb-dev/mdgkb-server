@@ -15,6 +15,7 @@ type SubMenu struct {
 	Color         string        `json:"color"`
 	Link          string        `json:"link"`
 	Menu          *Menu         `bun:"rel:belongs-to" json:"menus"`
+	Hide          bool          `json:"hide"`
 	MenuId        uuid.UUID     `bun:"type:uuid" json:"menuId"`
 	Order         uint          `bun:"sub_menu_order" json:"order"`
 	Page          *Page         `bun:"rel:belongs-to" json:"page"`
