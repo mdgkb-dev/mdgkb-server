@@ -2,6 +2,7 @@ package human
 
 import (
 	"mdgkb/mdgkb-server/handlers/contactInfo"
+	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -37,7 +38,11 @@ func (s *Service) Update(item *models.Human) error {
 	if item == nil {
 		return nil
 	}
-	err := contactInfo.CreateService(s.repository.getDB()).Upsert(item.ContactInfo)
+	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.Photo)
+	if err != nil {
+		return err
+	}
+	err = contactInfo.CreateService(s.repository.getDB()).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
@@ -54,7 +59,10 @@ func (s *Service) UpsertMany(items models.Humans) error {
 	if err != nil {
 		return err
 	}
-	//
+	err = fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.GetPhotos())
+	if err != nil {
+		return err
+	}
 	items.SetForeignKeys()
 	for i := range items {
 		items[i].Slug = s.helper.MakeSlug(items[i].GetFullName())
@@ -67,6 +75,10 @@ func (s *Service) Upsert(item *models.Human) error {
 		return nil
 	}
 	err := contactInfo.CreateService(s.repository.getDB()).Upsert(item.ContactInfo)
+	if err != nil {
+		return err
+	}
+	err = fileInfos.CreateService(s.repository.getDB()).Upsert(item.Photo)
 	if err != nil {
 		return err
 	}

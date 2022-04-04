@@ -22,7 +22,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 	item := models.User{}
 	err := r.db.NewSelect().
 		Model(&item).
-		Relation("Human").
+		Relation("Human.Photo").
 		//Relation("Questions").
 		Relation("DonorRulesUsers.DonorRule.Image").
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
@@ -39,7 +39,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 func (r *Repository) getByEmail(id string) (*models.User, error) {
 	item := models.User{}
 	err := r.db.NewSelect().Model(&item).
-		Relation("Human").
+		Relation("Human.Photo").
 		//Relation("Questions").
 		Relation("DonorRulesUsers.DonorRule.Image").
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
@@ -61,12 +61,14 @@ func (r *Repository) emailExists(email string) (bool, error) {
 }
 
 func (r *Repository) update(item *models.User) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db.NewUpdate().Model(item).OmitZero().
+		Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) upsert(item *models.User) (err error) {
 	_, err = r.db.NewUpdate().Model(item).
+		OmitZero().
 		Where("id = ?", item.ID).
 		Exec(r.ctx)
 	return err

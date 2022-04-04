@@ -35,6 +35,10 @@ func (s *Service) Update(item *models.User) error {
 		return err
 	}
 	item.SetForeignKeys()
+	//item.UUID.UUID, err = uuid.NewUUID()
+	//if err != nil {
+	//	return err
+	//}
 	err = s.repository.update(item)
 	if err != nil {
 		return err
@@ -58,6 +62,10 @@ func (s *Service) Upsert(item *models.User) error {
 		return err
 	}
 	item.SetForeignKeys()
+	//item.UUID.UUID, err = uuid.NewUUID()
+	//if err != nil {
+	//	return err
+	//}
 	err = s.repository.update(item)
 	if err != nil {
 		return err
