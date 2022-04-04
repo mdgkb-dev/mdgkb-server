@@ -53,8 +53,9 @@ func (r *Repository) get(id *string) (*models.PostgraduateApplication, error) {
 
 func (r *Repository) emailExists(email string, courseId string) (bool, error) {
 	exists, err := r.db.NewSelect().Model((*models.PostgraduateApplication)(nil)).
-	Join("JOIN users ON users.email = ?", email).
-	Where("postgraduate_applications.postgraduate_course_id = ?", courseId).Exists(r.ctx)
+		Join("JOIN form_values ON postgraduate_applications.form_value_id = form_values.id").
+		Join("JOIN users ON users.id = form_values.user_id and users.email = ?", email).
+		Where("postgraduate_applications.postgraduate_course_id = ?", courseId).Exists(r.ctx)
 	return exists, err
 }
 
