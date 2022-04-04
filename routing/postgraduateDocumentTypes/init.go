@@ -1,7 +1,7 @@
 package postgraduateDocumentTypes
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/postgraduateApplications"
+	handler "mdgkb/mdgkb-server/handlers/postgraduateDocumentTypes"
 
 	"github.com/gin-gonic/gin"
 
