@@ -15,6 +15,7 @@ import (
 type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
+	EmailExists(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
@@ -24,6 +25,7 @@ type IService interface {
 	setQueryFilter(*gin.Context) error
 	GetAll() (models.PostgraduateApplications, error)
 	Get(*string) (*models.PostgraduateApplication, error)
+	EmailExists(string, string) (bool, error)
 	Create(*models.PostgraduateApplication) error
 	Update(*models.PostgraduateApplication) error
 	Delete(*string) error
@@ -34,6 +36,7 @@ type IRepository interface {
 	getDB() *bun.DB
 	getAll() (models.PostgraduateApplications, error)
 	get(*string) (*models.PostgraduateApplication, error)
+	emailExists(string, string) (bool, error)
 	create(*models.PostgraduateApplication) error
 	update(*models.PostgraduateApplication) error
 	delete(*string) error

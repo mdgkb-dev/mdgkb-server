@@ -2,7 +2,7 @@ package candidateExams
 
 import (
 	"github.com/gin-gonic/gin"
-	handler "mdgkb/mdgkb-server/handlers/candidateApplications"
+	handler "mdgkb/mdgkb-server/handlers/candidateExams"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )

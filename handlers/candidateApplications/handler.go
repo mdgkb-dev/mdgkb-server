@@ -28,6 +28,14 @@ func (h *Handler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
+func (h *Handler) EmailExists(c *gin.Context) {
+	item, err := h.service.EmailExists(c.Param("email"), c.Param("examId"))
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}
+
 func (h *Handler) Create(c *gin.Context) {
 	var item models.CandidateApplication
 	files, err := h.helper.HTTP.GetForm(c, &item)

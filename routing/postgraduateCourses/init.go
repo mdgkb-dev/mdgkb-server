@@ -1,7 +1,7 @@
-package postgraduateApplications
+package postgraduateCourses
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/postgraduateApplications"
+	handler "mdgkb/mdgkb-server/handlers/postgraduateCourses"
 
 	"github.com/gin-gonic/gin"
 

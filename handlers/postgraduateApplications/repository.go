@@ -25,9 +25,9 @@ func (r *Repository) getAll() (models.PostgraduateApplications, error) {
 	query := r.db.NewSelect().
 		Model(&items).
 		Relation("PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
-		Relation("FieldValues.File").
-		Relation("FieldValues.Field").
-		Relation("User.Human")
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field").
+		Relation("FormValue.User.Human")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -40,11 +40,22 @@ func (r *Repository) get(id *string) (*models.PostgraduateApplication, error) {
 	item := models.PostgraduateApplication{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
-		Relation("User.Human").
-		Relation("FieldValues.File").
-		Relation("FieldValues.Field.ValueType").
+		Relation("PostgraduateCourse.FormPattern.Fields.File").
+		Relation("PostgraduateCourse.FormPattern.Fields.ValueType").
+		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields.File").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
 		Where("postgraduate_applications.id = ?", *id).Scan(r.ctx)
 	return &item, err
+}
+
+func (r *Repository) emailExists(email string, courseId string) (bool, error) {
+	exists, err := r.db.NewSelect().Model((*models.PostgraduateApplication)(nil)).
+	Join("JOIN users ON users.email = ?", email).
+	Where("postgraduate_applications.postgraduate_course_id = ?", courseId).Exists(r.ctx)
+	return exists, err
 }
 
 func (r *Repository) create(item *models.PostgraduateApplication) (err error) {
