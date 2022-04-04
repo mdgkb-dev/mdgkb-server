@@ -1,8 +1,7 @@
 package dpoApplications
 
 import (
-	"mdgkb/mdgkb-server/handlers/fieldsValues"
-	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +28,7 @@ func (s *Service) EmailExists(email string, courseId string) (bool, error) {
 }
 
 func (s *Service) Create(item *models.DpoApplication) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -38,16 +37,11 @@ func (s *Service) Create(item *models.DpoApplication) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
 func (s *Service) Update(item *models.DpoApplication) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -57,16 +51,6 @@ func (s *Service) Update(item *models.DpoApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	if len(item.FieldValuesForDelete) > 0 {
-		err = fieldsValues.CreateService(s.repository.getDB()).DeleteMany(item.FieldValuesForDelete)
-		if err != nil {
-			return err
-		}
-	}
-	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 

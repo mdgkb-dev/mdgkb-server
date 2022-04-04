@@ -2,8 +2,8 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/uptrace/bun"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/uptrace/bun"
 )
 
 type Field struct {
@@ -20,6 +20,8 @@ type Field struct {
 	ValueTypeID   uuid.UUID     `bun:"type:uuid" json:"valueTypeId"`
 	File          *FileInfo     `bun:"rel:belongs-to" json:"file"`
 	FileID        uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"fileId"`
+	FormValue     *FormValue    `bun:"rel:belongs-to" json:"formValue"`
+	FormValueID   uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
 }
 
 type Fields []*Field
@@ -29,6 +31,7 @@ func (item *Field) SetForeignKeys() {
 	item.FileID = item.File.ID
 	item.FormID = item.Form.ID
 	item.FormPatternID = item.FormPattern.ID
+	item.FormValueID = item.FormValue.ID
 }
 
 func (item *Field) SetFilePath(fileID *string) *string {

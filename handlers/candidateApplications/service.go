@@ -2,8 +2,7 @@ package candidateApplications
 
 import (
 	"mdgkb/mdgkb-server/handlers/candidateApplicationSpecializations"
-	"mdgkb/mdgkb-server/handlers/fieldsValues"
-	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -21,8 +20,16 @@ func (s *Service) Get(id *string) (*models.CandidateApplication, error) {
 	return item, nil
 }
 
+func (s *Service) EmailExists(email string, examId string) (bool, error) {
+	item, err := s.repository.emailExists(email, examId)
+	if err != nil {
+		return item, err
+	}
+	return item, nil
+}
+
 func (s *Service) Create(item *models.CandidateApplication) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -32,10 +39,6 @@ func (s *Service) Create(item *models.CandidateApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
-	if err != nil {
-		return err
-	}
 	err = candidateApplicationSpecializations.CreateService(s.repository.getDB()).UpsertMany(item.CandidateApplicationSpecializations)
 	if err != nil {
 		return err
@@ -44,15 +47,15 @@ func (s *Service) Create(item *models.CandidateApplication) error {
 }
 
 func (s *Service) Update(item *models.CandidateApplication) error {
-	err := s.repository.update(item)
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	if err != nil {
+		return err
+	}
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}
 	item.SetIdForChildren()
-	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
-	if err != nil {
-		return err
-	}
 	candidateApplicationSpecializationsService := candidateApplicationSpecializations.CreateService(s.repository.getDB())
 	err = candidateApplicationSpecializationsService.UpsertMany(item.CandidateApplicationSpecializations)
 	if err != nil {

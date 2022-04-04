@@ -22,17 +22,11 @@ type FieldValue struct {
 	Field   *Field    `bun:"rel:belongs-to" json:"field"`
 	FieldID uuid.UUID `bun:"type:uuid" json:"fieldId"`
 
+	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
+	FormValueID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
+
 	EventApplication   *EventApplication `bun:"rel:belongs-to" json:"eventApplication"`
 	EventApplicationID uuid.NullUUID     `bun:"type:uuid,nullzero,default:NULL" json:"eventApplicationId"`
-
-	DpoApplication   *DpoApplication `bun:"rel:belongs-to" json:"dpoApplication"`
-	DpoApplicationID uuid.NullUUID   `bun:"type:uuid,nullzero,default:NULL" json:"dpoApplicationId"`
-
-	PostgraduateApplication   *PostgraduateApplication `bun:"rel:belongs-to" json:"postgraduateApplication"`
-	PostgraduateApplicationID uuid.NullUUID            `bun:"type:uuid,nullzero,default:NULL" json:"postgraduateApplicationId"`
-
-	CandidateApplication   *CandidateApplication `bun:"rel:belongs-to" json:"candidateApplication"`
-	CandidateApplicationID uuid.NullUUID         `bun:"type:uuid,nullzero,default:NULL" json:"candidateApplicationId"`
 
 	File   *FileInfo     `bun:"rel:belongs-to" json:"file"`
 	FileID uuid.NullUUID `json:"fileId"`
@@ -108,20 +102,19 @@ func (items FieldValues) SetForeignKeys() {
 		if items[i].File != nil {
 			items[i].FileID = items[i].File.ID
 		}
-		if items[i].DpoApplication != nil {
-			items[i].DpoApplicationID = items[i].DpoApplication.ID
-		}
 		if items[i].EventApplication != nil {
 			items[i].EventApplicationID = items[i].EventApplication.ID
-		}
-		if items[i].PostgraduateApplication != nil {
-			items[i].PostgraduateApplicationID = items[i].PostgraduateApplication.ID
-		}
-		if items[i].CandidateApplication != nil {
-			items[i].CandidateApplicationID = items[i].CandidateApplication.ID
 		}
 		if items[i].Field != nil {
 			items[i].FieldID = items[i].Field.ID
 		}
 	}
+}
+
+func (items FieldValues) GetFields() Fields {
+	itemsForGet := make(Fields, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.Field)
+	}
+	return itemsForGet
 }

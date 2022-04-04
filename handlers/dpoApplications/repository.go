@@ -24,9 +24,9 @@ func (r *Repository) getAll() (models.DpoApplications, error) {
 	query := r.db.NewSelect().
 		Model(&items).
 		Relation("DpoCourse").
-		Relation("FieldValues.File").
-		Relation("FieldValues.Field").
-		Relation("User.Human")
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field").
+		Relation("FormValue.User.Human")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -40,9 +40,11 @@ func (r *Repository) get(id *string) (*models.DpoApplication, error) {
 	err := r.db.NewSelect().Model(&item).
 		Relation("DpoCourse.FormPattern.Fields.File").
 		Relation("DpoCourse.FormPattern.Fields.ValueType").
-		Relation("User.Human").
-		Relation("FieldValues.File").
-		Relation("FieldValues.Field.ValueType").
+		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields.File").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
 		Where("dpo_applications_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

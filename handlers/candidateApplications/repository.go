@@ -24,8 +24,9 @@ func (r *Repository) getAll() (models.CandidateApplications, error) {
 	query := r.db.NewSelect().
 		Model(&items).
 		Relation("CandidateExam").
-		Relation("FieldValues.File").
-		Relation("FieldValues.Field").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field").
+		Relation("FormValue.User.Human").
 		Relation("CandidateApplicationSpecializations.Specialization")
 
 	r.queryFilter.Paginator.CreatePagination(query)
@@ -41,11 +42,20 @@ func (r *Repository) get(id *string) (*models.CandidateApplication, error) {
 		Relation("CandidateApplicationSpecializations.Specialization").
 		Relation("CandidateExam.FormPattern.Fields.File").
 		Relation("CandidateExam.FormPattern.Fields.ValueType").
-		Relation("User.Human").
-		Relation("FieldValues.File").
-		Relation("FieldValues.Field.ValueType").
+		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields.File").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
 		Where("candidate_applications.id = ?", *id).Scan(r.ctx)
 	return &item, err
+}
+
+func (r *Repository) emailExists(email string, examId string) (bool, error) {
+	exists, err := r.db.NewSelect().Model((*models.CandidateApplication)(nil)).
+	Join("JOIN users ON users.email = ?", email).
+	Where("candidate_applications.candidate_exam_id = ?", examId).Exists(r.ctx)
+	return exists, err
 }
 
 func (r *Repository) create(item *models.CandidateApplication) (err error) {
