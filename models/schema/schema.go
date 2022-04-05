@@ -127,7 +127,7 @@ func createTeacherSchema() map[string]string {
 
 func createDpoCourseSchema() map[string]string {
 	return map[string]string{
-		"tableName":        "dpo_courses",
+		"tableName":        "dpo_courses_view",
 		"key":              "dpoCourse",
 		"id":               "id",
 		"name":             "name",
@@ -141,6 +141,8 @@ func createDpoCourseSchema() map[string]string {
 		"teacherId":        "teacher_id",
 		"listeners":        "listeners",
 		"start":            "dpo_course_start",
+		"minStart":         "min_dpo_course_start",
+		"minEnd":           "min_dpo_course_end",
 	}
 }
 
