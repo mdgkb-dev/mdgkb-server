@@ -12,6 +12,7 @@ type PostgraduateCourse struct {
 	Description                                 string                             `json:"description"`
 	EducationForm                               string                             `json:"educationForm"`
 	Years                                       int                                `json:"years"`
+	Slug                                        string                             `bun:",scanonly" json:"slug"`
 	PostgraduateCoursesSpecializations          PostgraduateCoursesSpecializations `bun:"rel:has-many" json:"postgraduateCoursesSpecializations"`
 	PostgraduateCoursesSpecializationsForDelete []uuid.UUID                        `bun:"-" json:"postgraduateCoursesSpecializationsForDelete"`
 	PostgraduateCoursesTeachers                 PostgraduateCoursesTeachers        `bun:"rel:has-many" json:"postgraduateCoursesTeachers"`

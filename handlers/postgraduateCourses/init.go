@@ -23,7 +23,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	GetAll() (models.PostgraduateCourses, error)
-	Get(*string) (*models.PostgraduateCourse, error)
+	Get() (*models.PostgraduateCourse, error)
 	Create(*models.PostgraduateCourse) error
 	Update(*models.PostgraduateCourse) error
 	Delete(*string) error
@@ -33,7 +33,7 @@ type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	getAll() (models.PostgraduateCourses, error)
-	get(*string) (*models.PostgraduateCourse, error)
+	get() (*models.PostgraduateCourse, error)
 	create(*models.PostgraduateCourse) error
 	update(*models.PostgraduateCourse) error
 	delete(*string) error

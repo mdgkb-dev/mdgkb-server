@@ -15,8 +15,8 @@ func (s *Service) GetAll() (models.PostgraduateCourses, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id *string) (*models.PostgraduateCourse, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get() (*models.PostgraduateCourse, error) {
+	item, err := s.repository.get()
 	if err != nil {
 		return nil, err
 	}

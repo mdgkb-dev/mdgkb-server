@@ -37,7 +37,7 @@ func (r *Repository) getAll() (models.PostgraduateCourses, error) {
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.PostgraduateCourse, error) {
+func (r *Repository) get() (*models.PostgraduateCourse, error) {
 	item := models.PostgraduateCourse{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("PostgraduateCoursesTeachers.Teacher.Doctor.Human").
@@ -53,7 +53,7 @@ func (r *Repository) get(id *string) (*models.PostgraduateCourse, error) {
 		}).
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
-		Where("postgraduate_courses_view.id = ?", *id).Scan(r.ctx)
+		Where("postgraduate_courses_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
 	return &item, err
 }
 
