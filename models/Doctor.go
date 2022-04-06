@@ -2,8 +2,8 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/uptrace/bun"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/uptrace/bun"
 	"time"
 )
 
@@ -26,7 +26,7 @@ type Doctor struct {
 	MedicalProfileID  uuid.UUID       `bun:"type:uuid" json:"medicalProfileId"`
 	Order             int             `bun:"item_order" json:"order"'`
 	FileInfo          *FileInfo       `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoId        uuid.UUID       `bun:"type:uuid" json:"fileInfoId"`
+	FileInfoID        uuid.NullUUID   `bun:"type:uuid" json:"fileInfoId"`
 	PhotoMini         *FileInfo       `bun:"rel:belongs-to" json:"photoMini"`
 	PhotoMiniID       uuid.UUID       `bun:"type:uuid" json:"photoMiniId"`
 	DoctorComments    DoctorComments  `bun:"rel:has-many" json:"doctorComments"`
@@ -79,7 +79,7 @@ func (item *Doctor) SetFilePath(fileID *string) *string {
 
 func (item *Doctor) SetForeignKeys() {
 	if item.FileInfo != nil {
-		item.FileInfoId = item.FileInfo.ID.UUID
+		item.FileInfoID = item.FileInfo.ID
 	}
 	if item.Human != nil {
 		item.HumanID = item.Human.ID

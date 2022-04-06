@@ -30,6 +30,7 @@ func (r *Repository) upsertMany(items models.PostgraduateCoursesSpecializations)
 		Model(&items).
 		Set("postgraduate_course_id = EXCLUDED.postgraduate_course_id").
 		Set("specialization_id = EXCLUDED.specialization_id").
+		Set("main = EXCLUDED.main").
 		Exec(r.ctx)
 	return err
 }

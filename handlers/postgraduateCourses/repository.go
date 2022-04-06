@@ -53,7 +53,7 @@ func (r *Repository) get(id *string) (*models.PostgraduateCourse, error) {
 		}).
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
-		Where("postgraduate_courses.id = ?", *id).Scan(r.ctx)
+		Where("postgraduate_courses_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 

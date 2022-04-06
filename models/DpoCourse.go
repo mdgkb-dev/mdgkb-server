@@ -18,7 +18,7 @@ type DpoCourse struct {
 	Listeners                          int                       `json:"listeners"`
 	Hours                              int                       `json:"hours"`
 	Cost                               int                       `json:"cost"`
-	MinStart                           time.Time                 `bun:"min_dpo_course_start" json:"minStart"`
+	MinStart                           time.Time                 `bun:"min_dpo_course_start,scanonly" json:"minStart"`
 	Specialization                     *Specialization           `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID                   uuid.NullUUID             `bun:"type:uuid" json:"specializationId,omitempty"`
 	DpoCoursesSpecializations          DpoCoursesSpecializations `bun:"rel:has-many" json:"dpoCoursesSpecializations"`

@@ -11,7 +11,7 @@ require (
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/google/uuid v1.3.0
 	github.com/mmcloughlin/meow v0.0.0-20181112033425-871e50784daf
-	github.com/pro-assistance/pro-assister v0.0.22
+	github.com/pro-assistance/pro-assister v0.0.23
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/uptrace/bun v1.0.20
 	github.com/uptrace/bun/dialect/sqlitedialect v1.0.17

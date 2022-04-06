@@ -36,6 +36,7 @@ func CreateSchema() Schema {
 		Vacancy:                 createVacancySchema(),
 		DpoCourseSpecialization: createDpoCourseSpecializationSchema(),
 		DpoApplication:          createDpoApplicationsSchema(),
+		PostgraduateCourse:      createPostgraduateCourseSchema(),
 	}
 }
 
@@ -132,6 +133,7 @@ func createDpoCourseSchema() map[string]string {
 		"id":               "id",
 		"name":             "name",
 		"slug":             "slug",
+		"cost":             "cost",
 		"isNmo":            "is_nmo",
 		"specializationId": "specialization_id",
 		"hours":            "hours",
@@ -216,17 +218,14 @@ func createVacancySchema() map[string]string {
 	}
 }
 
-func createAppointmentSchema() map[string]string {
+func createPostgraduateCourseSchema() map[string]string {
 	return map[string]string{
-		"tableName":        "appointments",
-		"time":             "appointment_time",
-		"clinicName":       "clinic_name",
-		"specializationId": "specialization_id",
-		"doctorId":         "doctor_id",
-		"oms":              "oms",
-		"mrt":              "mrt",
-		"mrtZone":          "mrtZone",
-		"value":            "id",
-		"sortColumn":       "title",
+		"tableName":     "postgraduate_courses_view",
+		"value":         "id",
+		"key":           "postgraduateCourse",
+		"name":          "name",
+		"code":          "code",
+		"years":         "years",
+		"educationForm": "education_form",
 	}
 }

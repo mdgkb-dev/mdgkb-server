@@ -10,8 +10,8 @@ type EducationalManager struct {
 	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 	DoctorID      uuid.UUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor   `bun:"rel:belongs-to" json:"doctor"`
-	Role          *string   `json:"role"`
-	Order         *int      `bun:"educational_manager_order" json:"order"`
+	Role          string    `json:"role"`
+	Order         int       `bun:"educational_manager_order" json:"order"`
 }
 
 type EducationalManagers []*EducationalManager

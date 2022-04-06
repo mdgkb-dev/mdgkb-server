@@ -12,6 +12,7 @@ type PostgraduateCourseSpecialization struct {
 	PostgraduateCourseID uuid.NullUUID       `bun:"type:uuid" json:"postgraduateCourseId"`
 	Specialization       *Specialization     `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID     uuid.UUID           `bun:"type:uuid" json:"specializationId"`
+	Main                 bool                `json:"main"`
 }
 
 type PostgraduateCoursesSpecializations []*PostgraduateCourseSpecialization
