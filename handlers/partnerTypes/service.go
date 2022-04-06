@@ -21,7 +21,7 @@ func (s *Service) Get(id string) (*models.PartnerType, error) {
 }
 
 func (s *Service) Create(item *models.PartnerType) error {
-	item.Slug = s.helper.MakeSlug(item.Name)
+	item.Slug = s.helper.Util.MakeSlug(item.Name)
 	err := s.repository.create(item)
 	if err != nil {
 		return err

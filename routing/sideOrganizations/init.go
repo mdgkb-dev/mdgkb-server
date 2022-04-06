@@ -1,7 +1,6 @@
 package sideOrganizations
 
 import (
-	"github.com/pro-assistance/pro-assister/helper"
 	handler "mdgkb/mdgkb-server/handlers/sideOrganizations"
 
 	"github.com/gin-gonic/gin"
@@ -11,8 +10,8 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB, uploader helper.Uploader) {
-	var h = handler.NewHandler(handler.NewRepository(db), uploader)
+func Init(r *gin.RouterGroup, db *bun.DB) {
+	var h = handler.NewHandler(handler.NewRepository(db))
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
 	r.POST("/", h.Create)

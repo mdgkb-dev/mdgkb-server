@@ -72,7 +72,7 @@ func (s *Service) Init() error {
 		return err
 	}
 	doctorsWithTimetable.InitAppointmentsSlots()
-	days := s.helper.GetMonthDays()
+	days := s.helper.Util.GetMonthDays()
 	appointmentsToInsert := doctorsWithTimetable.InitAppointments(days)
 	err = s.repository.upsertMany(appointmentsToInsert)
 	if err != nil {

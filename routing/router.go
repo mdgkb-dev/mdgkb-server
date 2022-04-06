@@ -93,8 +93,6 @@ import (
 	metaRouter "mdgkb/mdgkb-server/routing/meta"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
 	newsSlidesRouter "mdgkb/mdgkb-server/routing/newsSlides"
-	"mdgkb/mdgkb-server/routing/normativeDocumentTypes"
-	"mdgkb/mdgkb-server/routing/normativeDocuments"
 	pagesRouter "mdgkb/mdgkb-server/routing/pages"
 	paidProgramsRouter "mdgkb/mdgkb-server/routing/paidPrograms"
 	paidProgramsGroupsRouter "mdgkb/mdgkb-server/routing/paidProgramsGroups"
@@ -138,8 +136,6 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	//r.Use(m.CheckPermission())
 	r.Use(gin.Logger())
 
-	localUploader := helperPack.NewLocalUploader(&config.UploadPath)
-
 	r.Static("/static", "./static/")
 	authGroup := r.Group("/api/v1/auth")
 	authRouter.Init(authGroup.Group(""), auth.CreateHandler(db, helper))
@@ -148,22 +144,17 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	//api.Use(m.Authentication())
 	api.Use(m.CORSMiddleware())
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(db, helper))
-	buildings.Init(api.Group("/buildings"), db, localUploader)
+	buildings.Init(api.Group("/buildings"), db)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, helper))
 	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, helper)
-
 	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(db, helper))
 	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(db, helper))
-	//
 	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(db, helper))
 	newsRouter.Init(api.Group("/news"), news.CreateHandler(db, helper))
-	normativeDocumentTypes.Init(api.Group("/normative-document-types"), db, localUploader)
-	normativeDocuments.Init(api.Group("/normative-documents"), db, localUploader)
-	sideOrganizations.Init(api.Group("/side-organizations"), db, localUploader)
-	tags.Init(api.Group("/tags"), db, localUploader)
+	sideOrganizations.Init(api.Group("/side-organizations"), db)
+	tags.Init(api.Group("/tags"), db)
 	usersRouter.Init(api.Group("/users"), users.CreateHandler(db, helper))
 	timetables.Init(api.Group("/timetables"), db)
-	//
 	educationalOraganizationRouter.Init(api.Group("/educational-organization"), educationalOrganization.CreateHandler(db, helper))
 	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(db, helper))
 	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(db, helper))

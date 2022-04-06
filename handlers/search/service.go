@@ -12,7 +12,7 @@ func (s *Service) SearchMain(searchModel *models.SearchModel) (err error) {
 	if err != nil {
 		return err
 	}
-	search := s.helper.TranslitToRu(searchModel.Query)
+	search := s.helper.Util.TranslitToRu(searchModel.Query)
 	for i := range searchModel.SearchGroups {
 		err = s.repository.search(searchModel.SearchGroups[i], search)
 		if err != nil {
@@ -28,7 +28,7 @@ func (s *Service) SearchObjects(searchModel *models.SearchModel) (err error) {
 	if err != nil {
 		return err
 	}
-	search := s.helper.TranslitToRu(searchModel.Query)
+	search := s.helper.Util.TranslitToRu(searchModel.Query)
 	err = s.repository.search(searchModel.SearchGroup, search)
 	if err != nil {
 		return err
@@ -41,7 +41,7 @@ func (s *Service) SearchGroups() (models.SearchGroups, error) {
 }
 
 func (s *Service) Search(model *models.SearchModel) error {
-	model.TranslitQuery = s.helper.TranslitToRu(model.Query)
+	model.TranslitQuery = s.helper.Util.TranslitToRu(model.Query)
 	if !s.helper.Search.On {
 		return dummy(model)
 	}

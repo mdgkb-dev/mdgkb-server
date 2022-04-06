@@ -191,7 +191,7 @@ func (s *Service) CreateSlugs() error {
 	}
 	humans := make(models.Humans, 0)
 	//for i := range items {
-	//	items[i].Human.Slug = s.helper.MakeSlug(items[i].Human.GetFullName())
+	//	items[i].Human.Slug = s.helper.Util.MakeSlug(items[i].Human.GetFullName())
 	//	humans = append(humans, items[i].Human)
 	//}
 	err = human.CreateService(s.repository.getDB(), s.helper).UpsertMany(humans)
@@ -204,6 +204,6 @@ func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 }
 
 func (s *Service) Search(query string) (models.Doctors, error) {
-	queryRu := s.helper.TranslitToRu(query)
+	queryRu := s.helper.Util.TranslitToRu(query)
 	return s.repository.search(queryRu)
 }

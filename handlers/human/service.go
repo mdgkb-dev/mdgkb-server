@@ -15,7 +15,7 @@ func (s *Service) Create(item *models.Human) error {
 		return err
 	}
 	item.SetForeignKeys()
-	item.Slug = s.helper.MakeSlug(item.GetFullName())
+	item.Slug = s.helper.Util.MakeSlug(item.GetFullName())
 	return s.repository.create(item)
 }
 
@@ -29,7 +29,7 @@ func (s *Service) CreateMany(items models.Humans) error {
 	}
 	items.SetForeignKeys()
 	for i := range items {
-		items[i].Slug = s.helper.MakeSlug(items[i].GetFullName())
+		items[i].Slug = s.helper.Util.MakeSlug(items[i].GetFullName())
 	}
 	return s.repository.createMany(items)
 }
@@ -47,7 +47,7 @@ func (s *Service) Update(item *models.Human) error {
 		return err
 	}
 	item.SetForeignKeys()
-	item.Slug = s.helper.MakeSlug(item.GetFullName())
+	item.Slug = s.helper.Util.MakeSlug(item.GetFullName())
 	return s.repository.update(item)
 }
 
@@ -65,7 +65,7 @@ func (s *Service) UpsertMany(items models.Humans) error {
 	}
 	items.SetForeignKeys()
 	for i := range items {
-		items[i].Slug = s.helper.MakeSlug(items[i].GetFullName())
+		items[i].Slug = s.helper.Util.MakeSlug(items[i].GetFullName())
 	}
 	return s.repository.upsertMany(items)
 }
@@ -83,6 +83,6 @@ func (s *Service) Upsert(item *models.Human) error {
 		return err
 	}
 	item.SetForeignKeys()
-	item.Slug = s.helper.MakeSlug(item.GetFullName())
+	item.Slug = s.helper.Util.MakeSlug(item.GetFullName())
 	return s.repository.upsert(item)
 }
