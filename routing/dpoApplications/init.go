@@ -10,6 +10,7 @@ import (
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/", h.GetAll)
+	r.GET("/subscribe-create", h.SubscribeCreate)
 	r.GET("/:id", h.Get)
 	r.GET("/email-exists/:email/:courseId", h.EmailExists)
 	r.POST("", h.Create)

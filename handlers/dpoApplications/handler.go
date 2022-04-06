@@ -1,10 +1,11 @@
 package dpoApplications
 
 import (
+	"github.com/gin-gonic/gin"
+	"io"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"time"
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -38,6 +39,7 @@ func (h *Handler) EmailExists(c *gin.Context) {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.DpoApplication
+
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -50,6 +52,7 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	h.sse.Message <- "New application"
 	c.JSON(http.StatusOK, item)
 }
 
@@ -77,4 +80,22 @@ func (h *Handler) Delete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
+}
+
+func (h *Handler) SubscribeCreate(c *gin.Context) {
+	go func() {
+		h.sse.Message <- "ping"
+		for {
+			time.Sleep(time.Second * 60)
+			h.sse.Message <- "ping"
+		}
+	}()
+
+	c.Stream(func(w io.Writer) bool {
+		if msg, ok := <-h.sse.Message; ok {
+			c.SSEvent("dpoApplicationCreate", msg)
+			return true
+		}
+		return false
+	})
 }
