@@ -20,7 +20,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/donorRules"
 	"mdgkb/mdgkb-server/handlers/dpoApplications"
-	"mdgkb/mdgkb-server/handlers/formStatuses"
 	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/dpoDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationalManagers"
@@ -29,6 +28,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/formPatterns"
+	"mdgkb/mdgkb-server/handlers/formStatuses"
 	"mdgkb/mdgkb-server/handlers/gates"
 	"mdgkb/mdgkb-server/handlers/heads"
 	"mdgkb/mdgkb-server/handlers/medicalProfiles"
@@ -49,6 +49,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/projects"
 	"mdgkb/mdgkb-server/handlers/publicDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/questions"
+	"mdgkb/mdgkb-server/handlers/residencyCourses"
+	"mdgkb/mdgkb-server/handlers/residencyDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/specializations"
@@ -78,7 +80,6 @@ import (
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
-	formStatusesRouter "mdgkb/mdgkb-server/routing/formStatuses"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	dpoDocumentTypesRouter "mdgkb/mdgkb-server/routing/dpoDocumentTypes"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalManagers"
@@ -87,6 +88,7 @@ import (
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
 	formPatternsRouter "mdgkb/mdgkb-server/routing/formPatterns"
+	formStatusesRouter "mdgkb/mdgkb-server/routing/formStatuses"
 	gatesRouter "mdgkb/mdgkb-server/routing/gates"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
@@ -108,6 +110,8 @@ import (
 	projectsRouter "mdgkb/mdgkb-server/routing/projects"
 	publicDocumentTypesRouter "mdgkb/mdgkb-server/routing/publicDocumentTypes"
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
+	residencyCoursesRouter "mdgkb/mdgkb-server/routing/residencyCourses"
+	residencyDocumentTypesRouter "mdgkb/mdgkb-server/routing/residencyDocumentTypes"
 	rolesRouter "mdgkb/mdgkb-server/routing/roles"
 	searchRouter "mdgkb/mdgkb-server/routing/search"
 	"mdgkb/mdgkb-server/routing/sideOrganizations"
@@ -205,4 +209,6 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	dpoDocumentTypesRouter.Init(api.Group("/dpo-document-types"), dpoDocumentTypes.CreateHandler(db, helper))
 	candidateDocumentTypesRouter.Init(api.Group("/candidate-document-types"), candidateDocumentTypes.CreateHandler(db, helper))
 	rolesRouter.Init(api.Group("/roles"), roles.CreateHandler(db, helper))
+	residencyCoursesRouter.Init(api.Group("/residency-courses"), residencyCourses.CreateHandler(db, helper))
+	residencyDocumentTypesRouter.Init(api.Group("/residency-document-types"), residencyDocumentTypes.CreateHandler(db, helper))
 }
