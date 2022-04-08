@@ -4,5 +4,6 @@ CREATE TABLE residency_courses
     description varchar,
     years integer,
     listeners integer,
-    education_form varchar
+    education_form varchar,
+    form_pattern_id uuid references form_patterns on update cascade on delete cascade
 );

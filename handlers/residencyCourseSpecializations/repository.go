@@ -28,7 +28,7 @@ func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 func (r *Repository) upsertMany(items models.ResidencyCoursesSpecializations) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
-		Set("postgraduate_course_id = EXCLUDED.postgraduate_course_id").
+		Set("residency_course_id = EXCLUDED.residency_course_id").
 		Set("specialization_id = EXCLUDED.specialization_id").
 		Set("main = EXCLUDED.main").
 		Exec(r.ctx)

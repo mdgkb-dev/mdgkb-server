@@ -29,7 +29,7 @@ func (r *Repository) upsertMany(items models.ResidencyCoursesTeachers) (err erro
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("teacher_id = EXCLUDED.teacher_id").
-		Set("postgraduate_course_id = EXCLUDED.postgraduate_course_id").
+		Set("residency_course_id = EXCLUDED.residency_course_id").
 		Set("main = EXCLUDED.main").
 		Exec(r.ctx)
 	return err

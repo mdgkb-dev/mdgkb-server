@@ -13,10 +13,10 @@ type ResidencyCourse struct {
 	Years                                    int                             `json:"years"`
 	Slug                                     string                          `bun:",scanonly" json:"slug"`
 	Listeners                                int                             `json:"listeners"`
-	ResidencyCoursesSpecializations          ResidencyCoursesSpecializations `bun:"rel:has-many" json:"postgraduateCoursesSpecializations"`
-	ResidencyCoursesSpecializationsForDelete []uuid.UUID                     `bun:"-" json:"postgraduateCoursesSpecializationsForDelete"`
-	ResidencyCoursesTeachers                 ResidencyCoursesTeachers        `bun:"rel:has-many" json:"postgraduateCoursesTeachers"`
-	ResidencyCoursesTeachersForDelete        []uuid.UUID                     `bun:"-" json:"postgraduateCoursesForDelete"`
+	ResidencyCoursesSpecializations          ResidencyCoursesSpecializations `bun:"rel:has-many" json:"residencyCoursesSpecializations"`
+	ResidencyCoursesSpecializationsForDelete []uuid.UUID                     `bun:"-" json:"residencyCoursesSpecializationsForDelete"`
+	ResidencyCoursesTeachers                 ResidencyCoursesTeachers        `bun:"rel:has-many" json:"residencyCoursesTeachers"`
+	ResidencyCoursesTeachersForDelete        []uuid.UUID                     `bun:"-" json:"residencyCoursesForDelete"`
 
 	//QuestionsFile   *FileInfo     `bun:"rel:belongs-to" json:"questionsFile"`
 	//QuestionsFileID uuid.NullUUID `bun:"type:uuid" json:"questionsFileId"`
@@ -27,8 +27,8 @@ type ResidencyCourse struct {
 	//Calendar   *FileInfo     `bun:"rel:belongs-to" json:"calendar"`
 	//CalendarID uuid.NullUUID `bun:"type:uuid" json:"calendarId"`
 
-	//ResidencyCoursePlans          ResidencyCoursePlans `bun:"rel:has-many" json:"postgraduateCoursePlans"`
-	//ResidencyCoursePlansForDelete []uuid.UUID             `bun:"-" json:"postgraduateCoursePlansForDelete"`
+	//ResidencyCoursePlans          ResidencyCoursePlans `bun:"rel:has-many" json:"residencyCoursePlans"`
+	//ResidencyCoursePlansForDelete []uuid.UUID             `bun:"-" json:"residencyCoursePlansForDelete"`
 
 	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
 	FormPatternID uuid.NullUUID `bun:"type:uuid" json:"formPatternId"`

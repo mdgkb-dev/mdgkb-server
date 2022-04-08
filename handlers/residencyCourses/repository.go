@@ -26,10 +26,9 @@ func (r *Repository) getAll() (models.ResidencyCourses, error) {
 		Model(&items).
 		Relation("ResidencyCoursesTeachers.Teacher.Doctor.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
-		Relation("ResidencyCoursesDates").
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType")
-	
+
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
 	r.queryFilter.Sorter.CreateOrder(query)
@@ -42,9 +41,6 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 	err := r.db.NewSelect().Model(&item).
 		Relation("ResidencyCoursesTeachers.Teacher.Doctor.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
-		Relation("ResidencyCoursesDates").
-		Relation("DocumentType.Documents.DocumentsScans.Scan").
-		Relation("ResidencyCoursePlans.Plan").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
