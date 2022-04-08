@@ -1,6 +1,7 @@
 package residencyCourses
 
 import (
+	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/residencyCourseSpecializations"
 	"mdgkb/mdgkb-server/handlers/residencyCourseTeachers"
 	"mdgkb/mdgkb-server/models"
@@ -21,8 +22,25 @@ func (s *Service) Get() (*models.ResidencyCourse, error) {
 }
 
 func (s *Service) Create(item *models.ResidencyCourse) error {
+	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	err := fileInfosService.Create(item.Program)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Create(item.Annotation)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Create(item.Schedule)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Create(item.Plan)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	err := s.repository.create(item)
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -39,8 +57,25 @@ func (s *Service) Create(item *models.ResidencyCourse) error {
 }
 
 func (s *Service) Update(item *models.ResidencyCourse) error {
+	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	err := fileInfosService.Upsert(item.Program)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Upsert(item.Annotation)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Upsert(item.Schedule)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Upsert(item.Plan)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	err := s.repository.update(item)
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}

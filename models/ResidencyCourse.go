@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
 )
 
@@ -10,41 +11,44 @@ type ResidencyCourse struct {
 	ID                                       uuid.NullUUID                   `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
 	Description                              string                          `json:"description"`
 	EducationForm                            string                          `json:"educationForm"`
-	Years                                    int                             `json:"years"`
 	Slug                                     string                          `bun:",scanonly" json:"slug"`
-	Listeners                                int                             `json:"listeners"`
+	FreePlaces                               int                             `json:"freePlaces"`
+	Cost                                     int                             `json:"cost"`
+	PaidPlaces                               int                             `json:"paidPlaces"`
 	ResidencyCoursesSpecializations          ResidencyCoursesSpecializations `bun:"rel:has-many" json:"residencyCoursesSpecializations"`
 	ResidencyCoursesSpecializationsForDelete []uuid.UUID                     `bun:"-" json:"residencyCoursesSpecializationsForDelete"`
 	ResidencyCoursesTeachers                 ResidencyCoursesTeachers        `bun:"rel:has-many" json:"residencyCoursesTeachers"`
 	ResidencyCoursesTeachersForDelete        []uuid.UUID                     `bun:"-" json:"residencyCoursesForDelete"`
 
-	//QuestionsFile   *FileInfo     `bun:"rel:belongs-to" json:"questionsFile"`
-	//QuestionsFileID uuid.NullUUID `bun:"type:uuid" json:"questionsFileId"`
-	//
-	//ProgramFile   *FileInfo     `bun:"rel:belongs-to" json:"programFile"`
-	//ProgramFileID uuid.NullUUID `bun:"type:uuid" json:"programFileId"`
-	//
-	//Calendar   *FileInfo     `bun:"rel:belongs-to" json:"calendar"`
-	//CalendarID uuid.NullUUID `bun:"type:uuid" json:"calendarId"`
+	StartYear   *EducationYear `bun:"rel:belongs-to" json:"startYear"`
+	StartYearID uuid.NullUUID  `bun:"type:uuid" json:"startYearId"`
 
-	//ResidencyCoursePlans          ResidencyCoursePlans `bun:"rel:has-many" json:"residencyCoursePlans"`
-	//ResidencyCoursePlansForDelete []uuid.UUID             `bun:"-" json:"residencyCoursePlansForDelete"`
+	EndYear   *EducationYear `bun:"rel:belongs-to" json:"endYear"`
+	EndYearID uuid.NullUUID  `bun:"type:uuid" json:"endYearId"`
+
+	Annotation   *FileInfo     `bun:"rel:belongs-to" json:"annotation"`
+	AnnotationID uuid.NullUUID `bun:"type:uuid" json:"annotationId"`
+
+	Program   *FileInfo     `bun:"rel:belongs-to" json:"program"`
+	ProgramID uuid.NullUUID `bun:"type:uuid" json:"programId"`
+
+	Plan   *FileInfo     `bun:"rel:belongs-to" json:"plan"`
+	PlanID uuid.NullUUID `bun:"type:uuid" json:"planId"`
+
+	Schedule   *FileInfo     `bun:"rel:belongs-to" json:"schedule"`
+	ScheduleID uuid.NullUUID `bun:"type:uuid" json:"scheduleId"`
 
 	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
 	FormPatternID uuid.NullUUID `bun:"type:uuid" json:"formPatternId"`
-
-	//DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
-	//DocumentTypeID uuid.NullUUID `bun:"type:uuid" json:"documentTypeId"`
 }
 
 type ResidencyCourses []*ResidencyCourse
 
 func (item *ResidencyCourse) SetForeignKeys() {
-	//item.QuestionsFileID = item.QuestionsFile.ID
-	//item.ProgramFileID = item.ProgramFile.ID
-	//item.CalendarID = item.Calendar.ID
+	item.AnnotationID = item.Annotation.ID
+	item.ProgramID = item.Program.ID
+	item.PlanID = item.Plan.ID
 	item.FormPatternID = item.FormPattern.ID
-	//item.DocumentTypeID = item.DocumentType.ID
 }
 
 func (item *ResidencyCourse) SetIdForChildren() {
@@ -54,27 +58,24 @@ func (item *ResidencyCourse) SetIdForChildren() {
 	for i := range item.ResidencyCoursesSpecializations {
 		item.ResidencyCoursesSpecializations[i].ResidencyCourseID = item.ID
 	}
-	//for i := range item.ResidencyCoursePlans {
-	//	item.ResidencyCoursePlans[i].ResidencyCourseID = item.ID
-	//}
 }
 
 func (item *ResidencyCourse) SetFilePath(fileID string) *string {
-	//if item.QuestionsFile.ID.UUID.String() == fileID {
-	//	item.QuestionsFile.FileSystemPath = uploadHelper.BuildPath(&fileID)
-	//	return &item.QuestionsFile.FileSystemPath
-	//}
-	//if item.Calendar.ID.UUID.String() == fileID {
-	//	item.Calendar.FileSystemPath = uploadHelper.BuildPath(&fileID)
-	//	return &item.Calendar.FileSystemPath
-	//}
-	//if item.ProgramFile.ID.UUID.String() == fileID {
-	//	item.ProgramFile.FileSystemPath = uploadHelper.BuildPath(&fileID)
-	//	return &item.ProgramFile.FileSystemPath
-	//}
-	//filePath := item.ResidencyCoursePlans.SetFilePath(fileID)
-	//if filePath != nil {
-	//	return filePath
-	//}
+	if item.Annotation.ID.UUID.String() == fileID {
+		item.Annotation.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		return &item.Annotation.FileSystemPath
+	}
+	if item.Plan.ID.UUID.String() == fileID {
+		item.Plan.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		return &item.Plan.FileSystemPath
+	}
+	if item.Program.ID.UUID.String() == fileID {
+		item.Program.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		return &item.Program.FileSystemPath
+	}
+	if item.Schedule.ID.UUID.String() == fileID {
+		item.Schedule.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		return &item.Schedule.FileSystemPath
+	}
 	return nil
 }
