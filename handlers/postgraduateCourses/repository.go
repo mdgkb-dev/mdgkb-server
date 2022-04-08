@@ -44,7 +44,7 @@ func (r *Repository) get() (*models.PostgraduateCourse, error) {
 		Relation("PostgraduateCoursesSpecializations.Specialization").
 		Relation("PostgraduateCoursesDates").
 		Relation("QuestionsFile").
-		Relation("Program").
+		Relation("ProgramFile").
 		Relation("Calendar").
 		Relation("DocumentType.Documents.DocumentsScans.Scan").
 		Relation("PostgraduateCoursePlans.Plan").

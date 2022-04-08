@@ -44,6 +44,10 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
+		Relation("Annotation").
+		Relation("Program").
+		Relation("Plan").
+		Relation("Schedule").
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Where("residency_courses_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)

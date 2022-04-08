@@ -49,6 +49,7 @@ func (item *ResidencyCourse) SetForeignKeys() {
 	item.ProgramID = item.Program.ID
 	item.PlanID = item.Plan.ID
 	item.FormPatternID = item.FormPattern.ID
+	item.ScheduleID = item.Schedule.ID
 }
 
 func (item *ResidencyCourse) SetIdForChildren() {
