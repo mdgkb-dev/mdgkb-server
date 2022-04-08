@@ -28,9 +28,11 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
 		Relation("DoctorsUsers.Doctor").
 		Relation("Children.Human").
-		Relation("DpoApplications").
-		Relation("PostgraduateApplications").
-		Relation("CandidateApplications").
+		Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Relation("FormValues.DpoApplication.DpoCourse").
+		Relation("FormValues.PostgraduateApplication").
+		// Relation("FormValues.PostgraduateApplication.PostgraduateCourse").
+		Relation("FormValues.CandidateApplication.CandidateExam").
 		Where("users.id = ?", id).
 		Scan(r.ctx)
 	return &item, err

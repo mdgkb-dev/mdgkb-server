@@ -34,6 +34,8 @@ type User struct {
 
 	CandidateApplications          CandidateApplications `bun:"rel:has-many" json:"candidateApplications"`
 	CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationsForDelete"`
+
+	FormValues FormValues `bun:"rel:has-many" json:"formValues"`
 }
 
 type Users []*User

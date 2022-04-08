@@ -27,6 +27,7 @@ func (r *Repository) getAll() (models.PostgraduateApplications, error) {
 		Relation("PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("FormValue.User.Human")
 
 	r.queryFilter.Paginator.CreatePagination(query)
@@ -47,6 +48,7 @@ func (r *Repository) get(id *string) (*models.PostgraduateApplication, error) {
 		Relation("FormValue.Fields.ValueType").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Where("postgraduate_applications.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
