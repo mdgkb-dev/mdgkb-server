@@ -27,6 +27,7 @@ func (r *Repository) getAll() (models.CandidateApplications, error) {
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field").
 		Relation("FormValue.User.Human").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("CandidateApplicationSpecializations.Specialization")
 
 	r.queryFilter.Paginator.CreatePagination(query)
@@ -47,6 +48,7 @@ func (r *Repository) get(id *string) (*models.CandidateApplication, error) {
 		Relation("FormValue.Fields.ValueType").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Where("candidate_applications.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

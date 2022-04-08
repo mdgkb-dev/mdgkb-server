@@ -14,16 +14,15 @@ func (h *Handler) GetAll(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
-	return
 }
 
-type DonorRulesWithDeleted struct {
+type CertificatesWithDeleted struct {
 	Certificates          models.Certificates `json:"certificates"`
 	CertificatesForDelete []uuid.UUID         `json:"certificatesForDelete"`
 }
 
 func (h *Handler) UpdateMany(c *gin.Context) {
-	var item DonorRulesWithDeleted
+	var item CertificatesWithDeleted
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

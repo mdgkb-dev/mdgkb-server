@@ -17,6 +17,7 @@ func (r *Repository) upsert(item *models.FormValue) (err error) {
 		Set("created_at = EXCLUDED.created_at").
 		Set("is_new = EXCLUDED.is_new").
 		Set("user_id = EXCLUDED.user_id").
+		Set("form_status_id = EXCLUDED.form_status_id").
 		Exec(r.ctx)
 	return err
 }
