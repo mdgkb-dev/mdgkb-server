@@ -43,8 +43,8 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 type ResidencyDocumentTypesWithDelete struct {
-	ResidencyDocumentTypes          models.ResidencyDocumentTypes `json:"postgraduateDocumentTypes"`
-	ResidencyDocumentTypesForDelete []uuid.UUID                   `json:"postgraduateDocumentTypesForDelete"`
+	ResidencyDocumentTypes          models.ResidencyDocumentTypes `json:"residencyDocumentTypes"`
+	ResidencyDocumentTypesForDelete []uuid.UUID                   `json:"residencyDocumentTypesForDelete"`
 }
 
 func (h *Handler) Update(c *gin.Context) {
