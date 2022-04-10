@@ -27,7 +27,9 @@ func (r *Repository) getAll() (models.ResidencyCourses, error) {
 		Relation("ResidencyCoursesTeachers.Teacher.Doctor.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields.File").
-		Relation("FormPattern.Fields.ValueType")
+		Relation("FormPattern.Fields.ValueType").
+		Relation("StartYear").
+		Relation("EndYear")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -50,6 +52,8 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 		Relation("Schedule").
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
+		Relation("StartYear").
+		Relation("EndYear").
 		Where("residency_courses_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
 	return &item, err
 }

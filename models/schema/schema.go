@@ -236,10 +236,15 @@ func createResidencyCourseSchema() map[string]string {
 	return map[string]string{
 		"tableName":     "residency_courses_view",
 		"value":         "id",
-		"key":           "postgraduateCourse",
+		"key":           "residencyCourse",
 		"name":          "name",
 		"code":          "code",
 		"slug":          "slug",
+		"cost":          "cost",
+		"freePlaces":    "free_places",
+		"paidPlaces":    "paid_places",
+		"startYear":     "start_year",
+		"endYear":       "end_year",
 		"educationForm": "education_form",
 	}
 }

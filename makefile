@@ -39,4 +39,7 @@ migrate_rollback:
 drop_database:
 	go run $(database) -action=dropDatabase
 
+dump:
+	./database/dump_pg.sh
+
 
