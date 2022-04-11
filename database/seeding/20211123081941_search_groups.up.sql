@@ -5,4 +5,6 @@ values  ('486303cb-1b02-4059-a860-25704dcab8ea', 'doctor', 2, '/doctors', 'docto
         ('76250b93-b54a-42a5-a6f8-3ea517960525', 'teacher', null, null, 'teachers_view', 'full_name', null, 'full_name', 'id', null),
         ('d8631b3a-79e9-4ec8-be98-58e77a199371', 'vacancy', null, '/vacancies', 'vacancies', 'title', null, 'title', 'slug', null),
         ('2665b300-222c-44c3-b33c-ad8babb71d93', 'division', 1, '/divisions', 'divisions_view', 'name', 'Отделения и центры', 'name', 'slug', 'info'),
-        ('ffaf957c-ea44-4f47-8ae7-a817c58a0348', 'dpoCourse', null, null, 'dpo_courses', 'name', null, 'name', 'slug', null);
+        ('ffaf957c-ea44-4f47-8ae7-a817c58a0348', 'dpoCourse', null, null, 'dpo_courses', 'name', null, 'name', 'slug', null),
+        ('bb58aac6-d097-4c3e-8931-b69ea23c4da8', 'residencyCourse', null, null, 'residency_courses_view', 'name', null, 'name', 'slug', null),
+        ('538aa4dd-7f91-4afc-8ba7-c48477cb874e', 'postgraduateCourse', null, null, 'postgraduate_courses_view', 'name', null, 'name', 'slug', null);

@@ -9,6 +9,7 @@ type DocumentType struct {
 	bun.BaseModel        `bun:"document_types,alias:document_types"`
 	ID                   uuid.NullUUID       `bun:"type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 	Name                 string              `json:"name,omitempty"`
+	Description          string              `json:"description,omitempty"`
 	PublicDocumentTypeID uuid.NullUUID       `bun:"type:uuid,nullzero,default:NULL" json:"publicDocumentTypeId"`
 	PublicDocumentType   *PublicDocumentType `bun:"rel:belongs-to" json:"publicDocumentType"`
 

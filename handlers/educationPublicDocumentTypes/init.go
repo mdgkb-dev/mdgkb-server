@@ -1,9 +1,9 @@
-package publicDocumentTypes
+package educationPublicDocumentTypes
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -20,26 +20,28 @@ type IHandler interface {
 }
 
 type IService interface {
-	setQueryFilter(*gin.Context) error
-	GetAll() (models.PublicDocumentTypes, error)
-	Get(string) (*models.PublicDocumentType, error)
-	Create(*models.PublicDocumentType) error
-	Update(item *models.PublicDocumentType) error
+	GetAll() (models.EducationPublicDocumentTypes, error)
+	Get(string) (*models.EducationPublicDocumentType, error)
+	Create(*models.EducationPublicDocumentType) error
+	Update(item *models.EducationPublicDocumentType) error
+	Upsert(item *models.EducationPublicDocumentType) error
 	Delete(string) error
+	DeleteByPublicDocumentTypeID(id uuid.NullUUID) (err error)
 }
 
 type IRepository interface {
-	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
-	create(*models.PublicDocumentType) error
-	getAll() (models.PublicDocumentTypes, error)
-	get(string) (*models.PublicDocumentType, error)
-	update(item *models.PublicDocumentType) error
+	create(*models.EducationPublicDocumentType) error
+	getAll() (models.EducationPublicDocumentTypes, error)
+	get(string) (*models.EducationPublicDocumentType, error)
+	update(item *models.EducationPublicDocumentType) error
+	upsert(item *models.EducationPublicDocumentType) error
 	delete(string) error
+	deleteByPublicDocumentTypeID(id uuid.NullUUID) (err error)
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.PublicDocumentType, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.EducationPublicDocumentType, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -54,10 +56,9 @@ type Service struct {
 }
 
 type Repository struct {
-	db          *bun.DB
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
+	db     *bun.DB
+	ctx    context.Context
+	helper *helper.Helper
 }
 
 type FilesService struct {

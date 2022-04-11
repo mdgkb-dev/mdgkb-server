@@ -1,7 +1,9 @@
 package publicDocumentTypes
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
+	"mdgkb/mdgkb-server/handlers/educationPublicDocumentTypes"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -27,10 +29,20 @@ func (s *Service) Create(item *models.PublicDocumentType) error {
 		return err
 	}
 	item.SetIdForChildren()
+	educationPublicDocumentTypesService := educationPublicDocumentTypes.CreateService(s.repository.getDB(), s.helper)
+	err = educationPublicDocumentTypesService.Upsert(item.EducationPublicDocumentType)
+	if err != nil {
+		return err
+	}
+	err = educationPublicDocumentTypesService.DeleteByPublicDocumentTypeID(item.ID)
+	if err != nil {
+		return err
+	}
 	err = documentTypes.CreateService(s.repository.getDB(), s.helper).UpsertMany(item.DocumentTypes)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -40,6 +52,18 @@ func (s *Service) Update(item *models.PublicDocumentType) error {
 		return err
 	}
 	item.SetIdForChildren()
+	educationPublicDocumentTypesService := educationPublicDocumentTypes.CreateService(s.repository.getDB(), s.helper)
+	err = educationPublicDocumentTypesService.Upsert(item.EducationPublicDocumentType)
+	if err != nil {
+		return err
+	}
+	if item.EducationPublicDocumentType == nil {
+
+		err = educationPublicDocumentTypesService.DeleteByPublicDocumentTypeID(item.ID)
+		if err != nil {
+			return err
+		}
+	}
 	documentTypeService := documentTypes.CreateService(s.repository.getDB(), s.helper)
 	err = documentTypeService.DeleteMany(item.DocumentTypesForDelete)
 	if err != nil {
@@ -54,4 +78,9 @@ func (s *Service) Update(item *models.PublicDocumentType) error {
 
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

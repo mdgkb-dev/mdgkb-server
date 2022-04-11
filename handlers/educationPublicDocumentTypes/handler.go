@@ -1,4 +1,4 @@
-package publicDocumentTypes
+package educationPublicDocumentTypes
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -8,10 +8,6 @@ import (
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
-	err := h.service.setQueryFilter(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
 	items, err := h.service.GetAll()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -29,7 +25,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.PublicDocumentType
+	var item models.EducationPublicDocumentType
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -46,7 +42,7 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.PublicDocumentType
+	var item models.EducationPublicDocumentType
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

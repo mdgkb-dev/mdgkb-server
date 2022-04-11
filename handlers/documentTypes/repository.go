@@ -47,6 +47,7 @@ func (r *Repository) upsertMany(items models.DocumentTypes) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("name = EXCLUDED.name").
+		Set("description = EXCLUDED.description").
 		Exec(r.ctx)
 	return err
 }

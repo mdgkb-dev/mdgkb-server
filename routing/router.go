@@ -22,6 +22,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/dpoApplications"
 	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/dpoDocumentTypes"
+	"mdgkb/mdgkb-server/handlers/educationPublicDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationYears"
 	"mdgkb/mdgkb-server/handlers/educationalManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganization"
@@ -83,6 +84,7 @@ import (
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	dpoDocumentTypesRouter "mdgkb/mdgkb-server/routing/dpoDocumentTypes"
+	educationPublicDocumentTypesRouter "mdgkb/mdgkb-server/routing/educationPublicDocumentTypes"
 	educationYearsRouter "mdgkb/mdgkb-server/routing/educationYears"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalManagers"
 	educationalOraganizationRouter "mdgkb/mdgkb-server/routing/educationalOraganization"
@@ -214,4 +216,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	residencyCoursesRouter.Init(api.Group("/residency-courses"), residencyCourses.CreateHandler(db, helper))
 	residencyDocumentTypesRouter.Init(api.Group("/residency-document-types"), residencyDocumentTypes.CreateHandler(db, helper))
 	educationYearsRouter.Init(api.Group("/education-years"), educationYears.CreateHandler(db, helper))
+	educationPublicDocumentTypesRouter.Init(api.Group("/education-public-document-types"), educationPublicDocumentTypes.CreateHandler(db, helper))
 }
