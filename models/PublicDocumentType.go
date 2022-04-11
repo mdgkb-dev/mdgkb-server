@@ -33,4 +33,7 @@ func (item *PublicDocumentType) SetIdForChildren() {
 	for i := range item.DocumentTypes {
 		item.DocumentTypes[i].PublicDocumentTypeID = item.ID
 	}
+	if item.EducationPublicDocumentType != nil {
+		item.EducationPublicDocumentType.PublicDocumentTypeID = item.ID
+	}
 }

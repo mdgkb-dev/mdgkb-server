@@ -16,8 +16,6 @@ run:
 run_cold:
 	go run $(main)	
 
-full_migrate: drop_database migrate_init migrate seed
-
 migrate_init:
 	go run $(database) -action=init
 

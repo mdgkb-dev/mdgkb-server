@@ -34,9 +34,11 @@ func (s *Service) Create(item *models.PublicDocumentType) error {
 	if err != nil {
 		return err
 	}
-	err = educationPublicDocumentTypesService.DeleteByPublicDocumentTypeID(item.ID)
-	if err != nil {
-		return err
+	if item.EducationPublicDocumentType == nil {
+		err = educationPublicDocumentTypesService.DeleteByPublicDocumentTypeID(item.ID)
+		if err != nil {
+			return err
+		}
 	}
 	err = documentTypes.CreateService(s.repository.getDB(), s.helper).UpsertMany(item.DocumentTypes)
 	if err != nil {
@@ -58,7 +60,6 @@ func (s *Service) Update(item *models.PublicDocumentType) error {
 		return err
 	}
 	if item.EducationPublicDocumentType == nil {
-
 		err = educationPublicDocumentTypesService.DeleteByPublicDocumentTypeID(item.ID)
 		if err != nil {
 			return err
