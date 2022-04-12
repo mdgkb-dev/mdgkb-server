@@ -32,7 +32,9 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
 		Relation("FormValues.DpoApplication.DpoCourse").
 		Relation("FormValues.PostgraduateApplication").
+		Relation("FormValues.ResidencyApplication").
 		// Relation("FormValues.PostgraduateApplication.PostgraduateCourse.PostgraduateCoursesSpecializations").
+		// Relation("FormValues.ResidencyApplication.ResidencyCourse.ResidencyCoursesSpecializations").
 		Relation("FormValues.CandidateApplication.CandidateExam").
 		Where("users.id = ?", id).
 		Scan(r.ctx)
