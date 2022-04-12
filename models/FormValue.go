@@ -24,6 +24,7 @@ type FormValue struct {
 	DpoApplication          *DpoApplication          `bun:"rel:has-one" json:"dpoApplication"`
 	PostgraduateApplication *PostgraduateApplication `bun:"rel:has-one" json:"postgraduateApplication"`
 	CandidateApplication    *CandidateApplication    `bun:"rel:has-one" json:"candidateApplication"`
+	ResidencyApplication    *ResidencyApplication    `bun:"rel:has-one" json:"residencyApplication"`
 }
 
 type FormValues []*FormValue

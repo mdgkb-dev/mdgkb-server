@@ -20,6 +20,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/donorRules"
 	"mdgkb/mdgkb-server/handlers/dpoApplications"
+	"mdgkb/mdgkb-server/handlers/residencyApplications"
 	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/handlers/formStatuses"
 	"mdgkb/mdgkb-server/handlers/dpoCourses"
@@ -83,6 +84,7 @@ import (
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
+	residencyApplicationsRouter "mdgkb/mdgkb-server/routing/residencyApplications"
 	formValuesRouter "mdgkb/mdgkb-server/routing/formValues"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	dpoDocumentTypesRouter "mdgkb/mdgkb-server/routing/dpoDocumentTypes"
@@ -201,6 +203,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
 	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduateCourses.CreateHandler(db, helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper))
+	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyApplications.CreateHandler(db, helper))
 	formValuesRouter.Init(api.Group("/form-values"), formValues.CreateHandler(db, helper))
 	formStatusesRouter.Init(api.Group("/form-statuses"), formStatuses.CreateHandler(db, helper))
 	postgraduateApplicationsRouter.Init(api.Group("/postgraduate-applications"), postgraduateApplications.CreateHandler(db, helper))
