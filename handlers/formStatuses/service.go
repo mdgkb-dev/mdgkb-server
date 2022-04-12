@@ -1,6 +1,7 @@
 package formStatuses
 
 import (
+	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/formStatusToFormStatuses"
 	"mdgkb/mdgkb-server/models"
 
@@ -25,7 +26,12 @@ func (s *Service) Get(id *string) (*models.FormStatus, error) {
 }
 
 func (s *Service) Upsert(item *models.FormStatus) error {
-	err := s.repository.upsert(item)
+	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.Icon)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.upsert(item)
 	if err != nil {
 		return err
 	}
@@ -34,6 +40,7 @@ func (s *Service) Upsert(item *models.FormStatus) error {
 	if err != nil {
 		return err
 	}
+	err = formStatusToFormStatuses.CreateService(s.repository.getDB()).DeleteMany(item.FormStatusToFormStatusesForDelete)
 	return nil
 }
 
@@ -49,6 +56,12 @@ func (s *Service) UpsertMany(items models.FormStatuses) error {
 	err = formStatusToFormStatuses.CreateService(s.repository.getDB()).UpsertMany(items.GetFormStatusToFormStatuses())
 	if err != nil {
 		return err
+	}
+	if len(items.GetFormStatusToFormStatusesForDelete()) > 0 {
+		err = formStatusToFormStatuses.CreateService(s.repository.getDB()).DeleteMany(items.GetFormStatusToFormStatusesForDelete())
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 

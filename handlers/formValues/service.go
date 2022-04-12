@@ -23,3 +23,11 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	}
 	return nil
 }
+
+func (s *Service) Get(id *string) (*models.FormValue, error) {
+	item, err := s.repository.get(id)
+	if err != nil {
+		return nil, err
+	}
+	return item, nil
+}

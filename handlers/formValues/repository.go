@@ -21,3 +21,16 @@ func (r *Repository) upsert(item *models.FormValue) (err error) {
 		Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) get(id *string) (*models.FormValue, error) {
+	item := models.FormValue{}
+	err := r.db.NewSelect().Model(&item).
+		Relation("User.Human").
+		Relation("Fields.File").
+		Relation("Fields.ValueType").
+		Relation("FieldValues.File").
+		Relation("FieldValues.Field.ValueType").
+		Relation("FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Where("form_values.id = ?", *id).Scan(r.ctx)
+	return &item, err
+}

@@ -5,5 +5,6 @@ CREATE TABLE form_statuses (
     color VARCHAR,
     mod_action_name VARCHAR,
     user_action_name VARCHAR,
-    is_editable boolean
+    is_editable boolean,
+    icon_id uuid  REFERENCES file_infos (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL
 );

@@ -6,7 +6,8 @@ INSERT INTO
         color,
         mod_action_name,
         user_action_name,
-        is_editable
+        is_editable,
+        icon_id
     )
 VALUES
     (
@@ -16,7 +17,8 @@ VALUES
         '#FF4545',
         '',
         'Отозвать',
-        false
+        false,
+        NULL
     );
 
 INSERT INTO
@@ -27,7 +29,8 @@ INSERT INTO
         color,
         mod_action_name,
         user_action_name,
-        is_editable
+        is_editable,
+        icon_id
     )
 VALUES
     (
@@ -37,7 +40,8 @@ VALUES
         '#3FA540',
         'Зачислить',
         '',
-        false
+        false,
+        NULL
     );
 
 INSERT INTO
@@ -48,28 +52,8 @@ INSERT INTO
         color,
         mod_action_name,
         user_action_name,
-        is_editable
-    )
-VALUES
-    (
-        '03977c2f-31a9-4160-b194-5e595d89e434',
-        '',
-        'Новое',
-        '#536AC2',
-        '',
-        '',
-        true
-    );
-
-INSERT INTO
-    public.form_statuses (
-        id,
-        name,
-        label,
-        color,
-        mod_action_name,
-        user_action_name,
-        is_editable
+        is_editable,
+        icon_id
     )
 VALUES
     (
@@ -79,7 +63,8 @@ VALUES
         '#BFB467',
         'Принять к рассмотрению',
         '',
-        false
+        false,
+        NULL
     );
 
 INSERT INTO
@@ -90,7 +75,8 @@ INSERT INTO
         color,
         mod_action_name,
         user_action_name,
-        is_editable
+        is_editable,
+        icon_id
     )
 VALUES
     (
@@ -100,7 +86,8 @@ VALUES
         '#CF776D',
         'Отказать',
         '',
-        false
+        false,
+        NULL
     );
 
 INSERT INTO
@@ -111,7 +98,8 @@ INSERT INTO
         color,
         mod_action_name,
         user_action_name,
-        is_editable
+        is_editable,
+        icon_id
     )
 VALUES
     (
@@ -121,5 +109,52 @@ VALUES
         '#92D2D0',
         'Данные требуют уточнения',
         '',
-        true
+        true,
+        NULL
+    );
+
+INSERT INTO
+    public.form_statuses (
+        id,
+        name,
+        label,
+        color,
+        mod_action_name,
+        user_action_name,
+        is_editable,
+        icon_id
+    )
+VALUES
+    (
+        '03977c2f-31a9-4160-b194-5e595d89e434',
+        '',
+        'Новое',
+        '#536AC2',
+        '',
+        '',
+        false,
+        NULL
+    );
+
+INSERT INTO
+    public.form_statuses (
+        id,
+        name,
+        label,
+        color,
+        mod_action_name,
+        user_action_name,
+        is_editable,
+        icon_id
+    )
+VALUES
+    (
+        '02c4a531-6e43-4994-81b5-fec90d546086',
+        '',
+        'Уточнено',
+        '#D5D72A',
+        'Данные уточнены',
+        'Уточнить',
+        false,
+        NULL
     );

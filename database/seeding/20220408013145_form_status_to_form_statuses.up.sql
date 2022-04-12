@@ -11,33 +11,6 @@ INSERT INTO
     public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
 VALUES
     (
-        '3413bc3a-09b0-4020-a5c8-1d8dfd0812ef',
-        '03977c2f-31a9-4160-b194-5e595d89e434',
-        'aad761a2-490d-4e0a-93fd-212aa3c8acf5'
-    );
-
-INSERT INTO
-    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
-VALUES
-    (
-        'ab30667a-d1cf-4a82-b126-07b9e97691b3',
-        '03977c2f-31a9-4160-b194-5e595d89e434',
-        '896225bd-707a-42c1-b367-7adc9c3ec368'
-    );
-
-INSERT INTO
-    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
-VALUES
-    (
-        '1adf3976-9a48-4951-8001-12c6cf10372e',
-        '03977c2f-31a9-4160-b194-5e595d89e434',
-        'bc9f3b64-84a1-4859-8789-226bd18c34dc'
-    );
-
-INSERT INTO
-    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
-VALUES
-    (
         '6e03beec-f88d-4dbc-80ba-c950abf83e12',
         '896225bd-707a-42c1-b367-7adc9c3ec368',
         'aad761a2-490d-4e0a-93fd-212aa3c8acf5'
@@ -47,18 +20,18 @@ INSERT INTO
     public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
 VALUES
     (
-        'e399b7c5-bb86-4a9b-86a3-f64e73dba5cc',
+        'ffc26bff-5c69-4aea-bb6a-5d62d298a818',
         '896225bd-707a-42c1-b367-7adc9c3ec368',
-        '43a69584-933b-4064-8643-1a2cc552b811'
+        'b93fcf37-21af-421e-a70a-b7fc28156d89'
     );
 
 INSERT INTO
     public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
 VALUES
     (
-        'ffc26bff-5c69-4aea-bb6a-5d62d298a818',
+        'e399b7c5-bb86-4a9b-86a3-f64e73dba5cc',
         '896225bd-707a-42c1-b367-7adc9c3ec368',
-        'b93fcf37-21af-421e-a70a-b7fc28156d89'
+        '43a69584-933b-4064-8643-1a2cc552b811'
     );
 
 INSERT INTO
@@ -95,4 +68,58 @@ VALUES
         'c6ec92d6-00c5-4058-a5e0-c3199c4720bb',
         'bc9f3b64-84a1-4859-8789-226bd18c34dc',
         '896225bd-707a-42c1-b367-7adc9c3ec368'
+    );
+
+INSERT INTO
+    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
+VALUES
+    (
+        '54b2e318-fd98-4df4-a21e-61bfe9eba781',
+        'bc9f3b64-84a1-4859-8789-226bd18c34dc',
+        '02c4a531-6e43-4994-81b5-fec90d546086'
+    );
+
+INSERT INTO
+    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
+VALUES
+    (
+        'ab30667a-d1cf-4a82-b126-07b9e97691b3',
+        '03977c2f-31a9-4160-b194-5e595d89e434',
+        '896225bd-707a-42c1-b367-7adc9c3ec368'
+    );
+
+INSERT INTO
+    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
+VALUES
+    (
+        '1adf3976-9a48-4951-8001-12c6cf10372e',
+        '03977c2f-31a9-4160-b194-5e595d89e434',
+        'bc9f3b64-84a1-4859-8789-226bd18c34dc'
+    );
+
+INSERT INTO
+    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
+VALUES
+    (
+        'd9fdb6fb-5e10-4702-a846-2a76730eafcb',
+        '02c4a531-6e43-4994-81b5-fec90d546086',
+        '896225bd-707a-42c1-b367-7adc9c3ec368'
+    );
+
+INSERT INTO
+    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
+VALUES
+    (
+        '44ffa879-0b31-41b0-8882-f03b620d3f75',
+        '02c4a531-6e43-4994-81b5-fec90d546086',
+        'bc9f3b64-84a1-4859-8789-226bd18c34dc'
+    );
+
+INSERT INTO
+    public.form_status_to_form_statuses (id, form_status_id, child_form_status_id)
+VALUES
+    (
+        '01fd0da2-af33-42a1-acc8-b85d63407483',
+        '02c4a531-6e43-4994-81b5-fec90d546086',
+        'aad761a2-490d-4e0a-93fd-212aa3c8acf5'
     );
