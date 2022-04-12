@@ -20,6 +20,7 @@ type Schema struct {
 	ResidencyCourse             map[string]string `json:"residencyCourse"`
 	EducationPublicDocumentType map[string]string `json:"educationPublicDocumentType"`
 	PublicDocumentType          map[string]string `json:"publicDocumentType"`
+	EducationYear               map[string]string `json:"educationYear"`
 }
 
 func CreateSchema() Schema {
@@ -43,6 +44,7 @@ func CreateSchema() Schema {
 		ResidencyCourse:             createResidencyCourseSchema(),
 		EducationPublicDocumentType: createEducationPublicDocumentTypeSchema(),
 		PublicDocumentType:          createPublicDocumentTypeSchema(),
+		EducationYear:               createEducationYearSchema(),
 	}
 }
 
@@ -248,7 +250,9 @@ func createResidencyCourseSchema() map[string]string {
 		"freePlaces":    "free_places",
 		"paidPlaces":    "paid_places",
 		"startYear":     "start_year",
+		"startYearId":   "start_year_id",
 		"endYear":       "end_year",
+		"endYearId":     "end_year_id",
 		"educationForm": "education_form",
 	}
 }
@@ -269,5 +273,16 @@ func createPublicDocumentTypeSchema() map[string]string {
 		"value":     "id",
 		"id":        "id",
 		"key":       "publicDocumentTypeSchema",
+	}
+}
+
+func createEducationYearSchema() map[string]string {
+	return map[string]string{
+		"tableName":  "education_years",
+		"value":      "id",
+		"sortColumn": "year",
+		"label":      "year",
+		"id":         "id",
+		"key":        "educationYear",
 	}
 }
