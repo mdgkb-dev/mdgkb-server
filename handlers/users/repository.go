@@ -31,10 +31,11 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("FormValues.User").
 		Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
 		Relation("FormValues.DpoApplication.DpoCourse").
-		Relation("FormValues.PostgraduateApplication").
-		Relation("FormValues.ResidencyApplication").
-		// Relation("FormValues.PostgraduateApplication.PostgraduateCourse.PostgraduateCoursesSpecializations").
-		// Relation("FormValues.ResidencyApplication.ResidencyCourse.ResidencyCoursesSpecializations").
+		Relation("FormValues.PostgraduateApplication.PostgraduateCourse", func(query *bun.SelectQuery) *bun.SelectQuery {
+			return query.ExcludeColumn("questions_file_id")
+		}).
+		Relation("FormValues.PostgraduateApplication.PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
+		Relation("FormValues.ResidencyApplication.ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
 		Relation("FormValues.CandidateApplication.CandidateExam").
 		Where("users.id = ?", id).
 		Scan(r.ctx)

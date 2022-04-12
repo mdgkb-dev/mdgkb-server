@@ -6,7 +6,7 @@ import (
 )
 
 type PostgraduateApplication struct {
-	bun.BaseModel `bun:"postgraduate_applications,select:postgraduate_applications,alias:postgraduate_applications"`
+	bun.BaseModel `bun:"postgraduate_applications,select:postgraduate_applications,alias:pa"`
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	PostgraduateCourse   *PostgraduateCourse `bun:"rel:belongs-to" json:"postgraduateCourse"`
