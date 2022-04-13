@@ -1,6 +1,9 @@
 package specializations
 
-import "mdgkb/mdgkb-server/models"
+import (
+	"github.com/gin-gonic/gin"
+	"mdgkb/mdgkb-server/models"
+)
 
 func (s *Service) GetAll() (models.Specializations, error) {
 	items, err := s.repository.getAll()
@@ -50,4 +53,9 @@ func (s *Service) DeleteMany(id []string) error {
 		return nil
 	}
 	return s.repository.deleteMany(id)
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

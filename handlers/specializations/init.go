@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -19,6 +20,7 @@ type IHandler interface {
 }
 
 type IService interface {
+	setQueryFilter(*gin.Context) error
 	GetAll() (models.Specializations, error)
 	Get(*string) (*models.Specialization, error)
 	Create(*models.Specialization) error
@@ -29,6 +31,7 @@ type IService interface {
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	getAll() (models.Specializations, error)
 	get(*string) (*models.Specialization, error)
@@ -56,9 +59,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helper.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

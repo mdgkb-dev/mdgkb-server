@@ -1,50 +1,52 @@
 package schema
 
 type Schema struct {
-	Human                       map[string]string `json:"human"`
-	Comment                     map[string]string `json:"comment"`
-	Doctors                     map[string]string `json:"doctor"`
-	MedicalProfile              map[string]string `json:"medicalProfile"`
-	Division                    map[string]string `json:"division"`
-	DoctorUser                  map[string]string `json:"doctorUser"`
-	Center                      map[string]string `json:"center"`
-	Teacher                     map[string]string `json:"teacher"`
-	DpoCourse                   map[string]string `json:"dpoCourse"`
-	DpoBaseCourse               map[string]string `json:"dpoBaseCourse"`
-	EducationalManager          map[string]string `json:"educationalManager"`
-	Specialization              map[string]string `json:"specialization"`
-	Vacancy                     map[string]string `json:"vacancy"`
-	DpoCourseSpecialization     map[string]string `json:"dpoCourseSpecialization"`
-	DpoApplication              map[string]string `json:"dpoApplication"`
-	PostgraduateCourse          map[string]string `json:"postgraduateCourse"`
-	ResidencyCourse             map[string]string `json:"residencyCourse"`
-	EducationPublicDocumentType map[string]string `json:"educationPublicDocumentType"`
-	PublicDocumentType          map[string]string `json:"publicDocumentType"`
-	EducationYear               map[string]string `json:"educationYear"`
+	Human                            map[string]string `json:"human"`
+	Comment                          map[string]string `json:"comment"`
+	Doctors                          map[string]string `json:"doctor"`
+	MedicalProfile                   map[string]string `json:"medicalProfile"`
+	Division                         map[string]string `json:"division"`
+	DoctorUser                       map[string]string `json:"doctorUser"`
+	Center                           map[string]string `json:"center"`
+	Teacher                          map[string]string `json:"teacher"`
+	DpoCourse                        map[string]string `json:"dpoCourse"`
+	DpoBaseCourse                    map[string]string `json:"dpoBaseCourse"`
+	EducationalManager               map[string]string `json:"educationalManager"`
+	Specialization                   map[string]string `json:"specialization"`
+	Vacancy                          map[string]string `json:"vacancy"`
+	DpoCourseSpecialization          map[string]string `json:"dpoCourseSpecialization"`
+	DpoApplication                   map[string]string `json:"dpoApplication"`
+	PostgraduateCourse               map[string]string `json:"postgraduateCourse"`
+	ResidencyCourse                  map[string]string `json:"residencyCourse"`
+	EducationPublicDocumentType      map[string]string `json:"educationPublicDocumentType"`
+	PublicDocumentType               map[string]string `json:"publicDocumentType"`
+	EducationYear                    map[string]string `json:"educationYear"`
+	PostgraduateCourseSpecialization map[string]string `json:"postgraduateCourseSpecialization"`
 }
 
 func CreateSchema() Schema {
 	return Schema{
-		Human:                       createHumanSchema(),
-		Comment:                     createCommentsSchema(),
-		Doctors:                     createDoctorsSchema(),
-		Division:                    createDivisionSchema(),
-		MedicalProfile:              createMedicalProfileSchema(),
-		DoctorUser:                  createDoctorUserSchema(),
-		Center:                      createCenterSchema(),
-		Teacher:                     createTeacherSchema(),
-		DpoCourse:                   createDpoCourseSchema(),
-		DpoBaseCourse:               createDpoBaseCourseSchema(),
-		EducationalManager:          createEducationalManagerSchema(),
-		Specialization:              createSpecializationSchema(),
-		Vacancy:                     createVacancySchema(),
-		DpoCourseSpecialization:     createDpoCourseSpecializationSchema(),
-		DpoApplication:              createDpoApplicationsSchema(),
-		PostgraduateCourse:          createPostgraduateCourseSchema(),
-		ResidencyCourse:             createResidencyCourseSchema(),
-		EducationPublicDocumentType: createEducationPublicDocumentTypeSchema(),
-		PublicDocumentType:          createPublicDocumentTypeSchema(),
-		EducationYear:               createEducationYearSchema(),
+		Human:                            createHumanSchema(),
+		Comment:                          createCommentsSchema(),
+		Doctors:                          createDoctorsSchema(),
+		Division:                         createDivisionSchema(),
+		MedicalProfile:                   createMedicalProfileSchema(),
+		DoctorUser:                       createDoctorUserSchema(),
+		Center:                           createCenterSchema(),
+		Teacher:                          createTeacherSchema(),
+		DpoCourse:                        createDpoCourseSchema(),
+		DpoBaseCourse:                    createDpoBaseCourseSchema(),
+		EducationalManager:               createEducationalManagerSchema(),
+		Specialization:                   createSpecializationSchema(),
+		Vacancy:                          createVacancySchema(),
+		DpoCourseSpecialization:          createDpoCourseSpecializationSchema(),
+		DpoApplication:                   createDpoApplicationsSchema(),
+		PostgraduateCourse:               createPostgraduateCourseSchema(),
+		ResidencyCourse:                  createResidencyCourseSchema(),
+		EducationPublicDocumentType:      createEducationPublicDocumentTypeSchema(),
+		PublicDocumentType:               createPublicDocumentTypeSchema(),
+		EducationYear:                    createEducationYearSchema(),
+		PostgraduateCourseSpecialization: createPostgraduateCourseSpecializationSchema(),
 	}
 }
 
@@ -235,6 +237,16 @@ func createPostgraduateCourseSchema() map[string]string {
 		"code":          "code",
 		"years":         "years",
 		"educationForm": "education_form",
+	}
+}
+
+func createPostgraduateCourseSpecializationSchema() map[string]string {
+	return map[string]string{
+		"tableName":            "postgraduate_courses_specializations",
+		"key":                  "postgraduateCourseSpecialization",
+		"id":                   "id",
+		"postgraduateCourseId": "postgraduate_course_id",
+		"specializationId":     "specialization_id",
 	}
 }
 

@@ -1,6 +1,7 @@
 package specializations
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -12,9 +13,13 @@ func (r *Repository) getDB() *bun.DB {
 
 func (r *Repository) getAll() (models.Specializations, error) {
 	items := make(models.Specializations, 0)
-	err := r.db.NewSelect().Model(&items).
-		Order("name").
-		Scan(r.ctx)
+	query := r.db.NewSelect().Model(&items).
+		Order("name")
+
+	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Filter.CreateFilter(query)
+	//r.queryFilter.Sorter.CreateOrder(query)
+	err := query.Scan(r.ctx)
 	return items, err
 }
 
@@ -55,4 +60,12 @@ func (r *Repository) upsertMany(items models.Specializations) (err error) {
 		Model(&items).
 		Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }
