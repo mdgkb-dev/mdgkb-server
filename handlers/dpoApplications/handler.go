@@ -66,10 +66,21 @@ func (h *Handler) Update(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+
 	err = h.service.Update(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	//if item.FormValue.EmailNotify {
+	//	body, err := h.helper.Templater.ParseTemplate(item, "email/application_update_status.gohtml")
+	//	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	//		return
+	//	}
+	//	err = h.helper.Email.SendEmail([]string{item.FormValue.User.Email}, "Статус вашей заявки обновлён", body)
+	//	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	//		return
+	//	}
+	//}
 	c.JSON(http.StatusOK, item)
 }
 

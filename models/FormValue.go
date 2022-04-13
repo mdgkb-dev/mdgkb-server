@@ -11,9 +11,9 @@ type FormValue struct {
 	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	CreatedAt     time.Time     `json:"createdAt"`
 	IsNew         bool          `json:"isNew"`
-
-	User   *User     `bun:"rel:belongs-to" json:"user"`
-	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
+	EmailNotify   bool          `bun:"-" json:"emailNotify"`
+	User          *User         `bun:"rel:belongs-to" json:"user"`
+	UserID        uuid.UUID     `bun:"type:uuid" json:"userId"`
 
 	Fields      Fields      `bun:"rel:has-many" json:"fields"`
 	FieldValues FieldValues `bun:"rel:has-many" json:"fieldValues"`
