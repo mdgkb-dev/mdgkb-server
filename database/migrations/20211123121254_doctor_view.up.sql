@@ -1,4 +1,4 @@
-create or replace view doctors_view as
+create view doctors_view as
 SELECT
        doctors.*,
        h.name,

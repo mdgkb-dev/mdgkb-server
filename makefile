@@ -10,7 +10,7 @@ else
 	main := cmd/server/main.go
 endif
 
-run:
+run: migrate
 	reflex -r '\.go' -s -- sh -c "go run cmd/server/main.go"
 
 run_cold:
@@ -37,7 +37,7 @@ migrate_rollback:
 drop_database:
 	go run $(database) -action=dropDatabase
 
-dump:
-	./database/dump_pg.sh
+dump: drop_database migrate_init migrate
+	 ./database/dump_pg.sh
 
 
