@@ -40,4 +40,5 @@ drop_database:
 dump: drop_database migrate_init migrate
 	 ./database/dump_pg.sh
 
-
+build:
+	GOOS=linux GOARCH=amd64 go build -o ./test ./cmd/server/main.go
