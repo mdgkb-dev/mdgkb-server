@@ -28,6 +28,7 @@ func (r *Repository) upsertMany(items models.FieldValues) (err error) {
 		Set("value_number = EXCLUDED.value_number").
 		Set("value_date = EXCLUDED.value_date").
 		Set("mod_checked = EXCLUDED.mod_checked").
+		Set("mod_comment = EXCLUDED.mod_comment").
 		Set("field_id = EXCLUDED.field_id").
 		Set("event_application_id = EXCLUDED.event_application_id").
 		Exec(r.ctx)
@@ -41,6 +42,7 @@ func (r *Repository) upsert(item *models.FieldValue) (err error) {
 		Set("value_number = EXCLUDED.value_number").
 		Set("value_date = EXCLUDED.value_date").
 		Set("mod_checked = EXCLUDED.mod_checked").
+		Set("mod_comment = EXCLUDED.mod_comment").
 		Set("field_id = EXCLUDED.field_id").
 		Set("event_application_id = EXCLUDED.event_application_id").
 		Exec(r.ctx)
