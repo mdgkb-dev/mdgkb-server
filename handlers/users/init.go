@@ -31,6 +31,7 @@ type IService interface {
 	UpsertEmail(*models.User) error
 	DropUUID(*models.User) error
 	UpdatePassword(*models.User) error
+	SetAccessLink(item *models.User) error
 }
 
 type IRepository interface {

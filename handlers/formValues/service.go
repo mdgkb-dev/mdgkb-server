@@ -7,7 +7,8 @@ import (
 )
 
 func (s *Service) Upsert(item *models.FormValue) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	usersService := users.CreateService(s.repository.getDB(), s.helper)
+	err := usersService.UpsertEmail(item.User)
 	if err != nil {
 		return err
 	}
@@ -20,6 +21,20 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
 	if err != nil {
 		return err
+	}
+	err = usersService.SetAccessLink(item.User)
+	if err != nil {
+		return err
+	}
+	if item.FormStatus.SendEmail {
+		mail, err := s.helper.Templater.ParseTemplate(item, "email/application.gohtml")
+		if err != nil {
+			return err
+		}
+		err = s.helper.Email.SendEmail([]string{item.User.Email}, "Статус вашей заявки изменён", mail)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

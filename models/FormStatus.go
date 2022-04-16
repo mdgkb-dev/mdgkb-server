@@ -7,17 +7,17 @@ import (
 )
 
 type FormStatus struct {
-	bun.BaseModel  `bun:"form_statuses,alias:form_statuses"`
-	ID             uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name           string        `json:"name"`
-	Label          string        `json:"label"`
-	Color          string        `json:"color"`
-	ModActionName  string        `json:"modActionName"`
-	UserActionName string        `json:"userActionName"`
-	IsEditable     bool          `json:"isEditable"`
-	Icon           *FileInfo     `bun:"rel:belongs-to" json:"icon"`
-	IconId         uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
-
+	bun.BaseModel                     `bun:"form_statuses,alias:form_statuses"`
+	ID                                uuid.NullUUID            `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name                              string                   `json:"name"`
+	Label                             string                   `json:"label"`
+	Color                             string                   `json:"color"`
+	ModActionName                     string                   `json:"modActionName"`
+	UserActionName                    string                   `json:"userActionName"`
+	IsEditable                        bool                     `json:"isEditable"`
+	Icon                              *FileInfo                `bun:"rel:belongs-to" json:"icon"`
+	IconId                            uuid.NullUUID            `bun:"type:uuid"  json:"iconId"`
+	SendEmail                         bool                     `json:"sendEmail"`
 	FormStatusToFormStatuses          FormStatusToFormStatuses `bun:"rel:has-many" json:"formStatusToFormStatuses"`
 	FormStatusToFormStatusesForDelete []string                 `bun:"-" json:"formStatusToFormStatusesForDelete"`
 }

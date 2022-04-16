@@ -1,3 +1,8 @@
 {{ template "_header"}}
-    Статус вашей заявки изменён на {{.FormValue.FormStatus.Label }}
+    <div>
+        Статус вашей заявки изменён.
+    </div>
+    <div>
+        <b>Статус: {{.FormStatus.Label }} </b>
+    </div>
 {{ template "_footer"}}

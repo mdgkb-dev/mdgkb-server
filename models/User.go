@@ -13,10 +13,11 @@ type User struct {
 	UUID          uuid.UUID     `bun:"type:uuid,nullzero,notnull,default:uuid_generate_v4()"  json:"uuid"` // для восстановления пароля - обеспечивает уникальность страницы на фронте
 	Phone         string        `json:"phone"`
 	Password      string        `json:"password"`
+	IsActive      bool          `json:"isActive"`
 	Human         *Human        `bun:"rel:belongs-to" json:"human"`
 	HumanID       uuid.NullUUID `bun:"type:uuid" json:"humanId"`
 	Role          *Role         `bun:"rel:belongs-to" json:"role"`
-	RoleID        uuid.NullUUID `bun:"type:uuid,scanonly" json:"roleId"`
+	RoleID        uuid.NullUUID `bun:"type:uuid" json:"roleId"`
 	Questions     Questions     `bun:"rel:has-many" json:"questions"`
 
 	Children          Children    `bun:"rel:has-many" json:"children"`

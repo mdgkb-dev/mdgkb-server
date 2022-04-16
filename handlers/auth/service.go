@@ -18,7 +18,8 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	}
 	item.Role = role
 	item.RoleID = role.ID
-	err = users.CreateService(s.repository.getDB(), s.helper).Create(item)
+	item.IsActive = true
+	err = users.CreateService(s.repository.getDB(), s.helper).Upsert(item)
 	if err != nil {
 		return nil, err
 	}
@@ -66,6 +67,7 @@ func (s *Service) UpdatePassword(item *models.User) error {
 	if err != nil {
 		return err
 	}
+	item.IsActive = true
 	return users.CreateService(s.repository.getDB(), s.helper).UpdatePassword(item)
 }
 

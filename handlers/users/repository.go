@@ -52,7 +52,8 @@ func (r *Repository) getByEmail(id string) (*models.User, error) {
 		Relation("Children.Human").
 		Relation("Role").
 		Relation("DoctorsUsers").
-		Where("users.email = ?", id).Scan(r.ctx)
+		Where("users.email = ? AND users.is_active = true", id).
+		Scan(r.ctx)
 	return &item, err
 }
 
@@ -62,7 +63,7 @@ func (r *Repository) create(user *models.User) (err error) {
 }
 
 func (r *Repository) emailExists(email string) (bool, error) {
-	exists, err := r.db.NewSelect().Model((*models.User)(nil)).Where("users.email = ?", email).Exists(r.ctx)
+	exists, err := r.db.NewSelect().Model((*models.User)(nil)).Where("users.email = ? and is_active = true", email).Exists(r.ctx)
 	return exists, err
 }
 
@@ -73,9 +74,10 @@ func (r *Repository) update(item *models.User) (err error) {
 }
 
 func (r *Repository) upsert(item *models.User) (err error) {
-	_, err = r.db.NewUpdate().Model(item).
-		OmitZero().
-		Where("id = ?", item.ID).
+	_, err = r.db.NewInsert().On("conflict (email) do update").Model(item).
+		Set("role_id = EXCLUDED.role_id").
+		Set("password = EXCLUDED.password").
+		Set("is_active = EXCLUDED.is_active").
 		Exec(r.ctx)
 	return err
 }
@@ -114,6 +116,7 @@ func (r *Repository) updatePassword(item *models.User) (err error) {
 	_, err = r.db.NewUpdate().
 		Model(item).
 		Set("password = ?", item.Password).
+		Set("is_active = true").
 		Where("id = ?", item.ID).
 		Exec(r.ctx)
 	return err

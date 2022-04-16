@@ -1,8 +1,10 @@
 package users
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/human"
+	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -66,7 +68,7 @@ func (s *Service) Upsert(item *models.User) error {
 	//if err != nil {
 	//	return err
 	//}
-	err = s.repository.update(item)
+	err = s.repository.upsert(item)
 	if err != nil {
 		return err
 	}
@@ -146,4 +148,30 @@ func (s *Service) DropUUID(item *models.User) error {
 
 func (s *Service) UpdatePassword(item *models.User) error {
 	return s.repository.updatePassword(item)
+}
+
+func (s *Service) SetAccessLink(item *models.User) error {
+	if item.IsActive {
+		return nil
+	}
+	role, err := roles.CreateService(s.repository.getDB(), s.helper).GetDefaultRole()
+	if err != nil {
+		return err
+	}
+	item.Role = role
+	item.RoleID = role.ID
+	err = s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	link := fmt.Sprintf("%s/access-profile/%s/%s", s.helper.HTTP.Host, item.ID, item.UUID)
+	mail, err := s.helper.Templater.ParseTemplate(link, "email/profile_access.gohtml")
+	if err != nil {
+		return err
+	}
+	err = s.helper.Email.SendEmail([]string{item.Email}, "Подтверждение доступа к учётной записи", mail)
+	if err != nil {
+		return err
+	}
+	return nil
 }
