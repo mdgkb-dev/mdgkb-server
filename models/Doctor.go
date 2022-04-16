@@ -19,11 +19,11 @@ type Doctor struct {
 	Human             *Human          `bun:"rel:belongs-to" json:"human"`
 	HumanID           uuid.NullUUID   `bun:"type:uuid" json:"humanId"`
 	Position          *Position       `bun:"rel:belongs-to" json:"position"`
-	PositionID        uuid.UUID       `bun:"type:uuid" json:"positionId"`
+	PositionID        uuid.NullUUID   `bun:"type:uuid" json:"positionId"`
 	Schedule          string          `json:"schedule"`
 	Tags              string          `json:"tags"`
 	MedicalProfile    *MedicalProfile `bun:"rel:belongs-to" json:"medicalProfile"`
-	MedicalProfileID  uuid.UUID       `bun:"type:uuid" json:"medicalProfileId"`
+	MedicalProfileID  uuid.NullUUID   `bun:"type:uuid" json:"medicalProfileId"`
 	Order             int             `bun:"item_order" json:"order"'`
 	FileInfo          *FileInfo       `bun:"rel:belongs-to" json:"fileInfo"`
 	FileInfoID        uuid.NullUUID   `bun:"type:uuid" json:"fileInfoId"`
@@ -87,8 +87,14 @@ func (item *Doctor) SetForeignKeys() {
 	if item.PhotoMini != nil {
 		item.PhotoMiniID = item.PhotoMini.ID.UUID
 	}
+	if item.Position != nil {
+		item.PositionID = item.Position.ID
+	}
 	if item.Timetable != nil {
 		item.TimetableId = item.Timetable.ID
+	}
+	if item.MedicalProfile != nil {
+		item.MedicalProfileID = item.MedicalProfile.ID
 	}
 }
 

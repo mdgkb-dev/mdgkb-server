@@ -19,7 +19,7 @@ func (r *Repository) createMany(items models.PostgraduateCoursesSpecializations)
 
 func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.PostgraduateCoursesSpecializations)(nil)).
+		Model((*models.PostgraduateCourseSpecialization)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
