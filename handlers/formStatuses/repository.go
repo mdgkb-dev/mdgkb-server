@@ -48,6 +48,7 @@ func (r *Repository) upsert(item *models.FormStatus) (err error) {
 		Set("name = EXCLUDED.name").
 		Set("label = EXCLUDED.label").
 		Set("color = EXCLUDED.color").
+		Set("send_email = EXCLUDED.send_email").
 		Set("mod_action_name = EXCLUDED.mod_action_name").
 		Set("user_action_name = EXCLUDED.user_action_name").
 		Set("is_editable = EXCLUDED.is_editable").
@@ -62,6 +63,7 @@ func (r *Repository) upsertMany(items models.FormStatuses) (err error) {
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
 		Set("label = EXCLUDED.label").
+		Set("send_email = EXCLUDED.send_email").
 		Set("color = EXCLUDED.color").
 		Set("mod_action_name = EXCLUDED.mod_action_name").
 		Set("user_action_name = EXCLUDED.user_action_name").

@@ -151,7 +151,11 @@ func (s *Service) UpdatePassword(item *models.User) error {
 }
 
 func (s *Service) SetAccessLink(item *models.User) error {
-	if item.IsActive {
+	findedUser, err := s.repository.getByEmail(item.Email)
+	if err != nil {
+		return err
+	}
+	if findedUser.IsActive {
 		return nil
 	}
 	role, err := roles.CreateService(s.repository.getDB(), s.helper).GetDefaultRole()

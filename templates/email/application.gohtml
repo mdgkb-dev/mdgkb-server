@@ -3,6 +3,13 @@
         Статус вашей заявки изменён.
     </div>
     <div>
-        <b>Статус: {{.FormStatus.Label }} </b>
+        <b>Статус: {{.FormValue.FormStatus.Label }} </b>
+    </div>
+    <hr>
+    <div>
+        Для доступа к личному кабинету необходимо авторизироваться в системе
+    </div>
+    <div>
+        <a href="{{.Host}}">Ссылка на сайт больницы</a>
     </div>
 {{ template "_footer"}}

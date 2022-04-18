@@ -22,12 +22,15 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	if err != nil {
 		return err
 	}
-	err = usersService.SetAccessLink(item.User)
-	if err != nil {
-		return err
-	}
 	if item.FormStatus.SendEmail {
-		mail, err := s.helper.Templater.ParseTemplate(item, "email/application.gohtml")
+		emailStruct := struct {
+			FormValue *models.FormValue
+			Host      string
+		}{
+			item,
+			s.helper.HTTP.Host,
+		}
+		mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/application.gohtml")
 		if err != nil {
 			return err
 		}
