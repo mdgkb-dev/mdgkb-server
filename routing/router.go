@@ -20,9 +20,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/donorRules"
 	"mdgkb/mdgkb-server/handlers/dpoApplications"
-	"mdgkb/mdgkb-server/handlers/residencyApplications"
-	"mdgkb/mdgkb-server/handlers/formValues"
-	"mdgkb/mdgkb-server/handlers/formStatuses"
 	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/dpoDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationPublicDocumentTypes"
@@ -33,6 +30,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/formPatterns"
+	"mdgkb/mdgkb-server/handlers/formStatuses"
+	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/handlers/gates"
 	"mdgkb/mdgkb-server/handlers/heads"
 	"mdgkb/mdgkb-server/handlers/medicalProfiles"
@@ -53,6 +52,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/projects"
 	"mdgkb/mdgkb-server/handlers/publicDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/questions"
+	"mdgkb/mdgkb-server/handlers/residencyApplications"
 	"mdgkb/mdgkb-server/handlers/residencyCourses"
 	"mdgkb/mdgkb-server/handlers/residencyDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/roles"
@@ -84,8 +84,6 @@ import (
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
-	residencyApplicationsRouter "mdgkb/mdgkb-server/routing/residencyApplications"
-	formValuesRouter "mdgkb/mdgkb-server/routing/formValues"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	dpoDocumentTypesRouter "mdgkb/mdgkb-server/routing/dpoDocumentTypes"
 	educationPublicDocumentTypesRouter "mdgkb/mdgkb-server/routing/educationPublicDocumentTypes"
@@ -97,6 +95,7 @@ import (
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
 	formPatternsRouter "mdgkb/mdgkb-server/routing/formPatterns"
 	formStatusesRouter "mdgkb/mdgkb-server/routing/formStatuses"
+	formValuesRouter "mdgkb/mdgkb-server/routing/formValues"
 	gatesRouter "mdgkb/mdgkb-server/routing/gates"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
@@ -118,6 +117,7 @@ import (
 	projectsRouter "mdgkb/mdgkb-server/routing/projects"
 	publicDocumentTypesRouter "mdgkb/mdgkb-server/routing/publicDocumentTypes"
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
+	residencyApplicationsRouter "mdgkb/mdgkb-server/routing/residencyApplications"
 	residencyCoursesRouter "mdgkb/mdgkb-server/routing/residencyCourses"
 	residencyDocumentTypesRouter "mdgkb/mdgkb-server/routing/residencyDocumentTypes"
 	rolesRouter "mdgkb/mdgkb-server/routing/roles"
@@ -144,7 +144,7 @@ import (
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, config config.Config) {
 	helper := helperPack.NewHelper(config)
-	m := middleware.CreateMiddleware(helper, db)
+	m := middleware.CreateMiddleware(helper)
 
 	r.Use(m.CORSMiddleware())
 	//r.Use(m.CheckPermission())

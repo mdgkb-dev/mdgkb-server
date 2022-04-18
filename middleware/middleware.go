@@ -1,26 +1,17 @@
 package middleware
 
 import (
-	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/uptrace/bun"
-	"log"
 	"net/http"
 )
 
 type Middleware struct {
-	helper   *helper.Helper
-	enforcer *casbin.Enforcer
+	helper *helper.Helper
 }
 
-func CreateMiddleware(helper *helper.Helper, db *bun.DB) *Middleware {
-	adapter, err := NewAdapterByDB(db)
-	if err != nil {
-		log.Fatal(err)
-	}
-	e, err := casbin.NewEnforcer("casbin-model.conf", adapter)
-	return &Middleware{helper: helper, enforcer: e}
+func CreateMiddleware(helper *helper.Helper) *Middleware {
+	return &Middleware{helper: helper}
 }
 
 func (m *Middleware) Authentication() gin.HandlerFunc {
@@ -69,10 +60,10 @@ func (m *Middleware) CORSMiddleware() gin.HandlerFunc {
 
 func (m *Middleware) CheckPermission() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !m.checkPermission(c) {
-			c.AbortWithStatus(http.StatusForbidden)
-			return
-		}
+		//if !m.checkPermission(c) {
+		//	c.AbortWithStatus(http.StatusForbidden)
+		//	return
+		//}
 		c.Next()
 	}
 }

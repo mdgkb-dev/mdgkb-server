@@ -1,9 +1,5 @@
 package middleware
 
-import (
-	"github.com/gin-gonic/gin"
-)
-
 //
 //// Middleware returns a CasbinAuth middleware.
 ////
@@ -49,15 +45,3 @@ import (
 //	return maskMatch(mask1, uint(mask2)), nil
 //}
 //
-
-func (m *Middleware) checkPermission(c *gin.Context) bool {
-	role := "ADMIN"
-	method := "GET"
-	path := c.FullPath()
-	///api/v1/doctors
-	re, err := m.enforcer.Enforce(role, path, method)
-	if err != nil || !re {
-		return false
-	}
-	return true
-}

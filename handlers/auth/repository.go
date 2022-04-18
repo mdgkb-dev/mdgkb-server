@@ -12,8 +12,9 @@ func (r *Repository) getDB() *bun.DB {
 }
 
 func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT DO UPDATE").
+	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
+		Set("id = EXCLUDED.id").
 		Set("guest_allow = EXCLUDED.guest_allow").
 		Exec(r.ctx)
 	return err
@@ -28,7 +29,9 @@ func (r *Repository) deleteManyPathPermissions(idPool []uuid.UUID) (err error) {
 }
 
 func (r *Repository) upsertManyPathPermissionsRoles(items models.PathPermissionsRoles) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT DO NOTHING").
+	_, err = r.db.NewInsert().On("CONFLICT (path_permission_id, role_id) DO UPDATE").
+		Set("path_permission_id = EXCLUDED.path_permission_id").
+		Set("role_id = EXCLUDED.role_id").
 		Model(&items).
 		Exec(r.ctx)
 	return err
@@ -52,13 +55,17 @@ func (r *Repository) getAllPathPermissions() (models.PathPermissions, error) {
 }
 
 func (r *Repository) checkPathPermissions(path string, roleID string) error {
-	err := r.db.NewSelect().
+	if roleID == "" {
+		return r.db.NewSelect().
+			Model(&models.PathPermission{}).
+			Where("path_permissions.resource = ? and path_permissions.guest_allow = true", path).
+			Scan(r.ctx)
+	}
+
+	return r.db.NewSelect().
 		Model(&models.PathPermission{}).
 		Join("JOIN path_permissions_roles ppr on ppr.path_permission_id = path_permissions.id and ppr.role_id = ?", roleID).
 		Where("path_permissions.resource = ?", path).
-		Union(r.db.NewSelect().
-			Model(&models.PathPermission{}).Where("path_permissions.guest_allow = true")).
 		Scan(r.ctx)
 
-	return err
 }

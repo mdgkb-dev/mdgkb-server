@@ -3,8 +3,8 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"github.com/casbin/casbin/v2/model"
-	"github.com/casbin/casbin/v2/persist"
+	//"github.com/casbin/casbin/v2/model"
+	//"github.com/casbin/casbin/v2/persist"
 	"github.com/google/uuid"
 	"github.com/mmcloughlin/meow"
 	"github.com/uptrace/bun"
@@ -119,21 +119,21 @@ func (a *Adapter) AddPolicy(sec string, ptype string, rule []string) error {
 }
 
 // LoadPolicy loads policy from database.
-func (a *Adapter) LoadPolicy(model model.Model) error {
-	var lines []*CasbinRule
-
-	err := a.db.NewSelect().Model(&lines).Table(a.tableName).Scan(context.Background())
-	if err != nil {
-		return err
-	}
-	for _, line := range lines {
-		persist.LoadPolicyLine(line.String(), model)
-	}
-
-	a.filtered = false
-
-	return nil
-}
+//func (a *Adapter) LoadPolicy(model model.Model) error {
+//	var lines []*CasbinRule
+//
+//	err := a.db.NewSelect().Model(&lines).Table(a.tableName).Scan(context.Background())
+//	if err != nil {
+//		return err
+//	}
+//	for _, line := range lines {
+//		persist.LoadPolicyLine(line.String(), model)
+//	}
+//
+//	a.filtered = false
+//
+//	return nil
+//}
 
 func savePolicyLine(ptype string, rule []string) *CasbinRule {
 	line := &CasbinRule{Ptype: ptype}
@@ -205,40 +205,40 @@ func (a *Adapter) RemovePolicy(sec string, ptype string, rule []string) error {
 	return err
 }
 
-// SavePolicy saves policy to database.
-func (a *Adapter) SavePolicy(model model.Model) error {
-
-	_, err := a.db.NewDelete().Table(a.tableName).Where("id IS NOT NULL").Exec(context.Background())
-	if err != nil {
-		return err
-	}
-
-	var lines []*CasbinRule
-
-	for ptype, ast := range model["p"] {
-		for _, rule := range ast.Policy {
-			line := savePolicyLine(ptype, rule)
-			lines = append(lines, line)
-		}
-	}
-
-	for ptype, ast := range model["g"] {
-		for _, rule := range ast.Policy {
-			line := savePolicyLine(ptype, rule)
-			lines = append(lines, line)
-		}
-	}
-
-	for _, line := range lines {
-		_, err = a.db.NewInsert().Model(line).Table(a.tableName).Exec(context.Background())
-		if err != nil {
-			return err
-		}
-	}
-
-	if err != nil {
-		return fmt.Errorf("commit DB transaction: %v", err)
-	}
-
-	return nil
-}
+//SavePolicy saves policy to database.
+//func (a *Adapter) SavePolicy(model model.Model) error {
+//
+//	_, err := a.db.NewDelete().Table(a.tableName).Where("id IS NOT NULL").Exec(context.Background())
+//	if err != nil {
+//		return err
+//	}
+//
+//	var lines []*CasbinRule
+//
+//	for ptype, ast := range model["p"] {
+//		for _, rule := range ast.Policy {
+//			line := savePolicyLine(ptype, rule)
+//			lines = append(lines, line)
+//		}
+//	}
+//
+//	for ptype, ast := range model["g"] {
+//		for _, rule := range ast.Policy {
+//			line := savePolicyLine(ptype, rule)
+//			lines = append(lines, line)
+//		}
+//	}
+//
+//	for _, line := range lines {
+//		_, err = a.db.NewInsert().Model(line).Table(a.tableName).Exec(context.Background())
+//		if err != nil {
+//			return err
+//		}
+//	}
+//
+//	if err != nil {
+//		return fmt.Errorf("commit DB transaction: %v", err)
+//	}
+//
+//	return nil
+//}

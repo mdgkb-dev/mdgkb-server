@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -138,12 +137,15 @@ func (h *Handler) CheckPathPermissions(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusForbidden) {
 		return
 	}
-	accessDetails, err := h.helper.Token.GetAccessDetail(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusForbidden) {
-		return
+	userRoleId := ""
+	if c.Request.Header.Get("token") != "null" {
+		accessDetails, err := h.helper.Token.GetAccessDetail(c)
+		if h.helper.HTTP.HandleError(c, err, http.StatusForbidden) {
+			return
+		}
+		userRoleId = accessDetails.UserRoleID
 	}
-	fmt.Println(accessDetails)
-	err = h.service.CheckPathPermissions(path, accessDetails.UserRoleID)
+	err = h.service.CheckPathPermissions(path, userRoleId)
 	if h.helper.HTTP.HandleError(c, err, http.StatusForbidden) {
 		return
 	}
