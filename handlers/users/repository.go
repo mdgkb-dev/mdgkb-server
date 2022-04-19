@@ -83,7 +83,7 @@ func (r *Repository) upsert(item *models.User) (err error) {
 }
 
 func (r *Repository) upsertEmail(item *models.User) (err error) {
-	_, err = r.db.NewInsert().On("conflict (email) do update").
+	_, err = r.db.NewInsert().On("conflict (email) DO NOTHING").
 		Model(item).
 		Exec(r.ctx)
 	return err

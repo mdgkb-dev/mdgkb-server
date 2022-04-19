@@ -140,7 +140,7 @@ func (h *Handler) CheckPathPermissions(c *gin.Context) {
 	userRoleId := ""
 	if c.Request.Header.Get("token") != "null" {
 		accessDetails, err := h.helper.Token.GetAccessDetail(c)
-		if h.helper.HTTP.HandleError(c, err, http.StatusForbidden) {
+		if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
 			return
 		}
 		userRoleId = accessDetails.UserRoleID
