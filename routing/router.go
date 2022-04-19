@@ -2,7 +2,13 @@ package routing
 
 import (
 	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/gin-gonic/gin"
+	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/go-redis/redis/v7"
 	"github.com/pro-assistance/pro-assister/config"
+	helperPack "github.com/pro-assistance/pro-assister/helper"
+	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/broker"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -133,17 +139,11 @@ import (
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
-
-	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
-	"github.com/go-redis/redis/v7"
-	"github.com/uptrace/bun"
-
-	helperPack "github.com/pro-assistance/pro-assister/helper"
 )
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, config config.Config) {
 	helper := helperPack.NewHelper(config)
+
 	m := middleware.CreateMiddleware(helper)
 
 	r.Use(m.CORSMiddleware())
@@ -157,6 +157,9 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	api := r.Group("/api/v1")
 	//api.Use(m.Authentication())
 	api.Use(m.CORSMiddleware())
+	b := broker.NewBroker()
+	api.GET("/subscribe/:channel", b.ServeHTTP)
+
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(db, helper))
 	buildings.Init(api.Group("/buildings"), db)
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, helper))
@@ -202,7 +205,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
 	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduateCourses.CreateHandler(db, helper))
-	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper))
+	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper, b))
 	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyApplications.CreateHandler(db, helper))
 	formValuesRouter.Init(api.Group("/form-values"), formValues.CreateHandler(db, helper))
 	formStatusesRouter.Init(api.Group("/form-statuses"), formStatuses.CreateHandler(db, helper))

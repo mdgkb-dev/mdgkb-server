@@ -3,6 +3,7 @@ package dpoApplications
 import (
 	"github.com/gin-gonic/gin"
 	"io"
+	"mdgkb/mdgkb-server/broker"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 	"time"
@@ -39,7 +40,6 @@ func (h *Handler) EmailExists(c *gin.Context) {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.DpoApplication
-
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -52,7 +52,8 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	h.sse.Message <- "New application"
+	h.sse.Notifier <- broker.NotificationEvent{Payload: "wer", EventName: "ping"}
+	h.sse.Notifier <- broker.NotificationEvent{Payload: item, EventName: "dpo-application-create"}
 	c.JSON(http.StatusOK, item)
 }
 
@@ -71,16 +72,6 @@ func (h *Handler) Update(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	//if item.FormValue.EmailNotify {
-	//	body, err := h.helper.Templater.ParseTemplate(item, "email/application_update_status.gohtml")
-	//	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-	//		return
-	//	}
-	//	err = h.helper.Email.SendEmail([]string{item.FormValue.User.Email}, "Статус вашей заявки обновлён", body)
-	//	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-	//		return
-	//	}
-	//}
 	c.JSON(http.StatusOK, item)
 }
 
@@ -95,16 +86,16 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) SubscribeCreate(c *gin.Context) {
 	go func() {
-		h.sse.Message <- "ping"
+		h.sse.Notifier <- broker.NotificationEvent{}
 		for {
 			time.Sleep(time.Second * 60)
-			h.sse.Message <- "ping"
+			h.sse.Notifier <- broker.NotificationEvent{}
 		}
 	}()
 
 	c.Stream(func(w io.Writer) bool {
-		if msg, ok := <-h.sse.Message; ok {
-			c.SSEvent("dpoApplicationCreate", msg)
+		if msg, ok := <-h.sse.Notifier; ok {
+			c.SSEvent("dpo-application-create", msg)
 			return true
 		}
 		return false
