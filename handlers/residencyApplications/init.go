@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
+	"mdgkb/mdgkb-server/broker"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -18,8 +19,6 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
-
-	SubscribeCreate(c *gin.Context)
 }
 
 type IService interface {
@@ -47,29 +46,11 @@ type IFilesService interface {
 	Upload(*gin.Context, *models.ResidencyApplication, map[string][]*multipart.FileHeader) error
 }
 
-type Event struct {
-	Message       chan string
-	NewClients    chan chan string
-	ClosedClients chan chan string
-	TotalClients  map[chan string]bool
-}
-
-func (stream *Event) listen() {
-	for {
-		select {
-		case eventMsg := <-stream.Message:
-			for clientMessageChan := range stream.TotalClients {
-				clientMessageChan <- eventMsg
-			}
-		}
-	}
-}
-
 type Handler struct {
 	service      IService
 	filesService IFilesService
 	helper       *helper.Helper
-	sse          *Event
+	sse          *broker.Broker
 }
 
 type Service struct {
@@ -88,17 +69,16 @@ type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
+func CreateHandler(db *bun.DB, helper *helper.Helper, b *broker.Broker) *Handler {
 	repo := NewRepository(db, helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
-	return NewHandler(service, filesService, helper)
+	return NewHandler(service, filesService, helper, b)
 }
 
 // NewHandler constructor
-func NewHandler(s IService, filesService IFilesService, helper *helper.Helper) *Handler {
-	event := NewServer()
-	return &Handler{service: s, filesService: filesService, helper: helper, sse: event}
+func NewHandler(s IService, filesService IFilesService, helper *helper.Helper, b *broker.Broker) *Handler {
+	return &Handler{service: s, filesService: filesService, helper: helper, sse: b}
 }
 
 func NewService(repository IRepository, helper *helper.Helper) *Service {
@@ -111,33 +91,4 @@ func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
 
 func NewFilesService(helper *helper.Helper) *FilesService {
 	return &FilesService{helper: helper}
-}
-
-func NewServer() (event *Event) {
-	event = &Event{
-		Message:       make(chan string),
-		NewClients:    make(chan chan string),
-		ClosedClients: make(chan chan string),
-		TotalClients:  make(map[chan string]bool),
-	}
-	go event.listen()
-	return
-}
-
-// New event messages are broadcast to all registered client connection channels
-type ClientChan chan string
-
-func (stream *Event) serveHTTP() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		clientChan := make(ClientChan)
-		stream.NewClients <- clientChan
-		defer func() {
-			stream.ClosedClients <- clientChan
-		}()
-		go func() {
-			<-c.Done()
-			stream.ClosedClients <- clientChan
-		}()
-		c.Next()
-	}
 }

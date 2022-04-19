@@ -2,10 +2,9 @@ package residencyApplications
 
 import (
 	"github.com/gin-gonic/gin"
-	"io"
+	"mdgkb/mdgkb-server/broker"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
-	"time"
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -52,7 +51,7 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	h.sse.Message <- "New application"
+	h.sse.Notifier <- broker.NotificationEvent{Payload: item, EventName: "residency-application-create"}
 	c.JSON(http.StatusOK, item)
 }
 
@@ -80,22 +79,4 @@ func (h *Handler) Delete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
-}
-
-func (h *Handler) SubscribeCreate(c *gin.Context) {
-	go func() {
-		h.sse.Message <- "ping"
-		for {
-			time.Sleep(time.Second * 60)
-			h.sse.Message <- "ping"
-		}
-	}()
-
-	c.Stream(func(w io.Writer) bool {
-		if msg, ok := <-h.sse.Message; ok {
-			c.SSEvent("residencyApplicationCreate", msg)
-			return true
-		}
-		return false
-	})
 }

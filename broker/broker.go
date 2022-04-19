@@ -3,7 +3,7 @@ package broker
 import (
 	"fmt"
 	"io"
-	"log"
+	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -45,50 +45,46 @@ func NewBroker() (broker *Broker) {
 		closingClients: make(chan NotifierChan),
 		clients:        make(map[NotifierChan]struct{}),
 	}
-	//b.Listen()
+	go b.Listen()
 	return b
 }
 
 func (broker *Broker) ServeHTTP(c *gin.Context) {
 	eventName := c.Param("channel")
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	fmt.Println(eventName)
-	//c.Header("Content-Type", "text/event-stream")
-	//c.Header("Cache-Control", "no-cache")
-	//c.Header("Connection", "keep-alive")
-	//c.Header("Access-Control-Allow-Origin", "*")
+
+	c.Header("Content-Type", "text/event-stream")
+	c.Header("Cache-Control", "no-cache")
+	c.Header("Connection", "keep-alive")
+	c.Header("Access-Control-Allow-Origin", "*")
 
 	messageChan := make(NotifierChan)
 	broker.newClients <- messageChan
-	fmt.Println(broker.newClients)
-	fmt.Println(broker.newClients)
-	fmt.Println(broker.newClients)
-	fmt.Println(broker.newClients)
+
+	//go func() {
+	//	messageChan <- NotificationEvent{}
+	//	for {
+	//		time.Sleep(time.Second * 5)
+	//		messageChan <- NotificationEvent{}
+	//	}
+	//}()
+
 	defer func() {
 		broker.closingClients <- messageChan
 	}()
-
+	w := c.Writer
+	f, ok := w.(http.Flusher)
+	if !ok {
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("streaming unsupported"))
+		return
+	}
 	c.Stream(func(w io.Writer) bool {
 		event := <-messageChan
-		fmt.Println("123123sdfsdf")
-		fmt.Println("123123sdfsdf")
-		fmt.Println("123123sdfsdf")
-		fmt.Println("123123sdfsdf")
-		fmt.Println("123123sdfsdf")
 		switch eventName {
 		case event.EventName:
-			c.SSEvent(event.EventName, event.Payload)
+			fmt.Fprintf(w, "data: %s\n\n", event)
+			f.Flush()
+			return true
 		}
-		c.Writer.Flush()
 		return true
 	})
 }
@@ -105,8 +101,9 @@ func (broker *Broker) Listen() {
 			for clientMessageChan := range broker.clients {
 				select {
 				case clientMessageChan <- event:
-				case <-time.After(patience):
-					log.Print("Skipping client.")
+					//case <-time.After(patience):
+					//	log.Print("Skipping client.")
+					//}
 				}
 			}
 		}
