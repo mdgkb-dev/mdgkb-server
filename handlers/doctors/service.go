@@ -3,6 +3,7 @@ package doctors
 import (
 	certificates "mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/doctorPaidServices"
+	"mdgkb/mdgkb-server/handlers/educationalOrganizationAcademics"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
@@ -57,6 +58,14 @@ func (s *Service) Create(item *models.Doctor) error {
 	err = doctorPaidServices.CreateService(s.repository.getDB()).CreateMany(item.DoctorPaidServices)
 	if err != nil {
 		return err
+	}
+	educationalOrganizationAcademicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB(), s.helper)
+	if item.EducationalOrganizationAcademic != nil {
+		item.EducationalOrganizationAcademic.DoctorID = item.ID
+		err = educationalOrganizationAcademicsService.Upsert(item.EducationalOrganizationAcademic)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -129,6 +138,17 @@ func (s *Service) Update(item *models.Doctor) error {
 	err = doctorPaidServicesService.DeleteMany(item.DoctorPaidServicesForDelete)
 	if err != nil {
 		return err
+	}
+	educationalOrganizationAcademicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB(), s.helper)
+	err = educationalOrganizationAcademicsService.Upsert(item.EducationalOrganizationAcademic)
+	if err != nil {
+		return err
+	}
+	if item.EducationalOrganizationAcademic == nil {
+		err = educationalOrganizationAcademicsService.DeleteByDoctorID(item.ID)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

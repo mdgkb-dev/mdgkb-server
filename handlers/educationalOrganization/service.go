@@ -27,7 +27,7 @@ func (s *Service) Get() (*models.EducationalOrganization, error) {
 	if err != nil {
 		return nil, err
 	}
-	academicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB())
+	academicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB(), s.helper)
 	item.EducationalOrganizationAcademics, err = academicsService.GetAll()
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 		return err
 	}
 
-	educationalOrganizationAcademicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB())
+	educationalOrganizationAcademicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB(), s.helper)
 	err = educationalOrganizationAcademicsService.DeleteMany(item.EducationalOrganizationAcademicsForDelete)
 	if err != nil {
 		return err

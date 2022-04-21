@@ -1,9 +1,10 @@
 package doctors
 
 import (
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )
@@ -35,7 +36,7 @@ func (r *Repository) getAllMain() (items models.Doctors, err error) {
 		Relation("MedicalProfile").
 		Relation("Regalias").
 		Relation("DoctorComments.Comment").
-		Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true").
+		// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true").
 		Order("doctors_view.regalias_count DESC", "doctors_view.comments_count DESC").
 		Where("doctors_view.file_info_id is not null").
 		Where("doctors_view.mos_doctor_link is not null and doctors_view.mos_doctor_link != '' ").
@@ -52,8 +53,8 @@ func (r *Repository) getAll() (items models.Doctors, err error) {
 		Relation("Position").
 		Relation("MedicalProfile").
 		Relation("Regalias").
-		Relation("DoctorComments.Comment").
-		Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
+		Relation("DoctorComments.Comment")
+		// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
@@ -71,12 +72,13 @@ func (r *Repository) getAllAdmin() (items models.DoctorsWithCount, err error) {
 		Relation("Position").
 		Relation("MedicalProfile").
 		Relation("Regalias").
-		Relation("DoctorComments.Comment").
-		Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
+		Relation("DoctorComments.Comment")
+		// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
 
 	r.queryFilter.Paginator.CreatePagination(query)
 	r.queryFilter.Filter.CreateFilter(query)
-	items.Count, err = query.Limit(20).ScanAndCount(r.ctx)
+	r.queryFilter.Sorter.CreateOrder(query)
+	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
 
@@ -108,6 +110,7 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		Relation("Educations.EducationAccreditation").
 		Relation("DoctorComments.Comment.User.Human").
 		Relation("NewsDoctors.News").
+		Relation("EducationalOrganizationAcademic").
 		Scan(r.ctx)
 	return &item, err
 }

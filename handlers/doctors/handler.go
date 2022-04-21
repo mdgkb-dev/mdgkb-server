@@ -46,7 +46,7 @@ func (h *Handler) GetAllAdmin(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	items, err := h.service.GetAll()
+	items, err := h.service.GetAllAdmin()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

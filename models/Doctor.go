@@ -55,6 +55,8 @@ type Doctor struct {
 
 	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
 	TimetableId uuid.UUID  `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+
+	EducationalOrganizationAcademic *EducationalOrganizationAcademic `bun:"rel:has-one" json:"educationalOrganizationAcademic"`
 }
 
 type Doctors []*Doctor

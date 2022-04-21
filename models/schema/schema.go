@@ -22,6 +22,7 @@ type Schema struct {
 	PublicDocumentType               map[string]string `json:"publicDocumentType"`
 	EducationYear                    map[string]string `json:"educationYear"`
 	PostgraduateCourseSpecialization map[string]string `json:"postgraduateCourseSpecialization"`
+	EducationalOrganizationAcademic  map[string]string `json:"educationalOrganizationAcademic"`
 }
 
 func CreateSchema() Schema {
@@ -47,6 +48,7 @@ func CreateSchema() Schema {
 		PublicDocumentType:               createPublicDocumentTypeSchema(),
 		EducationYear:                    createEducationYearSchema(),
 		PostgraduateCourseSpecialization: createPostgraduateCourseSpecializationSchema(),
+		EducationalOrganizationAcademic:  createEducationalOrganizationAcademicsSchema(),
 	}
 }
 
@@ -296,5 +298,16 @@ func createEducationYearSchema() map[string]string {
 		"label":      "year",
 		"id":         "id",
 		"key":        "educationYear",
+	}
+}
+
+func createEducationalOrganizationAcademicsSchema() map[string]string {
+	return map[string]string{
+		"tableName": "educational_organization_academics_view",
+		"key":       "educationalOrganizationAcademic",
+		"id":        "id",
+		"fullName":  "full_name",
+		"value":      "id",
+		"sortColumn": "full_name",
 	}
 }
