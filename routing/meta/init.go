@@ -12,4 +12,5 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/schema", h.GetSchema)
 	r.GET("/social", h.GetSocial)
 	r.GET("/options", h.GetOptions)
+	r.GET("/get-applications-counts", h.GetApplicationsCounts)
 }

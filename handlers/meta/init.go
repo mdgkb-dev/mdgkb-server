@@ -15,17 +15,21 @@ type IHandler interface {
 	GetSchema(c *gin.Context)
 	GetSocial(c *gin.Context)
 	GetOptions(c *gin.Context)
+	GetApplicationsCounts(c *gin.Context)
 }
 
 type IService interface {
 	GetCount(*string) (*int, error)
 	GetSchema() schema.Schema
 	GetOptions(*models.OptionModel) (models.Options, error)
+	GetApplicationsCounts() (models.ApplicationsCounts, error)
+	SendApplicationsCounts() error
 }
 
 type IRepository interface {
 	getCount(*string) (*int, error)
 	getOptions(*models.OptionModel) (models.Options, error)
+	getApplicationsCounts() (models.ApplicationsCounts, error)
 }
 
 type Handler struct {

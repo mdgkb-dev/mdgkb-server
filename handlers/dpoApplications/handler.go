@@ -2,7 +2,6 @@ package dpoApplications
 
 import (
 	"github.com/gin-gonic/gin"
-	"mdgkb/mdgkb-server/broker"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 )
@@ -50,7 +49,7 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	h.sse.Notifier <- broker.NotificationEvent{Payload: item, EventName: "dpo-application-create"}
+	h.helper.Broker.SendEvent("dpo-application-create", item)
 	c.JSON(http.StatusOK, item)
 }
 

@@ -2,6 +2,7 @@ package postgraduateApplications
 
 import (
 	"mdgkb/mdgkb-server/handlers/formValues"
+	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -34,6 +35,10 @@ func (s *Service) Create(item *models.PostgraduateApplication) error {
 	}
 	item.SetForeignKeys()
 	err = s.repository.create(item)
+	if err != nil {
+		return err
+	}
+	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}

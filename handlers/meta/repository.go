@@ -19,3 +19,10 @@ func (r *Repository) getOptions(optionModel *models.OptionModel) (models.Options
 	err = r.db.ScanRows(r.ctx, queryContext, &options)
 	return options, err
 }
+
+func (r *Repository) getApplicationsCounts() (models.ApplicationsCounts, error) {
+	items := make(models.ApplicationsCounts, 0)
+	err := r.db.NewSelect().
+		Model(&items).Scan(r.ctx)
+	return items, err
+}

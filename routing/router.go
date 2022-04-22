@@ -8,7 +8,6 @@ import (
 	"github.com/pro-assistance/pro-assister/config"
 	helperPack "github.com/pro-assistance/pro-assister/helper"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/broker"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -26,13 +25,13 @@ import (
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/handlers/donorRules"
 	"mdgkb/mdgkb-server/handlers/dpoApplications"
-	"mdgkb/mdgkb-server/handlers/educationalOrganizationAcademics"
 	"mdgkb/mdgkb-server/handlers/dpoCourses"
 	"mdgkb/mdgkb-server/handlers/dpoDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationPublicDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/educationYears"
 	"mdgkb/mdgkb-server/handlers/educationalManagers"
 	"mdgkb/mdgkb-server/handlers/educationalOrganization"
+	"mdgkb/mdgkb-server/handlers/educationalOrganizationAcademics"
 	"mdgkb/mdgkb-server/handlers/entrances"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
@@ -91,13 +90,13 @@ import (
 	documentTypesRouter "mdgkb/mdgkb-server/routing/document-types"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorRules"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoApplications"
-	educationalOrganizationAcademicsRouter "mdgkb/mdgkb-server/routing/educationalOrganizationAcademics"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpoCourses"
 	dpoDocumentTypesRouter "mdgkb/mdgkb-server/routing/dpoDocumentTypes"
 	educationPublicDocumentTypesRouter "mdgkb/mdgkb-server/routing/educationPublicDocumentTypes"
 	educationYearsRouter "mdgkb/mdgkb-server/routing/educationYears"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalManagers"
 	educationalOraganizationRouter "mdgkb/mdgkb-server/routing/educationalOraganization"
+	educationalOrganizationAcademicsRouter "mdgkb/mdgkb-server/routing/educationalOrganizationAcademics"
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
@@ -159,8 +158,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	api := r.Group("/api/v1")
 	//api.Use(m.Authentication())
 	api.Use(m.CORSMiddleware())
-	b := broker.NewBroker()
-	api.GET("/subscribe/:channel", b.ServeHTTP)
+	api.GET("/subscribe/:channel", helper.Broker.ServeHTTP)
 
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(db, helper))
 	buildings.Init(api.Group("/buildings"), db)
@@ -207,9 +205,9 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
 	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduateCourses.CreateHandler(db, helper))
-	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper, b))
+	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper))
 	educationalOrganizationAcademicsRouter.Init(api.Group("/educational-organization-academics"), educationalOrganizationAcademics.CreateHandler(db, helper))
-	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyApplications.CreateHandler(db, helper, b))
+	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyApplications.CreateHandler(db, helper))
 	formValuesRouter.Init(api.Group("/form-values"), formValues.CreateHandler(db, helper))
 	formStatusesRouter.Init(api.Group("/form-statuses"), formStatuses.CreateHandler(db, helper))
 	postgraduateApplicationsRouter.Init(api.Group("/postgraduate-applications"), postgraduateApplications.CreateHandler(db, helper))

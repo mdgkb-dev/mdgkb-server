@@ -24,6 +24,14 @@ func (h *Handler) GetSocial(c *gin.Context) {
 	c.JSON(http.StatusOK, h.helper.Social.GetWebFeed())
 }
 
+func (h *Handler) GetApplicationsCounts(c *gin.Context) {
+	items, err := h.service.GetApplicationsCounts()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}
+
 func (h *Handler) GetOptions(c *gin.Context) {
 	var optionModel models.OptionModel
 	err := c.BindQuery(&optionModel)

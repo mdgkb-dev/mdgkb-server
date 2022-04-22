@@ -2,7 +2,6 @@ package residencyApplications
 
 import (
 	"github.com/gin-gonic/gin"
-	"mdgkb/mdgkb-server/broker"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 )
@@ -51,7 +50,7 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	h.sse.Notifier <- broker.NotificationEvent{Payload: item, EventName: "residency-application-create"}
+	h.helper.Broker.SendEvent("residency-application-create", item)
 	c.JSON(http.StatusOK, item)
 }
 

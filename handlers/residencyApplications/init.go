@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
-	"mdgkb/mdgkb-server/broker"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -50,7 +49,6 @@ type Handler struct {
 	service      IService
 	filesService IFilesService
 	helper       *helper.Helper
-	sse          *broker.Broker
 }
 
 type Service struct {
@@ -69,16 +67,16 @@ type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper, b *broker.Broker) *Handler {
+func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
 	repo := NewRepository(db, helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
-	return NewHandler(service, filesService, helper, b)
+	return NewHandler(service, filesService, helper)
 }
 
 // NewHandler constructor
-func NewHandler(s IService, filesService IFilesService, helper *helper.Helper, b *broker.Broker) *Handler {
-	return &Handler{service: s, filesService: filesService, helper: helper, sse: b}
+func NewHandler(s IService, filesService IFilesService, helper *helper.Helper) *Handler {
+	return &Handler{service: s, filesService: filesService, helper: helper}
 }
 
 func NewService(repository IRepository, helper *helper.Helper) *Service {

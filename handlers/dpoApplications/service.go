@@ -2,6 +2,7 @@ package dpoApplications
 
 import (
 	"mdgkb/mdgkb-server/handlers/formValues"
+	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -51,6 +52,10 @@ func (s *Service) Update(item *models.DpoApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
+	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
