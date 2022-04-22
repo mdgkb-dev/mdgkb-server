@@ -69,3 +69,14 @@ func (r *Repository) checkPathPermissions(path string, roleID string) error {
 		Scan(r.ctx)
 
 }
+
+func (r *Repository) getPathPermissionsByRoleId(id string) (models.PathPermissions, error) {
+	items := make(models.PathPermissions, 0)
+	err := r.db.NewSelect().
+		Model(&items).
+		Relation("PathPermissionsRoles").
+		Join("JOIN path_permissions_roles ppr on ppr.path_permission_id = path_permissions.id and ppr.role_id = ?", id).
+		// Where("path_permissions.path_permissions_roles.role_id = ?", id).
+		Scan(r.ctx)
+	return items, err
+}

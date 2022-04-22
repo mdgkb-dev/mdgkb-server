@@ -131,6 +131,14 @@ func (h *Handler) GetAllPathPermissions(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
+func (h *Handler) GetPathPermissionsByRoleId(c *gin.Context) {
+	items, err := h.service.GetPathPermissionsByRoleId(c.Param("roleId"))
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}
+
 func (h *Handler) CheckPathPermissions(c *gin.Context) {
 	var path string
 	err := c.Bind(&path)

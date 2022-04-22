@@ -102,3 +102,7 @@ func (s *Service) GetAllPathPermissions() (models.PathPermissions, error) {
 func (s *Service) CheckPathPermissions(path string, roleID string) error {
 	return s.repository.checkPathPermissions(path, roleID)
 }
+
+func (s *Service) GetPathPermissionsByRoleId(id string) (models.PathPermissions, error) {
+	return s.repository.getPathPermissionsByRoleId(id)
+}
