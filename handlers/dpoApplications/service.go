@@ -38,6 +38,10 @@ func (s *Service) Create(item *models.DpoApplication) error {
 	if err != nil {
 		return err
 	}
+	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -52,10 +56,6 @@ func (s *Service) Update(item *models.DpoApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
-	if err != nil {
-		return err
-	}
 	return nil
 }
 

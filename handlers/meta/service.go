@@ -1,6 +1,7 @@
 package meta
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/schema"
 )
@@ -22,6 +23,10 @@ func (s *Service) SendApplicationsCounts() error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(items)
+	fmt.Println(items)
+	fmt.Println(items)
+	fmt.Println(items)
 	s.helper.Broker.SendEvent("applications-counts-get", items)
 	return nil
 }
