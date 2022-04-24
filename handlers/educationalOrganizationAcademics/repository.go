@@ -22,14 +22,16 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 
 func (r *Repository) getAll() (models.EducationalOrganizationAcademics, error) {
 	items := make(models.EducationalOrganizationAcademics, 0)
+	// TODO: panic from relation FileInfo&PhotoMini
 	query := r.db.NewSelect().Model(&items).
-		Relation("Doctor.Human").
-		// Relation("Doctor.FileInfo").
-		// Relation("Doctor.PhotoMini").
+		Relation("Doctor.Human.Photo").
+		//Relation("Doctor.FileInfo").
+		//Relation("Doctor.PhotoMini").
 		Relation("Doctor.Position").
 		Relation("Doctor.MedicalProfile").
 		Relation("Doctor.Regalias").
 		Relation("Doctor.DoctorComments.Comment")
+
 	if r.queryFilter != nil {
 		r.queryFilter.Paginator.CreatePagination(query)
 		r.queryFilter.Filter.CreateFilter(query)

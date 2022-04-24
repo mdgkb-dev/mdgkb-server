@@ -16,30 +16,32 @@ type Doctor struct {
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId,omitempty"`
 
-	Human             *Human          `bun:"rel:belongs-to" json:"human"`
-	HumanID           uuid.NullUUID   `bun:"type:uuid" json:"humanId"`
-	Position          *Position       `bun:"rel:belongs-to" json:"position"`
-	PositionID        uuid.NullUUID   `bun:"type:uuid" json:"positionId"`
-	Schedule          string          `json:"schedule"`
-	Tags              string          `json:"tags"`
-	MedicalProfile    *MedicalProfile `bun:"rel:belongs-to" json:"medicalProfile"`
-	MedicalProfileID  uuid.NullUUID   `bun:"type:uuid" json:"medicalProfileId"`
-	Order             int             `bun:"item_order" json:"order"'`
-	FileInfo          *FileInfo       `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoID        uuid.NullUUID   `bun:"type:uuid" json:"fileInfoId"`
-	PhotoMini         *FileInfo       `bun:"rel:belongs-to" json:"photoMini"`
-	PhotoMiniID       uuid.UUID       `bun:"type:uuid" json:"photoMiniId"`
-	DoctorComments    DoctorComments  `bun:"rel:has-many" json:"doctorComments"`
-	NewsDoctors       NewsDoctors     `bun:"rel:has-many" json:"newsDoctors"`
-	MosDoctorLink     string          `json:"mosDoctorLink"`
-	OnlineDoctorID    string          `json:"onlineDoctorId"`
-	AcademicDegree    string          `json:"academicDegree"`
-	AcademicRank      string          `json:"academicRank"`
-	RegaliasCount     int             `bun:"-" json:"regaliasCount"`
-	CommentsCount     int             `bun:"-" json:"commentsCount"`
-	Show              bool            `json:"show"`
-	Regalias          Regalias        `bun:"rel:has-many" json:"regalias"`
-	RegaliasForDelete []uuid.UUID     `bun:"-" json:"regaliasForDelete"`
+	Human            *Human          `bun:"rel:belongs-to" json:"human"`
+	HumanID          uuid.NullUUID   `bun:"type:uuid" json:"humanId"`
+	Position         *Position       `bun:"rel:belongs-to" json:"position"`
+	PositionID       uuid.NullUUID   `bun:"type:uuid" json:"positionId"`
+	Schedule         string          `json:"schedule"`
+	Tags             string          `json:"tags"`
+	MedicalProfile   *MedicalProfile `bun:"rel:belongs-to" json:"medicalProfile"`
+	MedicalProfileID uuid.NullUUID   `bun:"type:uuid" json:"medicalProfileId"`
+	Order            int             `bun:"item_order" json:"order"`
+	FileInfo         *FileInfo       `bun:"rel:belongs-to" json:"fileInfo"`
+	FileInfoID       uuid.NullUUID   `bun:"type:uuid" json:"fileInfoId"`
+
+	PhotoMini   *FileInfo     `bun:"rel:belongs-to" json:"photoMini"`
+	PhotoMiniID uuid.NullUUID `bun:"type:uuid" json:"photoMiniId"`
+
+	DoctorComments    DoctorComments `bun:"rel:has-many" json:"doctorComments"`
+	NewsDoctors       NewsDoctors    `bun:"rel:has-many" json:"newsDoctors"`
+	MosDoctorLink     string         `json:"mosDoctorLink"`
+	OnlineDoctorID    string         `json:"onlineDoctorId"`
+	AcademicDegree    string         `json:"academicDegree"`
+	AcademicRank      string         `json:"academicRank"`
+	RegaliasCount     int            `bun:"-" json:"regaliasCount"`
+	CommentsCount     int            `bun:"-" json:"commentsCount"`
+	Show              bool           `json:"show"`
+	Regalias          Regalias       `bun:"rel:has-many" json:"regalias"`
+	RegaliasForDelete []uuid.UUID    `bun:"-" json:"regaliasForDelete"`
 
 	Educations          Educations  `bun:"rel:has-many" json:"educations"`
 	EducationsForDelete []uuid.UUID `bun:"-" json:"educationsForDelete"`
@@ -87,7 +89,7 @@ func (item *Doctor) SetForeignKeys() {
 		item.HumanID = item.Human.ID
 	}
 	if item.PhotoMini != nil {
-		item.PhotoMiniID = item.PhotoMini.ID.UUID
+		item.PhotoMiniID = item.PhotoMini.ID
 	}
 	if item.Position != nil {
 		item.PositionID = item.Position.ID

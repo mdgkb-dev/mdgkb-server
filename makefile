@@ -1,3 +1,5 @@
+include .env
+
 ifeq ($(OS),Windows_NT)
 	database := .\database
 	migrations := .\database\migrations
@@ -37,8 +39,10 @@ migrate_rollback:
 drop_database:
 	go run $(database) -action=dropDatabase
 
-dump: drop_database migrate_init migrate
-	 ./database/dump_pg.sh
+dump_from_remote:
+	 @./database/dump_pg.sh $(DB_PASSWORD)
+
+dump: dump_from_remote migrate
 
 build:
 	GOOS=linux GOARCH=amd64 go build -o ./test ./cmd/server/main.go
