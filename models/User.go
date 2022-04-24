@@ -60,7 +60,7 @@ func (i *User) CompareWithHashPassword(password string) bool {
 
 func (i *User) SetForeignKeys() {
 	i.HumanID = i.Human.ID
-	if i.Role != nil {
+	if i.Role != nil && i.Role.ID.Valid != false {
 		i.RoleID = i.Role.ID
 	}
 }

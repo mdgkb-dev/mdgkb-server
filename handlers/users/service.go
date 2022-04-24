@@ -2,6 +2,7 @@ package users
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/roles"
@@ -98,7 +99,7 @@ func (s *Service) UpsertEmail(item *models.User) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Users, error) {
+func (s *Service) GetAll() (models.UsersWithCount, error) {
 	return s.repository.getAll()
 }
 
@@ -178,4 +179,9 @@ func (s *Service) SetAccessLink(item *models.User) error {
 		return err
 	}
 	return nil
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

@@ -2,6 +2,7 @@ package users
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
 	_ "github.com/go-pg/pg/v10/orm"
@@ -12,12 +13,24 @@ func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
-func (r *Repository) getAll() (models.Users, error) {
-	items := make(models.Users, 0)
-	err := r.db.NewSelect().
-		Model(&items).
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Repository) getAll() (items models.UsersWithCount, err error) {
+	query := r.db.NewSelect().
+		Model(&items.Users).
 		Relation("Human").
-		Scan(r.ctx)
+		Relation("Role")
+
+	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Filter.CreateFilter(query)
+	r.queryFilter.Sorter.CreateOrder(query)
+	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
 
