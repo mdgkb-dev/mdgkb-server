@@ -12,7 +12,7 @@ func (r *Repository) getDB() *bun.DB {
 }
 
 func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
+	_, err = r.db.NewInsert().On("CONFLICT (resource) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("guest_allow = EXCLUDED.guest_allow").
