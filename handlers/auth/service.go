@@ -5,6 +5,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
@@ -99,10 +101,19 @@ func (s *Service) GetAllPathPermissions() (models.PathPermissions, error) {
 	return s.repository.getAllPathPermissions()
 }
 
+func (s *Service) GetAllPathPermissionsAdmin() (models.PathPermissionsWithCount, error) {
+	return s.repository.getAllPathPermissionsAdmin()
+}
+
 func (s *Service) CheckPathPermissions(path string, roleID string) error {
 	return s.repository.checkPathPermissions(path, roleID)
 }
 
 func (s *Service) GetPathPermissionsByRoleId(id string) (models.PathPermissions, error) {
 	return s.repository.getPathPermissionsByRoleId(id)
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }
