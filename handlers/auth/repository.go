@@ -1,14 +1,25 @@
 package auth
 
 import (
+	"fmt"
+	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) getDB() *bun.DB {
 	return r.db
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (err error) {
@@ -17,6 +28,7 @@ func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (er
 		Set("id = EXCLUDED.id").
 		Set("guest_allow = EXCLUDED.guest_allow").
 		Exec(r.ctx)
+		fmt.Println("ERRRRRRRRRRRRRRRRRRRRRRR", err)
 	return err
 }
 
@@ -51,6 +63,17 @@ func (r *Repository) getAllPathPermissions() (models.PathPermissions, error) {
 		Model(&items).
 		Relation("PathPermissionsRoles").
 		Scan(r.ctx)
+	return items, err
+}
+
+func (r *Repository) getAllPathPermissionsAdmin() (items models.PathPermissionsWithCount, err error) {
+	query := r.db.NewSelect().Model(&items.PathPermissions).
+		Relation("PathPermissionsRoles")
+
+	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.Filter.CreateFilter(query)
+	r.queryFilter.Sorter.CreateOrder(query)
+	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
 
