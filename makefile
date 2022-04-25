@@ -15,7 +15,7 @@ endif
 run: migrate
 	reflex -r '\.go' -s -- sh -c "go run cmd/server/main.go"
 
-run_cold:
+run_cold: migrate
 	go run $(main)	
 
 migrate_init:
