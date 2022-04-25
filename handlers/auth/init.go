@@ -2,11 +2,13 @@ package auth
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 type IHandler interface {
@@ -19,11 +21,13 @@ type IHandler interface {
 	CheckUUID(c *gin.Context)
 	SavePathPermissions(c *gin.Context)
 	GetAllPathPermissions(c *gin.Context)
+	GetAllPathPermissionsAdmin(c *gin.Context)
 	GetPathPermissionsByRoleId(c *gin.Context)
 	CheckPathPermissions(c *gin.Context)
 }
 
 type IService interface {
+	setQueryFilter(*gin.Context) error
 	Register(user *models.User) (*models.TokensWithUser, error)
 	Login(user *models.User) (*models.TokensWithUser, error)
 	FindUserByEmail(email string) (*models.User, error)
@@ -32,13 +36,16 @@ type IService interface {
 	UpdatePassword(*models.User) error
 	UpsertManyPathPermissions(models.PathPermissions) error
 	GetAllPathPermissions() (models.PathPermissions, error)
+	GetAllPathPermissionsAdmin() (models.PathPermissionsWithCount, error)
 	GetPathPermissionsByRoleId(id string) (models.PathPermissions, error)
 	CheckPathPermissions(path string, roleID string) error
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	getAllPathPermissions() (models.PathPermissions, error)
+	getAllPathPermissionsAdmin() (models.PathPermissionsWithCount, error)
 	getPathPermissionsByRoleId(id string) (models.PathPermissions, error)
 	upsertManyPathPermissions(items models.PathPermissions) (err error)
 	deleteManyPathPermissions(idPool []uuid.UUID) (err error)
@@ -63,9 +70,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helper.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
