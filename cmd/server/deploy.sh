@@ -3,7 +3,7 @@
 #branch=$1
 #if [ -z $branch ]
 # then
-#    branch="develop"
+    branch="develop"
 #fi
 #echo $branch
 
@@ -19,10 +19,10 @@ done
 PROCESS_NAME=mdgkb-server
 PIDFILE=${BIN_PATH}/${PROCESS_NAME}.pid
 PROCESS_FILE=${BIN_PATH}/${PROCESS_NAME}
-##git reset --hard && \
-##git pull --all && \
-##git checkout $branch && \
-#export GO111MODULE=on && \
+git reset --hard && \
+git pull --all && \
+git checkout $branch && \
+
 go build -o $PROCESS_FILE ./cmd/server/main.go && \
 #if [ -f "$PIDFILE" ]; then
 #    echo "$FILE exists."
@@ -30,5 +30,5 @@ go build -o $PROCESS_FILE ./cmd/server/main.go && \
 #fi
 #echo $PROCESS_FILE
 #
-nohup "$PROCESS_FILE" &
+nohup $PROCESS_FILE &
 exit
