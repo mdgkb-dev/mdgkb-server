@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/go-redis/redis/v7"
-	"github.com/pro-assistance/pro-assister/config"
 	helperPack "github.com/pro-assistance/pro-assister/helper"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
@@ -142,9 +141,7 @@ import (
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
 )
 
-func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, config config.Config) {
-	helper := helperPack.NewHelper(config)
-
+func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, helper *helperPack.Helper) {
 	m := middleware.CreateMiddleware(helper)
 
 	r.Use(m.CORSMiddleware())

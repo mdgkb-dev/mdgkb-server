@@ -44,5 +44,8 @@ dump_from_remote:
 
 dump: dump_from_remote migrate
 
-build:
-	GOOS=linux GOARCH=amd64 go build -o ./test ./cmd/server/main.go
+deploy:
+	./cmd/server/deploy.sh BIN_PATH=$(BIN_PATH)
+
+kill:
+	kill -9 `lsof -t -i:$(SERVER_PORT)`
