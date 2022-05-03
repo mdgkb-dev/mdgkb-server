@@ -26,16 +26,20 @@ func (r *Repository) getGroups(groupID string) (models.SearchGroups, error) {
 	return items, err
 }
 
-func (r *Repository) search(searchGroup *models.SearchGroup, search string) error {
-	querySelect := fmt.Sprintf("SELECT %s as value, %s as label", searchGroup.ValueColumn, searchGroup.LabelColumn)
-	queryFrom := fmt.Sprintf("FROM %s", searchGroup.Table)
-	queryWhere := r.helper.SQL.WhereLikeWithLowerTranslit(searchGroup.SearchColumn, search)
+func (r *Repository) search(searchModel *models.SearchModel) error {
+	querySelect := fmt.Sprintf("SELECT %s as value, %s as label", searchModel.SearchGroup.ValueColumn, searchModel.SearchGroup.LabelColumn)
+	queryFrom := fmt.Sprintf("FROM %s", searchModel.SearchGroup.Table)
+	search := searchModel.Query
+	if searchModel.MustBeTranslate {
+		search = r.helper.Util.TranslitToRu(searchModel.Query)
+	}
+	queryWhere := r.helper.SQL.WhereLikeWithLowerTranslit(searchModel.SearchGroup.SearchColumn, search)
 	query := fmt.Sprintf("%s %s %s", querySelect, queryFrom, queryWhere)
 	rows, err := r.db.QueryContext(r.ctx, query)
 	if err != nil {
 		return err
 	}
-	err = r.db.ScanRows(r.ctx, rows, &searchGroup.SearchElements)
+	err = r.db.ScanRows(r.ctx, rows, &searchModel.SearchGroup.SearchElements)
 	return err
 }
 

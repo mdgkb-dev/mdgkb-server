@@ -28,7 +28,7 @@ type IService interface {
 type IRepository interface {
 	getDB() *bun.DB
 	getGroups(string) (models.SearchGroups, error)
-	search(*models.SearchGroup, string) error
+	search(*models.SearchModel) error
 	elasticSearch(*models.SearchModel) error
 	elasticSuggester(*models.SearchModel) error
 }

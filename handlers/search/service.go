@@ -2,7 +2,6 @@ package search
 
 import (
 	"encoding/json"
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"os"
 	"path/filepath"
@@ -13,9 +12,8 @@ func (s *Service) SearchMain(searchModel *models.SearchModel) (err error) {
 	if err != nil {
 		return err
 	}
-	search := s.helper.Util.TranslitToRu(searchModel.Query)
 	for i := range searchModel.SearchGroups {
-		err = s.repository.search(searchModel.SearchGroups[i], search)
+		err = s.repository.search(searchModel)
 		if err != nil {
 			return err
 		}
@@ -25,17 +23,11 @@ func (s *Service) SearchMain(searchModel *models.SearchModel) (err error) {
 }
 
 func (s *Service) SearchObjects(searchModel *models.SearchModel) (err error) {
-	fmt.Println(searchModel.SearchGroupID)
-	fmt.Println(searchModel.SearchGroupID)
-	fmt.Println(searchModel.SearchGroupID)
-	fmt.Println(searchModel.SearchGroupID)
-	fmt.Println(searchModel.SearchGroupID)
 	searchModel.SearchGroups, err = s.repository.getGroups(searchModel.SearchGroupID)
 	if err != nil {
 		return err
 	}
-	search := s.helper.Util.TranslitToRu(searchModel.Query)
-	err = s.repository.search(searchModel.SearchGroup, search)
+	err = s.repository.search(searchModel)
 	if err != nil {
 		return err
 	}

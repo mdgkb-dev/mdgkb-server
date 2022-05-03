@@ -3,13 +3,14 @@ package models
 import "fmt"
 
 type SearchModel struct {
-	Suggester      bool           `json:"suggester"`
-	SearchElements SearchElements `bun:"-" json:"options"`
-	Query          string         `json:"query"`
-	TranslitQuery  string         `json:"translitQuery"`
-	SearchGroupID  string         `json:"searchGroupId"`
-	SearchGroups   SearchGroups   `json:"searchGroups"`
-	SearchGroup    *SearchGroup   `json:"searchGroup"`
+	Suggester       bool           `json:"suggester"`
+	SearchElements  SearchElements `bun:"-" json:"options"`
+	Query           string         `json:"query"`
+	MustBeTranslate bool           `json:"mustBeTranslate"`
+	TranslitQuery   string         `json:"translitQuery"`
+	SearchGroupID   string         `json:"searchGroupId"`
+	SearchGroups    SearchGroups   `json:"searchGroups"`
+	SearchGroup     *SearchGroup   `json:"searchGroup"`
 }
 
 func (item *SearchModel) findGroup(groupTable string) SearchGroup {

@@ -44,8 +44,17 @@ dump_from_remote:
 
 dump: dump_from_remote migrate
 
+git_commit:
+	git pull origin develop
+	git add .
+	git commit -m "$m"
+
+git_push: git_commit
+	git push -u origin HEAD
+
 deploy:
 	./cmd/server/deploy.sh DEPLOY_PATH=$(DEPLOY_PATH) DEPLOY_BRANCH=$(DEPLOY_BRANCH)
 
 kill:
 	kill -9 `lsof -t -i:$(SERVER_PORT)`
+
