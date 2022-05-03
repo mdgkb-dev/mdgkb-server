@@ -45,7 +45,7 @@ dump_from_remote:
 dump: dump_from_remote migrate
 
 deploy:
-	./cmd/server/deploy.sh BIN_PATH=$(BIN_PATH)
+	./cmd/server/deploy.sh DEPLOY_PATH=$(DEPLOY_PATH) DEPLOY_BRANCH=$(DEPLOY_BRANCH)
 
 kill:
 	kill -9 `lsof -t -i:$(SERVER_PORT)`

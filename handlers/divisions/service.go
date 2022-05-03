@@ -22,7 +22,7 @@ func (s *Service) Create(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	item.Slug = s.helper.Util.MakeSlug(item.Name)
+	item.Slug = s.helper.Util.MakeSlug(item.Name, true)
 
 	contactInfoService := contactInfo.CreateService(s.repository.getDB())
 	err = contactInfoService.Create(item.ContactInfo)

@@ -23,6 +23,7 @@ type IRepository interface {
 	update(*models.Human) error
 	upsertMany(models.Humans) error
 	upsert(*models.Human) error
+	getAllBySlug(string) (models.Humans, error)
 }
 
 type Handler struct {

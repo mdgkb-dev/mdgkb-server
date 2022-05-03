@@ -23,7 +23,7 @@ func (s *Service) Get() (*models.DpoCourse, error) {
 
 func (s *Service) Create(item *models.DpoCourse) error {
 	item.SetForeignKeys()
-	item.Slug = s.helper.Util.MakeSlug(item.Name)
+	item.Slug = s.helper.Util.MakeSlug(item.Name, true)
 	err := s.repository.create(item)
 	if err != nil {
 		return err
@@ -46,7 +46,7 @@ func (s *Service) Create(item *models.DpoCourse) error {
 
 func (s *Service) Update(item *models.DpoCourse) error {
 	item.SetForeignKeys()
-	item.Slug = s.helper.Util.MakeSlug(item.Name)
+	item.Slug = s.helper.Util.MakeSlug(item.Name, true)
 	err := s.repository.update(item)
 	if err != nil {
 		return err

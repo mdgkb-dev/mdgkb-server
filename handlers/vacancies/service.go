@@ -6,7 +6,7 @@ import (
 )
 
 func (s *Service) Create(item *models.Vacancy) error {
-	item.Slug = s.helper.Util.MakeSlug(item.Title)
+	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
 	return s.repository.create(item)
 }
 
