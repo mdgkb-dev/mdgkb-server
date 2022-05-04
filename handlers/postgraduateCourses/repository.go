@@ -46,6 +46,7 @@ func (r *Repository) get() (*models.PostgraduateCourse, error) {
 		Relation("QuestionsFile").
 		Relation("ProgramFile").
 		Relation("Calendar").
+		Relation("Annotation").
 		Relation("DocumentType.Documents.DocumentsScans.Scan").
 		Relation("PostgraduateCoursePlans.Plan").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {

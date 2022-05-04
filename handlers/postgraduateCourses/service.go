@@ -37,6 +37,10 @@ func (s *Service) Create(item *models.PostgraduateCourse) error {
 	if err != nil {
 		return err
 	}
+	err = fileInfosService.Create(item.Annotation)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
 	err = s.repository.create(item)
 	if err != nil {
@@ -74,6 +78,10 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 		return err
 	}
 	err = fileInfosService.Upsert(item.Calendar)
+	if err != nil {
+		return err
+	}
+	err = fileInfosService.Upsert(item.Annotation)
 	if err != nil {
 		return err
 	}

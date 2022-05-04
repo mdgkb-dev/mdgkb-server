@@ -20,6 +20,9 @@ type PostgraduateCourse struct {
 	PostgraduateCoursesDates                    PostgraduateCoursesDates           `bun:"rel:has-many" json:"postgraduateCoursesDates"`
 	PostgraduateCoursesDatesForDelete           []uuid.UUID                        `bun:"-" json:"postgraduateCoursesDatesForDelete"`
 
+	Annotation   *FileInfo     `bun:"rel:belongs-to" json:"annotation"`
+	AnnotationID uuid.NullUUID `bun:"type:uuid" json:"annotationId"`
+
 	QuestionsFile   *FileInfo     `bun:"rel:belongs-to" json:"questionsFile"`
 	QuestionsFileID uuid.NullUUID `bun:"type:uuid" json:"questionsFileId"`
 
@@ -42,6 +45,7 @@ type PostgraduateCourse struct {
 type PostgraduateCourses []*PostgraduateCourse
 
 func (item *PostgraduateCourse) SetForeignKeys() {
+	item.AnnotationID = item.Annotation.ID
 	item.QuestionsFileID = item.QuestionsFile.ID
 	item.ProgramFileID = item.ProgramFile.ID
 	item.CalendarID = item.Calendar.ID
@@ -76,6 +80,10 @@ func (item *PostgraduateCourse) SetFilePath(fileID string) *string {
 	if item.ProgramFile.ID.UUID.String() == fileID {
 		item.ProgramFile.FileSystemPath = uploadHelper.BuildPath(&fileID)
 		return &item.ProgramFile.FileSystemPath
+	}
+	if item.Annotation.ID.UUID.String() == fileID {
+		item.Annotation.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		return &item.Annotation.FileSystemPath
 	}
 	filePath := item.PostgraduateCoursePlans.SetFilePath(fileID)
 	if filePath != nil {

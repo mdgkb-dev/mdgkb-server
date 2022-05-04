@@ -10,7 +10,7 @@ type NewsDoctor struct {
 	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
 	DoctorID      uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor       `bun:"rel:belongs-to" json:"doctor"`
-	NewsID        uuid.UUID     `bun:"type:uuid" json:"newsId"`
+	NewsID        uuid.NullUUID `bun:"type:uuid" json:"newsId"`
 	News          *News         `bun:"rel:belongs-to" json:"news"`
 }
 
