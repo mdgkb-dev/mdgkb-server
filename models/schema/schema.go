@@ -240,6 +240,7 @@ func createPostgraduateCourseSchema() map[string]string {
 		"value":         "id",
 		"key":           "postgraduateCourse",
 		"name":          "name",
+		"cost":          "cost",
 		"code":          "code",
 		"years":         "years",
 		"educationForm": "education_form",
