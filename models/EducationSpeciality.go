@@ -7,7 +7,7 @@ import (
 
 type EducationSpeciality struct {
 	bun.BaseModel `bun:"education_specialities,alias:education_specialities"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string    `json:"name"`
 }
 

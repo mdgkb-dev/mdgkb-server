@@ -16,7 +16,7 @@ const DefaultTableName = "casbin_rules"
 // CasbinRule represents a rule in Casbin.
 type CasbinRule struct {
 	bun.BaseModel `bun:"casbin_rules,alias:casbin_rule"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Ptype         string
 	V0            string
 	V1            string `bun:unique`

@@ -6,7 +6,7 @@ import (
 )
 
 type NewsImage struct {
-	ID          uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID          uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Description string        `json:"description"`
 	NewsID      uuid.NullUUID `bun:"type:uuid" json:"newsId" `
 	FileInfo    *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`

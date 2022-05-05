@@ -9,7 +9,7 @@ import (
 
 type Doctor struct {
 	bun.BaseModel `bun:"doctors,select:doctors_view,alias:doctors_view"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Division      *Division     `bun:"rel:belongs-to" json:"division"`
 	DivisionId    uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
 

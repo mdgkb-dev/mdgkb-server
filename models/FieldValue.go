@@ -13,12 +13,12 @@ import (
 
 type FieldValue struct {
 	bun.BaseModel `bun:"field_values,alias:field_values"`
-	ID            uuid.UUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID  `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	ValueString   string     `json:"valueString"`
 	ValueNumber   int        `json:"valueNumber"`
 	ValueDate     *time.Time `bun:",nullzero" json:"valueDate"`
 	ModChecked    bool       `json:"modChecked"`
-	ModComment    string       `json:"modComment"`
+	ModComment    string     `json:"modComment"`
 
 	Field   *Field    `bun:"rel:belongs-to" json:"field"`
 	FieldID uuid.UUID `bun:"type:uuid" json:"fieldId"`

@@ -7,7 +7,7 @@ import (
 )
 
 type PageImage struct {
-	ID          uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID          uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Description string        `json:"description"`
 	PageID      uuid.UUID     `bun:"type:uuid" json:"pageID" `
 	FileInfo    *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`

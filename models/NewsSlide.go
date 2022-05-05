@@ -2,13 +2,13 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/uptrace/bun"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/uptrace/bun"
 )
 
 type NewsSlide struct {
 	bun.BaseModel             `bun:"news_slides,alias:news_slides"`
-	ID                        uuid.UUID        `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID                        uuid.UUID        `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Title                     string           `json:"title"`
 	Content                   string           `json:"content"`
 	Color                     string           `json:"color"`

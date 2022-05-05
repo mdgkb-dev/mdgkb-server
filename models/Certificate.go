@@ -2,13 +2,13 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/uptrace/bun"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/uptrace/bun"
 )
 
 type Certificate struct {
 	bun.BaseModel `bun:"certificates,alias:certificates"`
-	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	DoctorID      uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor       `bun:"rel:belongs-to" json:"doctor"`
 	Scan          *FileInfo     `bun:"rel:belongs-to" json:"scan"`

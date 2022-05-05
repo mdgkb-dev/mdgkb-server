@@ -7,7 +7,7 @@ import (
 
 type PreparationRulesGroup struct {
 	bun.BaseModel `bun:"preparations_rules_groups,alias:preparations_rules_groups"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
 
 	Preparation   *Preparation  `bun:"rel:belongs-to" json:"preparation"`

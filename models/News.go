@@ -11,7 +11,7 @@ import (
 
 type News struct {
 	bun.BaseModel        `bun:"news,alias:news"`
-	ID                   uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID                   uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Status               string        `json:"status"`
 	Title                string        `json:"title"`
 	PreviewText          string        `json:"previewText"`

@@ -11,7 +11,7 @@ import (
 
 type Human struct {
 	bun.BaseModel `bun:"humans,alias:humans"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
 
 	Photo   *FileInfo     `bun:"rel:belongs-to" json:"photo"`

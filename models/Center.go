@@ -7,7 +7,7 @@ import (
 
 type Center struct {
 	bun.BaseModel `bun:"centers,alias:centers"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
 	Info          string        `json:"info"`
 	Address       string        `json:"address"`

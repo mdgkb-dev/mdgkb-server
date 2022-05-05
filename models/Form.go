@@ -7,7 +7,7 @@ import (
 
 type Form struct {
 	bun.BaseModel `bun:"forms,alias:forms"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
 
 	Fields          Fields      `bun:"rel:has-many" json:"fields"`
 	FieldsForDelete []uuid.UUID `bun:"-" json:"fieldsForDelete"`

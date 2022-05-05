@@ -7,7 +7,7 @@ import (
 
 type Page struct {
 	bun.BaseModel `bun:"pages,alias:pages"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Title         string    `json:"title"`
 	Content       string    `json:"content"`
 	Slug          string    `json:"slug"`

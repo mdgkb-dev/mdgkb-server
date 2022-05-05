@@ -7,7 +7,7 @@ import (
 
 type EducationalOrganizationPage struct {
 	bun.BaseModel `bun:"pages,alias:pages"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Page          *Page     `bun:"rel:belongs-to" json:"page"`
 	PageID        uuid.UUID `bun:"type:uuid,nullzero,default:NULL" json:"pageID"`
 }

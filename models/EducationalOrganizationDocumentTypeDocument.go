@@ -7,7 +7,7 @@ import (
 
 type EducationalOrganizationDocumentTypeDocument struct {
 	bun.BaseModel `bun:"educational_organization_document_types_documents,alias:educational_organization_document_types_documents"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 
 	EducationalOrganizationDocumentType   *EducationalOrganizationDocumentType `bun:"rel:belongs-to" json:"educationalOrganizationDocumentType"`
 	EducationalOrganizationDocumentTypeID uuid.UUID                            `bun:"type:uuid" json:"educationalOrganizationDocumentTypeId"`

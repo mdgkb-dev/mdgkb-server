@@ -8,7 +8,7 @@ import (
 
 type PostgraduateCourse struct {
 	bun.BaseModel                               `bun:"postgraduate_courses,select:postgraduate_courses_view,alias:postgraduate_courses_view"`
-	ID                                          uuid.NullUUID                      `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID                                          uuid.NullUUID                      `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Description                                 string                             `json:"description"`
 	EducationForm                               string                             `json:"educationForm"`
 	Years                                       int                                `json:"years"`

@@ -8,7 +8,7 @@ import (
 
 type Question struct {
 	bun.BaseModel    `bun:"questions,alias:questions"`
-	ID               uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID               uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Theme            string    `json:"theme"`
 	Question         string    `json:"question"`
 	OriginalQuestion string    `json:"originalQuestion"`

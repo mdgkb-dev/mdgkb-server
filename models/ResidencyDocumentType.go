@@ -7,7 +7,7 @@ import (
 
 type ResidencyDocumentType struct {
 	bun.BaseModel  `bun:"residency_document_types,alias:residency_document_types"`
-	ID             uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
+	ID             uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
 	DocumentTypeID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"documentTypeId"`
 	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
 }

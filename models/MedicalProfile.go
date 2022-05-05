@@ -7,7 +7,7 @@ import (
 
 type MedicalProfile struct {
 	bun.BaseModel            `bun:"medical_profiles,alias:medical_profiles"`
-	ID                       uuid.NullUUID            `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID                       uuid.NullUUID            `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name                     string                   `json:"name"`
 	Description              string                   `json:"description"`
 	Icon                     string                   `json:"icon"`

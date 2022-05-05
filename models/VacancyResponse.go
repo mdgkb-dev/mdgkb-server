@@ -9,7 +9,7 @@ import (
 
 type VacancyResponse struct {
 	bun.BaseModel               `bun:"vacancy_responses,alias:vacancy_responses"`
-	ID                          uuid.UUID                   `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID                          uuid.UUID                   `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	ResponseDate                time.Time                   `json:"responseDate"`
 	CoverLetter                 string                      `json:"coverLetter"`
 	Vacancy                     *Vacancy                    `bun:"rel:belongs-to" json:"vacancy"`

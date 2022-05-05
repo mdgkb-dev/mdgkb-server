@@ -8,7 +8,7 @@ import (
 
 type DpoCourse struct {
 	bun.BaseModel                      `bun:"dpo_courses,select:dpo_courses_view,alias:dpo_courses_view"`
-	ID                                 uuid.NullUUID             `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID                                 uuid.NullUUID             `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Slug                               string                    `json:"slug"`
 	Name                               string                    `json:"name"`
 	Description                        string                    `json:"description"`

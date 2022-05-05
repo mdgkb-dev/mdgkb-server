@@ -7,7 +7,7 @@ import (
 
 type EducationalOrganizationProperty struct {
 	bun.BaseModel                         `bun:"educational_organization_properties,alias:educational_organization_properties"`
-	ID                                    uuid.UUID                            `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID                                    uuid.UUID                            `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name                                  string                               `json:"name"`
 	Value                                 string                               `json:"value"`
 	EducationalOrganizationPropertyType   *EducationalOrganizationPropertyType `bun:"rel:belongs-to" json:"educationalOrganizationPropertyType"`

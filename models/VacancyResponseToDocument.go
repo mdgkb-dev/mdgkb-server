@@ -7,7 +7,7 @@ import (
 
 type VacancyResponseToDocument struct {
 	bun.BaseModel `bun:"vacancies_responses_to_documents,alias:vacancies_responses_to_documents"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
 
 	Document   *Document `bun:"rel:belongs-to" json:"document"`
 	DocumentID uuid.UUID `bun:"type:uuid"  json:"documentId"`

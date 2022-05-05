@@ -9,7 +9,7 @@ import (
 
 type Document struct {
 	bun.BaseModel `bun:"documents,alias:documents"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Name          string    `json:"name"`
 
 	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`

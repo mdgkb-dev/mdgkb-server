@@ -7,7 +7,7 @@ import (
 
 type PageComment struct {
 	bun.BaseModel `bun:"pages_comments,alias:pages_comments"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 
 	Page      *Page     `bun:"rel:belongs-to" json:"page"`
 	PageId    uuid.UUID `bun:"type:uuid" json:"pageId"`

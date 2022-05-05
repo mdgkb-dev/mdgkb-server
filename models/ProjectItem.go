@@ -7,7 +7,7 @@ import (
 
 type ProjectItem struct {
 	bun.BaseModel `bun:"project_items,alias:project_items"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Title         string        `json:"title"`
 	Content       string        `json:"content"`
 

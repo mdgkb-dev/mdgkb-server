@@ -7,7 +7,7 @@ import (
 
 type Role struct {
 	bun.BaseModel `bun:"roles,alias:roles"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          RoleName      `json:"name"`
 	Label         string        `json:"label"`
 }
