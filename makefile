@@ -66,3 +66,8 @@ git_commit:
 # example: make git_feature n=1
 git_feature:
 	git flow feature start PORTAL-$n
+
+git_merge:
+	git checkout develop
+	git pull
+	git merge @{-1}
