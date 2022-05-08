@@ -1,7 +1,6 @@
 package buildings
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -63,7 +62,6 @@ func (h *AHandler) GetByFloorId(c *gin.Context) {
 
 func (h *AHandler) GetById(c *gin.Context) {
 	item, err := h.repository.getById(c, c.Param("id"))
-	fmt.Println(err)
 	if err != nil {
 		c.JSON(500, err)
 	}

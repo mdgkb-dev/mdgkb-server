@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
@@ -27,7 +26,6 @@ func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (er
 		Set("id = EXCLUDED.id").
 		Set("guest_allow = EXCLUDED.guest_allow").
 		Exec(r.ctx)
-	fmt.Println("ERRRRRRRRRRRRRRRRRRRRRRR", err)
 	return err
 }
 

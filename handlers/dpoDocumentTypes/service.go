@@ -1,7 +1,6 @@
 package dpoDocumentTypes
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/models"
@@ -59,7 +58,6 @@ func (s *Service) Delete(id string) error {
 }
 
 func (s *Service) UpsertMany(items DpoDocumentTypesWithDelete) error {
-	fmt.Println(items.DpoDocumentTypes)
 	documentService := documentTypes.CreateService(s.repository.getDB(), s.helper)
 	if len(items.DpoDocumentTypes) > 0 {
 		err := documentService.UpsertMany(items.DpoDocumentTypes.GetDocumentTypes())

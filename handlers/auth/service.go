@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
@@ -38,7 +37,6 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 		return nil, err
 	}
 	if !findedUser.CompareWithHashPassword(item.Password) {
-		fmt.Println(findedUser.CompareWithHashPassword(item.Password))
 		return nil, err
 	}
 	ts, err := s.helper.Token.CreateToken(findedUser.ID.String(), string(findedUser.Role.Name), findedUser.Role.ID.UUID.String())
@@ -81,7 +79,7 @@ func (s *Service) UpsertManyPathPermissions(paths models.PathPermissions) error 
 	if err != nil {
 		return err
 	}
-	
+
 	if len(paths.GetPathPermissionsRolesForDelete()) > 0 {
 		err = s.repository.deleteManyPathPermissionsRoles(paths.GetPathPermissionsRolesForDelete())
 		if err != nil {
