@@ -24,6 +24,7 @@ type Schema struct {
 	PostgraduateCourseSpecialization map[string]string `json:"postgraduateCourseSpecialization"`
 	EducationalOrganizationAcademic  map[string]string `json:"educationalOrganizationAcademic"`
 	Role                             map[string]string `json:"role"`
+	News                             map[string]string `json:"news"`
 	PathPermission                   map[string]string `json:"pathPermission"`
 }
 
@@ -53,6 +54,7 @@ func CreateSchema() Schema {
 		EducationalOrganizationAcademic:  createEducationalOrganizationAcademicsSchema(),
 		Role:                             createRolesSchema(),
 		PathPermission:                   createPathPermissionsSchema(),
+		News:                             createNewsSchema(),
 	}
 }
 
@@ -337,5 +339,27 @@ func createPathPermissionsSchema() map[string]string {
 		"value":      "id",
 		"resource":   "resource",
 		"sortColumn": "resource",
+	}
+}
+
+func createNewsSchema() map[string]string {
+	return map[string]string{
+		"tableName":   "news",
+		"key":         "news",
+		"id":          "id",
+		"value":       "id",
+		"sortColumn":  "title",
+		"title":       "title",
+		"status":      "status",
+		"previewText": "preview_text",
+		"slug":        "slug",
+		"publishedOn": "published_on",
+		"createdAt":   "created_at",
+		"description": "description",
+		"main":        "main",
+		"subMain":     "sub_main",
+		"articleLink": "article_link",
+		"isArticle":   "is_article",
+		"viewsCount":  "views_count",
 	}
 }

@@ -67,9 +67,7 @@ func (r *Repository) getAllPathPermissionsAdmin() (items models.PathPermissionsW
 	query := r.db.NewSelect().Model(&items.PathPermissions).
 		Relation("PathPermissionsRoles")
 
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }

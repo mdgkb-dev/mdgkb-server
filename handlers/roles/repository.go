@@ -23,9 +23,7 @@ func (r *Repository) getAll() (models.Roles, error) {
 	items := make(models.Roles, 0)
 	query := r.db.NewSelect().
 		Model(&items)
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

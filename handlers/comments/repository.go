@@ -43,10 +43,7 @@ func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
 		Relation("DivisionComments.Division").
 		Relation("User").
 		Order("published_on DESC")
-
-	r.queryFilter.Paginator.Cursor.Column = "comment.published_on"
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Paginator.CreatePagination(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 
 	return items, err

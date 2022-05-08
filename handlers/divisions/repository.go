@@ -31,9 +31,7 @@ func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error)
 	if onlyShowed {
 		query = query.Where("divisions_view.show = true")
 	}
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
 	return items, err
 }

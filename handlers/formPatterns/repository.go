@@ -26,9 +26,7 @@ func (r *Repository) getAll() (models.FormPatterns, error) {
 		Relation("Fields.File").
 		Relation("Fields.ValueType")
 
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

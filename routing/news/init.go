@@ -9,11 +9,8 @@ import (
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/relation-news", h.GetAll)
-	r.GET("/admin", h.GetAllAdmin)
-	r.GET("/main", h.GetAllMain)
 	r.GET("/", h.GetAll)
 	r.GET("/:slug", h.GetBySLug)
-	r.GET("/month", h.GetByMonth)
 	r.POST("", h.Create)
 	r.PUT("/:id", h.Update)
 	r.POST("/like", h.CreateLike)
