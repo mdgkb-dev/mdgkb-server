@@ -20,7 +20,7 @@ func (r *Repository) getAll() (models.MedicalProfiles, error) {
 	items := make(models.MedicalProfiles, 0)
 	query := r.db.NewSelect().Model(&items).
 		Relation("MedicalProfilesDivisions.Division").
-		Relation("MedicalProfilesNews.News.FileInfo").
+		Relation("MedicalProfilesNews.News.PreviewImage").
 		Order("medical_profiles.name")
 	err := query.Scan(r.ctx)
 	return items, err
@@ -30,7 +30,7 @@ func (r *Repository) get(id string) (*models.MedicalProfile, error) {
 	item := models.MedicalProfile{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("MedicalProfilesDivisions.Division").
-		Relation("MedicalProfilesNews.News.FileInfo").
+		Relation("MedicalProfilesNews.News.PreviewImage").
 		Relation("MedicalProfilesNews.News.NewsViews").
 		Where("medical_profiles.id = ?", id).
 		Scan(r.ctx)

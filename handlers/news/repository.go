@@ -68,7 +68,7 @@ func (r *Repository) getAll() (items models.NewsWithCount, err error) {
 	query := r.db.NewSelect().Model(&items.News).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
-		Relation("FileInfo").
+		Relation("PreviewImage").
 		Relation("NewsLikes").
 		Relation("NewsViews")
 	r.queryFilter.HandleQuery(query)
@@ -107,7 +107,7 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 	err := r.db.NewSelect().Model(&item).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
-		Relation("FileInfo").
+		Relation("PreviewImage").
 		Relation("MainImage").
 		Relation("NewsLikes").
 		Relation("NewsViews").

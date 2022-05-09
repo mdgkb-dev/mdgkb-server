@@ -26,12 +26,12 @@ type News struct {
 	IsArticle            bool          `json:"isArticle"`
 	NewsImagesForDelete  []string      `bun:"-" json:"newsImagesForDelete"`
 	NewsImagesNames      []string      `bun:"-" json:"newsImagesNames"`
-	FileInfo             *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoID           uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
+	PreviewImage         *FileInfo     `bun:"rel:belongs-to" json:"previewImage"`
+	PreviewImageID       uuid.NullUUID `bun:"type:uuid" json:"previewImageId"`
 	MainImage            *FileInfo     `bun:"rel:belongs-to" json:"mainImage"`
 	MainImageID          uuid.NullUUID `bun:"type:uuid" json:"mainImageId"`
 	MainImageDescription string        `bun:"type:uuid" json:"mainImageDescription"`
-	ViewsCount           int           `json:"viewsCount"`
+	ViewsCount           int           `bun:"-" json:"viewsCount"`
 	Event                *Event        `bun:"rel:belongs-to" json:"event"`
 	EventID              uuid.NullUUID `bun:"type:uuid" json:"eventId"`
 
@@ -48,9 +48,9 @@ type News struct {
 }
 
 func (item *News) SetFilePath(fileID *string) *string {
-	if item.FileInfo.ID.UUID.String() == *fileID {
-		item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
-		return &item.FileInfo.FileSystemPath
+	if item.PreviewImage.ID.UUID.String() == *fileID {
+		item.PreviewImage.FileSystemPath = uploadHelper.BuildPath(fileID)
+		return &item.PreviewImage.FileSystemPath
 	}
 	if item.MainImage.ID.UUID.String() == *fileID {
 		item.MainImage.FileSystemPath = uploadHelper.BuildPath(fileID)
@@ -64,7 +64,7 @@ func (item *News) SetFilePath(fileID *string) *string {
 }
 
 func (item *News) SetForeignKeys() {
-	item.FileInfoID = item.FileInfo.ID
+	item.PreviewImageID = item.PreviewImage.ID
 	item.MainImageID = item.MainImage.ID
 	if item.Event != nil {
 		item.EventID = item.Event.ID
@@ -101,6 +101,6 @@ func (item *News) SetIdForChildren() {
 
 func (item *News) GetFileInfos() FileInfos {
 	items := make(FileInfos, 0)
-	items = append(items, item.FileInfo, item.MainImage)
+	items = append(items, item.PreviewImage, item.MainImage)
 	return items
 }
