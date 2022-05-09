@@ -26,6 +26,7 @@ type Schema struct {
 	Role                             map[string]string `json:"role"`
 	News                             map[string]string `json:"news"`
 	PathPermission                   map[string]string `json:"pathPermission"`
+	NewsToTag                        map[string]string `json:"newsToTag"`
 }
 
 func CreateSchema() Schema {
@@ -55,6 +56,7 @@ func CreateSchema() Schema {
 		Role:                             createRolesSchema(),
 		PathPermission:                   createPathPermissionsSchema(),
 		News:                             createNewsSchema(),
+		NewsToTag:                        createNewsToTagSchema(),
 	}
 }
 
@@ -344,7 +346,7 @@ func createPathPermissionsSchema() map[string]string {
 
 func createNewsSchema() map[string]string {
 	return map[string]string{
-		"tableName":   "news",
+		"tableName":   "news_view",
 		"key":         "news",
 		"id":          "id",
 		"value":       "id",
@@ -361,5 +363,16 @@ func createNewsSchema() map[string]string {
 		"articleLink": "article_link",
 		"isArticle":   "is_article",
 		"viewsCount":  "views_count",
+	}
+}
+
+func createNewsToTagSchema() map[string]string {
+	return map[string]string{
+		"tableName": "news_to_tags",
+		"key":       "newsToTag",
+		"id":        "id",
+		"value":     "id",
+		"newsId":    "news_id",
+		"tagId":     "tag_id",
 	}
 }

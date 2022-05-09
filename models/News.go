@@ -10,7 +10,7 @@ import (
 )
 
 type News struct {
-	bun.BaseModel        `bun:"news,alias:news"`
+	bun.BaseModel        `bun:"news,select:news_view,alias:news_view"`
 	ID                   uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Status               string        `json:"status"`
 	Title                string        `json:"title"`
@@ -31,7 +31,7 @@ type News struct {
 	MainImage            *FileInfo     `bun:"rel:belongs-to" json:"mainImage"`
 	MainImageID          uuid.NullUUID `bun:"type:uuid" json:"mainImageId"`
 	MainImageDescription string        `bun:"type:uuid" json:"mainImageDescription"`
-	ViewsCount           int           `bun:"-" json:"viewsCount"`
+	ViewsCount           int           `json:"viewsCount"`
 	Event                *Event        `bun:"rel:belongs-to" json:"event"`
 	EventID              uuid.NullUUID `bun:"type:uuid" json:"eventId"`
 
