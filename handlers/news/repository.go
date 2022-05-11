@@ -115,6 +115,9 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		Relation("Event.EventApplications.FieldValues").
 		Relation("Event.EventApplications.User").
 		Relation("NewsComments.Comment.User").
+		Relation("NewsImages", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("news_images.news_image_order")
+		}).
 		Relation("NewsImages.FileInfo").
 		Relation("NewsDoctors.Doctor").
 		Relation("NewsDoctors.Doctor.Human").

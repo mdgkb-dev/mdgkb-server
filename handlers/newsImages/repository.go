@@ -29,6 +29,7 @@ func (r *Repository) upsertMany(items models.NewsImages) (err error) {
 		Model(&items).
 		Set("description = EXCLUDED.description").
 		Set("file_info_id = EXCLUDED.file_info_id").
+		Set("news_image_order = EXCLUDED.news_image_order").
 		Exec(r.ctx)
 	return err
 }
