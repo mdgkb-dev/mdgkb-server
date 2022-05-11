@@ -10,10 +10,15 @@ import (
 )
 
 func (s *Service) Create(item *models.User) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
+	err := item.GenerateHashPassword()
 	if err != nil {
 		return err
 	}
+	err = human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
+	if err != nil {
+		return err
+	}
+	item.IsActive = true
 	item.SetForeignKeys()
 	err = s.repository.create(item)
 	if err != nil {
