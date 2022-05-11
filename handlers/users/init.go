@@ -15,6 +15,7 @@ type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
 	GetByEmail(c *gin.Context)
+	Create(c *gin.Context)
 	Update(c *gin.Context)
 	AddToUser(c *gin.Context)
 	RemoveFromUser(c *gin.Context)
@@ -27,6 +28,7 @@ type IService interface {
 	GetByEmail(string) (*models.User, error)
 	EmailExists(string) (bool, error)
 	AddToUser(map[string]interface{}, string) error
+	Create(*models.User) error
 	Update(*models.User) error
 	Upsert(*models.User) error
 	RemoveFromUser(map[string]interface{}, string) error

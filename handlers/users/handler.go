@@ -43,8 +43,27 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Update(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) Create(c *gin.Context) {
+	var item models.User
+	files, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.Upload(c, &item, files)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.Create(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
