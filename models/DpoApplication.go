@@ -7,7 +7,7 @@ import (
 
 type DpoApplication struct {
 	bun.BaseModel `bun:"dpo_applications,select:dpo_applications_view,alias:dpo_applications_view"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	DpoCourse   *DpoCourse    `bun:"rel:belongs-to" json:"dpoCourse"`
 	DpoCourseID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"dpoCourseId"`

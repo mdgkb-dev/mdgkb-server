@@ -8,7 +8,7 @@ import (
 
 type FormStatus struct {
 	bun.BaseModel                     `bun:"form_statuses,alias:form_statuses"`
-	ID                                uuid.NullUUID            `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID                                uuid.NullUUID            `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name                              string                   `json:"name"`
 	Label                             string                   `json:"label"`
 	Color                             string                   `json:"color"`

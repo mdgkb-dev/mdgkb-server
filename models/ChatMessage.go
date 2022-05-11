@@ -8,7 +8,7 @@ import (
 
 type ChatMessage struct {
 	bun.BaseModel `bun:"chat_messages,alias:chat_messages"`
-	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	User          *User         `bun:"rel:belongs-to" json:"user"`
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
 	Message       string        `json:"message"`

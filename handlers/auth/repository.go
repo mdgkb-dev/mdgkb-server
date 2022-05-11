@@ -1,13 +1,11 @@
 package auth
 
 import (
-	"fmt"
-	"mdgkb/mdgkb-server/models"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -28,7 +26,6 @@ func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (er
 		Set("id = EXCLUDED.id").
 		Set("guest_allow = EXCLUDED.guest_allow").
 		Exec(r.ctx)
-		fmt.Println("ERRRRRRRRRRRRRRRRRRRRRRR", err)
 	return err
 }
 
@@ -70,9 +67,7 @@ func (r *Repository) getAllPathPermissionsAdmin() (items models.PathPermissionsW
 	query := r.db.NewSelect().Model(&items.PathPermissions).
 		Relation("PathPermissionsRoles")
 
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }

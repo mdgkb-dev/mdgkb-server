@@ -7,7 +7,7 @@ import (
 
 type PostgraduateDocumentType struct {
 	bun.BaseModel  `bun:"postgraduate_document_types,alias:postgraduate_document_types"`
-	ID             uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
+	ID             uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
 	DocumentTypeID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"documentTypeId"`
 	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
 }

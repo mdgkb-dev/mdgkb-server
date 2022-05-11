@@ -8,7 +8,7 @@ import (
 
 type Appointment struct {
 	bun.BaseModel `bun:"appointments,alias:appointments"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	Date time.Time `bun:"appointment_date" json:"date"`
 	Time string    `bun:"appointment_time" json:"time"`

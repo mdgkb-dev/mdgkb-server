@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/pro-assistance/pro-assister/helper"
 	httpHelper2 "github.com/pro-assistance/pro-assister/sqlHelper"
+	"mdgkb/mdgkb-server/handlers/baseHandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -13,11 +14,7 @@ import (
 
 type IHandler interface {
 	GetAll(c *gin.Context)
-	GetAllAdmin(c *gin.Context)
-	GetAllMain(c *gin.Context)
-	GetAllRelationsNews(c *gin.Context)
 	GetBySLug(c *gin.Context)
-	GetByMonth(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	CreateLike(c *gin.Context)
@@ -31,8 +28,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	setQueryFilter(*gin.Context) error
-
+	baseHandler.IService
 	Create(*models.News) error
 	Update(*models.News) error
 	CreateLike(*models.NewsLike) error
@@ -41,21 +37,15 @@ type IService interface {
 	CreateComment(*models.NewsComment) error
 	UpdateComment(*models.NewsComment) error
 	RemoveComment(string) error
-	GetAll(*newsParams) ([]*models.News, error)
-	GetAllAdmin() (models.NewsWithCount, error)
-	GetAllMain() ([]*models.News, error)
-	GetAllRelationsNews(*newsParams) ([]models.News, error)
+	GetAll() (models.NewsWithCount, error)
 	Delete(string) error
 	DeleteLike(string) error
 	GetBySlug(string) (*models.News, error)
-	GetByMonth(*monthParams) ([]models.News, error)
 	CreateViewOfNews(*models.NewsView) error
 }
 
 type IRepository interface {
-	setQueryFilter(*gin.Context) error
-
-	getDB() *bun.DB
+	baseHandler.IRepository
 	create(*models.News) error
 	update(*models.News) error
 	createLike(*models.NewsLike) error
@@ -64,14 +54,10 @@ type IRepository interface {
 	createComment(*models.NewsComment) error
 	updateComment(*models.NewsComment) error
 	removeComment(string) error
-	getAll(*newsParams) ([]*models.News, error)
-	getAllMain() ([]*models.News, error)
-	getAllAdmin() (models.NewsWithCount, error)
-	getAllRelationsNews(*newsParams) ([]models.News, error)
+	getAll() (models.NewsWithCount, error)
 	delete(string) error
 	deleteLike(string) error
 	getBySlug(string) (*models.News, error)
-	getByMonth(*monthParams) ([]models.News, error)
 	createViewOfNews(*models.NewsView) error
 }
 
@@ -86,11 +72,13 @@ type Handler struct {
 }
 
 type Service struct {
+	//baseHandler.Service
 	repository IRepository
 	helper     *helper.Helper
 }
 
 type Repository struct {
+	//baseHandler.Repository
 	db          *bun.DB
 	ctx         context.Context
 	helper      *helper.Helper

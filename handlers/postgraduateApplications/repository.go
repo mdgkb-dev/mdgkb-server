@@ -30,9 +30,7 @@ func (r *Repository) getAll() (models.PostgraduateApplications, error) {
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("FormValue.User.Human")
 
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

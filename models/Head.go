@@ -7,7 +7,7 @@ import (
 
 type Head struct {
 	bun.BaseModel `bun:"heads,select:heads,alias:heads"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Human         *Human        `bun:"rel:belongs-to" json:"human"`
 	HumanId       uuid.NullUUID `bun:"type:uuid" json:"humanId"`
 	Position      string        `json:"position"`

@@ -13,11 +13,11 @@ import (
 )
 
 func (s *Service) Create(item *models.News) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(item.GetFileInfos())
+	err := fileInfos.CreateService(s.repository.GetDB()).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
 	}
-	err = events.CreateService(s.repository.getDB(), s.helper).Create(item.Event)
+	err = events.CreateService(s.repository.GetDB(), s.helper).Create(item.Event)
 	if err != nil {
 		return err
 	}
@@ -29,49 +29,31 @@ func (s *Service) Create(item *models.News) error {
 	}
 	item.SetIdForChildren()
 
-	err = newsToCategories.CreateService(s.repository.getDB()).CreateMany(item.NewsToCategories)
+	err = newsToCategories.CreateService(s.repository.GetDB()).CreateMany(item.NewsToCategories)
 	if err != nil {
 		return err
 	}
-	err = newsToTags.CreateService(s.repository.getDB()).CreateMany(item.NewsToTags)
+	err = newsToTags.CreateService(s.repository.GetDB()).CreateMany(item.NewsToTags)
 	if err != nil {
 		return err
 	}
-	err = newsImages.CreateService(s.repository.getDB()).CreateMany(item.NewsImages)
+	err = newsImages.CreateService(s.repository.GetDB()).CreateMany(item.NewsImages)
 	if err != nil {
 		return err
 	}
-	err = newsDoctors.CreateService(s.repository.getDB()).CreateMany(item.NewsDoctors)
+	err = newsDoctors.CreateService(s.repository.GetDB()).CreateMany(item.NewsDoctors)
 	if err != nil {
 		return err
 	}
-	err = newsDivisions.CreateService(s.repository.getDB()).CreateMany(item.NewsDivisions)
+	err = newsDivisions.CreateService(s.repository.GetDB()).CreateMany(item.NewsDivisions)
 	if err != nil {
 		return err
 	}
 	return err
 }
 
-func (s *Service) GetAll(params *newsParams) ([]*models.News, error) {
-	if params.Main {
-		return s.repository.getAllMain()
-	}
-	return s.repository.getAll(params)
-}
-
-func (s *Service) GetAllAdmin() (models.NewsWithCount, error) {
-	return s.repository.getAllAdmin()
-}
-func (s *Service) GetAllMain() ([]*models.News, error) {
-	return s.repository.getAllMain()
-}
-
-func (s *Service) GetAllRelationsNews(params *newsParams) ([]models.News, error) {
-	return s.repository.getAllRelationsNews(params)
-}
-
-func (s *Service) GetByMonth(params *monthParams) ([]models.News, error) {
-	return s.repository.getByMonth(params)
+func (s *Service) GetAll() (models.NewsWithCount, error) {
+	return s.repository.getAll()
 }
 
 func (s *Service) RemoveTag(item *models.NewsToTag) error {
@@ -111,11 +93,11 @@ func (s *Service) GetBySlug(slug string) (*models.News, error) {
 }
 
 func (s *Service) Update(item *models.News) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(item.GetFileInfos())
+	err := fileInfos.CreateService(s.repository.GetDB()).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
 	}
-	err = events.CreateService(s.repository.getDB(), s.helper).Upsert(item.Event)
+	err = events.CreateService(s.repository.GetDB(), s.helper).Upsert(item.Event)
 	if err != nil {
 		return err
 	}
@@ -126,19 +108,19 @@ func (s *Service) Update(item *models.News) error {
 	}
 	item.SetIdForChildren()
 
-	err = newsToCategories.CreateService(s.repository.getDB()).UpsertMany(item.NewsToCategories)
+	err = newsToCategories.CreateService(s.repository.GetDB()).UpsertMany(item.NewsToCategories)
 	if err != nil {
 		return err
 	}
-	err = newsToTags.CreateService(s.repository.getDB()).UpsertMany(item.NewsToTags)
+	err = newsToTags.CreateService(s.repository.GetDB()).UpsertMany(item.NewsToTags)
 	if err != nil {
 		return err
 	}
-	err = newsImages.CreateService(s.repository.getDB()).UpsertMany(item.NewsImages)
+	err = newsImages.CreateService(s.repository.GetDB()).UpsertMany(item.NewsImages)
 	if err != nil {
 		return err
 	}
-	newsDoctorsService := newsDoctors.CreateService(s.repository.getDB())
+	newsDoctorsService := newsDoctors.CreateService(s.repository.GetDB())
 	err = newsDoctorsService.UpsertMany(item.NewsDoctors)
 	if err != nil {
 		return err
@@ -148,7 +130,7 @@ func (s *Service) Update(item *models.News) error {
 		return err
 	}
 
-	newsDivisionsService := newsDivisions.CreateService(s.repository.getDB())
+	newsDivisionsService := newsDivisions.CreateService(s.repository.GetDB())
 	err = newsDivisionsService.UpsertMany(item.NewsDivisions)
 	if err != nil {
 		return err
@@ -163,7 +145,6 @@ func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
 
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) SetQueryFilter(c *gin.Context) error {
+	return s.repository.SetQueryFilter(c)
 }

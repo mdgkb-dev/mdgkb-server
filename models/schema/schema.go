@@ -24,7 +24,9 @@ type Schema struct {
 	PostgraduateCourseSpecialization map[string]string `json:"postgraduateCourseSpecialization"`
 	EducationalOrganizationAcademic  map[string]string `json:"educationalOrganizationAcademic"`
 	Role                             map[string]string `json:"role"`
+	News                             map[string]string `json:"news"`
 	PathPermission                   map[string]string `json:"pathPermission"`
+	NewsToTag                        map[string]string `json:"newsToTag"`
 }
 
 func CreateSchema() Schema {
@@ -53,6 +55,8 @@ func CreateSchema() Schema {
 		EducationalOrganizationAcademic:  createEducationalOrganizationAcademicsSchema(),
 		Role:                             createRolesSchema(),
 		PathPermission:                   createPathPermissionsSchema(),
+		News:                             createNewsSchema(),
+		NewsToTag:                        createNewsToTagSchema(),
 	}
 }
 
@@ -240,6 +244,7 @@ func createPostgraduateCourseSchema() map[string]string {
 		"value":         "id",
 		"key":           "postgraduateCourse",
 		"name":          "name",
+		"cost":          "cost",
 		"code":          "code",
 		"years":         "years",
 		"educationForm": "education_form",
@@ -336,5 +341,38 @@ func createPathPermissionsSchema() map[string]string {
 		"value":      "id",
 		"resource":   "resource",
 		"sortColumn": "resource",
+	}
+}
+
+func createNewsSchema() map[string]string {
+	return map[string]string{
+		"tableName":   "news_view",
+		"key":         "news",
+		"id":          "id",
+		"value":       "id",
+		"sortColumn":  "title",
+		"title":       "title",
+		"status":      "status",
+		"previewText": "preview_text",
+		"slug":        "slug",
+		"publishedOn": "published_on",
+		"createdAt":   "created_at",
+		"description": "description",
+		"main":        "main",
+		"subMain":     "sub_main",
+		"articleLink": "article_link",
+		"isArticle":   "is_article",
+		"viewsCount":  "views_count",
+	}
+}
+
+func createNewsToTagSchema() map[string]string {
+	return map[string]string{
+		"tableName": "news_to_tags",
+		"key":       "newsToTag",
+		"id":        "id",
+		"value":     "id",
+		"newsId":    "news_id",
+		"tagId":     "tag_id",
 	}
 }

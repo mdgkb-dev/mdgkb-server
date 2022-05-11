@@ -20,9 +20,7 @@ func (r *Repository) create(item *models.Center) (err error) {
 func (r *Repository) getAll() (models.Centers, error) {
 	items := make(models.Centers, 0)
 	query := r.db.NewSelect().Model(&items)
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

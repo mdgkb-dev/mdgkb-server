@@ -7,7 +7,7 @@ import (
 
 type ResidencyCourseSpecialization struct {
 	bun.BaseModel     `bun:"residency_courses_specializations,alias:residency_courses_specializations"`
-	ID                uuid.UUID        `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID                uuid.UUID        `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Main              bool             `json:"main"`
 	ResidencyCourse   *ResidencyCourse `bun:"rel:belongs-to" json:"residencyCourse"`
 	ResidencyCourseID uuid.NullUUID    `bun:"type:uuid" json:"residencyCourseId"`

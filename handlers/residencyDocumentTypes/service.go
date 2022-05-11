@@ -1,7 +1,6 @@
 package residencyDocumentTypes
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/handlers/documentTypes"
 	"mdgkb/mdgkb-server/models"
@@ -59,7 +58,6 @@ func (s *Service) Delete(id string) error {
 }
 
 func (s *Service) UpsertMany(items ResidencyDocumentTypesWithDelete) error {
-	fmt.Println(items.ResidencyDocumentTypes)
 	documentService := documentTypes.CreateService(s.repository.getDB(), s.helper)
 	if len(items.ResidencyDocumentTypes) > 0 {
 		err := documentService.UpsertMany(items.ResidencyDocumentTypes.GetDocumentTypes())

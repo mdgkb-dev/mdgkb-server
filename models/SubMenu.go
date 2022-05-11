@@ -9,7 +9,7 @@ import (
 
 type SubMenu struct {
 	bun.BaseModel `bun:"sub_menus,alias:sub_menus"`
-	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
 	Description   string        `json:"description"`
 	Color         string        `json:"color"`

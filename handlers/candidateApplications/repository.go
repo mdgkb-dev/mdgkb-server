@@ -30,9 +30,7 @@ func (r *Repository) getAll() (models.CandidateApplications, error) {
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("CandidateApplicationSpecializations.Specialization")
 
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }
@@ -55,8 +53,8 @@ func (r *Repository) get(id *string) (*models.CandidateApplication, error) {
 
 func (r *Repository) emailExists(email string, examId string) (bool, error) {
 	exists, err := r.db.NewSelect().Model((*models.CandidateApplication)(nil)).
-	Join("JOIN users ON users.email = ?", email).
-	Where("candidate_applications.candidate_exam_id = ?", examId).Exists(r.ctx)
+		Join("JOIN users ON users.email = ?", email).
+		Where("candidate_applications.candidate_exam_id = ?", examId).Exists(r.ctx)
 	return exists, err
 }
 

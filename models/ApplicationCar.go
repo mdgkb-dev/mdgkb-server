@@ -9,7 +9,7 @@ import (
 
 type ApplicationCar struct {
 	bun.BaseModel `bun:"applications_cars,alias:applications_cars"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	CarNumber     string        `json:"carNumber"`
 	CarBrand      string        `json:"carBrand"`
 

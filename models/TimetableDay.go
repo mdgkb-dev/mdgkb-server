@@ -7,7 +7,7 @@ import (
 )
 
 type TimetableDay struct {
-	ID             uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID             uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	IsWeekend      bool      `json:"isWeekend"`
 	StartTime      string    `json:"startTime"`
 	EndTime        string    `json:"endTime"`

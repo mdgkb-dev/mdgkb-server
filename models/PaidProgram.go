@@ -7,7 +7,7 @@ import (
 
 type PaidProgram struct {
 	bun.BaseModel                     `bun:"paid_programs,alias:paid_programs"`
-	ID                                uuid.NullUUID            `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID                                uuid.NullUUID            `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name                              string                   `json:"name"`
 	Description                       string                   `json:"description"`
 	Order                             int                      `bun:"program_order" json:""`

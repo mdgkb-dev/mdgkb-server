@@ -7,7 +7,7 @@ import (
 
 type ResidencyApplication struct {
 	bun.BaseModel `bun:"residency_applications,select:residency_applications,alias:residency_applications"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	ResidencyCourse   *ResidencyCourse `bun:"rel:belongs-to" json:"residencyCourse"`
 	ResidencyCourseID uuid.NullUUID    `bun:"type:uuid,nullzero,default:NULL" json:"residencyCourseId"`

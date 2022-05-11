@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	bun.BaseModel `bun:"users,alias:users"`
-	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Email         string        `json:"email"`
 	UUID          uuid.UUID     `bun:"type:uuid,nullzero,notnull,default:uuid_generate_v4()"  json:"uuid"` // для восстановления пароля - обеспечивает уникальность страницы на фронте
 	Phone         string        `json:"phone"`

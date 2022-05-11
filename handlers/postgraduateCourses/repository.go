@@ -30,9 +30,7 @@ func (r *Repository) getAll() (models.PostgraduateCourses, error) {
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("QuestionsFile")
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }
@@ -46,6 +44,7 @@ func (r *Repository) get() (*models.PostgraduateCourse, error) {
 		Relation("QuestionsFile").
 		Relation("ProgramFile").
 		Relation("Calendar").
+		Relation("Annotation").
 		Relation("DocumentType.Documents.DocumentsScans.Scan").
 		Relation("PostgraduateCoursePlans.Plan").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {

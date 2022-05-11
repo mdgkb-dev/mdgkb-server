@@ -30,10 +30,7 @@ func (r *Repository) getAll() (models.ResidencyCourses, error) {
 		Relation("FormPattern.Fields.ValueType").
 		Relation("StartYear").
 		Relation("EndYear")
-
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

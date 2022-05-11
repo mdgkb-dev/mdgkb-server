@@ -7,7 +7,7 @@ import (
 
 type Tag struct {
 	bun.BaseModel `bun:"tags,alias:tags"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Color         string    `json:"color"`
 	Label         string    `json:"label"`
 }

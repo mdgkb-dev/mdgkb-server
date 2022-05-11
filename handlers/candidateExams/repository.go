@@ -24,9 +24,7 @@ func (r *Repository) getAll() (models.CandidateExams, error) {
 	query := r.db.NewSelect().
 		Model(&items)
 
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

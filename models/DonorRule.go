@@ -2,13 +2,13 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/uptrace/bun"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/uptrace/bun"
 )
 
 type DonorRule struct {
 	bun.BaseModel   `bun:"donor_rules,alias:donor_rules"`
-	ID              uuid.UUID       `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID              uuid.UUID       `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name            string          `json:"name"`
 	Order           int             `bun:"donor_rule_order" json:"order"`
 	Image           *FileInfo       `bun:"rel:belongs-to" json:"image"`

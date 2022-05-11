@@ -5,7 +5,7 @@ import (
 )
 
 type ContactInfo struct {
-	ID                        uuid.UUID        `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID                        uuid.UUID        `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	EmailsForDelete           []uuid.UUID      `bun:"-" json:"emailsForDelete"`
 	Emails                    Emails           `bun:"rel:has-many" json:"emails"`
 	PostAddressesForDelete    []uuid.UUID      `bun:"-" bun:"rel:has-many" json:"postAddressesForDelete"`

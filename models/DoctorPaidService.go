@@ -7,7 +7,7 @@ import (
 
 type DoctorPaidService struct {
 	bun.BaseModel `bun:"doctor_paid_services,alias:doctor_paid_services"`
-	ID            uuid.UUID     `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	DoctorID      uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor       `bun:"rel:belongs-to" json:"doctor"`
 	PaidService   *PaidService  `bun:"rel:belongs-to" json:"paidService"`

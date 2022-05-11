@@ -10,7 +10,7 @@ import (
 
 type PostgraduateCoursePlan struct {
 	bun.BaseModel `bun:"postgraduate_course_plans,alias:postgraduate_course_plans"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Year          time.Time     `json:"year"`
 	Plan          *FileInfo     `bun:"rel:belongs-to" json:"plan"`
 	PlanID        uuid.NullUUID `bun:"type:uuid" json:"planId"`

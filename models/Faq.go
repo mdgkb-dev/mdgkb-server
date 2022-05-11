@@ -7,7 +7,7 @@ import (
 
 type Faq struct {
 	bun.BaseModel `bun:"faqs,alias:faqs"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Order         uint      `bun:"faq_order" json:"order"`
 	Question      string    `json:"question"`
 	Answer        string    `json:"answer"`

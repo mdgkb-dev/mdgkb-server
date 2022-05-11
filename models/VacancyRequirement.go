@@ -7,7 +7,7 @@ import (
 
 type VacancyRequirement struct {
 	bun.BaseModel `bun:"vacancy_requirements,alias:vacancy_requirements"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string    `json:"name"`
 	Vacancy       *Vacancy  `bun:"rel:belongs-to" json:"vacancy"`
 	VacancyID     uuid.UUID `bun:"type:uuid"  json:"vacancyId"`

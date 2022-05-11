@@ -8,7 +8,7 @@ import (
 
 type SearchGroup struct {
 	bun.BaseModel     `bun:"search_groups,alias:search_groups"`
-	ID                uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID                uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Key               string        `json:"key"`
 	Label             string        `json:"label"`
 	Order             int           `bun:"search_group_order" json:"order"`

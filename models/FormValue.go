@@ -8,7 +8,7 @@ import (
 
 type FormValue struct {
 	bun.BaseModel `bun:"form_values,alias:form_values"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	CreatedAt     time.Time     `json:"createdAt"`
 	IsNew         bool          `json:"isNew"`
 	EmailNotify   bool          `bun:"-" json:"emailNotify"`

@@ -7,7 +7,7 @@ import (
 
 type PublicDocumentType struct {
 	bun.BaseModel               `bun:"public_document_types,alias:public_document_types"`
-	ID                          uuid.NullUUID                `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID                          uuid.NullUUID                `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Name                        string                       `json:"name"`
 	RouteAnchor                 string                       `json:"routeAnchor"`
 	Description                 string                       `json:"description"`

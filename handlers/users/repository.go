@@ -27,9 +27,7 @@ func (r *Repository) getAll() (items models.UsersWithCount, err error) {
 		Relation("Human").
 		Relation("Role")
 
-	r.queryFilter.Paginator.CreatePagination(query)
-	r.queryFilter.Filter.CreateFilter(query)
-	r.queryFilter.Sorter.CreateOrder(query)
+	r.queryFilter.HandleQuery(query)
 	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }

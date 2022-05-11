@@ -8,7 +8,7 @@ import (
 
 type EducationCertification struct {
 	bun.BaseModel     `bun:"education_certifications,alias:education_certifications"`
-	ID                uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID                uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Specialization    string        `json:"specialization"`
 	CertificationDate time.Time     `json:"certificationDate"`
 	EndDate           time.Time     `json:"endDate"`

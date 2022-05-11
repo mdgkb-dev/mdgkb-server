@@ -7,7 +7,7 @@ import (
 
 type NewsSlideButton struct {
 	bun.BaseModel   `bun:"news_slide_buttons,alias:news_slide_buttons"`
-	ID              uuid.UUID  `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID              uuid.UUID  `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Name            string     `json:"name"`
 	BackgroundColor string     `json:"backgroundColor"`
 	Color           string     `json:"color"`

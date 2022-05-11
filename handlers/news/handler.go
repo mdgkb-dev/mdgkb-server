@@ -3,7 +3,6 @@ package news
 import (
 	"mdgkb/mdgkb-server/models"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -66,66 +65,17 @@ func (h *Handler) CreateLike(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-type newsParams struct {
-	PublishedOn *time.Time `form:"publishedOn"`
-	CreatedAt   *time.Time `form:"createdAt"`
-	Limit       int        `form:"limit"`
-	FilterTags  string     `form:"filterTags"`
-	OrderByView string     `form:"orderByView"`
-	Events      bool       `form:"events"`
-	Main        bool       `form:"main"`
-}
-
 func (h *Handler) GetAll(c *gin.Context) {
-	var newsParams newsParams
-	err := c.BindQuery(&newsParams)
+	err := h.service.SetQueryFilter(c)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	news, err := h.service.GetAll(&newsParams)
+	news, err := h.service.GetAll()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	for i := range news {
-		news[i].ViewsCount = len(news[i].NewsViews)
-	}
-	c.JSON(http.StatusOK, news)
-}
-
-func (h *Handler) GetAllAdmin(c *gin.Context) {
-	err := h.service.setQueryFilter(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-
-	news, err := h.service.GetAllAdmin()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, news)
-}
-
-func (h *Handler) GetAllMain(c *gin.Context) {
-	news, err := h.service.GetAllMain()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, news)
-}
-
-func (h *Handler) GetAllRelationsNews(c *gin.Context) {
-	var newsParams newsParams
-	err := c.BindQuery(&newsParams)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-
-	news, err := h.service.GetAllRelationsNews(&newsParams)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	for i := range news {
-		news[i].ViewsCount = len(news[i].NewsViews)
+	for i := range news.News {
+		news.News[i].ViewsCount = len(news.News[i].NewsViews)
 	}
 	c.JSON(http.StatusOK, news)
 }
@@ -207,24 +157,4 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 	err = h.service.CreateViewOfNews(&newsView)
 
 	c.JSON(http.StatusOK, item)
-}
-
-type monthParams struct {
-	Month int `form:"month"`
-	Year  int `form:"year"`
-}
-
-func (h *Handler) GetByMonth(c *gin.Context) {
-	var monthParams monthParams
-	err := c.BindQuery(&monthParams)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-
-	items, err := h.service.GetByMonth(&monthParams)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-
-	c.JSON(http.StatusOK, items)
 }

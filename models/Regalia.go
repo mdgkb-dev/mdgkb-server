@@ -7,7 +7,7 @@ import (
 
 type Regalia struct {
 	bun.BaseModel `bun:"regalias,alias:regalias"`
-	ID            uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string    `json:"name"`
 
 	DoctorID uuid.NullUUID `bun:"type:uuid" json:"doctorId"`

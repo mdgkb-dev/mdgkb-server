@@ -8,7 +8,7 @@ import (
 
 type EducationYear struct {
 	bun.BaseModel `bun:"education_years,alias:education_years"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id"`
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Year          time.Time     `json:"year"`
 	Active        bool          `json:"active"`
 }

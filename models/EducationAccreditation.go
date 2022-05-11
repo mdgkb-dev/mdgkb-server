@@ -8,7 +8,7 @@ import (
 
 type EducationAccreditation struct {
 	bun.BaseModel `bun:"education_accreditations,alias:education_accreditations"`
-	ID            uuid.NullUUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Document      string        `json:"document"`
 
 	Specialization string    `json:"specialization"`
