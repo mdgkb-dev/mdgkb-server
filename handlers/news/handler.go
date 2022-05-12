@@ -155,6 +155,8 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 	ip, err := h.helper.HTTP.GetClientIPHelper(c.Request)
 	newsView := models.NewsView{IPAddress: ip, NewsID: item.ID}
 	err = h.service.CreateViewOfNews(&newsView)
-
+	if newsView.ID.Valid {
+		item.ViewsCount++
+	}
 	c.JSON(http.StatusOK, item)
 }
