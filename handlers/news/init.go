@@ -3,7 +3,7 @@ package news
 import (
 	"context"
 	"github.com/pro-assistance/pro-assister/helper"
-	httpHelper2 "github.com/pro-assistance/pro-assister/sqlHelper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/handlers/baseHandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
@@ -82,7 +82,7 @@ type Repository struct {
 	db          *bun.DB
 	ctx         context.Context
 	helper      *helper.Helper
-	queryFilter *httpHelper2.QueryFilter
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
