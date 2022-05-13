@@ -1,3 +1,0 @@
-INSERT INTO public.carousel_slides (id, title, content, carousel_id, file_info_id, link, button_show, button_color)
-VALUES  ('499afae5-9651-49fd-86d4-4dd464f9a97b', '<h1><br></h1><h1><span style="color: rgb(230, 0, 0);"><span class="ql-cursor">﻿﻿</span>О вакцинации против COVID-19</span></h1><p><br></p>', '', '6babf8a6-ed00-4bf4-a992-678e43fa0439', '64f8f97f-3e23-4265-aed3-56d724e83065', '/news/o-vaktsinatsii-protiv-covid-19', true, '#FF0000'),
-        ('cff69140-4f17-4f0b-b365-a6a59b2d3cf0', '<h1><span style="color: rgb(61, 20, 102);">Шефы рядом</span></h1><h2><br></h2><p><br></p>', '', '6babf8a6-ed00-4bf4-a992-678e43fa0439', 'f2f15849-380a-4d59-8550-b16933fcf766', '/news/shefy-ryadom-podvedeny-itogi-donorskoy-aktsii-v-morozovskoy-bolnitse', true, '#8283B5');

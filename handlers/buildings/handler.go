@@ -1,11 +1,10 @@
 package buildings
 
 import (
-	"fmt"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"mdgkb/mdgkb-server/helpers"
-	"mdgkb/mdgkb-server/models"
 )
 
 type Handler interface {
@@ -19,13 +18,13 @@ type Handler interface {
 
 type AHandler struct {
 	repository Repository
-	uploader   helpers.Uploader
+	//uploader   helper.Uploader
 }
 
 // NewHandler constructor
-func NewHandler(repository Repository, uploader helpers.Uploader) *AHandler {
+func NewHandler(repository Repository) *AHandler {
 	return &AHandler{
-		uploader:   uploader,
+		//uploader:   uploader,
 		repository: repository,
 	}
 }
@@ -50,13 +49,11 @@ func (h *AHandler) GetAll(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
-	fmt.Println(buildings)
 	c.JSON(200, buildings)
 }
 
 func (h *AHandler) GetByFloorId(c *gin.Context) {
 	item, err := h.repository.getByFloorId(c, c.Param("id"))
-	fmt.Println(err)
 	if err != nil {
 		c.JSON(500, err)
 	}
@@ -65,7 +62,6 @@ func (h *AHandler) GetByFloorId(c *gin.Context) {
 
 func (h *AHandler) GetById(c *gin.Context) {
 	item, err := h.repository.getById(c, c.Param("id"))
-	fmt.Println(err)
 	if err != nil {
 		c.JSON(500, err)
 	}

@@ -2,17 +2,17 @@ package users
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
-	handler "mdgkb/mdgkb-server/handlers/users"
-	"mdgkb/mdgkb-server/helpers"
-
 	_ "github.com/go-pg/pg/v10/orm"
+	handler "mdgkb/mdgkb-server/handlers/users"
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
-	var h = handler.NewHandler(handler.NewRepository(db), uploader)
+func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
 	r.GET("/get-by-email/:email", h.GetByEmail)
+	r.PUT("/:id", h.Update)
+	r.POST("", h.Create)
+	r.POST("/add-to-user/:domain", h.AddToUser)
+	r.DELETE("/remove-from-user/:domain/:id", h.RemoveFromUser)
 }

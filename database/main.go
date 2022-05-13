@@ -4,13 +4,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/migrate"
+	"github.com/pro-assistance/pro-assister/config"
 	"log"
-	"mdgkb/mdgkb-server/config"
 	"mdgkb/mdgkb-server/database/connect"
 	"mdgkb/mdgkb-server/database/migrations"
 	"mdgkb/mdgkb-server/database/seeding"
+
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/migrate"
 )
 
 func main() {
@@ -59,5 +60,5 @@ func getDb() *bun.DB {
 		log.Fatal("cannot load config:", err)
 	}
 
-	return connect.InitDB(conf)
+	return connect.InitDB(conf.DB)
 }

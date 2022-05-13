@@ -1,10 +1,9 @@
 package tags
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 type IHandler interface {
@@ -17,13 +16,13 @@ type IHandler interface {
 
 type Handler struct {
 	repository IRepository
-	uploader   helpers.Uploader
+	//uploader   helper.Uploader
 }
 
 // NewHandler constructor
-func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
+func NewHandler(repository IRepository) *Handler {
 	return &Handler{
-		uploader:   uploader,
+		//uploader:   uploader,
 		repository: repository,
 	}
 }
@@ -34,12 +33,10 @@ func (h *Handler) Create(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 	}
-	fmt.Println(item)
 	err = h.repository.create(c, &item)
 	if err != nil {
 		c.JSON(500, err)
 	}
-	fmt.Println(item)
 	c.JSON(200, item)
 }
 

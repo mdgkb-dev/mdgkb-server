@@ -1,7 +1,6 @@
 package sideOrganizations
 
 import (
-	"mdgkb/mdgkb-server/helpers"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -18,13 +17,12 @@ type IHandler interface {
 
 type Handler struct {
 	repository IRepository
-	uploader   helpers.Uploader
+	//uploader   helper.
 }
 
 // NewHandler constructor
-func NewHandler(repository IRepository, uploader helpers.Uploader) *Handler {
+func NewHandler(repository IRepository) *Handler {
 	return &Handler{
-		uploader:   uploader,
 		repository: repository,
 	}
 }

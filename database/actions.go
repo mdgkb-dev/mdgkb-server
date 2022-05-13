@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/uptrace/bun/migrate"
 	"log"
+
+	"github.com/uptrace/bun/migrate"
 )
 
 func createMigrationSql(migrator *migrate.Migrator, name *string) {
@@ -47,6 +48,7 @@ func initMigration(migrator *migrate.Migrator) {
 }
 
 func runMigration(migrator *migrate.Migrator) {
+
 	group, err := migrator.Migrate(context.TODO())
 	if err != nil {
 		log.Fatalf("fail migrate: %s", err)

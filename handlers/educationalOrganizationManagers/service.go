@@ -2,8 +2,7 @@ package educationalOrganizationManagers
 
 import "mdgkb/mdgkb-server/models"
 
-
-func (s *Service) GetAll() (models.EducationalOrganizationManagers, error) {
+func (s *Service) GetAll() (models.EducationalManagers, error) {
 	items, err := s.repository.getAll()
 	if err != nil {
 		return nil, err
@@ -11,7 +10,10 @@ func (s *Service) GetAll() (models.EducationalOrganizationManagers, error) {
 	return items, nil
 }
 
-func (s *Service) UpsertMany(items models.EducationalOrganizationManagers) error {
+func (s *Service) UpsertMany(items models.EducationalManagers) error {
+	if len(items) == 0 {
+		return nil
+	}
 	return s.repository.upsertMany(items)
 }
 

@@ -1,33 +1,35 @@
 package educationalOrganizationManagers
 
 import (
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
-func (r *Repository) getAll() (models.EducationalOrganizationManagers, error) {
-	items := make(models.EducationalOrganizationManagers, 0)
-	err := r.db.NewSelect().Model(&items).
+func (r *Repository) getAll() (models.EducationalManagers, error) {
+	items := make(models.EducationalManagers, 0)
+	err := r.db.NewSelect().
+		Model(&items).
 		Relation("Doctor.Human").
-		Relation("Doctor.FileInfo").
-		Order("educational_organization_managers.manager_order").Scan(r.ctx)
+		//Relation("Doctor.FileInfo").
+		Order("educational_managers_view.educational_manager_order").
+		Scan(r.ctx)
 	return items, err
 }
 
 func (r *Repository) deleteMany(idPool []string) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.EducationalOrganizationManager)(nil)).
+		Model((*models.EducationalManager)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.EducationalOrganizationManagers) (err error) {
+func (r *Repository) upsertMany(items models.EducationalManagers) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Set("doctor_id = EXCLUDED.doctor_id").
 		Model(&items).

@@ -1,59 +1,66 @@
-INSERT INTO public.timetables VALUES ('15830802-c11d-4df2-8ea2-7944d946a295', '');
-INSERT INTO public.timetables VALUES ('60a10532-ed01-4f5c-adb8-2dc66ef13212', '');
-INSERT INTO public.timetables VALUES ('4226c8da-5e8b-465b-b5be-37d73ba6af81', '');
-INSERT INTO public.timetables VALUES ('cd79e673-6d14-4b92-aca8-78e4cfc739ce', '');
-INSERT INTO public.timetables VALUES ('a34b4787-83d2-47a0-855e-4ffdb28ce145', '');
-INSERT INTO public.timetables VALUES ('9a5e8905-bbe2-432d-8efa-debd1ced042b', '');
-INSERT INTO public.timetables VALUES ('fc163a07-7b9b-4527-9f3c-03b2cfc283ca', '');
-INSERT INTO public.timetables VALUES ('65246e01-2bf1-4397-8c4f-67e3cc5b2034', '');
-INSERT INTO public.timetables VALUES ('f9e61bcf-9d30-4e33-b961-34f4ff954d76', '');
-INSERT INTO public.timetables VALUES ('7b8e194c-aabf-4c9f-92b3-29f03b58df4a', '');
-INSERT INTO public.timetables VALUES ('09cde922-117b-4230-b3fc-e0f6eee243e9', '');
-INSERT INTO public.timetables VALUES ('fe55da6d-f175-48e3-a9b6-af5218f37dd3', '');
-INSERT INTO public.timetables VALUES ('72f473c0-923f-428c-ae56-1de03c2137c5', '');
-INSERT INTO public.timetables VALUES ('28fed9e0-931a-41fa-8426-6e6200232205', '');
-INSERT INTO public.timetables VALUES ('46ade928-0c2e-432e-9fc1-1326987b5248', '');
-INSERT INTO public.timetables VALUES ('4818fe2c-3a6e-4a6a-8af3-de8238f44925', '');
-INSERT INTO public.timetables VALUES ('b8bd1546-5830-4012-9a5a-507ff4654ce2', '');
-INSERT INTO public.timetables VALUES ('76d5b18a-90fa-48fb-bbae-a70f6fc32ef3', '');
-INSERT INTO public.timetables VALUES ('efe42ddf-28c5-4992-88cf-7b92572d6c2f', '');
-INSERT INTO public.timetables VALUES ('ed5b4d47-c1c3-48d1-a873-37a2a4adc8a3', '');
-INSERT INTO public.timetables VALUES ('606065ea-f1cd-4cd9-86c6-3e58cdac80f4', '');
-INSERT INTO public.timetables VALUES ('1e4eb90b-d5a4-4847-8dfe-e7bd7ed1bd7a', '');
-INSERT INTO public.timetables VALUES ('02d21238-7bd1-4360-90ed-2c83047e4e87', '');
-INSERT INTO public.timetables VALUES ('6888238b-351c-4391-bc9b-36184831e900', '');
-INSERT INTO public.timetables VALUES ('9bf6d1c1-a9ad-401d-8f6d-cff52af1b23b', '');
-INSERT INTO public.timetables VALUES ('ccfe1b90-59fa-4373-8b74-7dfa6d44fbe3', '');
-INSERT INTO public.timetables VALUES ('868d5885-f654-441b-8945-446062e46616', '');
-INSERT INTO public.timetables VALUES ('0a074ead-6579-4882-87f9-767396be97cd', '');
-INSERT INTO public.timetables VALUES ('91d06980-e976-482a-9708-8517eaed463b', '');
-INSERT INTO public.timetables VALUES ('d0861327-61ad-49bb-a14f-8ccad1d0b845', '');
-INSERT INTO public.timetables VALUES ('65bf319e-270c-4093-9f39-9b6a73072b93', '');
-INSERT INTO public.timetables VALUES ('10cf7ab2-9049-49d7-8802-09d16a4f89a9', '');
-INSERT INTO public.timetables VALUES ('9ff21775-3a51-4640-9f39-0d4a41b9b4d3', '');
-INSERT INTO public.timetables VALUES ('9a3d755a-bf65-4cda-8fe3-15dab7b61dd2', '');
-INSERT INTO public.timetables VALUES ('730f3439-b63b-4143-9135-7e8bb54121f4', '');
-INSERT INTO public.timetables VALUES ('580cb3cd-1b4a-4250-bc0a-6d6913c1ae94', '');
-INSERT INTO public.timetables VALUES ('a7d10498-0126-4e96-b94d-47bdb586ce2a', '');
-INSERT INTO public.timetables VALUES ('ee8231e5-5d26-415c-8bb8-f8058c785739', '');
-INSERT INTO public.timetables VALUES ('5a31a0aa-f018-4027-b090-24b68bb42e15', '');
-INSERT INTO public.timetables VALUES ('31c135eb-9168-4c8d-b219-ad9de74739cc', '');
-INSERT INTO public.timetables VALUES ('07c7e665-3c70-4876-b74c-d6a66557dbfe', '');
-INSERT INTO public.timetables VALUES ('e2f81299-ed66-48c9-a003-95105c212499', '');
-INSERT INTO public.timetables VALUES ('593d2dce-f7cd-453c-b731-3af1e42206c2', '');
-INSERT INTO public.timetables VALUES ('610615cd-52a2-4c3b-acbd-0f930c0f5d70', '');
-INSERT INTO public.timetables VALUES ('f673023d-24fb-47ee-a095-b2aac1c1b4c3', '');
-INSERT INTO public.timetables VALUES ('f82b83a2-bed9-48fc-86bf-131f99fb3b51', '');
-INSERT INTO public.timetables VALUES ('697f764c-b940-4467-b853-1b5d4a3763aa', '');
-INSERT INTO public.timetables VALUES ('3957e7b5-5a53-441d-99bc-c4dd18534a80', '');
-INSERT INTO public.timetables VALUES ('c022fd88-1996-4bf9-8306-8d4845d3c1e5', '');
-INSERT INTO public.timetables VALUES ('3501ff62-9516-482e-9ad5-219fd99e7fb9', '');
-INSERT INTO public.timetables VALUES ('3e4900a7-facd-470d-a73a-a4561a97d6ce', '');
-INSERT INTO public.timetables VALUES ('21529d35-3012-4d49-b899-61207610c58a', '');
-INSERT INTO public.timetables VALUES ('c7e5fda1-ca65-4522-9a12-b6f90392150d', '');
-INSERT INTO public.timetables VALUES ('647260fd-fc7e-444c-9a8e-46cc17eade9b', '');
-INSERT INTO public.timetables VALUES ('890e438a-d2c9-4734-8a4e-4118ccd89f98', '');
-INSERT INTO public.timetables VALUES ('dad550e5-fbc7-44cd-875b-2373fe3acc70', '');
-INSERT INTO public.timetables VALUES ('0e4632f1-3548-4bd6-958a-cabb5bd81f2d', '');
-INSERT INTO public.timetables VALUES ('a9b1dc5a-7476-4619-b573-9a9fbf0a6522', '');
-INSERT INTO public.timetables VALUES ('6e5d4521-1268-4013-8a78-5f185bbd0816', '');
+insert into public.timetables (id, description)
+values  ('15830802-c11d-4df2-8ea2-7944d946a295', ''),
+        ('60a10532-ed01-4f5c-adb8-2dc66ef13212', ''),
+        ('4226c8da-5e8b-465b-b5be-37d73ba6af81', ''),
+        ('cd79e673-6d14-4b92-aca8-78e4cfc739ce', ''),
+        ('a34b4787-83d2-47a0-855e-4ffdb28ce145', ''),
+        ('9a5e8905-bbe2-432d-8efa-debd1ced042b', ''),
+        ('fc163a07-7b9b-4527-9f3c-03b2cfc283ca', ''),
+        ('65246e01-2bf1-4397-8c4f-67e3cc5b2034', ''),
+        ('f9e61bcf-9d30-4e33-b961-34f4ff954d76', ''),
+        ('7b8e194c-aabf-4c9f-92b3-29f03b58df4a', ''),
+        ('09cde922-117b-4230-b3fc-e0f6eee243e9', ''),
+        ('fe55da6d-f175-48e3-a9b6-af5218f37dd3', ''),
+        ('72f473c0-923f-428c-ae56-1de03c2137c5', ''),
+        ('28fed9e0-931a-41fa-8426-6e6200232205', ''),
+        ('46ade928-0c2e-432e-9fc1-1326987b5248', ''),
+        ('4818fe2c-3a6e-4a6a-8af3-de8238f44925', ''),
+        ('b8bd1546-5830-4012-9a5a-507ff4654ce2', ''),
+        ('76d5b18a-90fa-48fb-bbae-a70f6fc32ef3', ''),
+        ('efe42ddf-28c5-4992-88cf-7b92572d6c2f', ''),
+        ('ed5b4d47-c1c3-48d1-a873-37a2a4adc8a3', ''),
+        ('606065ea-f1cd-4cd9-86c6-3e58cdac80f4', ''),
+        ('1e4eb90b-d5a4-4847-8dfe-e7bd7ed1bd7a', ''),
+        ('02d21238-7bd1-4360-90ed-2c83047e4e87', ''),
+        ('6888238b-351c-4391-bc9b-36184831e900', ''),
+        ('9bf6d1c1-a9ad-401d-8f6d-cff52af1b23b', ''),
+        ('ccfe1b90-59fa-4373-8b74-7dfa6d44fbe3', ''),
+        ('868d5885-f654-441b-8945-446062e46616', ''),
+        ('0a074ead-6579-4882-87f9-767396be97cd', ''),
+        ('91d06980-e976-482a-9708-8517eaed463b', ''),
+        ('d0861327-61ad-49bb-a14f-8ccad1d0b845', ''),
+        ('65bf319e-270c-4093-9f39-9b6a73072b93', ''),
+        ('10cf7ab2-9049-49d7-8802-09d16a4f89a9', ''),
+        ('9ff21775-3a51-4640-9f39-0d4a41b9b4d3', ''),
+        ('9a3d755a-bf65-4cda-8fe3-15dab7b61dd2', ''),
+        ('730f3439-b63b-4143-9135-7e8bb54121f4', ''),
+        ('580cb3cd-1b4a-4250-bc0a-6d6913c1ae94', ''),
+        ('a7d10498-0126-4e96-b94d-47bdb586ce2a', ''),
+        ('ee8231e5-5d26-415c-8bb8-f8058c785739', ''),
+        ('5a31a0aa-f018-4027-b090-24b68bb42e15', ''),
+        ('31c135eb-9168-4c8d-b219-ad9de74739cc', ''),
+        ('07c7e665-3c70-4876-b74c-d6a66557dbfe', ''),
+        ('e2f81299-ed66-48c9-a003-95105c212499', ''),
+        ('593d2dce-f7cd-453c-b731-3af1e42206c2', ''),
+        ('610615cd-52a2-4c3b-acbd-0f930c0f5d70', ''),
+        ('f673023d-24fb-47ee-a095-b2aac1c1b4c3', ''),
+        ('f82b83a2-bed9-48fc-86bf-131f99fb3b51', ''),
+        ('697f764c-b940-4467-b853-1b5d4a3763aa', ''),
+        ('3957e7b5-5a53-441d-99bc-c4dd18534a80', ''),
+        ('c022fd88-1996-4bf9-8306-8d4845d3c1e5', ''),
+        ('3501ff62-9516-482e-9ad5-219fd99e7fb9', ''),
+        ('3e4900a7-facd-470d-a73a-a4561a97d6ce', ''),
+        ('21529d35-3012-4d49-b899-61207610c58a', ''),
+        ('c7e5fda1-ca65-4522-9a12-b6f90392150d', ''),
+        ('647260fd-fc7e-444c-9a8e-46cc17eade9b', ''),
+        ('890e438a-d2c9-4734-8a4e-4118ccd89f98', ''),
+        ('dad550e5-fbc7-44cd-875b-2373fe3acc70', ''),
+        ('0e4632f1-3548-4bd6-958a-cabb5bd81f2d', ''),
+        ('a9b1dc5a-7476-4619-b573-9a9fbf0a6522', ''),
+        ('6e5d4521-1268-4013-8a78-5f185bbd0816', ''),
+        ('97da18a9-fb40-4d23-b3a0-55058d12ce87', ''),
+        ('a9a674d0-c293-424b-b792-bdc5c52d12fc', ''),
+        ('12b70ef3-9f08-4f83-888f-aab4c4165f30', ''),
+        ('d0bef973-9a6f-45c0-81dd-6e4a6e4d8d69', ''),
+        ('b21e7a65-b241-40e9-84fe-0761b5fa775e', ''),
+        ('d8c5be96-d819-4d3c-8ca0-92f73dd93e30', '');

@@ -84,7 +84,7 @@ func (r *BRepository) update(ctx *gin.Context, building *models.Building) (err e
 	}
 	for _, floors := range building.Floors {
 		_, err = r.db.NewUpdate().Model(floors).Where("id = ?", floors.ID).Exec(ctx)
-		if floors.ID == uuid.Nil {
+		if floors.ID.UUID == uuid.Nil {
 			_, err = r.db.NewInsert().Model(floors).Exec(ctx)
 		}
 	}
@@ -104,7 +104,7 @@ func (r *BRepository) update(ctx *gin.Context, building *models.Building) (err e
 	}
 	for _, entrances := range building.Entrances {
 		_, err = r.db.NewUpdate().Model(entrances).Where("id = ?", entrances.ID).Exec(ctx)
-		if entrances.ID == uuid.Nil {
+		if entrances.ID.UUID == uuid.Nil {
 			_, err = r.db.NewInsert().Model(entrances).Exec(ctx)
 		}
 	}

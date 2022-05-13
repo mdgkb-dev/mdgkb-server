@@ -1,17 +1,15 @@
 package educationalOraganization
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 	handler "mdgkb/mdgkb-server/handlers/educationalOrganization"
-	"mdgkb/mdgkb-server/helpers"
+
+	"github.com/gin-gonic/gin"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
-	var h = handler.CreateHandler(db, uploader)
+func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/", h.Get)
-	r.PUT("/", h.Update)
+	r.PUT("", h.Update)
 }

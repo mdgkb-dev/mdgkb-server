@@ -8,14 +8,14 @@ import (
 )
 
 type IService interface {
-	GetAll() (models.EducationalOrganizationManagers, error)
-	UpsertMany(models.EducationalOrganizationManagers) error
+	GetAll() (models.EducationalManagers, error)
+	UpsertMany(models.EducationalManagers) error
 	DeleteMany([]string) error
 }
 
 type IRepository interface {
-	getAll() (models.EducationalOrganizationManagers, error)
-	upsertMany(models.EducationalOrganizationManagers) error
+	getAll() (models.EducationalManagers, error)
+	upsertMany(models.EducationalManagers) error
 	deleteMany([]string) error
 }
 

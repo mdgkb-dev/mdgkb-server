@@ -2,7 +2,6 @@ package educationalOrganizationProperties
 
 import "mdgkb/mdgkb-server/models"
 
-
 func (s *Service) GetAll() (models.EducationalOrganizationProperties, error) {
 	items, err := s.repository.getAll()
 	if err != nil {

@@ -1,108 +1,172 @@
 package doctors
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
+
+	_ "github.com/go-pg/pg/v10/orm"
 )
 
-type IRepository interface {
-	create(*gin.Context, *models.Doctor) error
-	getAll(*gin.Context) ([]models.Doctor, error)
-	get(*gin.Context, string) (models.Doctor, error)
-	getByDivisionId(*gin.Context, string) ([]models.Doctor, error)
-	updateStatus(*gin.Context, *models.Doctor) error
-	delete(*gin.Context, string) error
-	update(*gin.Context, *models.Doctor) error
-	createComment(*gin.Context, *models.DoctorComment) error
-	updateComment(*gin.Context, *models.DoctorComment) error
-	removeComment(*gin.Context, string) error
+func (r *Repository) getDB() *bun.DB {
+	return r.db
 }
 
-type Repository struct {
-	db *bun.DB
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db}
-}
-
-func (r *Repository) create(ctx *gin.Context, item *models.Doctor) (err error) {
-	_, err = r.db.NewInsert().Model(item.FileInfo).Exec(ctx)
-	item.FileInfoId = item.FileInfo.ID
-	_, err = r.db.NewInsert().Model(item.Human).Exec(ctx)
-	item.HumanId = item.Human.ID
-	_, err = r.db.NewInsert().Model(item).Exec(ctx)
-	fmt.Println(err)
+func (r *Repository) create(item *models.Doctor) (err error) {
+	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) getAll(ctx *gin.Context) (items []models.Doctor, err error) {
+func (r *Repository) getAllMain() (items models.Doctors, err error) {
 	err = r.db.NewSelect().Model(&items).
 		Relation("Human").
-		Relation("Division").
-		Order("human.surname").
-		Scan(ctx)
+		Relation("Division.Floor").
+		Relation("FileInfo").
+		Relation("PhotoMini").
+		Relation("Position").
+		Relation("MedicalProfile").
+		Relation("Regalias").
+		Relation("DoctorComments.Comment").
+		// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true").
+		Order("doctors_view.regalias_count DESC", "doctors_view.comments_count DESC").
+		Where("doctors_view.file_info_id is not null").
+		Where("doctors_view.mos_doctor_link is not null and doctors_view.mos_doctor_link != '' ").
+		Limit(20).Scan(r.ctx)
 	return items, err
 }
 
-func (r *Repository) get(ctx *gin.Context, id string) (item models.Doctor, err error) {
-	err = r.db.NewSelect().Model(&item).Where("doctor.id = ?", id).
+func (r *Repository) getAll() (items models.Doctors, err error) {
+	query := r.db.NewSelect().Model(&items).
+		Relation("Human").
+		Relation("Division.Floor").
+		Relation("FileInfo").
+		Relation("PhotoMini").
+		Relation("Position").
+		Relation("MedicalProfile").
+		Relation("Regalias").
+		Relation("DoctorComments.Comment")
+	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
+
+	r.queryFilter.HandleQuery(query)
+	err = query.Scan(r.ctx)
+	return items, err
+}
+
+func (r *Repository) getAllAdmin() (items models.DoctorsWithCount, err error) {
+	query := r.db.NewSelect().Model(&items.Doctors).
+		Relation("Human").
+		Relation("Division.Floor").
+		Relation("FileInfo").
+		Relation("PhotoMini").
+		Relation("Position").
+		Relation("MedicalProfile").
+		Relation("Regalias").
+		Relation("DoctorComments.Comment")
+	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
+
+	r.queryFilter.HandleQuery(query)
+	items.Count, err = query.ScanAndCount(r.ctx)
+	return items, err
+}
+
+func (r *Repository) getAllTimetables() (models.Doctors, error) {
+	items := make(models.Doctors, 0)
+	err := r.db.NewSelect().Model(&items).
+		Relation("Timetable.TimetableDays.Weekday").
+		Relation("Timetable.TimetableDays.BreakPeriods").
+		Scan(r.ctx)
+	return items, err
+}
+
+func (r *Repository) get(slug string) (*models.Doctor, error) {
+	item := models.Doctor{}
+	err := r.db.NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
 		Relation("Human").
 		Relation("FileInfo").
-		Relation("Division").
-		Relation("DoctorComments.Comment.User").
-		Scan(ctx)
-	return item, err
+		Relation("PhotoMini").
+		Relation("Division.Timetable.TimetableDays.Weekday").
+		Relation("Regalias").
+		Relation("Experiences").
+		Relation("Position").
+		Relation("DoctorPaidServices.PaidService").
+		Relation("MedicalProfile").
+		Relation("Certificates.Scan").
+		Relation("Timetable.TimetableDays.Weekday").
+		Relation("Timetable.TimetableDays.BreakPeriods").
+		Relation("Educations.EducationCertification").
+		Relation("Educations.EducationAccreditation").
+		Relation("DoctorComments.Comment.User.Human").
+		Relation("NewsDoctors.News").
+		Relation("EducationalOrganizationAcademic").
+		Scan(r.ctx)
+	return &item, err
 }
 
-func (r *Repository) getByDivisionId(ctx *gin.Context, id string) (items []models.Doctor, err error) {
-	err = r.db.NewSelect().Model(&items).Where("division.id = ?", id).
+func (r *Repository) getByDivisionID(id string) (models.Doctors, error) {
+	items := make(models.Doctors, 0)
+	err := r.db.NewSelect().
+		Model(&items).
+		Where("doctors_view.id = ?", id).
 		Relation("Human").
-		Scan(ctx)
+		Scan(r.ctx)
 	return items, err
 }
 
-func (r *Repository) updateStatus(ctx *gin.Context, item *models.Doctor) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Exec(ctx)
+func (r *Repository) delete(id string) (err error) {
+	_, err = r.db.NewDelete().Model(&models.Doctor{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.Doctor{}).Where("id = ?", id).Exec(ctx)
+func (r *Repository) update(item *models.Doctor) (err error) {
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) update(ctx *gin.Context, item *models.Doctor) (err error) {
-	_, err = r.db.NewInsert().Model(item.FileInfo).
-		On("CONFLICT (id) DO UPDATE").
-		Set("original_name = EXCLUDED.original_name").
-		Set("file_system_path = EXCLUDED.file_system_path").
-		Exec(ctx)
-
-	item.FileInfoId = item.FileInfo.ID
-	r.db.NewUpdate().Model(item.Human).Where("id = ?", item.Human.ID).Exec(ctx)
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
-	return err
-}
-
-func (r *Repository) createComment(ctx *gin.Context, item *models.DoctorComment) error {
-	_, err := r.db.NewInsert().Model(item.Comment).Exec(ctx)
+func (r *Repository) createComment(item *models.DoctorComment) error {
+	_, err := r.db.NewInsert().Model(item.Comment).Exec(r.ctx)
 	item.CommentId = item.Comment.ID
-_, err = r.db.NewInsert().Model(item).Exec(ctx)
+	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) updateComment(ctx *gin.Context, item *models.DoctorComment) error {
-	_, err := r.db.NewUpdate().Model(item.Comment).Where("id = ?", item.Comment.ID).Exec(ctx)
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(ctx)
+func (r *Repository) updateComment(item *models.DoctorComment) error {
+	_, err := r.db.NewUpdate().Model(item.Comment).Where("id = ?", item.Comment.ID).Exec(r.ctx)
+	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) removeComment(ctx *gin.Context, id string) error {
-	_, err := r.db.NewDelete().Model(&models.DoctorComment{}).Where("id = ?", id).Exec(ctx)
+func (r *Repository) removeComment(id string) error {
+	_, err := r.db.NewDelete().Model(&models.DoctorComment{}).Where("id = ?", id).Exec(r.ctx)
 	return err
-}		
+}
+
+func (r *Repository) upsertMany(items models.Doctors) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Set("id = EXCLUDED.id").
+		Set("show = EXCLUDED.show").
+		Set("division_id = EXCLUDED.division_id").
+		Model(&items).
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) search(search string) (models.Doctors, error) {
+	items := make(models.Doctors, 0)
+	err := r.db.NewSelect().
+		Model(&items).
+		Relation("Human").
+		Where("lower(regexp_replace(human.name, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", "%"+search+"%").
+		WhereOr("lower(regexp_replace(human.surname, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", "%"+search+"%").
+		WhereOr("lower(regexp_replace(human.patronymic, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", "%"+search+"%").
+		Scan(r.ctx)
+	return items, err
+}

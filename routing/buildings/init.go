@@ -1,17 +1,17 @@
 package buildings
 
 import (
+	handler "mdgkb/mdgkb-server/handlers/buildings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
-	handler "mdgkb/mdgkb-server/handlers/buildings"
-	"mdgkb/mdgkb-server/helpers"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )
 
 // Init func
-func Init(r *gin.RouterGroup, db *bun.DB, uploader helpers.Uploader) {
-	var h = handler.NewHandler(handler.NewRepository(db), uploader)
+func Init(r *gin.RouterGroup, db *bun.DB) {
+	var h = handler.NewHandler(handler.NewRepository(db))
 	r.GET("/", h.GetAll)
 	r.GET("/floor/:id", h.GetByFloorId)
 	r.GET("/:id", h.GetById)
