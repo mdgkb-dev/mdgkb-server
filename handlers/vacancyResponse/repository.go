@@ -23,7 +23,11 @@ func (r *Repository) getAll() (models.VacancyResponses, error) {
 
 func (r *Repository) get(id string) (*models.VacancyResponse, error) {
 	item := models.VacancyResponse{}
-	err := r.db.NewSelect().Model(&item).Where("id = ?", id).Scan(r.ctx)
+	err := r.db.NewSelect().
+		Model(&item).
+		Relation("Vacancy").
+		Relation("User.Human").
+		Where("vacancy_responses.id = ?", id).Scan(r.ctx)
 	return &item, err
 }
 
