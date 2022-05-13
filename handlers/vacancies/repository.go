@@ -41,8 +41,8 @@ func (r *Repository) getAllWithResponses() (models.Vacancies, error) {
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactDoctor.Human").
-		Relation("VacancyResponses.Human.ContactInfo.Emails").
-		Relation("VacancyResponses.Human.ContactInfo.TelephoneNumbers").
+		Relation("VacancyResponses.User.Human.ContactInfo.Emails").
+		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
 		Scan(r.ctx)
 	return items, err
