@@ -3,6 +3,8 @@ package vacancies
 import (
 	"context"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
+	"mdgkb/mdgkb-server/handlers/baseHandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -22,8 +24,8 @@ type IHandler interface {
 }
 
 type IService interface {
+	baseHandler.IService
 	GetAll() (models.Vacancies, error)
-	GetAllWithResponses() (models.Vacancies, error)
 	Get(*string) (*models.Vacancy, error)
 	GetBySlug(*string) (*models.Vacancy, error)
 	Create(*models.Vacancy) error
@@ -34,11 +36,10 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	baseHandler.IRepository
 	create(*models.Vacancy) error
 	getAll() (models.Vacancies, error)
 	getBySlug(*string) (*models.Vacancy, error)
-	getAllWithResponses() (models.Vacancies, error)
 	get(*string) (*models.Vacancy, error)
 	update(*models.Vacancy) error
 	delete(*string) error
@@ -62,9 +63,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helper.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
