@@ -35,8 +35,12 @@ func (r *Repository) getAllWithResponses() (models.Vacancies, error) {
 	err := r.db.NewSelect().
 		Model(&items).
 		Relation("Division").
-		Relation("VacancyDuties").
-		Relation("VacancyRequirements").
+		Relation("VacancyDuties", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("vacancy_duties.vacancy_duty_order")
+		}).
+		Relation("VacancyRequirements", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("vacancy_requirements.vacancy_requirement_order")
+		}).
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").
@@ -53,8 +57,12 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 	err := r.db.NewSelect().
 		Model(&item).
 		Relation("Division").
-		Relation("VacancyDuties").
-		Relation("VacancyRequirements").
+		Relation("VacancyDuties", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("vacancy_duties.vacancy_duty_order")
+		}).
+		Relation("VacancyRequirements", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("vacancy_requirements.vacancy_requirement_order")
+		}).
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").

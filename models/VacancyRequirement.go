@@ -11,6 +11,7 @@ type VacancyRequirement struct {
 	Name          string    `json:"name"`
 	Vacancy       *Vacancy  `bun:"rel:belongs-to" json:"vacancy"`
 	VacancyID     uuid.UUID `bun:"type:uuid"  json:"vacancyId"`
+	Order         uint      `bun:"vacancy_requirement_order" json:"order"`
 }
 
 type VacancyRequirements []*VacancyRequirement
