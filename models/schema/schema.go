@@ -226,15 +226,17 @@ func createSpecializationSchema() map[string]string {
 
 func createVacancySchema() map[string]string {
 	return map[string]string{
-		"tableName":  "vacancies",
-		"key":        "vacancy",
-		"title":      "title",
-		"minSalary":  "min_salary",
-		"divisionId": "division_id",
-		"slug":       "slug",
-		"value":      "slug",
-		"maxSalary":  "max_salary",
-		"sortColumn": "title",
+		"tableName":      "vacancies_view",
+		"key":            "vacancy",
+		"title":          "title",
+		"minSalary":      "min_salary",
+		"divisionId":     "division_id",
+		"slug":           "slug",
+		"date":           "vacancy_date",
+		"value":          "slug",
+		"maxSalary":      "max_salary",
+		"sortColumn":     "title",
+		"responsesCount": "responses_count",
 	}
 }
 

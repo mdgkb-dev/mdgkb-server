@@ -7,7 +7,7 @@ import (
 )
 
 type Vacancy struct {
-	bun.BaseModel                `bun:"vacancies,alias:vacancies"`
+	bun.BaseModel                `bun:"vacancies,select:vacancies_view,alias:vacancies_view"`
 	ID                           uuid.UUID           `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Title                        string              `json:"title"`
 	Slug                         string              `json:"slug"`
@@ -19,6 +19,7 @@ type Vacancy struct {
 	Experience                   string              `json:"experience"`
 	Schedule                     string              `json:"schedule"`
 	Date                         time.Time           `bun:"vacancy_date" json:"date"`
+	ResponsesCount               int                 `json:"responsesCount"`
 	VacancyResponses             VacancyResponses    `bun:"rel:has-many" json:"vacancyResponses"`
 	VacancyDuties                VacancyDuties       `bun:"rel:has-many" json:"vacancyDuties"`
 	VacancyDutiesDelete          []uuid.UUID         `bun:"-" json:"vacancyDutiesDelete"`
