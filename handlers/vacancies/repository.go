@@ -64,7 +64,7 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentType").
-		Where("vacancies.id = ?", *id).
+		Where("vacancies_view.id = ?", *id).
 		Scan(r.ctx)
 	return &item, err
 }

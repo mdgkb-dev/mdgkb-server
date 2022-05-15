@@ -15,11 +15,12 @@ type Vacancy struct {
 	MinSalary                    int                 `json:"minSalary"`
 	MaxSalary                    int                 `json:"maxSalary"`
 	SalaryComment                string              `json:"salaryComment"`
-	Archived                     bool                `json:"archived"`
+	Active                       bool                `json:"active"`
 	Experience                   string              `json:"experience"`
 	Schedule                     string              `json:"schedule"`
 	Date                         time.Time           `bun:"vacancy_date" json:"date"`
 	ResponsesCount               int                 `json:"responsesCount"`
+	NewResponsesCount            int                 `json:"newResponsesCount"`
 	VacancyResponses             VacancyResponses    `bun:"rel:has-many" json:"vacancyResponses"`
 	VacancyDuties                VacancyDuties       `bun:"rel:has-many" json:"vacancyDuties"`
 	VacancyDutiesDelete          []uuid.UUID         `bun:"-" json:"vacancyDutiesDelete"`
