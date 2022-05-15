@@ -20,7 +20,7 @@ func InitDB(conf config.DB) *bun.DB {
 	conn := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(conn, sqlitedialect.New())
 	db.AddQueryHook(bundebug.NewQueryHook(
-		bundebug.WithVerbose(false),
+		bundebug.WithVerbose(true),
 	))
 	_, _ = db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
 

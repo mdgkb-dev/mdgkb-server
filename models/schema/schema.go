@@ -238,6 +238,7 @@ func createVacancySchema() map[string]string {
 		"sortColumn":        "title",
 		"responsesCount":    "responses_count",
 		"newResponsesCount": "new_responses_count",
+		"active":            "active",
 	}
 }
 
