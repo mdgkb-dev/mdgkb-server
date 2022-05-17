@@ -116,7 +116,12 @@ func (s *Service) Update(item *models.News) error {
 	if err != nil {
 		return err
 	}
-	err = newsImages.CreateService(s.repository.GetDB()).UpsertMany(item.NewsImages)
+	newsImagersService := newsImages.CreateService(s.repository.GetDB())
+	err = newsImagersService.UpsertMany(item.NewsImages)
+	if err != nil {
+		return err
+	}
+	err = newsImagersService.DeleteMany(item.NewsImagesForDelete)
 	if err != nil {
 		return err
 	}

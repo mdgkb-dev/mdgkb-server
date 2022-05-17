@@ -148,7 +148,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	//r.Use(m.CheckPermission())
 	r.Use(gin.Logger())
 
-	r.Static("/static", "./static/")
+	r.Static("/api/v1/static", "./static/")
 	authGroup := r.Group("/api/v1/auth")
 	authRouter.Init(authGroup.Group(""), auth.CreateHandler(db, helper))
 

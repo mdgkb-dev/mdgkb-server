@@ -24,7 +24,7 @@ type News struct {
 	SubMain              bool          `json:"subMain"`
 	ArticleLink          string        `json:"articleLink"`
 	IsArticle            bool          `json:"isArticle"`
-	NewsImagesForDelete  []string      `bun:"-" json:"newsImagesForDelete"`
+	NewsImagesForDelete  []uuid.UUID   `bun:"-" json:"newsImagesForDelete"`
 	NewsImagesNames      []string      `bun:"-" json:"newsImagesNames"`
 	PreviewImage         *FileInfo     `bun:"rel:belongs-to" json:"previewImage"`
 	PreviewImageID       uuid.NullUUID `bun:"type:uuid" json:"previewImageId"`
