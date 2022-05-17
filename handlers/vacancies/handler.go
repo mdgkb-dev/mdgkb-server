@@ -21,14 +21,11 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	withResponses := c.Query("withResponses")
-	items := make(models.Vacancies, 0)
-	var err error
-	if withResponses == "" {
-		items, err = h.service.GetAll()
-	} else {
-		items, err = h.service.GetAllWithResponses()
+	err := h.service.SetQueryFilter(c)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
+	items, err := h.service.GetAll()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

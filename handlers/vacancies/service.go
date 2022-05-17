@@ -1,6 +1,7 @@
 package vacancies
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/vacancyDuties"
 	"mdgkb/mdgkb-server/handlers/vacancyRequirements"
 	"mdgkb/mdgkb-server/handlers/vacancyResponsesToDocuments"
@@ -14,12 +15,12 @@ func (s *Service) Create(item *models.Vacancy) error {
 		return err
 	}
 	item.SetIdForChildren()
-	vacancyDutiesService := vacancyDuties.CreateService(s.repository.getDB())
+	vacancyDutiesService := vacancyDuties.CreateService(s.repository.GetDB())
 	err = vacancyDutiesService.UpsertMany(item.VacancyDuties)
 	if err != nil {
 		return err
 	}
-	vacancyRequirementsService := vacancyRequirements.CreateService(s.repository.getDB())
+	vacancyRequirementsService := vacancyRequirements.CreateService(s.repository.GetDB())
 	err = vacancyRequirementsService.UpsertMany(item.VacancyRequirements)
 	if err != nil {
 		return err
@@ -29,14 +30,6 @@ func (s *Service) Create(item *models.Vacancy) error {
 
 func (s *Service) GetAll() (models.Vacancies, error) {
 	items, err := s.repository.getAll()
-	if err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-func (s *Service) GetAllWithResponses() (models.Vacancies, error) {
-	items, err := s.repository.getAllWithResponses()
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +55,7 @@ func (s *Service) Update(item *models.Vacancy) error {
 		return err
 	}
 	item.SetIdForChildren()
-	vacancyDutiesService := vacancyDuties.CreateService(s.repository.getDB())
+	vacancyDutiesService := vacancyDuties.CreateService(s.repository.GetDB())
 	err = vacancyDutiesService.UpsertMany(item.VacancyDuties)
 	if err != nil {
 		return err
@@ -71,7 +64,8 @@ func (s *Service) Update(item *models.Vacancy) error {
 	if err != nil {
 		return err
 	}
-	vacancyRequirementsService := vacancyRequirements.CreateService(s.repository.getDB())
+
+	vacancyRequirementsService := vacancyRequirements.CreateService(s.repository.GetDB())
 	err = vacancyRequirementsService.UpsertMany(item.VacancyRequirements)
 	if err != nil {
 		return err
@@ -88,7 +82,7 @@ func (s *Service) Delete(id *string) error {
 }
 
 func (s *Service) CreateResponse(item *models.VacancyResponse) error {
-	//err := human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
+	//err := human.CreateService(s.repository.GetDB(), s.helper).Create(item.Human)
 	//if err != nil {
 	//	return err
 	//}
@@ -98,9 +92,13 @@ func (s *Service) CreateResponse(item *models.VacancyResponse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = vacancyResponsesToDocuments.CreateService(s.repository.getDB()).CreateMany(item.VacancyResponsesToDocuments)
+	err = vacancyResponsesToDocuments.CreateService(s.repository.GetDB()).CreateMany(item.VacancyResponsesToDocuments)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (s *Service) SetQueryFilter(c *gin.Context) error {
+	return s.repository.SetQueryFilter(c)
 }
