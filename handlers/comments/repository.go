@@ -35,17 +35,15 @@ func (r *Repository) upsertMany(items models.Comments) (err error) {
 	return err
 }
 
-func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
-	items := make(models.Comments, 0)
-	query := r.db.NewSelect().Model(&items).
+func (r *Repository) getAll() (items models.CommentsWithCount, err error) {
+	query := r.db.NewSelect().Model(&items.Comments).
 		Relation("NewsComment.News").
 		Relation("DoctorComments.Doctor.Human").
 		Relation("DivisionComments.Division").
 		Relation("User").
 		Order("published_on DESC")
 	r.queryFilter.HandleQuery(query)
-	err := query.Scan(r.ctx)
-
+	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
 
