@@ -20,7 +20,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	CreateMany(comments models.Comments) error
-	GetAll(*commentsParams) (models.Comments, error)
+	GetAll() (models.CommentsWithCount, error)
 	GetAllMain() (models.Comments, error)
 	UpdateOne(*models.Comment) error
 	UpsertOne(*models.Comment) error
@@ -32,7 +32,7 @@ type IRepository interface {
 	createMany(comments models.Comments) error
 	upsertMany(comments models.Comments) error
 	deleteMany([]string) error
-	getAll(*commentsParams) (models.Comments, error)
+	getAll() (models.CommentsWithCount, error)
 	getAllMain() (models.Comments, error)
 	updateOne(*models.Comment) error
 	upsertOne(*models.Comment) error
