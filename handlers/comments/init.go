@@ -2,6 +2,7 @@ package comments
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	httpHelper2 "github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
@@ -29,6 +30,7 @@ type IService interface {
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
+	get(uuid.UUID) (models.Comment, error)
 	createMany(comments models.Comments) error
 	upsertMany(comments models.Comments) error
 	deleteMany([]string) error

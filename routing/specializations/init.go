@@ -2,7 +2,7 @@ package specializations
 
 import (
 	"github.com/gin-gonic/gin"
-	handler "mdgkb/mdgkb-server/handlers/dpoCourses"
+	handler "mdgkb/mdgkb-server/handlers/specializations"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )
