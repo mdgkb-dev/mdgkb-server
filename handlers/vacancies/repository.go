@@ -27,17 +27,19 @@ func (r *Repository) create(item *models.Vacancy) (err error) {
 func (r *Repository) getAll() (models.Vacancies, error) {
 	items := make(models.Vacancies, 0)
 	query := r.db.NewSelect().Model(&items).
-		Relation("VacancyResponses")
-	//Relation("Division").
-	//Relation("VacancyDuties").
-	//Relation("VacancyRequirements").
-	//Relation("ContactInfo").
-	//Relation("ContactInfo.Emails").
-	//Relation("ContactInfo.TelephoneNumbers").
-	//Relation("ContactDoctor.Human").
-	//Relation("VacancyResponses.User.Human.ContactInfo.Emails").
-	//Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
-	//Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan")
+		Relation("VacancyResponses").
+		Relation("Division").
+		Relation("VacancyDuties").
+		Relation("VacancyRequirements").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactDoctor.Human").
+		Relation("VacancyResponses.User.Human.ContactInfo.Emails").
+		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
+		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan")
+	r.queryFilter.HandleQuery(query)
+	err := query.Scan(r.ctx)
 	return items, err
 }
 
