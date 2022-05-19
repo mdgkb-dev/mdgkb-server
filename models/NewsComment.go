@@ -15,3 +15,7 @@ type NewsComment struct {
 }
 
 type NewsComments []*NewsComment
+
+func (item *NewsComment) SetForeignKeys() {
+	item.CommentID = item.Comment.ID
+}

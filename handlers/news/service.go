@@ -2,6 +2,7 @@ package news
 
 import (
 	"github.com/gin-gonic/gin"
+	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/handlers/newsDivisions"
@@ -69,10 +70,22 @@ func (s *Service) CreateLike(item *models.NewsLike) error {
 }
 
 func (s *Service) CreateComment(item *models.NewsComment) error {
+	commentsService := comments.CreateService(s.repository.GetDB(), s.helper)
+	err := commentsService.UpsertOne(item.Comment)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	return s.repository.createComment(item)
 }
 
 func (s *Service) UpdateComment(item *models.NewsComment) error {
+	commentsService := comments.CreateService(s.repository.GetDB(), s.helper)
+	err := commentsService.UpdateOne(item.Comment)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	return s.repository.updateComment(item)
 }
 

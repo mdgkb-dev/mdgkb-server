@@ -74,6 +74,8 @@ func createCommentsSchema() map[string]string {
 		"tableName":   "comment",
 		"publishedOn": "published_on",
 		"positive":    "positive",
+		"key":         "text",
+		"modChecked":  "mod_checked",
 		"rating":      "rating",
 		"userId":      "user_id",
 	}
@@ -367,6 +369,7 @@ func createNewsSchema() map[string]string {
 		"articleLink": "article_link",
 		"isArticle":   "is_article",
 		"viewsCount":  "views_count",
+		"isDraft":     "is_draft",
 	}
 }
 

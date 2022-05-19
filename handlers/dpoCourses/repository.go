@@ -19,10 +19,9 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (models.DpoCourses, error) {
-	items := make(models.DpoCourses, 0)
+func (r *Repository) getAll() (items models.DpoCoursesWithCount, err error) {
 	query := r.db.NewSelect().
-		Model(&items).
+		Model(&items.DpoCourses).
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
@@ -30,7 +29,7 @@ func (r *Repository) getAll() (models.DpoCourses, error) {
 		Relation("FormPattern.Fields.ValueType").
 		Relation("Specialization")
 	r.queryFilter.HandleQuery(query)
-	err := query.Scan(r.ctx)
+	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
 
@@ -62,5 +61,16 @@ func (r *Repository) delete(id *string) (err error) {
 
 func (r *Repository) update(item *models.DpoCourse) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) upsertMany(items models.DpoCourses) (err error) {
+	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
+		Model(&items).
+		Set("id = EXCLUDED.id").
+		Set("name = EXCLUDED.name").
+		Set("cost = EXCLUDED.cost").
+		Set("hours = EXCLUDED.hours").
+		Exec(r.ctx)
 	return err
 }

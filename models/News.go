@@ -34,6 +34,7 @@ type News struct {
 	ViewsCount           int           `bun:"-" json:"viewsCount"`
 	Event                *Event        `bun:"rel:belongs-to" json:"event"`
 	EventID              uuid.NullUUID `bun:"type:uuid" json:"eventId"`
+	IsDraft              bool          `json:"isDraft"`
 
 	NewsToCategories       NewsToCategories `bun:"rel:has-many" json:"newsToCategories"`
 	NewsToTags             NewsToTags       `bun:"rel:has-many" json:"newsToTags"`

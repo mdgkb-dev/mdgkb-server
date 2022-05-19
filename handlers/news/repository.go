@@ -46,9 +46,7 @@ func (r *Repository) removeTag(item *models.NewsToTag) error {
 }
 
 func (r *Repository) createComment(item *models.NewsComment) error {
-	_, err := r.db.NewInsert().Model(item.Comment).Exec(r.ctx)
-	item.CommentID = item.Comment.ID
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
@@ -114,7 +112,10 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		Relation("Event.Form.Fields.ValueType").
 		Relation("Event.EventApplications.FieldValues").
 		Relation("Event.EventApplications.User").
-		Relation("NewsComments.Comment.User").
+		Relation("NewsComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("comment.published_on DESC")
+		}).
+		Relation("NewsComments.Comment.User.Human").
 		Relation("NewsImages", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("news_images.news_image_order")
 		}).

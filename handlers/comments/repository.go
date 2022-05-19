@@ -2,6 +2,7 @@ package comments
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -35,17 +36,25 @@ func (r *Repository) upsertMany(items models.Comments) (err error) {
 	return err
 }
 
-func (r *Repository) getAll(params *commentsParams) (models.Comments, error) {
-	items := make(models.Comments, 0)
-	query := r.db.NewSelect().Model(&items).
+func (r *Repository) get(id uuid.UUID) (item models.Comment, err error) {
+	err = r.db.NewSelect().Model(&item).
 		Relation("NewsComment.News").
 		Relation("DoctorComments.Doctor.Human").
 		Relation("DivisionComments.Division").
 		Relation("User").
-		Order("published_on DESC")
-	r.queryFilter.HandleQuery(query)
-	err := query.Scan(r.ctx)
+		Where("comment.id = ?", id).Scan(r.ctx)
 
+	return item, err
+}
+
+func (r *Repository) getAll() (items models.CommentsWithCount, err error) {
+	query := r.db.NewSelect().Model(&items.Comments).
+		Relation("NewsComment.News").
+		Relation("DoctorComments.Doctor.Human").
+		Relation("DivisionComments.Division").
+		Relation("User")
+	r.queryFilter.HandleQuery(query)
+	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
 

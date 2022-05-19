@@ -64,6 +64,7 @@ func (s *Service) Update(item *models.Vacancy) error {
 	if err != nil {
 		return err
 	}
+
 	vacancyRequirementsService := vacancyRequirements.CreateService(s.repository.GetDB())
 	err = vacancyRequirementsService.UpsertMany(item.VacancyRequirements)
 	if err != nil {

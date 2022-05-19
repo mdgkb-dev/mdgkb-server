@@ -2,6 +2,7 @@ package comments
 
 import (
 	"github.com/gin-gonic/gin"
+	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -13,7 +14,10 @@ func (s *Service) CreateMany(items models.Comments) error {
 	if err != nil {
 		return err
 	}
-
+	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -25,6 +29,11 @@ func (s *Service) UpsertMany(items models.Comments) error {
 	if err != nil {
 		return err
 	}
+	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -35,12 +44,8 @@ func (s *Service) DeleteMany(idPool []string) error {
 	return s.repository.deleteMany(idPool)
 }
 
-func (s *Service) GetAll(params *commentsParams) (models.Comments, error) {
-	items, err := s.repository.getAll(params)
-	if err != nil {
-		return nil, err
-	}
-	return items, nil
+func (s *Service) GetAll() (models.CommentsWithCount, error) {
+	return s.repository.getAll()
 }
 
 func (s *Service) GetAllMain() (models.Comments, error) {
@@ -48,11 +53,32 @@ func (s *Service) GetAllMain() (models.Comments, error) {
 }
 
 func (s *Service) UpdateOne(item *models.Comment) error {
-	return s.repository.updateOne(item)
+	err := s.repository.updateOne(item)
+	if err != nil {
+		return err
+	}
+	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) UpsertOne(item *models.Comment) error {
-	return s.repository.upsertOne(item)
+	err := s.repository.upsertOne(item)
+	if err != nil {
+		return err
+	}
+	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	if err != nil {
+		return err
+	}
+	newComment, err := s.repository.get(item.ID)
+	if err != nil {
+		return err
+	}
+	s.helper.Broker.SendEvent("comment-create", newComment)
+	return nil
 }
 
 func (s *Service) setQueryFilter(c *gin.Context) (err error) {
