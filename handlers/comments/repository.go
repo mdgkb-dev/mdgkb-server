@@ -37,7 +37,7 @@ func (r *Repository) upsertMany(items models.Comments) (err error) {
 
 func (r *Repository) getAll() (items models.CommentsWithCount, err error) {
 	query := r.db.NewSelect().Model(&items.Comments).
-		// Relation("NewsComment.News").
+		Relation("NewsComment.News").
 		Relation("DoctorComments.Doctor.Human").
 		Relation("DivisionComments.Division").
 		Relation("User")
