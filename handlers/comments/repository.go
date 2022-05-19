@@ -2,6 +2,7 @@ package comments
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -33,6 +34,17 @@ func (r *Repository) upsertMany(items models.Comments) (err error) {
 		Set("published_on = EXCLUDED.published_on").
 		Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) get(id uuid.UUID) (item models.Comment, err error) {
+	err = r.db.NewSelect().Model(&item).
+		Relation("NewsComment.News").
+		Relation("DoctorComments.Doctor.Human").
+		Relation("DivisionComments.Division").
+		Relation("User").
+		Where("comment.id = ?", id).Scan(r.ctx)
+
+	return item, err
 }
 
 func (r *Repository) getAll() (items models.CommentsWithCount, err error) {

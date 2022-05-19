@@ -46,9 +46,7 @@ func (r *Repository) removeTag(item *models.NewsToTag) error {
 }
 
 func (r *Repository) createComment(item *models.NewsComment) error {
-	_, err := r.db.NewInsert().Model(item.Comment).Exec(r.ctx)
-	item.CommentID = item.Comment.ID
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 

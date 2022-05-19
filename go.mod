@@ -9,7 +9,7 @@ require (
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/google/uuid v1.3.0
 	github.com/mmcloughlin/meow v0.0.0-20200201185800-3501c7c05d21
-	github.com/pro-assistance/pro-assister v0.0.58
+	github.com/pro-assistance/pro-assister v0.0.59
 	github.com/uptrace/bun v1.1.5
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.5
 	github.com/uptrace/bun/driver/pgdriver v1.1.5
