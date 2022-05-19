@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.DpoCourses, error) {
+func (s *Service) GetAll() (models.DpoCoursesWithCount, error) {
 	return s.repository.getAll()
 }
 
@@ -81,6 +81,18 @@ func (s *Service) Update(item *models.DpoCourse) error {
 	}
 	return nil
 }
+
+func (s *Service) UpsertMany(items models.DpoCourses) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 
 func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)
