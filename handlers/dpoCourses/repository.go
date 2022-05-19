@@ -19,9 +19,9 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (items models.DpoCoursesWithCount, err error) {
+func (r *Repository) getAll() (item models.DpoCoursesWithCount, err error) {
 	query := r.db.NewSelect().
-		Model(&items.DpoCourses).
+		Model(&item.DpoCourses).
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
@@ -29,8 +29,8 @@ func (r *Repository) getAll() (items models.DpoCoursesWithCount, err error) {
 		Relation("FormPattern.Fields.ValueType").
 		Relation("Specialization")
 	r.queryFilter.HandleQuery(query)
-	items.Count, err = query.ScanAndCount(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get() (*models.DpoCourse, error) {

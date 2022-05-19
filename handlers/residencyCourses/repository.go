@@ -20,10 +20,9 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (models.ResidencyCourses, error) {
-	items := make(models.ResidencyCourses, 0)
+func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error) {
 	query := r.db.NewSelect().
-		Model(&items).
+		Model(&item.ResidencyCourses).
 		Relation("ResidencyCoursesTeachers.Teacher.Doctor.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields.File").
@@ -31,8 +30,8 @@ func (r *Repository) getAll() (models.ResidencyCourses, error) {
 		Relation("StartYear").
 		Relation("EndYear")
 	r.queryFilter.HandleQuery(query)
-	err := query.Scan(r.ctx)
-	return items, err
+	item.Count,err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get() (*models.ResidencyCourse, error) {
@@ -67,5 +66,15 @@ func (r *Repository) delete(id *string) (err error) {
 
 func (r *Repository) update(item *models.ResidencyCourse) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) upsertMany(items models.ResidencyCourses) (err error) {
+	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
+		Model(&items).
+		Set("id = EXCLUDED.id").
+		Set("cost = EXCLUDED.cost").
+		Set("free_places = EXCLUDED.free_places").
+		Exec(r.ctx)
 	return err
 }
