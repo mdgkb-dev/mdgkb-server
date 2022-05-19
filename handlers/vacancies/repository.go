@@ -38,6 +38,10 @@ func (r *Repository) getAll() (models.Vacancies, error) {
 	//Relation("VacancyResponses.User.Human.ContactInfo.Emails").
 	//Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
 	//Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan")
+
+	r.queryFilter.HandleQuery(query)
+
+	err := query.Scan(r.ctx)
 	return items, err
 }
 
