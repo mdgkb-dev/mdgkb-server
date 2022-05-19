@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.PostgraduateCourses, error) {
+func (s *Service) GetAll() (models.PostgraduateCoursesWithCount, error) {
 	return s.repository.getAll()
 }
 
@@ -124,6 +124,17 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 		return err
 	}
 	err = postgraduateCoursePlansService.DeleteMany(item.PostgraduateCoursePlansForDelete)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Service) UpsertMany(items models.PostgraduateCourses) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}
