@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.ResidencyCourses, error) {
+func (s *Service) GetAll() (models.ResidencyCoursesWithCount, error) {
 	return s.repository.getAll()
 }
 
@@ -95,6 +95,17 @@ func (s *Service) Update(item *models.ResidencyCourse) error {
 		return err
 	}
 	err = residencyCourseSpecializationsService.DeleteMany(item.ResidencyCoursesSpecializationsForDelete)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Service) UpsertMany(items models.ResidencyCourses) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}
