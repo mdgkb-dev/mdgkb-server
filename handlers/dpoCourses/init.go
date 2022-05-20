@@ -37,7 +37,7 @@ type IRepository interface {
 	get() (*models.DpoCourse, error)
 	create(*models.DpoCourse) error
 	update(*models.DpoCourse) error
-	upsertMany(items models.DpoCourses) (err error)
+	upsertMany(models.DpoCourses) (err error)
 	delete(*string) error
 }
 

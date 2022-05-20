@@ -18,24 +18,27 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+	UpsertMany(c *gin.Context)
 }
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
-	GetAll() (models.PostgraduateCourses, error)
+	GetAll() (models.PostgraduateCoursesWithCount, error)
 	Get() (*models.PostgraduateCourse, error)
 	Create(*models.PostgraduateCourse) error
 	Update(*models.PostgraduateCourse) error
 	Delete(*string) error
+	UpsertMany(models.PostgraduateCourses) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
-	getAll() (models.PostgraduateCourses, error)
+	getAll() (models.PostgraduateCoursesWithCount, error)
 	get() (*models.PostgraduateCourse, error)
 	create(*models.PostgraduateCourse) error
 	update(*models.PostgraduateCourse) error
+	upsertMany(models.PostgraduateCourses) (err error)
 	delete(*string) error
 }
 
