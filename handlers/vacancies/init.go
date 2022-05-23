@@ -25,7 +25,7 @@ type IHandler interface {
 
 type IService interface {
 	baseHandler.IService
-	GetAll() (models.Vacancies, error)
+	GetAll() (models.VacanciesWithCount, error)
 	Get(*string) (*models.Vacancy, error)
 	GetBySlug(*string) (*models.Vacancy, error)
 	Create(*models.Vacancy) error
@@ -38,7 +38,7 @@ type IService interface {
 type IRepository interface {
 	baseHandler.IRepository
 	create(*models.Vacancy) error
-	getAll() (models.Vacancies, error)
+	getAll() (models.VacanciesWithCount, error)
 	getBySlug(*string) (*models.Vacancy, error)
 	get(*string) (*models.Vacancy, error)
 	update(*models.Vacancy) error

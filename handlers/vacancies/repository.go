@@ -24,9 +24,8 @@ func (r *Repository) create(item *models.Vacancy) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (models.Vacancies, error) {
-	items := make(models.Vacancies, 0)
-	query := r.db.NewSelect().Model(&items).
+func (r *Repository) getAll() (item models.VacanciesWithCount, err error) {
+	query := r.db.NewSelect().Model(&item.Vacancies).
 		Relation("VacancyResponses").
 		Relation("Division").
 		Relation("VacancyDuties").
@@ -39,8 +38,8 @@ func (r *Repository) getAll() (models.Vacancies, error) {
 		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan")
 	r.queryFilter.HandleQuery(query)
-	err := query.Scan(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(id *string) (*models.Vacancy, error) {

@@ -28,12 +28,8 @@ func (s *Service) Create(item *models.Vacancy) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Vacancies, error) {
-	items, err := s.repository.getAll()
-	if err != nil {
-		return nil, err
-	}
-	return items, nil
+func (s *Service) GetAll() (models.VacanciesWithCount, error) {
+	return s.repository.getAll()
 }
 
 func (s *Service) Get(id *string) (*models.Vacancy, error) {
