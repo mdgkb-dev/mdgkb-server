@@ -2,9 +2,11 @@ package vacancyResponse
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/helper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -28,6 +30,7 @@ type IService interface {
 	Update(*models.VacancyResponse) error
 	Delete(string) error
 	EmailExists(string, string) (bool, error)
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
@@ -38,6 +41,7 @@ type IRepository interface {
 	update(*models.VacancyResponse) error
 	delete(string) error
 	emailExists(string, string) (bool, error)
+	deleteMany([]uuid.UUID) error
 }
 
 type IFilesService interface {
@@ -70,6 +74,11 @@ func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
+}
+
+func CreateService(db *bun.DB, helper *helper.Helper) *Service {
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor

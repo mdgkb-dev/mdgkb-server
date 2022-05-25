@@ -3,7 +3,7 @@ package vacancies
 import (
 	"mdgkb/mdgkb-server/handlers/vacancyDuties"
 	"mdgkb/mdgkb-server/handlers/vacancyRequirements"
-	"mdgkb/mdgkb-server/handlers/vacancyResponsesToDocuments"
+	"mdgkb/mdgkb-server/handlers/vacancyResponse"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -73,6 +73,11 @@ func (s *Service) Update(item *models.Vacancy) error {
 	if err != nil {
 		return err
 	}
+
+	err = vacancyResponse.CreateService(s.repository.GetDB(), s.helper).DeleteMany(item.VacancyResponsesForDelete)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -91,10 +96,6 @@ func (s *Service) CreateResponse(item *models.VacancyResponse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = vacancyResponsesToDocuments.CreateService(s.repository.GetDB()).CreateMany(item.VacancyResponsesToDocuments)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 

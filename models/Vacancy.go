@@ -22,6 +22,7 @@ type Vacancy struct {
 	ResponsesCount               int                 `json:"responsesCount"`
 	NewResponsesCount            int                 `json:"newResponsesCount"`
 	VacancyResponses             VacancyResponses    `bun:"rel:has-many" json:"vacancyResponses"`
+	VacancyResponsesForDelete    []uuid.UUID         `bun:"-" json:"vacancyResponsesForDelete"`
 	VacancyDuties                VacancyDuties       `bun:"rel:has-many" json:"vacancyDuties"`
 	VacancyDutiesDelete          []uuid.UUID         `bun:"-" json:"vacancyDutiesDelete"`
 	VacancyRequirements          VacancyRequirements `bun:"rel:has-many" json:"vacancyRequirements"`

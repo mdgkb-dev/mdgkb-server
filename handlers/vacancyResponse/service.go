@@ -2,8 +2,9 @@ package vacancyResponse
 
 import (
 	"mdgkb/mdgkb-server/handlers/formValues"
-	"mdgkb/mdgkb-server/handlers/vacancyResponsesToDocuments"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) Create(item *models.VacancyResponse) error {
@@ -13,11 +14,6 @@ func (s *Service) Create(item *models.VacancyResponse) error {
 	}
 	item.SetForeignKeys()
 	err = s.repository.create(item)
-	if err != nil {
-		return err
-	}
-	item.SetIdForChildren()
-	err = vacancyResponsesToDocuments.CreateService(s.repository.getDB()).CreateMany(item.VacancyResponsesToDocuments)
 	if err != nil {
 		return err
 	}
@@ -41,16 +37,27 @@ func (s *Service) Get(id string) (*models.VacancyResponse, error) {
 }
 
 func (s *Service) Update(item *models.VacancyResponse) error {
-	//err := contactInfo.CreateService(s.repository.getDB()).Update(item.ContactInfo)
-	//if err != nil {
-	//	return err
-	//}
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	return s.repository.update(item)
+	err = s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+	if len(idPool) == 0 {
+		return nil
+	}
+	return s.repository.deleteMany(idPool)
 }
 
 func (s *Service) EmailExists(email string, vacancyId string) (bool, error) {
