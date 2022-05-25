@@ -47,6 +47,7 @@ func (r *Repository) upsertMany(items models.AdmissionCommitteeDocumentTypes) (e
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("document_type_id = EXCLUDED.document_type_id").
+		Set("admission_committee_document_type_order = EXCLUDED.admission_committee_document_type_order").
 		Exec(r.ctx)
 	return err
 }

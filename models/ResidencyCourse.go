@@ -13,6 +13,7 @@ type ResidencyCourse struct {
 	EducationForm                            string                          `json:"educationForm"`
 	Slug                                     string                          `bun:",scanonly" json:"slug"`
 	FreePlaces                               int                             `json:"freePlaces"`
+	FreeGovernmentPlaces                     int                             `json:"freeGovernmentPlaces"`
 	Cost                                     int                             `json:"cost"`
 	PaidPlaces                               int                             `json:"paidPlaces"`
 	ResidencyCoursesSpecializations          ResidencyCoursesSpecializations `bun:"rel:has-many" json:"residencyCoursesSpecializations"`

@@ -48,6 +48,7 @@ func (r *Repository) upsertMany(items models.DocumentTypes) (err error) {
 		Model(&items).
 		Set("name = EXCLUDED.name").
 		Set("description = EXCLUDED.description").
+		Set("document_type_order = EXCLUDED.document_type_order").
 		Exec(r.ctx)
 	return err
 }
