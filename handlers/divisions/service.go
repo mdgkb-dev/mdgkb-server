@@ -69,7 +69,7 @@ func (s *Service) Update(item *models.Division) error {
 	}
 
 	contactInfoService := contactInfo.CreateService(s.repository.getDB())
-	err = contactInfoService.Create(item.ContactInfo)
+	err = contactInfoService.Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
