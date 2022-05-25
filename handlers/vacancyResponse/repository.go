@@ -26,7 +26,11 @@ func (r *Repository) get(id string) (*models.VacancyResponse, error) {
 	err := r.db.NewSelect().
 		Model(&item).
 		Relation("Vacancy").
-		Relation("User.Human").
+		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Where("vacancy_responses.id = ?", id).Scan(r.ctx)
 	return &item, err
 }
@@ -39,4 +43,12 @@ func (r *Repository) delete(id string) (err error) {
 func (r *Repository) update(item *models.VacancyResponse) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
+}
+
+func (r *Repository) emailExists(email string, vacancyId string) (bool, error) {
+	exists, err := r.db.NewSelect().Model((*models.VacancyResponse)(nil)).
+		Join("JOIN form_values ON vacancy_responses.form_value_id = form_values.id").
+		Join("JOIN users ON users.id = form_values.user_id and users.email = ?", email).
+		Where("vacancy_responses.vacancy_id = ?", vacancyId).Exists(r.ctx)
+	return exists, err
 }

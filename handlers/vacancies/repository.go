@@ -1,9 +1,8 @@
 package vacancies
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
-
+	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
@@ -20,7 +19,7 @@ func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) create(item *models.Vacancy) (err error) {
-	_, err = r.db.NewInsert().ExcludeColumn("responses_count", "new_responses_count").Model(item).Exec(r.ctx)
+	_, err = r.db.NewInsert().Model(item).ExcludeColumn("responses_count", "new_responses_count").Exec(r.ctx)
 	return err
 }
 
@@ -34,8 +33,8 @@ func (r *Repository) getAll() (item models.VacanciesWithCount, err error) {
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactDoctor.Human").
-		Relation("VacancyResponses.User.Human.ContactInfo.Emails").
-		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
+		// Relation("VacancyResponses.User.Human.ContactInfo.Emails").
+		// Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan")
 	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
@@ -57,10 +56,21 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactDoctor.Human").
-		Relation("VacancyResponses.User.Human.ContactInfo.Emails").
-		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
+		// Relation("VacancyResponses.User.Human.ContactInfo.Emails").
+		// Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentType").
+		Relation("VacancyResponses.FormValue.User.Human").
+		Relation("VacancyResponses.FormValue.Fields.File").
+		Relation("VacancyResponses.FormValue.Fields.ValueType").
+		Relation("VacancyResponses.FormValue.FieldValues.File").
+		Relation("VacancyResponses.FormValue.FieldValues.Field.ValueType").
+		Relation("VacancyResponses.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("FormPattern.Fields.File").
+		Relation("FormPattern.Fields.ValueType").
 		Where("vacancies_view.id = ?", *id).
 		Scan(r.ctx)
 	return &item, err
@@ -77,11 +87,20 @@ func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactDoctor.Human").
-		Relation("VacancyResponses.User.Human.ContactInfo.Emails").
-		Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
+		// Relation("VacancyResponses.User.Human.ContactInfo.Emails").
+		// Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
+		Relation("VacancyResponses.FormValue.FieldValues.File").
+		Relation("VacancyResponses.FormValue.FieldValues.Field").
+		Relation("VacancyResponses.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Relation("VacancyResponses.FormValue.User.Human").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
 		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentType").
-		Where("vacancies.slug = ?", *slug).
+		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("FormPattern.Fields.File").
+		Relation("FormPattern.Fields.ValueType").
+		Where("vacancies_view.slug = ?", *slug).
 		Scan(r.ctx)
 	return &item, err
 }

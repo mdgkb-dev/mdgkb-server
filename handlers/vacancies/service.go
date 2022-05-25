@@ -1,14 +1,16 @@
 package vacancies
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/vacancyDuties"
 	"mdgkb/mdgkb-server/handlers/vacancyRequirements"
 	"mdgkb/mdgkb-server/handlers/vacancyResponsesToDocuments"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Vacancy) error {
+	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
 	err := s.repository.create(item)
 	if err != nil {
@@ -45,6 +47,7 @@ func (s *Service) GetBySlug(slug *string) (*models.Vacancy, error) {
 }
 
 func (s *Service) Update(item *models.Vacancy) error {
+	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
 	err := s.repository.update(item)
 	if err != nil {

@@ -49,6 +49,7 @@ type IRepository interface {
 
 type IFilesService interface {
 	Upload(*gin.Context, *models.VacancyResponse, map[string][]*multipart.FileHeader) error
+	UploadVacancy(*gin.Context, *models.Vacancy, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

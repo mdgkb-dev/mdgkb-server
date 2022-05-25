@@ -3,13 +3,16 @@ package vacancies
 import (
 	"mdgkb/mdgkb-server/models"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Vacancy
-	err := c.Bind(&item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.UploadVacancy(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -61,7 +64,11 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Vacancy
-	err := c.Bind(&item)
+	files, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.UploadVacancy(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -79,6 +86,9 @@ func (h *Handler) CreateResponse(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.CreateResponse(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

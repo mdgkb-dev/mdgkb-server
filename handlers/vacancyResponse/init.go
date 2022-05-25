@@ -16,6 +16,7 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+	EmailExists(c *gin.Context)
 
 	PDF(c *gin.Context)
 }
@@ -26,6 +27,7 @@ type IService interface {
 	Create(*models.VacancyResponse) error
 	Update(*models.VacancyResponse) error
 	Delete(string) error
+	EmailExists(string, string) (bool, error)
 }
 
 type IRepository interface {
@@ -35,6 +37,7 @@ type IRepository interface {
 	get(string) (*models.VacancyResponse, error)
 	update(*models.VacancyResponse) error
 	delete(string) error
+	emailExists(string, string) (bool, error)
 }
 
 type IFilesService interface {

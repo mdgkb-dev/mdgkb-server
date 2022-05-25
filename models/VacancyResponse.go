@@ -12,19 +12,22 @@ type VacancyResponse struct {
 	ID                          uuid.UUID                   `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	ResponseDate                time.Time                   `json:"responseDate"`
 	CoverLetter                 string                      `json:"coverLetter"`
-	Vacancy                     *Vacancy                    `bun:"rel:belongs-to" json:"vacancy"`
-	VacancyID                   uuid.UUID                   `bun:"type:uuid"  json:"vacancyId"`
 	Viewed                      bool                        `json:"viewed"`
 	VacancyResponsesToDocuments VacancyResponsesToDocuments `bun:"rel:has-many" json:"vacancyResponsesToDocuments"`
 
-	User   *User     `bun:"rel:belongs-to" json:"user"`
-	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
+	// UserID uuid.UUID `bun:"type:uuid" json:"userId"`
+	Vacancy   *Vacancy  `bun:"rel:belongs-to" json:"vacancy"`
+	VacancyID uuid.UUID `bun:"type:uuid"  json:"vacancyId"`
+
+	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
+	FormValueID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
 }
 
 type VacancyResponses []*VacancyResponse
 
 func (item *VacancyResponse) SetForeignKeys() {
-	item.UserID = item.User.ID
+	item.FormValueID = item.FormValue.ID
+	// item.UserID = item.User.ID
 }
 
 func (item *VacancyResponse) SetIdForChildren() {
@@ -37,9 +40,7 @@ func (item *VacancyResponse) SetIdForChildren() {
 }
 
 func (item *VacancyResponse) SetFilePath(fileID *string) *string {
-	path := item.VacancyResponsesToDocuments.SetFilePath(fileID)
-	if path != nil {
+	path := item.FormValue.SetFilePath(fileID)
+	// path := item.VacancyResponsesToDocuments.SetFilePath(fileID)
 		return path
-	}
-	return nil
 }

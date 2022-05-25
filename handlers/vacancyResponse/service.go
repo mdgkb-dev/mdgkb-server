@@ -1,13 +1,13 @@
 package vacancyResponse
 
 import (
-	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/handlers/vacancyResponsesToDocuments"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.VacancyResponse) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -51,4 +51,12 @@ func (s *Service) Update(item *models.VacancyResponse) error {
 
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) EmailExists(email string, vacancyId string) (bool, error) {
+	item, err := s.repository.emailExists(email, vacancyId)
+	if err != nil {
+		return item, err
+	}
+	return item, nil
 }

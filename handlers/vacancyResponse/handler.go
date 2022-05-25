@@ -14,7 +14,6 @@ func (h *Handler) Create(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -77,4 +76,12 @@ func (h *Handler) PDF(c *gin.Context) {
 	c.Header("Content-Description", "File Transfer")
 	c.Header("Content-Disposition", "attachment; filename=response")
 	c.Data(http.StatusOK, "application/pdf", pdf)
+}
+
+func (h *Handler) EmailExists(c *gin.Context) {
+	item, err := h.service.EmailExists(c.Param("email"), c.Param("vacancyId"))
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
 }
