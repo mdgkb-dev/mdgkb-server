@@ -30,7 +30,7 @@ func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error)
 		Relation("StartYear").
 		Relation("EndYear")
 	r.queryFilter.HandleQuery(query)
-	item.Count,err = query.ScanAndCount(r.ctx)
+	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }
 
@@ -48,6 +48,8 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 		Relation("Schedule").
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
+		Relation("FormPattern.DefaultFormStatus").
+		Relation("FormPattern.FormStatusGroup").
 		Relation("StartYear").
 		Relation("EndYear").
 		Where("residency_courses_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)

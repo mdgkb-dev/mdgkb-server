@@ -46,6 +46,8 @@ func (r *Repository) get() (*models.PostgraduateCourse, error) {
 		Relation("Annotation").
 		Relation("DocumentType.Documents.DocumentsScans.Scan").
 		Relation("PostgraduateCoursePlans.Plan").
+		Relation("FormPattern.DefaultFormStatus").
+		Relation("FormPattern.FormStatusGroup").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).

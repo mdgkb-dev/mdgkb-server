@@ -1,9 +1,9 @@
 package vacancies
 
 import (
-	"mdgkb/mdgkb-server/models"
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) GetDB() *bun.DB {
@@ -64,6 +64,8 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 			return q.Order("fields.field_order")
 		}).
 		Relation("FormPattern.Fields.File").
+		Relation("FormPattern.DefaultFormStatus").
+		Relation("FormPattern.FormStatusGroup").
 		Relation("FormPattern.Fields.ValueType").
 		Where("vacancies_view.id = ?", *id).
 		Scan(r.ctx)
@@ -87,6 +89,8 @@ func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
 		Relation("VacancyResponses.FormValue.FieldValues.Field").
 		Relation("VacancyResponses.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("VacancyResponses.FormValue.User.Human").
+		Relation("FormPattern.DefaultFormStatus").
+		Relation("FormPattern.FormStatusGroup").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
