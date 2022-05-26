@@ -20,6 +20,9 @@ type FormStatus struct {
 	SendEmail                         bool                     `json:"sendEmail"`
 	FormStatusToFormStatuses          FormStatusToFormStatuses `bun:"rel:has-many" json:"formStatusToFormStatuses"`
 	FormStatusToFormStatusesForDelete []string                 `bun:"-" json:"formStatusToFormStatusesForDelete"`
+
+	FormStatusGroup   *FormStatusGroup `bun:"rel:belongs-to" json:"formStatusGroup"`
+	FormStatusGroupID uuid.NullUUID    `bun:"type:uuid"  json:"formStatusGroupId"`
 }
 
 type FormStatuses []*FormStatus
@@ -53,6 +56,16 @@ func (item *FormStatus) SetFilePath(fileID *string) *string {
 	if item.Icon.ID.UUID.String() == *fileID {
 		item.Icon.FileSystemPath = uploadHelper.BuildPath(fileID)
 		return &item.Icon.FileSystemPath
+	}
+	return nil
+}
+
+func (items FormStatuses) SetFilePath(fileID *string) *string {
+	for i := range items {
+		path := items[i].SetFilePath(fileID)
+		if path != nil {
+			return path
+		}
 	}
 	return nil
 }

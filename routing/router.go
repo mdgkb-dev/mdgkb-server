@@ -36,6 +36,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/formPatterns"
 	"mdgkb/mdgkb-server/handlers/formStatuses"
+	"mdgkb/mdgkb-server/handlers/formStatusGroups"
 	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/handlers/gates"
 	"mdgkb/mdgkb-server/handlers/heads"
@@ -101,6 +102,7 @@ import (
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
 	formPatternsRouter "mdgkb/mdgkb-server/routing/formPatterns"
 	formStatusesRouter "mdgkb/mdgkb-server/routing/formStatuses"
+	formStatusGroupsRouter "mdgkb/mdgkb-server/routing/formStatusGroups"
 	formValuesRouter "mdgkb/mdgkb-server/routing/formValues"
 	gatesRouter "mdgkb/mdgkb-server/routing/gates"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
@@ -207,6 +209,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyApplications.CreateHandler(db, helper))
 	formValuesRouter.Init(api.Group("/form-values"), formValues.CreateHandler(db, helper))
 	formStatusesRouter.Init(api.Group("/form-statuses"), formStatuses.CreateHandler(db, helper))
+	formStatusGroupsRouter.Init(api.Group("/form-status-groups"), formStatusGroups.CreateHandler(db, helper))
 	postgraduateApplicationsRouter.Init(api.Group("/postgraduate-applications"), postgraduateApplications.CreateHandler(db, helper))
 	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(db, helper))
 	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalManagers.CreateHandler(db, helper))

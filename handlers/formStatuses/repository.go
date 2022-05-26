@@ -30,6 +30,18 @@ func (r *Repository) getAll() (models.FormStatuses, error) {
 	return items, err
 }
 
+func (r *Repository) GetAllByGroupId(id *string) (models.FormStatuses, error) {
+	items := make(models.FormStatuses, 0)
+	query := r.db.NewSelect().
+		Model(&items).
+		Relation("Icon").
+		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
+		Where("form_statuses.form_status_group_id = ?", *id)
+	r.queryFilter.HandleQuery(query)
+	err := query.Scan(r.ctx)
+	return items, err
+}
+
 func (r *Repository) get(id *string) (*models.FormStatus, error) {
 	item := models.FormStatus{}
 	err := r.db.NewSelect().Model(&item).

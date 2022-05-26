@@ -1,4 +1,4 @@
-package formStatuses
+package formStatusGroups
 
 import (
 	"context"
@@ -13,7 +13,6 @@ import (
 
 type IHandler interface {
 	GetAll(c *gin.Context)
-	GetAllByGroupId(c *gin.Context)
 	Get(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
@@ -23,27 +22,25 @@ type IHandler interface {
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
-	GetAll() (models.FormStatuses, error)
-	GetAllByGroupId(*string) (models.FormStatuses, error)
-	Get(*string) (*models.FormStatus, error)
-	Upsert(*models.FormStatus) error
-	UpsertMany(models.FormStatuses) error
+	GetAll() (models.FormStatusGroupsWithCount, error)
+	Get(*string) (*models.FormStatusGroup, error)
+	Upsert(*models.FormStatusGroup) error
+	UpsertMany(models.FormStatusGroups) error
 	Delete(*string) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
-	getAll() (models.FormStatuses, error)
-	GetAllByGroupId(*string) (models.FormStatuses, error)
-	get(*string) (*models.FormStatus, error)
-	upsert(*models.FormStatus) error
-	upsertMany(models.FormStatuses) error
+	getAll() (models.FormStatusGroupsWithCount, error)
+	get(*string) (*models.FormStatusGroup, error)
+	upsert(*models.FormStatusGroup) error
+	upsertMany(models.FormStatusGroups) error
 	delete(*string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.FormStatus, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.FormStatusGroup, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

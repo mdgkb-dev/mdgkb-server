@@ -87,8 +87,6 @@ func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
 		Relation("VacancyResponses.FormValue.FieldValues.Field").
 		Relation("VacancyResponses.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("VacancyResponses.FormValue.User.Human").
-		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentsScans.Scan").
-		Relation("VacancyResponses.VacancyResponsesToDocuments.Document.DocumentType").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).

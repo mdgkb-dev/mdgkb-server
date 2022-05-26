@@ -1,4 +1,4 @@
-package formStatuses
+package formStatusGroups
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -19,19 +19,6 @@ func (h *Handler) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
-func (h *Handler) GetAllByGroupId(c *gin.Context) {
-	id := c.Param("id")
-	err := h.service.setQueryFilter(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	items, err := h.service.GetAllByGroupId(&id)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, items)
-}
-
 func (h *Handler) Get(c *gin.Context) {
 	id := c.Param("id")
 	item, err := h.service.Get(&id)
@@ -42,7 +29,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.FormStatus
+	var item models.FormStatusGroup
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -59,7 +46,7 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.FormStatus
+	var item models.FormStatusGroup
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -76,7 +63,7 @@ func (h *Handler) Update(c *gin.Context) {
 }
 
 func (h *Handler) UpdateMany(c *gin.Context) {
-	var items models.FormStatuses
+	var items models.FormStatusGroups
 	_, err := h.helper.HTTP.GetForm(c, &items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
