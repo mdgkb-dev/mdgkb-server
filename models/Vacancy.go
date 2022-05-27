@@ -22,6 +22,7 @@ type Vacancy struct {
 	ResponsesCount               int                 `json:"responsesCount"`
 	NewResponsesCount            int                 `json:"newResponsesCount"`
 	VacancyResponses             VacancyResponses    `bun:"rel:has-many" json:"vacancyResponses"`
+	VacancyResponsesForDelete    []uuid.UUID         `bun:"-" json:"vacancyResponsesForDelete"`
 	VacancyDuties                VacancyDuties       `bun:"rel:has-many" json:"vacancyDuties"`
 	VacancyDutiesDelete          []uuid.UUID         `bun:"-" json:"vacancyDutiesDelete"`
 	VacancyRequirements          VacancyRequirements `bun:"rel:has-many" json:"vacancyRequirements"`
@@ -35,6 +36,9 @@ type Vacancy struct {
 
 	ContactDoctor   *Doctor       `bun:"rel:belongs-to" json:"contactDoctor"`
 	ContactDoctorID uuid.NullUUID `bun:"type:uuid" json:"contactDoctorId"`
+
+	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
+	FormPatternID uuid.NullUUID `bun:"type:uuid" json:"formPatternId"`
 }
 
 type Vacancies []*Vacancy
@@ -46,4 +50,12 @@ func (item *Vacancy) SetIdForChildren() {
 	for i := range item.VacancyRequirements {
 		item.VacancyRequirements[i].VacancyID = item.ID
 	}
+}
+
+func (item *Vacancy) SetForeignKeys() {
+	item.FormPatternID = item.FormPattern.ID
+}
+
+func (item *Vacancy) SetFilePath(fileID *string) *string {
+	return item.FormPattern.SetFilePath(fileID)
 }

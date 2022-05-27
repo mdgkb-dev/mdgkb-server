@@ -17,7 +17,7 @@ func (r *Repository) createMany(items models.HospitalizationsToDocumentTypes) (e
 
 func (r *Repository) deleteMany(idPool []string) (err error) {
 	_, err = r.db.NewDelete().
-		Model((*models.VacancyResponseToDocument)(nil)).
+		Model((*models.HospitalizationToDocumentType)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err

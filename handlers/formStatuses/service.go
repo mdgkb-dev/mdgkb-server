@@ -17,6 +17,10 @@ func (s *Service) GetAll() (models.FormStatuses, error) {
 	return s.repository.getAll()
 }
 
+func (s *Service) GetAllByGroupId(id *string) (models.FormStatuses, error) {
+	return s.repository.GetAllByGroupId(id)
+}
+
 func (s *Service) Get(id *string) (*models.FormStatus, error) {
 	item, err := s.repository.get(id)
 	if err != nil {

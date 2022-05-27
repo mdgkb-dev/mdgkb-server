@@ -13,6 +13,7 @@ import (
 
 type IHandler interface {
 	GetAll(c *gin.Context)
+	GetAllByGroupId(c *gin.Context)
 	Get(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
@@ -23,6 +24,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	GetAll() (models.FormStatuses, error)
+	GetAllByGroupId(*string) (models.FormStatuses, error)
 	Get(*string) (*models.FormStatus, error)
 	Upsert(*models.FormStatus) error
 	UpsertMany(models.FormStatuses) error
@@ -33,6 +35,7 @@ type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	getAll() (models.FormStatuses, error)
+	GetAllByGroupId(*string) (models.FormStatuses, error)
 	get(*string) (*models.FormStatus, error)
 	upsert(*models.FormStatus) error
 	upsertMany(models.FormStatuses) error

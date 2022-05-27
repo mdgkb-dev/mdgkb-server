@@ -1,0 +1,1 @@
+drop table vacancies_responses_to_documents;
