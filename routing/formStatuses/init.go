@@ -10,6 +10,7 @@ import (
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/", h.GetAll)
+	r.GET("/by-group/:id", h.GetAllByGroupId)
 	r.GET("/:id", h.Get)
 	r.POST("", h.Create)
 	r.PUT("/", h.UpdateMany)

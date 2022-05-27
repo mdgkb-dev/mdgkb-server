@@ -30,10 +30,23 @@ func (r *Repository) getAll() (models.FormStatuses, error) {
 	return items, err
 }
 
+func (r *Repository) GetAllByGroupId(id *string) (models.FormStatuses, error) {
+	items := make(models.FormStatuses, 0)
+	query := r.db.NewSelect().
+		Model(&items).
+		Relation("Icon").
+		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
+		Where("form_statuses.form_status_group_id = ?", *id)
+	r.queryFilter.HandleQuery(query)
+	err := query.Scan(r.ctx)
+	return items, err
+}
+
 func (r *Repository) get(id *string) (*models.FormStatus, error) {
 	item := models.FormStatus{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("Icon").
+		Relation("FormStatusGroup").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
 		Where("form_statuses.id = ?", *id).Scan(r.ctx)
 	return &item, err
@@ -50,6 +63,7 @@ func (r *Repository) upsert(item *models.FormStatus) (err error) {
 		Set("mod_action_name = EXCLUDED.mod_action_name").
 		Set("user_action_name = EXCLUDED.user_action_name").
 		Set("is_editable = EXCLUDED.is_editable").
+		Set("form_status_group_id = EXCLUDED.form_status_group_id").
 		Set("icon_id = EXCLUDED.icon_id").
 		Exec(r.ctx)
 	return err

@@ -1,12 +1,11 @@
-package vacancyResponse
+package formStatusGroups
 
 import (
 	"context"
+	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
-
-	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/helper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -17,35 +16,31 @@ type IHandler interface {
 	Get(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
+	UpdateMany(c *gin.Context)
 	Delete(c *gin.Context)
-	EmailExists(c *gin.Context)
-
-	PDF(c *gin.Context)
 }
 
 type IService interface {
-	GetAll() (models.VacancyResponses, error)
-	Get(string) (*models.VacancyResponse, error)
-	Create(*models.VacancyResponse) error
-	Update(*models.VacancyResponse) error
-	Delete(string) error
-	EmailExists(string, string) (bool, error)
-	DeleteMany([]uuid.UUID) error
+	setQueryFilter(*gin.Context) error
+	GetAll() (models.FormStatusGroupsWithCount, error)
+	Get(*string) (*models.FormStatusGroup, error)
+	Upsert(*models.FormStatusGroup) error
+	UpsertMany(models.FormStatusGroups) error
+	Delete(*string) error
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
-	create(*models.VacancyResponse) error
-	getAll() (models.VacancyResponses, error)
-	get(string) (*models.VacancyResponse, error)
-	update(*models.VacancyResponse) error
-	delete(string) error
-	emailExists(string, string) (bool, error)
-	deleteMany([]uuid.UUID) error
+	getAll() (models.FormStatusGroupsWithCount, error)
+	get(*string) (*models.FormStatusGroup, error)
+	upsert(*models.FormStatusGroup) error
+	upsertMany(models.FormStatusGroups) error
+	delete(*string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.VacancyResponse, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.FormStatusGroup, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -60,9 +55,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helper.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
@@ -74,11 +70,6 @@ func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
-}
-
-func CreateService(db *bun.DB, helper *helper.Helper) *Service {
-	repo := NewRepository(db, helper)
-	return NewService(repo, helper)
 }
 
 // NewHandler constructor

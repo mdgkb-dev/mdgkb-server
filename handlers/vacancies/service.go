@@ -1,14 +1,16 @@
 package vacancies
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/vacancyDuties"
 	"mdgkb/mdgkb-server/handlers/vacancyRequirements"
-	"mdgkb/mdgkb-server/handlers/vacancyResponsesToDocuments"
+	"mdgkb/mdgkb-server/handlers/vacancyResponse"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Vacancy) error {
+	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
 	err := s.repository.create(item)
 	if err != nil {
@@ -28,12 +30,8 @@ func (s *Service) Create(item *models.Vacancy) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Vacancies, error) {
-	items, err := s.repository.getAll()
-	if err != nil {
-		return nil, err
-	}
-	return items, nil
+func (s *Service) GetAll() (models.VacanciesWithCount, error) {
+	return s.repository.getAll()
 }
 
 func (s *Service) Get(id *string) (*models.Vacancy, error) {
@@ -49,6 +47,7 @@ func (s *Service) GetBySlug(slug *string) (*models.Vacancy, error) {
 }
 
 func (s *Service) Update(item *models.Vacancy) error {
+	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
 	err := s.repository.update(item)
 	if err != nil {
@@ -74,6 +73,11 @@ func (s *Service) Update(item *models.Vacancy) error {
 	if err != nil {
 		return err
 	}
+
+	err = vacancyResponse.CreateService(s.repository.GetDB(), s.helper).DeleteMany(item.VacancyResponsesForDelete)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -92,10 +96,6 @@ func (s *Service) CreateResponse(item *models.VacancyResponse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = vacancyResponsesToDocuments.CreateService(s.repository.GetDB()).CreateMany(item.VacancyResponsesToDocuments)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 

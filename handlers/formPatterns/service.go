@@ -20,6 +20,7 @@ func (s *Service) Get(id string) (*models.FormPattern, error) {
 }
 
 func (s *Service) Create(item *models.FormPattern) error {
+	item.SetForeignKeys()
 	err := s.repository.create(item)
 	if err != nil {
 		return err
@@ -34,6 +35,7 @@ func (s *Service) Create(item *models.FormPattern) error {
 }
 
 func (s *Service) Update(item *models.FormPattern) error {
+	item.SetForeignKeys()
 	err := s.repository.update(item)
 	if err != nil {
 		return err

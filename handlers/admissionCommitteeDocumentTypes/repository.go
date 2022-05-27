@@ -19,7 +19,11 @@ func (r *Repository) create(item *models.AdmissionCommitteeDocumentType) (err er
 func (r *Repository) getAll() (models.AdmissionCommitteeDocumentTypes, error) {
 	items := make(models.AdmissionCommitteeDocumentTypes, 0)
 	err := r.db.NewSelect().Model(&items).
+		Relation("DocumentType.Documents", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("documents.document_order DESC")
+		}).
 		Relation("DocumentType.Documents.DocumentsScans.Scan").
+		Order("admission_committee_document_type_order").
 		Scan(r.ctx)
 	return items, err
 }
