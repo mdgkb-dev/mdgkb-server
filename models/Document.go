@@ -8,10 +8,10 @@ import (
 )
 
 type Document struct {
-	bun.BaseModel `bun:"documents,alias:documents"`
-	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
-	Name          string    `json:"name"`
-
+	bun.BaseModel  `bun:"documents,alias:documents"`
+	ID             uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
+	Name           string        `json:"name"`
+	Order          uint          `bun:"document_order" json:"order"`
 	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
 	DocumentTypeID uuid.NullUUID `bun:"type:uuid" json:"documentTypeId"`
 

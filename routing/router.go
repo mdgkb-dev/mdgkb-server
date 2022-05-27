@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v7"
 	helperPack "github.com/pro-assistance/pro-assister/helper"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/handlers/admissionCommitteeDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -72,6 +73,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/middleware"
+	admissionCommitteeDocumentTypesRouter "mdgkb/mdgkb-server/routing/admissionCommitteeDocumentTypes"
 	applicationsCarsRouter "mdgkb/mdgkb-server/routing/applicationsCars"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
@@ -227,4 +229,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	residencyDocumentTypesRouter.Init(api.Group("/residency-document-types"), residencyDocumentTypes.CreateHandler(db, helper))
 	educationYearsRouter.Init(api.Group("/education-years"), educationYears.CreateHandler(db, helper))
 	educationPublicDocumentTypesRouter.Init(api.Group("/education-public-document-types"), educationPublicDocumentTypes.CreateHandler(db, helper))
+	admissionCommitteeDocumentTypesRouter.Init(api.Group("/admission-committee-document-types"), admissionCommitteeDocumentTypes.CreateHandler(db, helper))
 }

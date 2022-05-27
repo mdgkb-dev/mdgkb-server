@@ -23,6 +23,8 @@ func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error)
 		Relation("Entrance.Building").
 		Relation("DivisionImages.FileInfo").
 		Relation("ContactInfo.Emails").
+		Relation("Timetable.TimetableDays.BreakPeriods").
+		Relation("Timetable.TimetableDays.Weekday").
 		Relation("ContactInfo.PostAddresses").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Websites").
@@ -47,6 +49,7 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("DivisionPaidServices.PaidService").
 		Relation("DivisionComments.Comment.User").
 		Relation("Timetable.TimetableDays.BreakPeriods").
+		Relation("Timetable.TimetableDays.Weekday").
 		Relation("HospitalizationContactInfo.Emails").
 		Relation("HospitalizationContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Emails").
