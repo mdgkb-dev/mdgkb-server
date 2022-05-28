@@ -21,15 +21,16 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (items models.UsersWithCount, err error) {
+func (r *Repository) getAll() (item models.UsersWithCount, err error) {
+	item.Users = make(models.Users, 0)
 	query := r.db.NewSelect().
-		Model(&items.Users).
+		Model(&item.Users).
 		Relation("Human").
 		Relation("Role")
 
 	r.queryFilter.HandleQuery(query)
-	items.Count, err = query.ScanAndCount(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(id string) (*models.User, error) {
