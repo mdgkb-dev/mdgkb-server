@@ -16,6 +16,7 @@ type IHandler interface {
 	Get(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
+	UpdateOrder(c *gin.Context)
 	Delete(c *gin.Context)
 }
 
@@ -23,19 +24,20 @@ type IService interface {
 	GetAll() (models.AdmissionCommitteeDocumentTypes, error)
 	Get(string) (*models.AdmissionCommitteeDocumentType, error)
 	Create(*models.AdmissionCommitteeDocumentType) error
-	Update(item *models.AdmissionCommitteeDocumentType) error
+	Update(*models.AdmissionCommitteeDocumentType) error
 	Delete(string) error
 
 	UpsertMany(item AdmissionCommitteeDocumentTypesWithDelete) error
+	UpdateOrder(models.AdmissionCommitteeDocumentTypes) error
 	DeleteMany(uuid []uuid.UUID) error
 }
 
 type IRepository interface {
 	getDB() *bun.DB
-	create(*models.AdmissionCommitteeDocumentType) error
 	getAll() (models.AdmissionCommitteeDocumentTypes, error)
 	get(string) (*models.AdmissionCommitteeDocumentType, error)
-	update(item *models.AdmissionCommitteeDocumentType) error
+	create(*models.AdmissionCommitteeDocumentType) error
+	update(*models.AdmissionCommitteeDocumentType) error
 	delete(string) error
 
 	upsertMany(item models.AdmissionCommitteeDocumentTypes) error
@@ -43,7 +45,7 @@ type IRepository interface {
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.AdmissionCommitteeDocumentTypes, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.AdmissionCommitteeDocumentType, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

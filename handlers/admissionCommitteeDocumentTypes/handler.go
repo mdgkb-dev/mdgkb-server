@@ -1,7 +1,6 @@
 package admissionCommitteeDocumentTypes
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -27,7 +26,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.AdmissionCommitteeDocumentTypes
+	var item models.AdmissionCommitteeDocumentType
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -36,10 +35,10 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	//err = h.service.UpsertMany(item)
-	//if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-	//	return
-	//}
+	err = h.service.Create(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	c.JSON(http.StatusOK, item)
 }
 
@@ -49,21 +48,33 @@ type AdmissionCommitteeDocumentTypesWithDelete struct {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item AdmissionCommitteeDocumentTypesWithDelete
+	var item models.AdmissionCommitteeDocumentType
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.filesService.Upload(c, &item.AdmissionCommitteeDocumentTypes, files)
+	err = h.filesService.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	fmt.Println(item)
-	err = h.service.UpsertMany(item)
+	err = h.service.Update(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) UpdateOrder(c *gin.Context) {
+	var items models.AdmissionCommitteeDocumentTypes
+	_, err := h.helper.HTTP.GetForm(c, &items)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.UpdateOrder(items)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
 }
 
 func (h *Handler) Delete(c *gin.Context) {
