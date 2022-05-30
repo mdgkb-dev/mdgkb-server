@@ -63,13 +63,14 @@ func (r *Repository) getAllPathPermissions() (models.PathPermissions, error) {
 	return items, err
 }
 
-func (r *Repository) getAllPathPermissionsAdmin() (items models.PathPermissionsWithCount, err error) {
-	query := r.db.NewSelect().Model(&items.PathPermissions).
+func (r *Repository) getAllPathPermissionsAdmin() (item models.PathPermissionsWithCount, err error) {
+	item.PathPermissions = make(models.PathPermissions, 0)
+	query := r.db.NewSelect().Model(&item.PathPermissions).
 		Relation("PathPermissionsRoles")
 
 	r.queryFilter.HandleQuery(query)
-	items.Count, err = query.ScanAndCount(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) checkPathPermissions(path string, roleID string) error {

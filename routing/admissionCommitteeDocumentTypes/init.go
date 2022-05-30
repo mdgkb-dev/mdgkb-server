@@ -1,7 +1,7 @@
 package admissionCommitteeDocumentTypes
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/postgraduateDocumentTypes"
+	handler "mdgkb/mdgkb-server/handlers/admissionCommitteeDocumentTypes"
 
 	"github.com/gin-gonic/gin"
 
@@ -14,5 +14,6 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/:id", h.Get)
 	r.POST("", h.Create)
 	r.DELETE("/:id", h.Delete)
-	r.PUT("", h.Update)
+	r.PUT("/:id", h.Update)
+	r.PUT("/order", h.UpdateOrder)
 }

@@ -16,7 +16,14 @@ func (s *Service) Create(item *models.DocumentType) error {
 	}
 	item.SetIdForChildren()
 	err = documentTypeFields.CreateService(s.repository.getDB()).CreateMany(item.DocumentTypeFields)
-	return err
+	if err != nil {
+		return err
+	}
+	err = documents.CreateService(s.repository.getDB()).UpsertMany(item.Documents)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) GetAll(params models.DocumentsParams) ([]*models.DocumentType, error) {
@@ -52,6 +59,19 @@ func (s *Service) Update(item *models.DocumentType) error {
 			return err
 		}
 	}
+
+	documentService := documents.CreateService(s.repository.getDB())
+	if len(item.DocumentsForDelete) > 0 {
+		err = documentService.DeleteMany(item.DocumentsForDelete)
+		if err != nil {
+			return err
+		}
+	}
+	err = documentService.UpsertMany(item.Documents)
+	if err != nil {
+		return err
+	}
+
 	return err
 }
 
@@ -61,6 +81,24 @@ func (s *Service) Delete(id *string) error {
 
 func (s *Service) GetDocumentsTypesForTablesNames() map[string]string {
 	return schema.GetDocumentTypesForTablesNames()
+}
+
+func (s *Service) Upsert(item *models.DocumentType) error {
+	err := s.repository.upsert(item)
+	if err != nil {
+		return err
+	}
+	item.SetIdForChildren()
+	documentService := documents.CreateService(s.repository.getDB())
+	err = documentService.DeleteMany(item.DocumentsForDelete)
+	if err != nil {
+		return err
+	}
+	err = documentService.UpsertMany(item.Documents)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) UpsertMany(items models.DocumentTypes) error {

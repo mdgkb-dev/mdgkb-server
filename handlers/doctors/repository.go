@@ -61,8 +61,9 @@ func (r *Repository) getAll() (items models.Doctors, err error) {
 	return items, err
 }
 
-func (r *Repository) getAllAdmin() (items models.DoctorsWithCount, err error) {
-	query := r.db.NewSelect().Model(&items.Doctors).
+func (r *Repository) getAllAdmin() (item models.DoctorsWithCount, err error) {
+	item.Doctors = make(models.Doctors, 0)
+	query := r.db.NewSelect().Model(&item.Doctors).
 		Relation("Human").
 		Relation("Division.Floor").
 		Relation("FileInfo").
@@ -74,8 +75,8 @@ func (r *Repository) getAllAdmin() (items models.DoctorsWithCount, err error) {
 	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
 
 	r.queryFilter.HandleQuery(query)
-	items.Count, err = query.ScanAndCount(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) getAllTimetables() (models.Doctors, error) {
