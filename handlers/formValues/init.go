@@ -13,6 +13,7 @@ import (
 type IHandler interface {
 	Update(c *gin.Context)
 	Get(c *gin.Context)
+	DocumentsToPDF(c *gin.Context)
 }
 
 type IService interface {
