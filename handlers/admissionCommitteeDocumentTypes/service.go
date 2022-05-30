@@ -23,38 +23,37 @@ func (s *Service) Get(id string) (*models.AdmissionCommitteeDocumentType, error)
 }
 
 func (s *Service) Create(item *models.AdmissionCommitteeDocumentType) error {
-	err := s.repository.create(item)
+	err := documentTypes.CreateService(s.repository.getDB(), s.helper).Create(item.DocumentType)
 	if err != nil {
 		return err
 	}
-	//item.SetIdForChildren()
-	//err = documentTypes.CreateService(s.repository.getDB(), s.helper).UpsertMany(item.DocumentTypes)
-	//if err != nil {
-	//	return err
-	//}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (s *Service) Update(item *models.AdmissionCommitteeDocumentType) error {
-	err := s.repository.update(item)
+	err := documentTypes.CreateService(s.repository.getDB(), s.helper).Update(item.DocumentType)
 	if err != nil {
 		return err
 	}
-	//item.SetIdForChildren()
-	//documentTypeService := documentTypes.CreateService(s.repository.getDB(), s.helper)
-	//err = documentTypeService.DeleteMany(item.DocumentTypesForDelete)
-	//if err != nil {
-	//	return err
-	//}
-	//err = documentTypeService.UpsertMany(item.DocumentTypes)
-	//if err != nil {
-	//	return err
-	//}
+	item.SetForeignKeys()
+	err = s.repository.update(item)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) UpdateOrder(items models.AdmissionCommitteeDocumentTypes) error {
+	return s.repository.upsertMany(items)
 }
 
 func (s *Service) UpsertMany(items AdmissionCommitteeDocumentTypesWithDelete) error {

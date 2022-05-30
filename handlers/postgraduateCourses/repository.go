@@ -21,6 +21,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) getAll() (item models.PostgraduateCoursesWithCount, err error) {
+	item.PostgraduateCourses = make(models.PostgraduateCourses, 0)
 	query := r.db.NewSelect().
 		Model(&item.PostgraduateCourses).
 		Relation("PostgraduateCoursesTeachers.Teacher.Doctor.Human").

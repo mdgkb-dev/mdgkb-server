@@ -26,6 +26,7 @@ type IService interface {
 	Create(*models.DocumentType) error
 	Update(*models.DocumentType) error
 	Delete(*string) error
+	Upsert(*models.DocumentType) error
 	UpsertMany(models.DocumentTypes) error
 	DeleteMany([]uuid.UUID) error
 
@@ -39,6 +40,7 @@ type IRepository interface {
 	get(*string) (*models.DocumentType, error)
 	update(*models.DocumentType) error
 	delete(*string) error
+	upsert(*models.DocumentType) error
 	upsertMany(models.DocumentTypes) error
 	deleteMany([]uuid.UUID) error
 }

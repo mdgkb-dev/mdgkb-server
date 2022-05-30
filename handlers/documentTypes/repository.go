@@ -43,6 +43,16 @@ func (r *Repository) update(item *models.DocumentType) (err error) {
 	return err
 }
 
+func (r *Repository) upsert(item *models.DocumentType) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(item).
+		Set("name = EXCLUDED.name").
+		Set("description = EXCLUDED.description").
+		Set("document_type_order = EXCLUDED.document_type_order").
+		Exec(r.ctx)
+	return err
+}
+
 func (r *Repository) upsertMany(items models.DocumentTypes) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).

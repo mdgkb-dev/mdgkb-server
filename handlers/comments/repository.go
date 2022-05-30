@@ -47,15 +47,16 @@ func (r *Repository) get(id uuid.UUID) (item models.Comment, err error) {
 	return item, err
 }
 
-func (r *Repository) getAll() (items models.CommentsWithCount, err error) {
-	query := r.db.NewSelect().Model(&items.Comments).
+func (r *Repository) getAll() (item models.CommentsWithCount, err error) {
+	item.Comments = make(models.Comments, 0)
+	query := r.db.NewSelect().Model(&item.Comments).
 		Relation("NewsComment.News").
 		Relation("DoctorComments.Doctor.Human").
 		Relation("DivisionComments.Division").
 		Relation("User")
 	r.queryFilter.HandleQuery(query)
-	items.Count, err = query.ScanAndCount(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) getAllMain() (models.Comments, error) {

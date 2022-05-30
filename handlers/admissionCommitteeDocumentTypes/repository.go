@@ -30,8 +30,11 @@ func (r *Repository) getAll() (models.AdmissionCommitteeDocumentTypes, error) {
 
 func (r *Repository) get(id string) (*models.AdmissionCommitteeDocumentType, error) {
 	item := models.AdmissionCommitteeDocumentType{}
-	err := r.db.NewSelect().Model(&item).Where("id = ?", id).
-		Relation("DocumentTypes.Documents.DocumentsScans.Scan").
+	err := r.db.NewSelect().Model(&item).Where("admission_committee_document_types.id = ?", id).
+		Relation("DocumentType.Documents", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("documents.document_order DESC")
+		}).
+		Relation("DocumentType.Documents.DocumentsScans.Scan").
 		Scan(r.ctx)
 	return &item, err
 }

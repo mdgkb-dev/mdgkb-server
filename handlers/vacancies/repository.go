@@ -24,6 +24,7 @@ func (r *Repository) create(item *models.Vacancy) (err error) {
 }
 
 func (r *Repository) getAll() (item models.VacanciesWithCount, err error) {
+	item.Vacancies = make(models.Vacancies, 0)
 	query := r.db.NewSelect().Model(&item.Vacancies).
 		Relation("VacancyResponses").
 		Relation("Division").
