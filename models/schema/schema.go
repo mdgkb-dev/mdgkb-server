@@ -27,6 +27,7 @@ type Schema struct {
 	News                             map[string]string `json:"news"`
 	PathPermission                   map[string]string `json:"pathPermission"`
 	NewsToTag                        map[string]string `json:"newsToTag"`
+	FormStatus                       map[string]string `json:"formStatus"`
 }
 
 func CreateSchema() Schema {
@@ -57,6 +58,7 @@ func CreateSchema() Schema {
 		PathPermission:                   createPathPermissionsSchema(),
 		News:                             createNewsSchema(),
 		NewsToTag:                        createNewsToTagSchema(),
+		FormStatus:                       createFormStatusSchema(),
 	}
 }
 
@@ -172,11 +174,12 @@ func createDpoCourseSchema() map[string]string {
 
 func createDpoApplicationsSchema() map[string]string {
 	return map[string]string{
-		"tableName": "dpo_applications_view",
-		"key":       "dpoApplication",
-		"id":        "id",
-		"createdAt": "created_at",
-		"isNmo":     "is_nmo",
+		"tableName":    "dpo_applications_view",
+		"key":          "dpoApplication",
+		"id":           "id",
+		"createdAt":    "created_at",
+		"isNmo":        "is_nmo",
+		"formStatusId": "form_status_id",
 	}
 }
 
@@ -381,5 +384,15 @@ func createNewsToTagSchema() map[string]string {
 		"value":     "id",
 		"newsId":    "news_id",
 		"tagId":     "tag_id",
+	}
+}
+
+func createFormStatusSchema() map[string]string {
+	return map[string]string{
+		"tableName":         "form_statuses",
+		"key":               "formStatus",
+		"id":                "id",
+		"value":             "id",
+		"formStatusGroupId": "form_status_group_id",
 	}
 }
