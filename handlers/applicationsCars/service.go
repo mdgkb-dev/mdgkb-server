@@ -1,7 +1,7 @@
 package applicationsCars
 
 import (
-	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -18,7 +18,7 @@ func (s *Service) Get(id *string) (*models.ApplicationCar, error) {
 }
 
 func (s *Service) Create(item *models.ApplicationCar) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (s *Service) Create(item *models.ApplicationCar) error {
 }
 
 func (s *Service) Update(item *models.ApplicationCar) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).Upsert(item.User)
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}

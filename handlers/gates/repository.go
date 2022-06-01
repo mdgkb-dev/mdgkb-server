@@ -24,7 +24,6 @@ func (r *Repository) getAll() (models.Gates, error) {
 	query := r.db.NewSelect().
 		Model(&items).
 		Relation("FormPattern").
-		Relation("ApplicationsCars.User").
 		Relation("ApplicationsCars.Division")
 	err := query.Scan(r.ctx)
 	return items, err
@@ -33,8 +32,13 @@ func (r *Repository) getAll() (models.Gates, error) {
 func (r *Repository) get(id *string) (*models.Gate, error) {
 	item := models.Gate{}
 	err := r.db.NewSelect().Model(&item).
-		Relation("ApplicationsCars.User").
-		Relation("ApplicationsCars.Division").
+		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("FormPattern.Fields.File").
+		Relation("FormPattern.DefaultFormStatus").
+		Relation("FormPattern.FormStatusGroup").
+		Relation("FormPattern.Fields.ValueType").
 		Where("gates.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
