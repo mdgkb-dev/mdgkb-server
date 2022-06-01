@@ -16,6 +16,7 @@ type IHandler interface {
 	Get(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
+	UpdateMany(c *gin.Context)
 	Delete(c *gin.Context)
 }
 
@@ -25,6 +26,7 @@ type IService interface {
 	Get(*string) (*models.Gate, error)
 	Create(*models.Gate) error
 	Update(*models.Gate) error
+	UpdateMany(models.Gates) error
 	Delete(*string) error
 }
 
@@ -35,6 +37,7 @@ type IRepository interface {
 	get(*string) (*models.Gate, error)
 	create(*models.Gate) error
 	update(*models.Gate) error
+	upsertMany(models.Gates) error
 	delete(*string) error
 }
 

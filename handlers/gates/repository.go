@@ -23,6 +23,7 @@ func (r *Repository) getAll() (models.Gates, error) {
 	items := make(models.Gates, 0)
 	query := r.db.NewSelect().
 		Model(&items).
+		Relation("FormPattern").
 		Relation("ApplicationsCars.User").
 		Relation("ApplicationsCars.Division")
 	err := query.Scan(r.ctx)
@@ -50,5 +51,15 @@ func (r *Repository) delete(id *string) (err error) {
 
 func (r *Repository) update(item *models.Gate) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) upsertMany(items models.Gates) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(&items).
+		Set("id = EXCLUDED.id").
+		Set("name = EXCLUDED.name").
+		Set("form_pattern_id = EXCLUDED.form_pattern_id").
+		Exec(r.ctx)
 	return err
 }
