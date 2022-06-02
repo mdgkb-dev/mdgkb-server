@@ -1,12 +1,6 @@
 package routing
 
 import (
-	"github.com/elastic/go-elasticsearch/v8"
-	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
-	"github.com/go-redis/redis/v7"
-	helperPack "github.com/pro-assistance/pro-assister/helper"
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/handlers/admissionCommitteeDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
@@ -36,8 +30,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
 	"mdgkb/mdgkb-server/handlers/formPatterns"
-	"mdgkb/mdgkb-server/handlers/formStatuses"
 	"mdgkb/mdgkb-server/handlers/formStatusGroups"
+	"mdgkb/mdgkb-server/handlers/formStatuses"
 	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/handlers/gates"
 	"mdgkb/mdgkb-server/handlers/heads"
@@ -67,6 +61,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/specializations"
 	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/handlers/timetablePatterns"
+	"mdgkb/mdgkb-server/handlers/treatDirections"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
 	"mdgkb/mdgkb-server/handlers/vacancyResponse"
@@ -103,8 +98,8 @@ import (
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
 	formPatternsRouter "mdgkb/mdgkb-server/routing/formPatterns"
-	formStatusesRouter "mdgkb/mdgkb-server/routing/formStatuses"
 	formStatusGroupsRouter "mdgkb/mdgkb-server/routing/formStatusGroups"
+	formStatusesRouter "mdgkb/mdgkb-server/routing/formStatuses"
 	formValuesRouter "mdgkb/mdgkb-server/routing/formValues"
 	gatesRouter "mdgkb/mdgkb-server/routing/gates"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
@@ -138,11 +133,19 @@ import (
 	teachersRouter "mdgkb/mdgkb-server/routing/teachers"
 	timetablePatternsRouter "mdgkb/mdgkb-server/routing/timetablePatterns"
 	"mdgkb/mdgkb-server/routing/timetables"
+	treatDirectionsRouter "mdgkb/mdgkb-server/routing/treatDirections"
 	usersRouter "mdgkb/mdgkb-server/routing/users"
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
+
+	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/gin-gonic/gin"
+	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/go-redis/redis/v7"
+	helperPack "github.com/pro-assistance/pro-assister/helper"
+	"github.com/uptrace/bun"
 )
 
 func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, helper *helperPack.Helper) {
@@ -201,6 +204,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	metaRouter.Init(api.Group("/meta"), meta.CreateHandler(db, helper))
 	paidServicesRouter.Init(api.Group("/paid-services"), paidServices.CreateHandler(db, helper))
 	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalProfiles.CreateHandler(db, helper))
+	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatDirections.CreateHandler(db, helper))
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackRequests.CreateHandler(db, helper))
 	applicationsCarsRouter.Init(api.Group("/applications-cars"), applicationsCars.CreateHandler(db, helper))
 	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))

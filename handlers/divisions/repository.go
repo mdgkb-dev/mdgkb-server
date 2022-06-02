@@ -1,8 +1,9 @@
 package divisions
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
 
@@ -28,7 +29,8 @@ func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error)
 		Relation("ContactInfo.PostAddresses").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Websites").
-		Relation("MedicalProfilesDivisions.MedicalProfile")
+		Relation("MedicalProfilesDivisions.MedicalProfile").
+		Relation("TreatDirection")
 
 	if onlyShowed {
 		query = query.Where("divisions_view.show = true")
@@ -57,7 +59,8 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Websites").
 		Relation("HospitalizationDoctor.Human").
-		Relation("MedicalProfilesDivisions.MedicalProfile")
+		Relation("MedicalProfilesDivisions.MedicalProfile").
+		Relation("TreatDirection")
 	//if onlyShowed {
 	q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
 		return query.
