@@ -53,3 +53,13 @@ func (item *FormValue) SetFilePath(fileID *string) *string {
 	}
 	return nil
 }
+
+func (item *FormValue) GetFiles() []FileInfo {
+	files := make([]FileInfo, 0)
+	for i := range item.FieldValues {
+		if item.FieldValues[i].File != nil && item.FieldValues[i].File.FileSystemPath != "" {
+			files = append(files, *item.FieldValues[i].File)
+		}
+	}
+	return files
+}

@@ -11,3 +11,11 @@ type FileInfo struct {
 }
 
 type FileInfos []*FileInfo
+
+func (item FileInfo) GetOriginalName() string {
+	return item.OriginalName
+}
+
+func (item FileInfo) GetFullPath() string {
+	return item.FileSystemPath
+}
