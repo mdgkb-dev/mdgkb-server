@@ -46,6 +46,8 @@ type Division struct {
 	HospitalizationDoctor   *Doctor       `bun:"rel:belongs-to" json:"hospitalizationDoctor"`
 
 	MedicalProfilesDivisions MedicalProfilesDivisions `bun:"rel:has-many" json:"medicalProfilesDivisions"`
+	TreatDirection           *TreatDirection          `bun:"rel:belongs-to" json:"treatDirection"`
+	TreatDirectionID         uuid.NullUUID            `bun:"type:uuid" json:"treatDirectionId"`
 }
 
 type Divisions []*Division

@@ -1,7 +1,6 @@
 package formValues
 
 import (
-	"fmt"
 	"github.com/pro-assistance/pro-assister/pdfHelper"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -46,9 +45,7 @@ func (h *Handler) DocumentsToPDF(c *gin.Context) {
 	for i := range files {
 		fullPath := h.helper.Uploader.GetFullPath(&files[i].FileSystemPath)
 		files[i].FileSystemPath = *fullPath
-		fmt.Println(files[i].GetFullPath())
 		filesToMerge = append(filesToMerge, files[i])
-
 	}
 	mergedPDF, err := h.helper.PDF.MergeFilesToPDF(filesToMerge)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
