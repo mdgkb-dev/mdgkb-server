@@ -27,7 +27,7 @@ func (r *Repository) getGroups(groupID string) (models.SearchGroups, error) {
 }
 
 func (r *Repository) search(searchModel *models.SearchModel) error {
-	querySelect := fmt.Sprintf("SELECT %s as value, %s as label", searchModel.SearchGroup.ValueColumn, searchModel.SearchGroup.LabelColumn)
+	querySelect := fmt.Sprintf("SELECT id, %s as value, %s as label", searchModel.SearchGroup.ValueColumn, searchModel.SearchGroup.LabelColumn)
 	queryFrom := fmt.Sprintf("FROM %s", searchModel.SearchGroup.Table)
 	search := searchModel.Query
 	if searchModel.MustBeTranslate {
