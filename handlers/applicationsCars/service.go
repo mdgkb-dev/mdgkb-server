@@ -1,11 +1,13 @@
 package applicationsCars
 
 import (
-	"mdgkb/mdgkb-server/handlers/users"
+	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.ApplicationsCars, error) {
+func (s *Service) GetAll() (models.ApplicationsCarsWithCount, error) {
 	return s.repository.getAll()
 }
 
@@ -18,7 +20,7 @@ func (s *Service) Get(id *string) (*models.ApplicationCar, error) {
 }
 
 func (s *Service) Create(item *models.ApplicationCar) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).UpsertEmail(item.User)
+	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -31,7 +33,7 @@ func (s *Service) Create(item *models.ApplicationCar) error {
 }
 
 func (s *Service) Update(item *models.ApplicationCar) error {
-	err := users.CreateService(s.repository.getDB(), s.helper).Upsert(item.User)
+	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -45,4 +47,8 @@ func (s *Service) Update(item *models.ApplicationCar) error {
 
 func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) SetQueryFilter(c *gin.Context) error {
+	return s.repository.SetQueryFilter(c)
 }

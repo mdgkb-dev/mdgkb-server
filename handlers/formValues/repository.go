@@ -18,6 +18,7 @@ func (r *Repository) upsert(item *models.FormValue) (err error) {
 		Set("is_new = EXCLUDED.is_new").
 		Set("user_id = EXCLUDED.user_id").
 		Set("form_status_id = EXCLUDED.form_status_id").
+		Set("child_id = EXCLUDED.child_id").
 		Exec(r.ctx)
 	return err
 }
@@ -26,6 +27,7 @@ func (r *Repository) get(id *string) (*models.FormValue, error) {
 	item := models.FormValue{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("User.Human").
+		Relation("Child.Human").
 		Relation("Fields.File").
 		Relation("Fields.ValueType").
 		Relation("FieldValues.File").

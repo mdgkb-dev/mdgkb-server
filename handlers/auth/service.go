@@ -24,7 +24,7 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	ts, err := s.helper.Token.CreateToken(item.ID.String(), string(item.Role.Name), item.Role.ID.UUID.String())
+	ts, err := s.helper.Token.CreateToken(item.ID.UUID.String(), string(item.Role.Name), item.Role.ID.UUID.String())
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 	if !findedUser.CompareWithHashPassword(item.Password) {
 		return nil, err
 	}
-	ts, err := s.helper.Token.CreateToken(findedUser.ID.String(), string(findedUser.Role.Name), findedUser.Role.ID.UUID.String())
+	ts, err := s.helper.Token.CreateToken(findedUser.ID.UUID.String(), string(findedUser.Role.Name), findedUser.Role.ID.UUID.String())
 	if err != nil {
 		return nil, err
 	}

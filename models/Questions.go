@@ -28,6 +28,6 @@ type Questions []*Question
 
 func (item *Question) SetForeignKeys() {
 	if item.User != nil {
-		item.UserID = item.User.ID
+		item.UserID = item.User.ID.UUID
 	}
 }

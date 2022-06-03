@@ -62,6 +62,23 @@ func (h *Handler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
+func (h *Handler) UpdateMany(c *gin.Context) {
+	var items models.Gates
+	files, err := h.helper.HTTP.GetForm(c, &items)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.Upload(c, &items, files)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.UpdateMany(items)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}
+
 func (h *Handler) Delete(c *gin.Context) {
 	id := c.Param("id")
 	err := h.service.Delete(&id)

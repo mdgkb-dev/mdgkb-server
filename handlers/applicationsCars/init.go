@@ -2,9 +2,12 @@ package applicationsCars
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
+	"mdgkb/mdgkb-server/handlers/baseHandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -19,7 +22,8 @@ type IHandler interface {
 }
 
 type IService interface {
-	GetAll() (models.ApplicationsCars, error)
+	baseHandler.IService
+	GetAll() (models.ApplicationsCarsWithCount, error)
 	Get(*string) (*models.ApplicationCar, error)
 	Create(*models.ApplicationCar) error
 	Update(*models.ApplicationCar) error
@@ -27,8 +31,8 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
-	getAll() (models.ApplicationsCars, error)
+	baseHandler.IRepository
+	getAll() (models.ApplicationsCarsWithCount, error)
 	get(*string) (*models.ApplicationCar, error)
 	create(*models.ApplicationCar) error
 	update(*models.ApplicationCar) error
@@ -54,6 +58,7 @@ type Repository struct {
 	db     *bun.DB
 	ctx    context.Context
 	helper *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

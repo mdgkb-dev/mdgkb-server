@@ -12,7 +12,7 @@ type Child struct {
 	HumanID       uuid.NullUUID `bun:"type:uuid" json:"humanId"`
 
 	User   *User     `bun:"rel:belongs-to" json:"user"`
-	UserID uuid.UUID `bun:"type:uuid" json:"userId"`
+	UserID uuid.NullUUID `bun:"type:uuid" json:"userId"`
 }
 
 type Children []*Child
