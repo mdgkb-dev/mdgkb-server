@@ -24,10 +24,8 @@ func (r *Repository) getAll() (item models.ApplicationsCarsWithCount, err error)
 	query := r.db.NewSelect().Model(&item.ApplicationsCars).
 		Relation("Gate").
 		Relation("Division").
+		// Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
-		Relation("FormValue.Fields.ValueType").
-		Relation("FormValue.FieldValues.File").
-		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus")
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
@@ -38,6 +36,7 @@ func (r *Repository) get(id *string) (*models.ApplicationCar, error) {
 	err := r.db.NewSelect().Model(&item).
 		Relation("Gate").
 		Relation("Division").
+		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
 		Relation("FormValue.Fields.ValueType").
 		Relation("FormValue.FieldValues.File").

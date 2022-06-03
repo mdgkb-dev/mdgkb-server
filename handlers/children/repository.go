@@ -40,6 +40,7 @@ func (r *Repository) upsertMany(items models.Children) (err error) {
 func (r *Repository) upsert(item *models.Child) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(item).
+		Set("human_id = EXCLUDED.human_id").
 		Exec(r.ctx)
 	return err
 }
