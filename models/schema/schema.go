@@ -28,6 +28,7 @@ type Schema struct {
 	PathPermission                   map[string]string `json:"pathPermission"`
 	NewsToTag                        map[string]string `json:"newsToTag"`
 	FormStatus                       map[string]string `json:"formStatus"`
+	Question                         map[string]string `json:"question"`
 }
 
 func CreateSchema() Schema {
@@ -59,6 +60,7 @@ func CreateSchema() Schema {
 		News:                             createNewsSchema(),
 		NewsToTag:                        createNewsToTagSchema(),
 		FormStatus:                       createFormStatusSchema(),
+		Question:                         createQuestionSchema(),
 	}
 }
 
@@ -394,5 +396,20 @@ func createFormStatusSchema() map[string]string {
 		"id":                "id",
 		"value":             "id",
 		"formStatusGroupId": "form_status_group_id",
+	}
+}
+
+func createQuestionSchema() map[string]string {
+	return map[string]string{
+		"tableName":    "questions",
+		"key":          "question",
+		"id":           "id",
+		"value":        "id",
+		"date":         "question_date",
+		"published":    "published",
+		"answered":     "answered",
+		"isNew":        "is_new",
+		"answerIsRead": "answer_is_read",
+		"theme":        "theme",
 	}
 }

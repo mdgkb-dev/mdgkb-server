@@ -1,6 +1,7 @@
 package heads
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/contactInfo"
 	"mdgkb/mdgkb-server/handlers/departments"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
@@ -11,19 +12,19 @@ import (
 )
 
 func (s *Service) Create(item *models.Head) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Create(item.Photo)
+	err := fileInfos.CreateService(s.repository.GetDB()).Create(item.Photo)
 	if err != nil {
 		return err
 	}
-	err = contactInfo.CreateService(s.repository.getDB()).Create(item.ContactInfo)
+	err = contactInfo.CreateService(s.repository.GetDB()).Create(item.ContactInfo)
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
+	err = human.CreateService(s.repository.GetDB(), s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
-	err = timetables.CreateService(s.repository.getDB()).Create(item.Timetable)
+	err = timetables.CreateService(s.repository.GetDB()).Create(item.Timetable)
 	if err != nil {
 		return err
 	}
@@ -34,11 +35,11 @@ func (s *Service) Create(item *models.Head) error {
 	}
 	item.SetIdForChildren()
 
-	err = regalias.CreateService(s.repository.getDB()).CreateMany(item.Regalias)
+	err = regalias.CreateService(s.repository.GetDB()).CreateMany(item.Regalias)
 	if err != nil {
 		return err
 	}
-	err = departments.CreateService(s.repository.getDB()).CreateMany(item.Departments)
+	err = departments.CreateService(s.repository.GetDB()).CreateMany(item.Departments)
 	if err != nil {
 		return err
 	}
@@ -46,19 +47,19 @@ func (s *Service) Create(item *models.Head) error {
 }
 
 func (s *Service) Update(item *models.Head) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.Photo)
+	err := fileInfos.CreateService(s.repository.GetDB()).Upsert(item.Photo)
 	if err != nil {
 		return err
 	}
-	err = contactInfo.CreateService(s.repository.getDB()).Upsert(item.ContactInfo)
+	err = contactInfo.CreateService(s.repository.GetDB()).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.repository.getDB(), s.helper).Update(item.Human)
+	err = human.CreateService(s.repository.GetDB(), s.helper).Update(item.Human)
 	if err != nil {
 		return err
 	}
-	err = timetables.CreateService(s.repository.getDB()).Upsert(item.Timetable)
+	err = timetables.CreateService(s.repository.GetDB()).Upsert(item.Timetable)
 	if err != nil {
 		return err
 	}
@@ -68,7 +69,7 @@ func (s *Service) Update(item *models.Head) error {
 		return err
 	}
 	item.SetIdForChildren()
-	regaliasService := regalias.CreateService(s.repository.getDB())
+	regaliasService := regalias.CreateService(s.repository.GetDB())
 	err = regaliasService.UpsertMany(item.Regalias)
 	if err != nil {
 		return err
@@ -78,7 +79,7 @@ func (s *Service) Update(item *models.Head) error {
 		return err
 	}
 
-	departmentsService := departments.CreateService(s.repository.getDB())
+	departmentsService := departments.CreateService(s.repository.GetDB())
 	err = departmentsService.UpsertMany(item.Departments)
 	if err != nil {
 		return err
@@ -105,4 +106,8 @@ func (s *Service) Get(id string) (*models.Head, error) {
 
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) SetQueryFilter(c *gin.Context) error {
+	return s.repository.SetQueryFilter(c)
 }

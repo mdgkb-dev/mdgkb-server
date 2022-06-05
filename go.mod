@@ -9,11 +9,12 @@ require (
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/google/uuid v1.3.0
 	github.com/mmcloughlin/meow v0.0.0-20200201185800-3501c7c05d21
-	github.com/pro-assistance/pro-assister v0.0.66
+	github.com/oiime/logrusbun v0.1.1
+	github.com/pro-assistance/pro-assister v0.0.71
+	github.com/sirupsen/logrus v1.8.1
 	github.com/uptrace/bun v1.1.5
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.5
 	github.com/uptrace/bun/driver/pgdriver v1.1.5
-	github.com/uptrace/bun/extra/bundebug v1.1.5
 	golang.org/x/crypto v0.0.0-20220511200225-c6db032c6c88
 )
 
@@ -52,6 +53,7 @@ require (
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/unidoc/unidoc v2.2.0+incompatible // indirect
+	github.com/uptrace/bun/extra/bundebug v1.1.5 // indirect
 	github.com/vmihailenco/bufpool v0.1.11 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect

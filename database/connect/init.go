@@ -4,28 +4,55 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/elastic/go-elasticsearch/v8"
-	"github.com/uptrace/bun/extra/bundebug"
-	"mdgkb/mdgkb-server/models"
-
 	"github.com/go-redis/redis/v7"
+	"github.com/oiime/logrusbun"
+	"github.com/pro-assistance/pro-assister/config"
+	"github.com/sirupsen/logrus"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/pgdriver"
-
-	"github.com/pro-assistance/pro-assister/config"
+	"mdgkb/mdgkb-server/models"
+	"os"
+	"time"
 )
 
 func InitDB(conf config.DB) *bun.DB {
 	dsn := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable", conf.DB, conf.User, conf.Password, conf.Host, conf.Port, conf.Name)
 	conn := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(conn, sqlitedialect.New())
-	db.AddQueryHook(bundebug.NewQueryHook(
-		bundebug.WithVerbose(false),
-	))
-	_, _ = db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
 
+	_, _ = db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
+	createLogger(conf, db)
 	//recognizeModels(db)
 	return db
+}
+
+func createLogger(conf config.DB, db *bun.DB) {
+
+	log := logrus.New()
+	log.Level = logrus.TraceLevel
+	if conf.LogPath != "" {
+		f, err := os.OpenFile(conf.LogPath, os.O_APPEND|os.O_CREATE|os.O_RDWR, 7777)
+		if err != nil {
+			panic(err)
+		}
+		log.SetOutput(f)
+	} else {
+		log.SetOutput(os.Stdout)
+	}
+
+	//defer f.Close()
+
+	//bun.SetLogger(log)
+	db.AddQueryHook(logrusbun.NewQueryHook(logrusbun.QueryHookOptions{
+		LogSlow:         time.Second,
+		Logger:          log,
+		QueryLevel:      logrus.DebugLevel,
+		ErrorLevel:      logrus.ErrorLevel,
+		SlowLevel:       logrus.WarnLevel,
+		MessageTemplate: "{{.Operation}} : {{.Query}}",
+		ErrorTemplate:   "{{.Operation}}[{{.Duration}}]: {{.Query}}: {{.Error}}",
+	}))
 }
 
 func recognizeModels(db *bun.DB) {
