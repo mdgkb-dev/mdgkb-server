@@ -43,6 +43,7 @@ func (r *Repository) get(id *string) (*models.DpoApplication, error) {
 		Relation("FormValue.Fields.File").
 		Relation("FormValue.Fields.ValueType").
 		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.FieldValuesFiles.FileInfo").
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusGroup").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").

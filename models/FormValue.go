@@ -21,7 +21,7 @@ type FormValue struct {
 	FormStatus   *FormStatus   `bun:"rel:belongs-to" json:"formStatus"`
 	FormStatusID uuid.NullUUID `bun:"type:uuid" json:"formStatusId"`
 
-	Child   *Child     `bun:"rel:belongs-to" json:"child"`
+	Child   *Child        `bun:"rel:belongs-to" json:"child"`
 	ChildID uuid.NullUUID `bun:"type:uuid" json:"childId"`
 
 	DpoApplication          *DpoApplication          `bun:"rel:has-one" json:"dpoApplication"`
@@ -37,7 +37,7 @@ func (item *FormValue) SetForeignKeys() {
 	item.FormStatusID = item.FormStatus.ID
 	if item.Child != nil {
 		item.ChildID = item.Child.ID
-	} 
+	}
 }
 
 func (item *FormValue) SetIdForChildren() {
@@ -56,7 +56,12 @@ func (item *FormValue) SetFilePath(fileID *string) *string {
 		if filePath != nil {
 			return filePath
 		}
+		filePath = item.FieldValues[i].FieldValuesFiles.SetFilePath(fileID)
+		if filePath != nil {
+			return filePath
+		}
 	}
+
 	return nil
 }
 
