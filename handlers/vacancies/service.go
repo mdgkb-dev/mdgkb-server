@@ -102,3 +102,12 @@ func (s *Service) CreateResponse(item *models.VacancyResponse) error {
 func (s *Service) SetQueryFilter(c *gin.Context) error {
 	return s.repository.SetQueryFilter(c)
 }
+
+func (s *Service) UpdateMany(items models.Vacancies) error {
+	items.SetForeignKeys()
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	return nil
+}

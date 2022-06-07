@@ -4,11 +4,12 @@ import (
 	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 func (s *Service) Create(item *models.VacancyResponse) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -20,12 +21,8 @@ func (s *Service) Create(item *models.VacancyResponse) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.VacancyResponses, error) {
-	items, err := s.repository.getAll()
-	if err != nil {
-		return nil, err
-	}
-	return items, nil
+func (s *Service) GetAll() (models.VacancyResponsesWithCount, error) {
+	return s.repository.getAll()
 }
 
 func (s *Service) Get(id string) (*models.VacancyResponse, error) {
@@ -37,7 +34,7 @@ func (s *Service) Get(id string) (*models.VacancyResponse, error) {
 }
 
 func (s *Service) Update(item *models.VacancyResponse) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -66,4 +63,8 @@ func (s *Service) EmailExists(email string, vacancyId string) (bool, error) {
 		return item, err
 	}
 	return item, nil
+}
+
+func (s *Service) SetQueryFilter(c *gin.Context) error {
+	return s.repository.SetQueryFilter(c)
 }

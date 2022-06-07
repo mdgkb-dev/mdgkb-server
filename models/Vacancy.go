@@ -56,6 +56,12 @@ func (item *Vacancy) SetForeignKeys() {
 	item.FormPatternID = item.FormPattern.ID
 }
 
+func (items Vacancies) SetForeignKeys() {
+	for i := range items {
+		items[i].SetForeignKeys()
+	}
+}
+
 func (item *Vacancy) SetFilePath(fileID *string) *string {
 	return item.FormPattern.SetFilePath(fileID)
 }
