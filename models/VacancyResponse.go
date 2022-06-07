@@ -6,7 +6,7 @@ import (
 )
 
 type VacancyResponse struct {
-	bun.BaseModel `bun:"vacancy_responses_view,alias:vacancy_responses_view"`
+	bun.BaseModel `bun:"vacancy_responses,select:vacancy_responses_view,alias:vacancy_responses_view"`
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 
 	Vacancy   *Vacancy  `bun:"rel:belongs-to" json:"vacancy"`

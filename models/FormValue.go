@@ -13,7 +13,7 @@ type FormValue struct {
 	IsNew         bool          `json:"isNew"`
 	EmailNotify   bool          `bun:"-" json:"emailNotify"`
 	User          *User         `bun:"rel:belongs-to" json:"user"`
-	UserID        uuid.UUID     `bun:"type:uuid" json:"userId"`
+	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
 
 	Fields      Fields      `bun:"rel:has-many" json:"fields"`
 	FieldValues FieldValues `bun:"rel:has-many" json:"fieldValues"`
@@ -21,7 +21,7 @@ type FormValue struct {
 	FormStatus   *FormStatus   `bun:"rel:belongs-to" json:"formStatus"`
 	FormStatusID uuid.NullUUID `bun:"type:uuid" json:"formStatusId"`
 
-	Child   *Child     `bun:"rel:belongs-to" json:"child"`
+	Child   *Child        `bun:"rel:belongs-to" json:"child"`
 	ChildID uuid.NullUUID `bun:"type:uuid" json:"childId"`
 
 	DpoApplication          *DpoApplication          `bun:"rel:has-one" json:"dpoApplication"`
@@ -33,11 +33,11 @@ type FormValue struct {
 type FormValues []*FormValue
 
 func (item *FormValue) SetForeignKeys() {
-	item.UserID = item.User.ID.UUID
+	item.UserID = item.User.ID
 	item.FormStatusID = item.FormStatus.ID
 	if item.Child != nil {
 		item.ChildID = item.Child.ID
-	} 
+	}
 }
 
 func (item *FormValue) SetIdForChildren() {

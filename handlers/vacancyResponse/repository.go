@@ -73,7 +73,7 @@ func (r *Repository) update(item *models.VacancyResponse) (err error) {
 
 func (r *Repository) emailExists(email string, vacancyId string) (bool, error) {
 	exists, err := r.db.NewSelect().Model((*models.VacancyResponse)(nil)).
-		Join("JOIN form_values ON vacancy_responses.form_value_id = form_values.id").
+		Join("JOIN form_values ON vacancy_responses_view.form_value_id = form_values.id").
 		Join("JOIN users ON users.id = form_values.user_id and users.email = ?", email).
 		Where("vacancy_responses_view.vacancy_id = ?", vacancyId).Exists(r.ctx)
 	return exists, err
