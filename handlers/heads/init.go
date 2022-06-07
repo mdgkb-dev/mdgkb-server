@@ -3,7 +3,9 @@ package heads
 import (
 	"context"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"mdgkb/mdgkb-server/handlers/baseHandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -20,6 +22,7 @@ type IHandler interface {
 }
 
 type IService interface {
+	baseHandler.IService
 	Create(*models.Head) error
 	GetAll() (models.Heads, error)
 	Get(string) (*models.Head, error)
@@ -28,7 +31,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	baseHandler.IRepository
 	create(*models.Head) error
 	getAll() (models.Heads, error)
 	get(string) (*models.Head, error)
@@ -52,9 +55,10 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helper.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

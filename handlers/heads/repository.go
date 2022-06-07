@@ -1,14 +1,23 @@
 package heads
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )
 
-func (r *Repository) getDB() *bun.DB {
+func (r *Repository) GetDB() *bun.DB {
 	return r.db
+}
+
+func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *Repository) create(item *models.Head) (err error) {
@@ -27,8 +36,8 @@ func (r *Repository) getAll() (models.Heads, error) {
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.PostAddresses").
 		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites").
-		Order("human.surname")
+		Relation("ContactInfo.Websites")
+	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

@@ -54,10 +54,19 @@ func (s *Service) UpsertMany(items models.Children) error {
 }
 
 func (s *Service) Upsert(item *models.Child) error {
+	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	if item == nil {
 		return nil
 	}
-	return s.repository.upsert(item)
+	err = s.repository.upsert(item)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) DeleteMany(idPool []uuid.UUID) error {

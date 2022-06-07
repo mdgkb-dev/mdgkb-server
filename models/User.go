@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	bun.BaseModel `bun:"users,alias:users"`
-	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Email         string        `json:"email"`
 	UUID          uuid.UUID     `bun:"type:uuid,nullzero,notnull,default:uuid_generate_v4()"  json:"uuid"` // для восстановления пароля - обеспечивает уникальность страницы на фронте
 	Phone         string        `json:"phone"`
@@ -79,7 +79,7 @@ func (i *User) SetIdForChildren() {
 	}
 	if len(i.DonorRulesUsers) > 0 {
 		for index := range i.Children {
-			i.DonorRulesUsers[index].UserID = i.ID
+			i.DonorRulesUsers[index].UserID = i.ID.UUID
 		}
 	}
 }

@@ -33,6 +33,15 @@ func (s *Service) Update(item *models.Gate) error {
 	return nil
 }
 
+func (s *Service) UpdateMany(items models.Gates) error {
+	items.SetForeignKeys()
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)
 }

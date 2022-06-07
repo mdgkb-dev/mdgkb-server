@@ -1,6 +1,7 @@
 package fieldsValues
 
 import (
+	"mdgkb/mdgkb-server/handlers/fieldValuesFiles"
 	"mdgkb/mdgkb-server/handlers/fields"
 	"mdgkb/mdgkb-server/handlers/fileInfos"
 	"mdgkb/mdgkb-server/models"
@@ -36,6 +37,16 @@ func (s *Service) UpsertMany(items models.FieldValues) error {
 	}
 	items.SetForeignKeys()
 	err = s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	items.SetIdForChildren()
+	fieldValuesFilesService := fieldValuesFiles.CreateService(s.repository.getDB())
+	err = fieldValuesFilesService.UpsertMany(items.GetFieldValuesFiles())
+	if err != nil {
+		return err
+	}
+	err = fieldValuesFilesService.DeleteMany(items.GetFieldValuesFilesForDelete())
 	if err != nil {
 		return err
 	}
