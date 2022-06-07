@@ -28,6 +28,7 @@ func (r *Repository) getAll() (item models.VacanciesWithCount, err error) {
 	query := r.db.NewSelect().Model(&item.Vacancies).
 		Relation("VacancyResponses").
 		Relation("Division").
+		Relation("FormPattern").
 		Relation("VacancyDuties").
 		Relation("VacancyRequirements").
 		Relation("ContactInfo").
@@ -109,6 +110,16 @@ func (r *Repository) delete(id *string) (err error) {
 
 func (r *Repository) update(item *models.Vacancy) (err error) {
 	_, err = r.db.NewUpdate().Model(item).ExcludeColumn("responses_count", "new_responses_count").Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) upsertMany(items models.Vacancies) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").Model(&items).ExcludeColumn("responses_count", "new_responses_count").
+		Set("id = EXCLUDED.id").
+		Set("min_salary = EXCLUDED.min_salary").
+		Set("max_salary = EXCLUDED.max_salary").
+		Set("form_pattern_id = EXCLUDED.form_pattern_id").
+		Exec(r.ctx)
 	return err
 }
 
