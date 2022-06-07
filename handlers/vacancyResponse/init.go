@@ -2,11 +2,13 @@ package vacancyResponse
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/handlers/baseHandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -24,7 +26,8 @@ type IHandler interface {
 }
 
 type IService interface {
-	GetAll() (models.VacancyResponses, error)
+	baseHandler.IService
+	GetAll() (models.VacancyResponsesWithCount, error)
 	Get(string) (*models.VacancyResponse, error)
 	Create(*models.VacancyResponse) error
 	Update(*models.VacancyResponse) error
@@ -34,9 +37,9 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	baseHandler.IRepository
 	create(*models.VacancyResponse) error
-	getAll() (models.VacancyResponses, error)
+	getAll() (models.VacancyResponsesWithCount, error)
 	get(string) (*models.VacancyResponse, error)
 	update(*models.VacancyResponse) error
 	delete(string) error
@@ -63,6 +66,7 @@ type Repository struct {
 	db     *bun.DB
 	ctx    context.Context
 	helper *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

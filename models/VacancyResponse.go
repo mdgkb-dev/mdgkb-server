@@ -6,7 +6,7 @@ import (
 )
 
 type VacancyResponse struct {
-	bun.BaseModel `bun:"vacancy_responses,alias:vacancy_responses"`
+	bun.BaseModel `bun:"vacancy_responses_view,alias:vacancy_responses_view"`
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 
 	Vacancy   *Vacancy  `bun:"rel:belongs-to" json:"vacancy"`
@@ -17,6 +17,11 @@ type VacancyResponse struct {
 }
 
 type VacancyResponses []*VacancyResponse
+
+type VacancyResponsesWithCount struct {
+	VacancyResponses VacancyResponses `json:"vacancyResponses"`
+	Count     int       `json:"count"`
+}
 
 func (item *VacancyResponse) SetForeignKeys() {
 	item.FormValueID = item.FormValue.ID
