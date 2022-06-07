@@ -56,7 +56,12 @@ func (item *FormValue) SetFilePath(fileID *string) *string {
 		if filePath != nil {
 			return filePath
 		}
+		filePath = item.FieldValues[i].FieldValuesFiles.SetFilePath(fileID)
+		if filePath != nil {
+			return filePath
+		}
 	}
+
 	return nil
 }
 

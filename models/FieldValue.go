@@ -32,6 +32,9 @@ type FieldValue struct {
 	File   *FileInfo     `bun:"rel:belongs-to" json:"file"`
 	FileID uuid.NullUUID `json:"fileId"`
 
+	FieldValuesFiles          FieldValuesFiles `bun:"rel:has-many" json:"fieldValuesFiles"`
+	FieldValuesFilesForDelete []uuid.UUID      `bun:"-" json:"fieldValuesFilesForDelete"`
+
 	Value string `bun:"-" json:"-"`
 }
 
@@ -54,21 +57,43 @@ func (items FieldValues) writeValueToPrint() {
 	}
 }
 
-func (i *FieldValue) writeValueToPrint() {
-	if i.ValueDate != nil {
-		i.Value = fmt.Sprintf("%d-%d-%d", i.ValueDate.Year(), i.ValueDate.Month(), i.ValueDate.Day())
+func (item *FieldValue) writeValueToPrint() {
+	if item.ValueDate != nil {
+		item.Value = fmt.Sprintf("%d-%d-%d", item.ValueDate.Year(), item.ValueDate.Month(), item.ValueDate.Day())
 	}
-	if i.ValueString != "" {
-		i.Value = i.ValueString
+	if item.ValueString != "" {
+		item.Value = item.ValueString
 	}
-	if i.ValueNumber != 0 {
-		i.Value = strconv.Itoa(i.ValueNumber)
+	if item.ValueNumber != 0 {
+		item.Value = strconv.Itoa(item.ValueNumber)
 	}
 }
 
 func (item *FieldValue) GetFileInfos() FileInfos {
 	items := make(FileInfos, 0)
 	items = append(items, item.File)
+	return items
+}
+
+func (items FieldValues) GetFieldValuesFiles() FieldValuesFiles {
+	itemsForGet := make(FieldValuesFiles, 0)
+	for i := range items {
+		itemsForGet = append(itemsForGet, items[i].GetFieldValuesFiles()...)
+	}
+	return itemsForGet
+}
+
+func (items FieldValues) GetFieldValuesFilesForDelete() []uuid.UUID {
+	itemsForGet := make([]uuid.UUID, 0)
+	for i := range items {
+		itemsForGet = append(itemsForGet, items[i].FieldValuesFilesForDelete...)
+	}
+	return itemsForGet
+}
+
+func (item *FieldValue) GetFieldValuesFiles() FieldValuesFiles {
+	items := make(FieldValuesFiles, 0)
+	items = append(items, item.FieldValuesFiles...)
 	return items
 }
 
@@ -92,8 +117,8 @@ func (items FieldValues) SetFilePath(fileID string) *string {
 
 func (items FieldValues) GetFileInfos() FileInfos {
 	itemsForGet := make(FileInfos, 0)
-	for _, item := range items {
-		itemsForGet = append(itemsForGet, item.File)
+	for i := range items {
+		itemsForGet = append(itemsForGet, items[i].File)
 	}
 	return itemsForGet
 }
@@ -118,4 +143,16 @@ func (items FieldValues) GetFields() Fields {
 		itemsForGet = append(itemsForGet, item.Field)
 	}
 	return itemsForGet
+}
+
+func (item *FieldValue) SetIdForChildren() {
+	for i := range item.FieldValuesFiles {
+		item.FieldValuesFiles[i].FieldValueID = item.ID
+	}
+}
+
+func (items FieldValues) SetIdForChildren() {
+	for i := range items {
+		items[i].SetIdForChildren()
+	}
 }

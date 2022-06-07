@@ -30,7 +30,7 @@ func InitDB(conf config.DB) *bun.DB {
 func createLogger(conf config.DB, db *bun.DB) {
 
 	log := logrus.New()
-	log.Level = logrus.TraceLevel
+	log.Level = logrus.ErrorLevel
 	if conf.LogPath != "" {
 		f, err := os.OpenFile(conf.LogPath, os.O_APPEND|os.O_CREATE|os.O_RDWR, 7777)
 		if err != nil {
