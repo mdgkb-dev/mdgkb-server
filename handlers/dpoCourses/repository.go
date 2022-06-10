@@ -47,6 +47,7 @@ func (r *Repository) get() (*models.DpoCourse, error) {
 		Relation("FormPattern.Fields.ValueType").
 		Relation("FormPattern.DefaultFormStatus").
 		Relation("FormPattern.FormStatusGroup").
+		// Relation("FormPattern.PersonalDataAgreement").
 		Relation("Specialization").
 		Where("dpo_courses_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
 	return &item, err

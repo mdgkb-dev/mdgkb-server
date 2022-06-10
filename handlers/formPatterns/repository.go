@@ -41,6 +41,7 @@ func (r *Repository) get(id string) (*models.FormPattern, error) {
 		Relation("Fields.ValueType").
 		Relation("FormStatusGroup.FormStatuses").
 		Relation("DefaultFormStatus").
+		Relation("PersonalDataAgreement").
 		Where("form_patterns.id = ?", id).Scan(r.ctx)
 	return &item, err
 }
