@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
@@ -50,7 +49,6 @@ func (items PostgraduateCoursePlans) SetFilePath(fileId string) *string {
 }
 
 func (item *PostgraduateCoursePlan) SetFilePath(fileID string) *string {
-	fmt.Println(item.Plan)
 	if item.Plan.ID.UUID.String() == fileID {
 		item.Plan.FileSystemPath = uploadHelper.BuildPath(&fileID)
 		return &item.Plan.FileSystemPath

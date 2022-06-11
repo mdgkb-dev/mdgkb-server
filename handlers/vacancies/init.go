@@ -19,6 +19,7 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+	UpdateMany(c *gin.Context)
 
 	CreateResponse(c *gin.Context)
 }
@@ -31,6 +32,7 @@ type IService interface {
 	Create(*models.Vacancy) error
 	Update(*models.Vacancy) error
 	Delete(*string) error
+	UpdateMany(models.Vacancies) error
 
 	CreateResponse(*models.VacancyResponse) error
 }
@@ -43,6 +45,7 @@ type IRepository interface {
 	get(*string) (*models.Vacancy, error)
 	update(*models.Vacancy) error
 	delete(*string) error
+	upsertMany(models.Vacancies) error
 
 	createResponse(*models.VacancyResponse) error
 }

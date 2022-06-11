@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	bun.BaseModel `bun:"users,alias:users"`
-	ID            uuid.NullUUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Email         string        `json:"email"`
 	UUID          uuid.UUID     `bun:"type:uuid,nullzero,notnull,default:uuid_generate_v4()"  json:"uuid"` // для восстановления пароля - обеспечивает уникальность страницы на фронте
 	Phone         string        `json:"phone"`
@@ -19,6 +19,8 @@ type User struct {
 	Role          *Role         `bun:"rel:belongs-to" json:"role"`
 	RoleID        uuid.NullUUID `bun:"type:uuid" json:"roleId"`
 	Questions     Questions     `bun:"rel:has-many" json:"questions"`
+
+	RejectEmail bool `json:"rejectEmail"`
 
 	Children          Children    `bun:"rel:has-many" json:"children"`
 	ChildrenForDelete []uuid.UUID `bun:"-" json:"childrenForDelete"`

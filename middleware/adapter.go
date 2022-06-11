@@ -97,7 +97,6 @@ func NewAdapterByDB(db *bun.DB, opts ...Option) (*Adapter, error) {
 }
 
 func (a *Adapter) createTableifNotExists() error {
-	fmt.Println(a.tableName)
 	_, err := a.db.NewCreateTable().Model((*CasbinRule)(nil)).Table(a.tableName).IfNotExists().Exec(context.Background())
 	if err != nil {
 		return err

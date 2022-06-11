@@ -14,6 +14,7 @@ type Schema struct {
 	EducationalManager               map[string]string `json:"educationalManager"`
 	Specialization                   map[string]string `json:"specialization"`
 	Vacancy                          map[string]string `json:"vacancy"`
+	VacancyResponse                  map[string]string `json:"vacancyResponse"`
 	DpoCourseSpecialization          map[string]string `json:"dpoCourseSpecialization"`
 	DpoApplication                   map[string]string `json:"dpoApplication"`
 	PostgraduateCourse               map[string]string `json:"postgraduateCourse"`
@@ -47,6 +48,7 @@ func CreateSchema() Schema {
 		EducationalManager:               createEducationalManagerSchema(),
 		Specialization:                   createSpecializationSchema(),
 		Vacancy:                          createVacancySchema(),
+		VacancyResponse:                  createVacancyResponseSchema(),
 		DpoCourseSpecialization:          createDpoCourseSpecializationSchema(),
 		DpoApplication:                   createDpoApplicationsSchema(),
 		PostgraduateCourse:               createPostgraduateCourseSchema(),
@@ -249,6 +251,17 @@ func createVacancySchema() map[string]string {
 		"responsesCount":    "responses_count",
 		"newResponsesCount": "new_responses_count",
 		"active":            "active",
+	}
+}
+
+func createVacancyResponseSchema() map[string]string {
+	return map[string]string{
+		"tableName":  "vacancy_responses_view",
+		"key":        "vacancyResponse",
+		"title":      "title",
+		"date":       "created_at",
+		"value":      "id",
+		"sortColumn": "created_at",
 	}
 }
 
