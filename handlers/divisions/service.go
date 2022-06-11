@@ -1,7 +1,6 @@
 package divisions
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/contactInfo"
 	"mdgkb/mdgkb-server/handlers/divisionImages"
 	"mdgkb/mdgkb-server/handlers/doctors"
@@ -9,6 +8,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/handlers/visitingRules"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Division) error {
@@ -103,8 +104,8 @@ func (s *Service) Update(item *models.Division) error {
 	return s.repository.update(item)
 }
 
-func (s *Service) GetAll(onlyShowed bool) (models.Divisions, error) {
-	return s.repository.getAll(onlyShowed)
+func (s *Service) GetAll() (models.DivisionsWithCount, error) {
+	return s.repository.getAll()
 }
 
 func (s *Service) Get(id string, onlyShowed bool) (*models.Division, error) {

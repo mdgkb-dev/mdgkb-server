@@ -2,11 +2,12 @@ package divisions
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
+
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
-	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -27,7 +28,7 @@ type IService interface {
 	setQueryFilter(*gin.Context) error
 
 	Create(*models.Division) error
-	GetAll(bool) (models.Divisions, error)
+	GetAll() (models.DivisionsWithCount, error)
 	Get(string, bool) (*models.Division, error)
 	Delete(string) error
 	Update(*models.Division) error
@@ -42,7 +43,7 @@ type IRepository interface {
 
 	getDB() *bun.DB
 	create(*models.Division) error
-	getAll(bool) (models.Divisions, error)
+	getAll() (models.DivisionsWithCount, error)
 	get(string, bool) (*models.Division, error)
 	delete(string) error
 	update(*models.Division) error
