@@ -29,6 +29,7 @@ type Schema struct {
 	NewsToTag                        map[string]string `json:"newsToTag"`
 	FormStatus                       map[string]string `json:"formStatus"`
 	Question                         map[string]string `json:"question"`
+	TreatDirection                   map[string]string `json:"treatDirection"`
 }
 
 func CreateSchema() Schema {
@@ -61,6 +62,7 @@ func CreateSchema() Schema {
 		NewsToTag:                        createNewsToTagSchema(),
 		FormStatus:                       createFormStatusSchema(),
 		Question:                         createQuestionSchema(),
+		TreatDirection:                   createTreatDirectionSchema(),
 	}
 }
 
@@ -110,6 +112,7 @@ func createDivisionSchema() map[string]string {
 		"label":                        "name",
 		"commentsCount":                "comments_count",
 		"hospitalizationContactInfoId": "hospitalization_contact_info_id",
+		"treatDirectionId":             "treat_direction_id",
 	}
 }
 
@@ -411,5 +414,17 @@ func createQuestionSchema() map[string]string {
 		"isNew":        "is_new",
 		"answerIsRead": "answer_is_read",
 		"theme":        "theme",
+	}
+}
+
+func createTreatDirectionSchema() map[string]string {
+	return map[string]string{
+		"tableName":  "treat_directions",
+		"key":        "treatDirection",
+		"id":         "id",
+		"value":      "id",
+		"name":       "name",
+		"sortColumn": "name",
+		"label":      "name",
 	}
 }
