@@ -11,6 +11,7 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/pgdriver"
+	"log"
 	"mdgkb/mdgkb-server/models"
 	"os"
 	"time"
@@ -82,7 +83,7 @@ func InitRedis(conf *config.Config) (client *redis.Client) {
 	})
 	_, err := client.Ping().Result()
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 	return client
 }

@@ -26,7 +26,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 
-	GetAll(bool) (models.Questions, error)
+	GetAll() (models.QuestionsWithCount, error)
 	Get(string) (*models.Question, error)
 	Create(*models.Question) error
 	Update(*models.Question) error
@@ -39,10 +39,10 @@ type IService interface {
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
-
 	getDB() *bun.DB
+
 	create(*models.Question) error
-	getAll(bool) (models.Questions, error)
+	getAll() (models.QuestionsWithCount, error)
 	get(string) (*models.Question, error)
 	update(*models.Question) error
 	delete(string) error
