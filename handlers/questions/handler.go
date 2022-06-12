@@ -26,11 +26,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	//published, err := strconv.ParseBool(c.Query("published"))
-	//if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-	//	return
-	//}
-	items, err := h.service.GetAll(true)
+	items, err := h.service.GetAll()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

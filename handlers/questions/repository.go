@@ -11,18 +11,28 @@ func (r *Repository) getDB() *bun.DB {
 	return r.db
 }
 
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *Repository) create(item *models.Question) (err error) {
 	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) getAll(published bool) (models.Questions, error) {
-	items := make(models.Questions, 0)
-	query := r.db.NewSelect().Model(&items).Relation("User.Human")
+func (r *Repository) getAll() (item models.QuestionsWithCount, err error) {
+	item.Questions = make(models.Questions, 0)
+	query := r.db.NewSelect().
+		Model(&item.Questions).
+		Relation("User.Human")
 	r.queryFilter.HandleQuery(query)
 
-	err := query.Scan(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(id string) (*models.Question, error) {
@@ -64,12 +74,4 @@ func (r *Repository) publish(id string) (err error) {
 		Where("id = ?", id).
 		Exec(r.ctx)
 	return err
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
-	if err != nil {
-		return err
-	}
-	return nil
 }

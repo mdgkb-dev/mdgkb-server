@@ -19,8 +19,9 @@ func (r *Repository) create(item *models.Division) (err error) {
 	return err
 }
 
-func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error) {
-	query := r.db.NewSelect().Model(&items).
+func (r *Repository) getAll() (item models.DivisionsWithCount, err error) {
+	item.Divisions = make(models.Divisions, 0)
+	query := r.db.NewSelect().Model(&item.Divisions).
 		Relation("Entrance.Building").
 		Relation("DivisionImages.FileInfo").
 		Relation("ContactInfo.Emails").
@@ -32,12 +33,9 @@ func (r *Repository) getAll(onlyShowed bool) (items models.Divisions, err error)
 		Relation("MedicalProfilesDivisions.MedicalProfile").
 		Relation("TreatDirection")
 
-	if onlyShowed {
-		query = query.Where("divisions_view.show = true")
-	}
 	r.queryFilter.HandleQuery(query)
-	err = query.Scan(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error) {
