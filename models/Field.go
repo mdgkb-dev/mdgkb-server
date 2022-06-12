@@ -11,6 +11,7 @@ type Field struct {
 	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
 	Order         uint          `bun:"field_order" json:"order"`
+	Comment       string        `json:"comment"`
 	Required      bool          `json:"required"`
 	Form          *Form         `bun:"rel:belongs-to" json:"form"`
 	FormID        uuid.NullUUID `bun:"type:uuid" json:"formId"`
