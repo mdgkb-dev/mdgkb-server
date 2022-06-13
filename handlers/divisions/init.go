@@ -29,7 +29,7 @@ type IService interface {
 
 	Create(*models.Division) error
 	GetAll() (models.DivisionsWithCount, error)
-	Get(string, bool) (*models.Division, error)
+	Get() (*models.Division, error)
 	Delete(string) error
 	Update(*models.Division) error
 	CreateComment(*models.DivisionComment) error
@@ -44,7 +44,7 @@ type IRepository interface {
 	getDB() *bun.DB
 	create(*models.Division) error
 	getAll() (models.DivisionsWithCount, error)
-	get(string, bool) (*models.Division, error)
+	get() (*models.Division, error)
 	delete(string) error
 	update(*models.Division) error
 	createComment(*models.DivisionComment) error

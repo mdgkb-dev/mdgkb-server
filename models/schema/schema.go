@@ -107,8 +107,10 @@ func createDoctorsSchema() map[string]string {
 func createDivisionSchema() map[string]string {
 	return map[string]string{
 		"tableName":                    "divisions_view",
+		"id":                           "id",
 		"sortColumn":                   "name",
 		"key":                          "division",
+		"slug":                         "slug",
 		"name":                         "name",
 		"value":                        "id",
 		"label":                        "name",

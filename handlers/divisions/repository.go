@@ -39,7 +39,7 @@ func (r *Repository) getAll() (item models.DivisionsWithCount, err error) {
 	return item, err
 }
 
-func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error) {
+func (r *Repository) get() (*models.Division, error) {
 	item := models.Division{}
 	q := r.db.NewSelect().
 		Model(&item).
@@ -76,7 +76,7 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("Doctors.MedicalProfile").
 		Relation("Vacancies").
 		Relation("VisitingRules").
-		Where("divisions_view.slug = ?", slug).
+		Where("divisions_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).
 		Scan(r.ctx)
 
 	return &item, err
