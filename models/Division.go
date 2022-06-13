@@ -48,6 +48,8 @@ type Division struct {
 	MedicalProfilesDivisions MedicalProfilesDivisions `bun:"rel:has-many" json:"medicalProfilesDivisions"`
 	TreatDirection           *TreatDirection          `bun:"rel:belongs-to" json:"treatDirection"`
 	TreatDirectionID         uuid.NullUUID            `bun:"type:uuid" json:"treatDirectionId"`
+	Chief                    *Doctor                  `bun:"rel:belongs-to" json:"chief"`
+	ChiefID                  uuid.NullUUID            `bun:"type:uuid" json:"chiefId"`
 }
 
 type Divisions []*Division
@@ -75,6 +77,9 @@ func (i *Division) SetForeignKeys() {
 	}
 	if i.Schedule != nil {
 		i.ScheduleId = i.Schedule.ID
+	}
+	if i.Chief != nil {
+		i.ChiefID = i.Chief.ID
 	}
 }
 

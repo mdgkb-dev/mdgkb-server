@@ -31,7 +31,8 @@ func (r *Repository) getAll() (item models.DivisionsWithCount, err error) {
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Websites").
 		Relation("MedicalProfilesDivisions.MedicalProfile").
-		Relation("TreatDirection")
+		Relation("TreatDirection").
+		Relation("Chief.Human")
 
 	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
@@ -58,7 +59,8 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("ContactInfo.Websites").
 		Relation("HospitalizationDoctor.Human").
 		Relation("MedicalProfilesDivisions.MedicalProfile").
-		Relation("TreatDirection")
+		Relation("TreatDirection").
+		Relation("Chief.Human")
 	//if onlyShowed {
 	q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
 		return query.
