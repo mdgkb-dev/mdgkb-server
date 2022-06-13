@@ -290,6 +290,7 @@ func createPostgraduateCourseSpecializationSchema() map[string]string {
 
 func createResidencyCourseSchema() map[string]string {
 	return map[string]string{
+		"id":            "id",
 		"tableName":     "residency_courses_view",
 		"value":         "id",
 		"key":           "residencyCourse",

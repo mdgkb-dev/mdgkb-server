@@ -29,11 +29,10 @@ func InitDB(conf config.DB) *bun.DB {
 }
 
 func createLogger(conf config.DB, db *bun.DB) {
-
 	log := logrus.New()
-	log.Level = logrus.ErrorLevel
+	log.Level = logrus.TraceLevel
 	if conf.LogPath != "" {
-		f, err := os.OpenFile(conf.LogPath, os.O_APPEND|os.O_CREATE|os.O_RDWR, 7777)
+		f, err := os.OpenFile(conf.LogPath, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0777)
 		if err != nil {
 			panic(err)
 		}
@@ -41,7 +40,15 @@ func createLogger(conf config.DB, db *bun.DB) {
 	} else {
 		log.SetOutput(os.Stdout)
 	}
-
+	log.SetFormatter(&logrus.JSONFormatter{
+		TimestampFormat:   "",
+		DisableTimestamp:  false,
+		DisableHTMLEscape: false,
+		DataKey:           "",
+		FieldMap:          nil,
+		CallerPrettyfier:  nil,
+		PrettyPrint:       false,
+	})
 	//defer f.Close()
 
 	//bun.SetLogger(log)
