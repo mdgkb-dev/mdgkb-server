@@ -108,8 +108,8 @@ func (s *Service) GetAll() (models.DivisionsWithCount, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id string, onlyShowed bool) (*models.Division, error) {
-	item, err := s.repository.get(id, onlyShowed)
+func (s *Service) Get() (*models.Division, error) {
+	item, err := s.repository.get()
 	if err != nil {
 		return nil, err
 	}
