@@ -74,7 +74,7 @@ func (r *Repository) get(slug string, onlyShowed bool) (*models.Division, error)
 		Relation("Doctors.MedicalProfile").
 		Relation("Vacancies").
 		Relation("VisitingRules").
-		Where("divisions_view.id = ?", slug).
+		Where("divisions_view.slug = ?", slug).
 		Scan(r.ctx)
 
 	return &item, err
