@@ -1,8 +1,9 @@
 package divisions
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 
 	"mdgkb/mdgkb-server/models"
 )
@@ -24,15 +25,12 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	showedAll := false
-	if len(c.Query("showed")) > 0 {
-		showedAll = true
-	}
+
 	err := h.service.setQueryFilter(c)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	items, err := h.service.GetAll(showedAll)
+	items, err := h.service.GetAll()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -40,11 +38,11 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	showedAll := false
-	if len(c.Query("showed")) > 0 {
-		showedAll = true
+	err := h.service.setQueryFilter(c)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	item, err := h.service.Get(c.Param("id"), showedAll)
+	item, err := h.service.Get()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

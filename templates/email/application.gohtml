@@ -7,9 +7,12 @@
         <p style="margin:0 30px 50px 30px; text-align:left; font-size:12px; line-height:14px; color:#343E5C;letter-spacing:1px">
             Статус вашей заявки изменён.<br>
             <b>Статус: {{.FormValue.FormStatus.Label }} </b>.<br>
-            Для доступа к личному кабинету необходимо авторизироваться в системе.<br>
+            Для доступа к личному кабинету необходимо авторизироваться в системе.
+            <br>
+            <br>
             <a href="{{.Host}}">Ссылка на сайт больницы</a>
-        </p>                                      
+            <a href="{{.Host}}/reject-email/{{.FormValue.User.ID.UUID}}/{{.FormValue.User.UUID}}">Отказаться от email-уведомлений</a>
+        </p>
     </td>
 </tr>
 {{ template "_footer"}}

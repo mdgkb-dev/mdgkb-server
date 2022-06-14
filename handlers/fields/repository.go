@@ -26,6 +26,7 @@ func (r *Repository) upsertMany(items models.Fields) (err error) {
 		Model(&items).
 		Set("name = EXCLUDED.name").
 		Set("required = EXCLUDED.required").
+		Set("comment = EXCLUDED.comment").
 		Set("field_order = EXCLUDED.field_order").
 		Set("form_id = EXCLUDED.form_id").
 		Set("form_pattern_id = EXCLUDED.form_pattern_id").

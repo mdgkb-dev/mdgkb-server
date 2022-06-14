@@ -1,8 +1,8 @@
 package formValues
 
 import (
-	"mdgkb/mdgkb-server/handlers/fieldsValues"
 	"mdgkb/mdgkb-server/handlers/children"
+	"mdgkb/mdgkb-server/handlers/fieldsValues"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
 )
@@ -10,6 +10,10 @@ import (
 func (s *Service) Upsert(item *models.FormValue) error {
 	usersService := users.CreateService(s.repository.getDB(), s.helper)
 	err := usersService.UpsertEmail(item.User)
+	if err != nil {
+		return err
+	}
+	item.User, err = usersService.Get(item.User.ID.UUID.String())
 	if err != nil {
 		return err
 	}
@@ -26,6 +30,9 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
 	if err != nil {
 		return err
+	}
+	if item.User.RejectEmail {
+		return nil
 	}
 	if item.FormStatus.SendEmail {
 		emailStruct := struct {

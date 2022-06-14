@@ -20,6 +20,8 @@ type User struct {
 	RoleID        uuid.NullUUID `bun:"type:uuid" json:"roleId"`
 	Questions     Questions     `bun:"rel:has-many" json:"questions"`
 
+	RejectEmail bool `json:"rejectEmail"`
+
 	Children          Children    `bun:"rel:has-many" json:"children"`
 	ChildrenForDelete []uuid.UUID `bun:"-" json:"childrenForDelete"`
 

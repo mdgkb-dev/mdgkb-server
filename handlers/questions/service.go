@@ -19,12 +19,8 @@ func (s *Service) Create(item *models.Question) error {
 	return nil
 }
 
-func (s *Service) GetAll(published bool) (models.Questions, error) {
-	items, err := s.repository.getAll(published)
-	if err != nil {
-		return nil, err
-	}
-	return items, nil
+func (s *Service) GetAll() (models.QuestionsWithCount, error) {
+	return s.repository.getAll()
 }
 
 func (s *Service) Get(id string) (*models.Question, error) {

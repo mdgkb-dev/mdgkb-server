@@ -85,8 +85,11 @@ func (r *Repository) emailExists(email string) (bool, error) {
 }
 
 func (r *Repository) update(item *models.User) (err error) {
-	_, err = r.db.NewUpdate().Model(item).OmitZero().
-		Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db.NewUpdate().Model(item).
+		OmitZero().
+		ExcludeColumn("password", "is_active", "role_id"). // all columns except col1
+		Where("id = ?", item.ID).
+		Exec(r.ctx)
 	return err
 }
 

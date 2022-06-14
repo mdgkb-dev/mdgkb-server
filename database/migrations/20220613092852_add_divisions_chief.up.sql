@@ -1,0 +1,2 @@
+ALTER TABLE divisions
+    ADD COLUMN chief_id uuid REFERENCES doctors(id) ON UPDATE CASCADE ON DELETE CASCADE;

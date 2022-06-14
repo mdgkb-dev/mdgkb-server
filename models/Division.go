@@ -48,6 +48,8 @@ type Division struct {
 	MedicalProfilesDivisions MedicalProfilesDivisions `bun:"rel:has-many" json:"medicalProfilesDivisions"`
 	TreatDirection           *TreatDirection          `bun:"rel:belongs-to" json:"treatDirection"`
 	TreatDirectionID         uuid.NullUUID            `bun:"type:uuid" json:"treatDirectionId"`
+	Chief                    *Doctor                  `bun:"rel:belongs-to" json:"chief"`
+	ChiefID                  uuid.NullUUID            `bun:"type:uuid" json:"chiefId"`
 }
 
 type Divisions []*Division
@@ -61,11 +63,24 @@ func (i Division) SetFilePath(fileID *string) *string {
 }
 
 func (i *Division) SetForeignKeys() {
-	i.HospitalizationContactInfoId = i.HospitalizationContactInfo.ID
-	i.ContactInfoID = i.ContactInfo.ID
-	i.HospitalizationDoctorID = i.HospitalizationDoctor.ID
-	i.TimetableId = i.Timetable.ID
-	i.ScheduleId = i.Schedule.ID
+	if i.HospitalizationContactInfo != nil {
+		i.HospitalizationContactInfoId = i.HospitalizationContactInfo.ID
+	}
+	if i.ContactInfo != nil {
+		i.ContactInfoID = i.ContactInfo.ID
+	}
+	if i.HospitalizationDoctor != nil {
+		i.HospitalizationDoctorID = i.HospitalizationDoctor.ID
+	}
+	if i.Timetable != nil {
+		i.TimetableId = i.Timetable.ID
+	}
+	if i.Schedule != nil {
+		i.ScheduleId = i.Schedule.ID
+	}
+	if i.Chief != nil {
+		i.ChiefID = i.Chief.ID
+	}
 }
 
 func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {
