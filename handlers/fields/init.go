@@ -3,8 +3,10 @@ package fields
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
-	"github.com/pro-assistance/pro-assister/helper"
 	"mime/multipart"
+
+	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/helper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -15,6 +17,7 @@ type IService interface {
 	Update(info *models.Field) error
 	Upsert(info *models.Field) error
 	UpsertMany(infos models.Fields) error
+	DeleteMany(uuid []uuid.UUID) error
 }
 
 type IRepository interface {
@@ -23,7 +26,7 @@ type IRepository interface {
 	update(info *models.Field) error
 	upsert(info *models.Field) error
 	upsertMany(infos models.Fields) error
-	//deleteMany([]string) error
+	deleteMany([]uuid.UUID) error
 }
 
 type IFilesService interface {

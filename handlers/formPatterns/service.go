@@ -1,10 +1,10 @@
 package formPatterns
 
 import (
-	"mdgkb/mdgkb-server/handlers/fields"
-	"mdgkb/mdgkb-server/models"
-
 	"github.com/gin-gonic/gin"
+	"mdgkb/mdgkb-server/handlers/fields"
+	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) GetAll() (models.FormPatterns, error) {
@@ -20,8 +20,12 @@ func (s *Service) Get(id string) (*models.FormPattern, error) {
 }
 
 func (s *Service) Create(item *models.FormPattern) error {
+	err := fileInfos.CreateService(s.repository.getDB()).Create(item.PersonalDataAgreement)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	err := s.repository.create(item)
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -35,16 +39,29 @@ func (s *Service) Create(item *models.FormPattern) error {
 }
 
 func (s *Service) Update(item *models.FormPattern) error {
+	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.PersonalDataAgreement)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
-	err := s.repository.update(item)
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}
 	item.SetIdForChildren()
 
-	err = fields.CreateService(s.repository.getDB()).UpsertMany(item.Fields)
-	if err != nil {
-		return err
+	fieldsService := fields.CreateService(s.repository.getDB())
+	if len(item.Fields) > 0 {
+		err = fieldsService.UpsertMany(item.Fields)
+		if err != nil {
+			return err
+		}
+	}
+	if len(item.FieldsForDelete) > 0 {
+		err = fieldsService.DeleteMany(item.FieldsForDelete)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

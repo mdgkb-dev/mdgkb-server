@@ -61,3 +61,14 @@ func (s *Service) Get(id *string) (*models.FormValue, error) {
 	}
 	return item, nil
 }
+
+func (s *Service) UpsertMany(items models.FormValues) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	return nil
+}

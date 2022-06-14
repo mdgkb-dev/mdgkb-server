@@ -16,6 +16,7 @@ func (r *Repository) upsert(item *models.FormValue) (err error) {
 		Set("id = EXCLUDED.id").
 		Set("created_at = EXCLUDED.created_at").
 		Set("is_new = EXCLUDED.is_new").
+		Set("viewed_by_user = EXCLUDED.viewed_by_user").
 		Set("user_id = EXCLUDED.user_id").
 		Set("form_status_id = EXCLUDED.form_status_id").
 		Set("child_id = EXCLUDED.child_id").
@@ -35,4 +36,12 @@ func (r *Repository) get(id *string) (*models.FormValue, error) {
 		Relation("FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Where("form_values.id = ?", *id).Scan(r.ctx)
 	return &item, err
+}
+
+func (r *Repository) upsertMany(items models.FormValues) (err error) {
+	_, err = r.db.NewInsert().On("conflict (id) do update").
+		Model(&items).
+		Set("viewed_by_user = EXCLUDED.viewed_by_user").
+		Exec(r.ctx)
+	return err
 }
