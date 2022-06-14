@@ -34,6 +34,19 @@ func (h *Handler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
+func (h *Handler) UpdateMany(c *gin.Context) {
+	var items models.FormValues
+	_, err := h.helper.HTTP.GetForm(c, &items)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.UpsertMany(items)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}
+
 func (h *Handler) DocumentsToPDF(c *gin.Context) {
 	id := c.Param("id")
 	item, err := h.service.Get(&id)

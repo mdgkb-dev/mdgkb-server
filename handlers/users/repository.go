@@ -52,6 +52,8 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("FormValues.PostgraduateApplication.PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
 		Relation("FormValues.ResidencyApplication.ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
 		Relation("FormValues.CandidateApplication.CandidateExam").
+		Relation("FormValues.VacancyResponse.Vacancy").
+		Relation("FormValues.ApplicationCar.Division").
 		Where("users.id = ?", id).
 		Scan(r.ctx)
 	return &item, err

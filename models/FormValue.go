@@ -11,6 +11,7 @@ type FormValue struct {
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	CreatedAt     time.Time     `json:"createdAt"`
 	IsNew         bool          `json:"isNew"`
+	ViewedByUser  bool          `json:"viewedByUser"`
 	EmailNotify   bool          `bun:"-" json:"emailNotify"`
 	User          *User         `bun:"rel:belongs-to" json:"user"`
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
@@ -28,6 +29,8 @@ type FormValue struct {
 	PostgraduateApplication *PostgraduateApplication `bun:"rel:has-one" json:"postgraduateApplication"`
 	CandidateApplication    *CandidateApplication    `bun:"rel:has-one" json:"candidateApplication"`
 	ResidencyApplication    *ResidencyApplication    `bun:"rel:has-one" json:"residencyApplication"`
+	ApplicationCar          *ApplicationCar          `bun:"rel:has-one" json:"applicationCar"`
+	VacancyResponse         *VacancyResponse         `bun:"rel:has-one" json:"vacancyResponse"`
 }
 
 type FormValues []*FormValue

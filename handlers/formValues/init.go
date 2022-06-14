@@ -12,18 +12,21 @@ import (
 
 type IHandler interface {
 	Update(c *gin.Context)
+	UpdateMany(c *gin.Context)
 	Get(c *gin.Context)
 	DocumentsToPDF(c *gin.Context)
 }
 
 type IService interface {
 	Upsert(info *models.FormValue) error
+	UpsertMany(models.FormValues) error
 	Get(*string) (*models.FormValue, error)
 }
 
 type IRepository interface {
 	getDB() *bun.DB
 	upsert(info *models.FormValue) error
+	upsertMany(models.FormValues) error
 	get(*string) (*models.FormValue, error)
 }
 
