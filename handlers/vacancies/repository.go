@@ -69,7 +69,7 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 		Relation("FormPattern.DefaultFormStatus").
 		Relation("FormPattern.FormStatusGroup").
 		Relation("FormPattern.Fields.ValueType").
-		Relation("FormPattern.PersonalDataAgreement").
+		// Relation("FormPattern.PersonalDataAgreement").
 		Where("vacancies_view.id = ?", *id).
 		Scan(r.ctx)
 	return &item, err

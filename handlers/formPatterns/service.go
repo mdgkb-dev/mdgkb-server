@@ -50,9 +50,18 @@ func (s *Service) Update(item *models.FormPattern) error {
 	}
 	item.SetIdForChildren()
 
-	err = fields.CreateService(s.repository.getDB()).UpsertMany(item.Fields)
-	if err != nil {
-		return err
+	fieldsService := fields.CreateService(s.repository.getDB())
+	if len(item.Fields) > 0 {
+		err = fieldsService.UpsertMany(item.Fields)
+		if err != nil {
+			return err
+		}
+	}
+	if len(item.FieldsForDelete) > 0 {
+		err = fieldsService.DeleteMany(item.FieldsForDelete)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
