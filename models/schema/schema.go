@@ -17,6 +17,7 @@ type Schema struct {
 	VacancyResponse                  map[string]string `json:"vacancyResponse"`
 	DpoCourseSpecialization          map[string]string `json:"dpoCourseSpecialization"`
 	DpoApplication                   map[string]string `json:"dpoApplication"`
+	ResidencyApplication             map[string]string `json:"residencyApplication"`
 	PostgraduateCourse               map[string]string `json:"postgraduateCourse"`
 	ResidencyCourse                  map[string]string `json:"residencyCourse"`
 	EducationPublicDocumentType      map[string]string `json:"educationPublicDocumentType"`
@@ -51,6 +52,7 @@ func CreateSchema() Schema {
 		VacancyResponse:                  createVacancyResponseSchema(),
 		DpoCourseSpecialization:          createDpoCourseSpecializationSchema(),
 		DpoApplication:                   createDpoApplicationsSchema(),
+		ResidencyApplication:             createResidencyApplicationsSchema(),
 		PostgraduateCourse:               createPostgraduateCourseSchema(),
 		ResidencyCourse:                  createResidencyCourseSchema(),
 		EducationPublicDocumentType:      createEducationPublicDocumentTypeSchema(),
@@ -189,6 +191,18 @@ func createDpoApplicationsSchema() map[string]string {
 		"createdAt":    "created_at",
 		"isNmo":        "is_nmo",
 		"formStatusId": "form_status_id",
+	}
+}
+
+func createResidencyApplicationsSchema() map[string]string {
+	return map[string]string{
+		"tableName":    "residency_applications_view",
+		"key":          "residencyApplication",
+		"id":           "id",
+		"createdAt":    "created_at",
+		"formStatusId": "form_status_id",
+		"email":        "email",
+		"fullName":    "full_name",
 	}
 }
 
@@ -415,6 +429,8 @@ func createFormStatusSchema() map[string]string {
 		"id":                "id",
 		"value":             "id",
 		"formStatusGroupId": "form_status_group_id",
+		"label":             "label",
+		"sortColumn":        "label",
 	}
 }
 

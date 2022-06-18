@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.ResidencyApplications, error) {
+func (s *Service) GetAll() (models.ResidencyApplicationsWithCount, error) {
 	return s.repository.getAll()
 }
 

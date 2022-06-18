@@ -6,7 +6,7 @@ import (
 )
 
 type ResidencyApplication struct {
-	bun.BaseModel `bun:"residency_applications,select:residency_applications,alias:residency_applications"`
+	bun.BaseModel `bun:"residency_applications,select:residency_applications_view,alias:residency_applications_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	ResidencyCourse   *ResidencyCourse `bun:"rel:belongs-to" json:"residencyCourse"`
@@ -17,6 +17,11 @@ type ResidencyApplication struct {
 }
 
 type ResidencyApplications []*ResidencyApplication
+
+type ResidencyApplicationsWithCount struct {
+	ResidencyApplications ResidencyApplications `json:"residencyApplications"`
+	Count                 int                   `json:"count"`
+}
 
 func (item *ResidencyApplication) SetForeignKeys() {
 	item.ResidencyCourseID = item.ResidencyCourse.ID
