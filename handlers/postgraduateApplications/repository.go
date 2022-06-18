@@ -20,10 +20,10 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (models.PostgraduateApplications, error) {
-	items := make(models.PostgraduateApplications, 0)
+func (r *Repository) getAll() (item models.PostgraduateApplicationsWithCount, err error) {
+	item.PostgraduateApplications = make(models.PostgraduateApplications, 0)
 	query := r.db.NewSelect().
-		Model(&items).
+		Model(&item.PostgraduateApplications).
 		Relation("PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field").
@@ -31,8 +31,8 @@ func (r *Repository) getAll() (models.PostgraduateApplications, error) {
 		Relation("FormValue.User.Human")
 
 	r.queryFilter.HandleQuery(query)
-	err := query.Scan(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(id *string) (*models.PostgraduateApplication, error) {
@@ -47,15 +47,15 @@ func (r *Repository) get(id *string) (*models.PostgraduateApplication, error) {
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
-		Where("postgraduate_applications.id = ?", *id).Scan(r.ctx)
+		Where("postgraduate_applications_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 
 func (r *Repository) emailExists(email string, courseId string) (bool, error) {
 	exists, err := r.db.NewSelect().Model((*models.PostgraduateApplication)(nil)).
-		Join("JOIN form_values ON postgraduate_applications.form_value_id = form_values.id").
+		Join("JOIN form_values ON postgraduate_applications_view.form_value_id = form_values.id").
 		Join("JOIN users ON users.id = form_values.user_id and users.email = ?", email).
-		Where("postgraduate_applications.postgraduate_course_id = ?", courseId).Exists(r.ctx)
+		Where("postgraduate_applications_view.postgraduate_course_id = ?", courseId).Exists(r.ctx)
 	return exists, err
 }
 

@@ -18,6 +18,11 @@ type DpoApplication struct {
 
 type DpoApplications []*DpoApplication
 
+type DpoApplicationsWithCount struct {
+	DpoApplications DpoApplications `json:"dpoApplications"`
+	Count           int             `json:"count"`
+}
+
 func (item *DpoApplication) SetForeignKeys() {
 	item.DpoCourseID = item.DpoCourse.ID
 	item.FormValueID = item.FormValue.ID

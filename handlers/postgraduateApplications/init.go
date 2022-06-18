@@ -23,7 +23,7 @@ type IHandler interface {
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
-	GetAll() (models.PostgraduateApplications, error)
+	GetAll() (models.PostgraduateApplicationsWithCount, error)
 	Get(*string) (*models.PostgraduateApplication, error)
 	EmailExists(string, string) (bool, error)
 	Create(*models.PostgraduateApplication) error
@@ -34,7 +34,7 @@ type IService interface {
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
-	getAll() (models.PostgraduateApplications, error)
+	getAll() (models.PostgraduateApplicationsWithCount, error)
 	get(*string) (*models.PostgraduateApplication, error)
 	emailExists(string, string) (bool, error)
 	create(*models.PostgraduateApplication) error

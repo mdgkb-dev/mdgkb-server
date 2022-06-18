@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.DpoApplications, error) {
+func (s *Service) GetAll() (models.DpoApplicationsWithCount, error) {
 	return s.repository.getAll()
 }
 
