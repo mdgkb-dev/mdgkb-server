@@ -6,7 +6,7 @@ import (
 )
 
 type ApplicationCar struct {
-	bun.BaseModel `bun:"applications_cars,alias:applications_cars"`
+	bun.BaseModel `bun:"applications_cars,select:applications_cars_view,alias:applications_cars_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`

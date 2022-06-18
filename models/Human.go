@@ -13,15 +13,15 @@ type Human struct {
 	bun.BaseModel `bun:"humans,alias:humans"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
+	Surname       string        `json:"surname"`
+	Patronymic    string        `json:"patronymic"`
+	Snils         string        `json:"snils"`
+	IsMale        bool          `json:"isMale"`
+	DateBirth     *time.Time    `json:"dateBirth,omitempty"`
+	Slug          string        `json:"slug"`
 
 	Photo   *FileInfo     `bun:"rel:belongs-to" json:"photo"`
 	PhotoID uuid.NullUUID `bun:"type:uuid" json:"photoId"`
-
-	Surname    string     `json:"surname"`
-	Patronymic string     `json:"patronymic"`
-	IsMale     bool       `json:"isMale"`
-	DateBirth  *time.Time `json:"dateBirth,omitempty"`
-	Slug       string     `json:"slug"`
 
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`

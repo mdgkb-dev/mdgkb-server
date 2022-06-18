@@ -24,9 +24,10 @@ func (r *Repository) getAll() (item models.ApplicationsCarsWithCount, err error)
 	query := r.db.NewSelect().Model(&item.ApplicationsCars).
 		Relation("Gate").
 		Relation("Division").
-		// Relation("FormValue.Child.Human").
+		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus")
+	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }
@@ -42,7 +43,7 @@ func (r *Repository) get(id *string) (*models.ApplicationCar, error) {
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
-		Where("applications_cars.id = ?", *id).Scan(r.ctx)
+		Where("applications_cars_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 

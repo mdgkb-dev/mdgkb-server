@@ -19,10 +19,10 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (models.DpoApplications, error) {
-	items := make(models.DpoApplications, 0)
+func (r *Repository) getAll() (item models.DpoApplicationsWithCount, err error) {
+	item.DpoApplications = make(models.DpoApplications, 0)
 	query := r.db.NewSelect().
-		Model(&items).
+		Model(&item.DpoApplications).
 		Relation("DpoCourse").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field").
@@ -30,8 +30,8 @@ func (r *Repository) getAll() (models.DpoApplications, error) {
 		Relation("FormValue.User.Human")
 
 	r.queryFilter.HandleQuery(query)
-	err := query.Scan(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(id *string) (*models.DpoApplication, error) {
