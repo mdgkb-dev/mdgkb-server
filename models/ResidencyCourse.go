@@ -21,6 +21,8 @@ type ResidencyCourse struct {
 	ResidencyCoursesTeachers                 ResidencyCoursesTeachers        `bun:"rel:has-many" json:"residencyCoursesTeachers"`
 	ResidencyCoursesTeachersForDelete        []uuid.UUID                     `bun:"-" json:"residencyCoursesForDelete"`
 
+	ResidencyApplications ResidencyApplications `bun:"rel:has-many" json:"residencyApplications"`
+
 	StartYear   *EducationYear `bun:"rel:belongs-to" json:"startYear"`
 	StartYearID uuid.NullUUID  `bun:"type:uuid" json:"startYearId"`
 

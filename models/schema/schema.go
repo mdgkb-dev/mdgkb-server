@@ -189,15 +189,15 @@ func createDpoCourseSchema() map[string]string {
 
 func createApplicationsCarsSchema() map[string]string {
 	return map[string]string{
-		"tableName":    "applications_cars_view",
-		"key":          "applicationCar",
-		"id":           "id",
-		"createdAt":    "created_at",
-		"formStatusId": "form_status_id",
-		"email":        "email",
+		"tableName":     "applications_cars_view",
+		"key":           "applicationCar",
+		"id":            "id",
+		"createdAt":     "created_at",
+		"formStatusId":  "form_status_id",
+		"email":         "email",
 		"childFullName": "child_full_name",
-		"gateName":     "gate_name",
-		"divisionName": "division_name",
+		"gateName":      "gate_name",
+		"divisionName":  "division_name",
 	}
 }
 
@@ -217,14 +217,19 @@ func createDpoApplicationsSchema() map[string]string {
 
 func createResidencyApplicationsSchema() map[string]string {
 	return map[string]string{
-		"tableName":    "residency_applications_view",
-		"key":          "residencyApplication",
-		"id":           "id",
-		"createdAt":    "created_at",
-		"formStatusId": "form_status_id",
-		"email":        "email",
-		"fullName":     "full_name",
-		"courseName":   "course_name",
+		"tableName":          "residency_applications_view",
+		"key":                "residencyApplication",
+		"id":                 "id",
+		"createdAt":          "created_at",
+		"formStatusId":       "form_status_id",
+		"email":              "email",
+		"pointsAchievements": "points_achievements",
+		"pointsEntrance":     "points_entrance",
+		"pointsSum":          "points_sum",
+		"startYear":          "start_year",
+		"endYear":            "end_year",
+		"fullName":           "full_name",
+		"courseName":         "course_name",
 	}
 }
 

@@ -71,3 +71,14 @@ func (r *Repository) update(item *models.ResidencyApplication) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) upsertMany(items models.ResidencyApplications) (err error) {
+	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
+		Model(&items).
+		Set("id = EXCLUDED.id").
+		Set("residency_course_id = EXCLUDED.residency_course_id").
+		Set("points_achievements = EXCLUDED.points_achievements").
+		Set("points_entrance = EXCLUDED.points_entrance").
+		Exec(r.ctx)
+	return err
+}

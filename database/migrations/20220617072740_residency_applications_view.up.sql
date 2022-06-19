@@ -1,4 +1,4 @@
--- drop view residency_applications_view;
+--drop view residency_applications_view;
 
 create
 or replace view residency_applications_view as

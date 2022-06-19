@@ -59,6 +59,17 @@ func (s *Service) Update(item *models.ResidencyApplication) error {
 	return nil
 }
 
+func (s *Service) UpsertMany(items models.ResidencyApplications) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)
 }

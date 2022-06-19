@@ -18,6 +18,7 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+	UpsertMany(c *gin.Context)
 }
 
 type IService interface {
@@ -27,6 +28,7 @@ type IService interface {
 	EmailExists(string, string) (bool, error)
 	Create(*models.ResidencyApplication) error
 	Update(*models.ResidencyApplication) error
+	UpsertMany(models.ResidencyApplications) error
 	Delete(*string) error
 }
 
@@ -38,6 +40,7 @@ type IRepository interface {
 	emailExists(string, string) (bool, error)
 	create(*models.ResidencyApplication) error
 	update(*models.ResidencyApplication) error
+	upsertMany(models.ResidencyApplications) (err error)
 	delete(*string) error
 }
 
