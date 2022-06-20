@@ -2,10 +2,12 @@ package doctors
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -47,6 +49,7 @@ type IService interface {
 	UpsertMany(models.Doctors) error
 	CreateSlugs() error
 	Search(string) (models.Doctors, error)
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
@@ -66,6 +69,7 @@ type IRepository interface {
 	removeComment(string) error
 	upsertMany(models.Doctors) error
 	search(string) (models.Doctors, error)
+	deleteMany([]uuid.UUID) error
 }
 
 type IFilesService interface {
