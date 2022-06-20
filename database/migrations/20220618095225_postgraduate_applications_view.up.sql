@@ -1,4 +1,4 @@
-drop view postgraduate_applications_view;
+--drop view postgraduate_applications_view;
 
 create
 or replace view postgraduate_applications_view as
