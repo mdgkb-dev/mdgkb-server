@@ -1,6 +1,7 @@
 package formValues
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/fieldsValues"
 	"mdgkb/mdgkb-server/handlers/users"
@@ -9,10 +10,13 @@ import (
 
 func (s *Service) Upsert(item *models.FormValue) error {
 	usersService := users.CreateService(s.repository.getDB(), s.helper)
+	fmt.Println(item.User.ID)
 	err := usersService.UpsertEmail(item.User)
 	if err != nil {
 		return err
 	}
+
+	fmt.Println(item.User.ID)
 	item.User, err = usersService.Get(item.User.ID.UUID.String())
 	if err != nil {
 		return err

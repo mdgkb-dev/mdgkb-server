@@ -1,5 +1,7 @@
 alter table residency_applications
 add column points_achievements int,
+add column paid boolean,
+add column main boolean,
 add column points_entrance int;
 
 drop view residency_applications_view;
