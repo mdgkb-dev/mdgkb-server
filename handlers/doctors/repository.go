@@ -4,6 +4,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 
 	_ "github.com/go-pg/pg/v10/orm"
@@ -170,4 +171,12 @@ func (r *Repository) search(search string) (models.Doctors, error) {
 		WhereOr("lower(regexp_replace(human.patronymic, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", "%"+search+"%").
 		Scan(r.ctx)
 	return items, err
+}
+
+func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
+	_, err = r.db.NewDelete().
+		Model((*models.Doctor)(nil)).
+		Where("id IN (?)", bun.In(idPool)).
+		Exec(r.ctx)
+	return err
 }

@@ -13,6 +13,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (s *Service) Create(item *models.Doctor) error {
@@ -226,4 +227,11 @@ func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 func (s *Service) Search(query string) (models.Doctors, error) {
 	queryRu := s.helper.Util.TranslitToRu(query)
 	return s.repository.search(queryRu)
+}
+
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+	if len(idPool) == 0 {
+		return nil
+	}
+	return s.repository.deleteMany(idPool)
 }
