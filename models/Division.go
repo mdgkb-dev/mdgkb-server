@@ -14,12 +14,13 @@ type Division struct {
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
 
-	Address                 string    `json:"address"`
-	Slug                    string    `json:"slug"`
-	ShowCommonVisitingRules bool      `bun:"default:true" json:"showCommonVisitingRules"`
-	Doctors                 Doctors   `bun:"rel:has-many" json:"doctors"`
-	Vacancies               Vacancies `bun:"rel:has-many" json:"vacancies"`
-	Show                    bool      `json:"show"`
+	Address                 string      `json:"address"`
+	Slug                    string      `json:"slug"`
+	ShowCommonVisitingRules bool        `bun:"default:true" json:"showCommonVisitingRules"`
+	Doctors                 Doctors     `bun:"rel:has-many" json:"doctors"`
+	DoctorsForDelete        []uuid.UUID `bun:"-" json:"doctorsForDelete"`
+	Vacancies               Vacancies   `bun:"rel:has-many" json:"vacancies"`
+	Show                    bool        `json:"show"`
 
 	DivisionPaidServices          DivisionPaidServices `bun:"rel:has-many" json:"divisionPaidServices"`
 	DivisionPaidServicesForDelete []uuid.UUID          `bun:"-" json:"divisionPaidServicesForDelete"`

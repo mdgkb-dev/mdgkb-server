@@ -77,6 +77,10 @@ func (s *Service) Update(item *models.Division) error {
 	item.SetForeignKeys()
 
 	doctorsService := doctors.CreateService(s.repository.getDB(), s.helper)
+	err = doctorsService.DeleteMany(item.DoctorsForDelete)
+	if err != nil {
+		return err
+	}
 	err = doctorsService.UpsertMany(item.Doctors)
 	if err != nil {
 		return err
