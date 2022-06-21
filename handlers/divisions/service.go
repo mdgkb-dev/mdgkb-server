@@ -1,6 +1,7 @@
 package divisions
 
 import (
+	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/contactInfo"
 	"mdgkb/mdgkb-server/handlers/divisionImages"
 	"mdgkb/mdgkb-server/handlers/doctors"
@@ -125,10 +126,22 @@ func (s *Service) Delete(id string) error {
 }
 
 func (s *Service) CreateComment(item *models.DivisionComment) error {
+	commentsService := comments.CreateService(s.repository.getDB(), s.helper)
+	err := commentsService.UpsertOne(item.Comment)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	return s.repository.createComment(item)
 }
 
 func (s *Service) UpdateComment(item *models.DivisionComment) error {
+	commentsService := comments.CreateService(s.repository.getDB(), s.helper)
+	err := commentsService.UpdateOne(item.Comment)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	return s.repository.updateComment(item)
 }
 

@@ -51,8 +51,7 @@ func (r *Repository) createComment(item *models.NewsComment) error {
 }
 
 func (r *Repository) updateComment(item *models.NewsComment) error {
-	_, err := r.db.NewUpdate().Model(item.Comment).Where("id = ?", item.Comment.ID).Exec(r.ctx)
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 

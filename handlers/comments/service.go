@@ -1,6 +1,7 @@
 package comments
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/models"
@@ -78,6 +79,11 @@ func (s *Service) UpsertOne(item *models.Comment) error {
 		return err
 	}
 	s.helper.Broker.SendEvent("comment-create", newComment)
+	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	if err != nil {
+		return err
+	}
+	fmt.Println("Comment-crest")
 	return nil
 }
 

@@ -2,6 +2,7 @@ package doctors
 
 import (
 	certificates "mdgkb/mdgkb-server/handlers/certificates"
+	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/doctorPaidServices"
 	"mdgkb/mdgkb-server/handlers/educationalOrganizationAcademics"
 	"mdgkb/mdgkb-server/handlers/educations"
@@ -187,10 +188,22 @@ func (s *Service) Delete(id string) error {
 }
 
 func (s *Service) CreateComment(item *models.DoctorComment) error {
+	commentsService := comments.CreateService(s.repository.getDB(), s.helper)
+	err := commentsService.UpsertOne(item.Comment)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	return s.repository.createComment(item)
 }
 
 func (s *Service) UpdateComment(item *models.DoctorComment) error {
+	commentsService := comments.CreateService(s.repository.getDB(), s.helper)
+	err := commentsService.UpdateOne(item.Comment)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
 	return s.repository.updateComment(item)
 }
 

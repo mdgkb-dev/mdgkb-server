@@ -134,15 +134,12 @@ func (r *Repository) update(item *models.Doctor) (err error) {
 }
 
 func (r *Repository) createComment(item *models.DoctorComment) error {
-	_, err := r.db.NewInsert().Model(item.Comment).Exec(r.ctx)
-	item.CommentId = item.Comment.ID
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) updateComment(item *models.DoctorComment) error {
-	_, err := r.db.NewUpdate().Model(item.Comment).Where("id = ?", item.Comment.ID).Exec(r.ctx)
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
