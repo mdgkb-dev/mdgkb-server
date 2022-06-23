@@ -27,10 +27,16 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 		"item.FormValue.User.Human.PlaceBirth":  item.FormValue.User.Human.PlaceBirth,
 		"item.FormValue.User.Human.Citizenship": item.FormValue.User.Human.Citizenship,
 		"item.FormValue.User.Human.Snils":       item.FormValue.User.Human.Snils,
+		"item.FormValue.User.Human.PostIndex":   item.FormValue.User.Human.PostIndex,
+		"item.FormValue.User.Human.Address":     item.FormValue.User.Human.Address,
+		"item.FormValue.User.Email":             item.FormValue.User.Email,
+		"item.FormValue.User.Phone":             item.FormValue.User.Phone,
 		"CourseName":                            item.GetCourseName(),
 		"DiplomaSeries":                         item.FormValue.GetFieldValueByCode("DiplomaSeries"),
 		"DiplomaNumber":                         item.FormValue.GetFieldValueByCode("DiplomaNumber"),
-		"DiplomaDate":                           item.FormValue.GetFieldValueByCode("DiplomaDate").(time.Time).Format("01.02.2006"),
+		"DiplomaDate":                           item.FormValue.GetFieldValueByCode("DiplomaDate").(*time.Time).Format("01.02.2006"),
+		"UniversityEndYear":                     item.FormValue.GetFieldValueByCode("UniversityEndYear").(*time.Time).Format("2006"),
+		"UniversityName":                        item.FormValue.GetFieldValueByCode("UniversityName").(string),
 	}
 	m["FreeApplication"] = point
 	m["PaidApplication"] = ""

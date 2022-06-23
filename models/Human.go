@@ -17,6 +17,9 @@ type Human struct {
 	Patronymic    string        `json:"patronymic"`
 	Snils         string        `json:"snils"`
 
+	PostIndex string `json:"postIndex"`
+	Address   string `json:"address"`
+
 	IsMale      bool       `json:"isMale"`
 	DateBirth   *time.Time `json:"dateBirth"`
 	PlaceBirth  string     `json:"placeBirth"`
