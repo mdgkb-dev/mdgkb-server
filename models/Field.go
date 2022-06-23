@@ -10,6 +10,7 @@ type Field struct {
 	bun.BaseModel `bun:"fields,alias:fields"`
 	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
+	Code          string        `json:"code"`
 	Order         uint          `bun:"field_order" json:"order"`
 	Comment       string        `json:"comment"`
 	Required      bool          `json:"required"`

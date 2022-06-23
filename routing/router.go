@@ -46,6 +46,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/paidServices"
 	"mdgkb/mdgkb-server/handlers/partnerTypes"
 	"mdgkb/mdgkb-server/handlers/partners"
+	"mdgkb/mdgkb-server/handlers/pointsAchievements"
 	"mdgkb/mdgkb-server/handlers/postgraduateApplications"
 	"mdgkb/mdgkb-server/handlers/postgraduateCourses"
 	"mdgkb/mdgkb-server/handlers/postgraduateDocumentTypes"
@@ -115,6 +116,7 @@ import (
 	paidServicesRouter "mdgkb/mdgkb-server/routing/paidServices"
 	partnerTypesRouter "mdgkb/mdgkb-server/routing/partnerTypes"
 	partnersRouter "mdgkb/mdgkb-server/routing/partners"
+	pointsAchievementsRouter "mdgkb/mdgkb-server/routing/pointsAchievements"
 	postgraduateApplicationsRouter "mdgkb/mdgkb-server/routing/postgraduateApplications"
 	postgraduateCoursesRouter "mdgkb/mdgkb-server/routing/postgraduateCourses"
 	postgraduateDocumentTypesRouter "mdgkb/mdgkb-server/routing/postgraduateDocumentTypes"
@@ -234,4 +236,5 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	educationYearsRouter.Init(api.Group("/education-years"), educationYears.CreateHandler(db, helper))
 	educationPublicDocumentTypesRouter.Init(api.Group("/education-public-document-types"), educationPublicDocumentTypes.CreateHandler(db, helper))
 	admissionCommitteeDocumentTypesRouter.Init(api.Group("/admission-committee-document-types"), admissionCommitteeDocumentTypes.CreateHandler(db, helper))
+	pointsAchievementsRouter.Init(api.Group("/points-achievements"), pointsAchievements.CreateHandler(db, helper))
 }

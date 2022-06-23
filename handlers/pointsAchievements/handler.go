@@ -1,9 +1,10 @@
-package residencyApplications
+package pointsAchievements
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -27,22 +28,13 @@ func (h *Handler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-func (h *Handler) EmailExists(c *gin.Context) {
-	item, err := h.service.EmailExists(c.Param("email"), c.Param("courseId"))
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, item)
-}
-
 func (h *Handler) Create(c *gin.Context) {
-	var item models.ResidencyApplication
-
-	files, err := h.helper.HTTP.GetForm(c, &item)
+	var item models.PointsAchievement
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	//err = h.filesService.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -50,17 +42,16 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	h.helper.Broker.SendEvent("residency-application-create", item)
 	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.ResidencyApplication
-	files, err := h.helper.HTTP.GetForm(c, &item)
+	var item models.PointsAchievement
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	//err = h.filesService.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -71,17 +62,21 @@ func (h *Handler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-func (h *Handler) UpsertMany(c *gin.Context) {
-	var items models.ResidencyApplications
-	err := c.Bind(&items)
+func (h *Handler) UpdateMany(c *gin.Context) {
+	var items models.PointsAchievements
+	//files, err := h.helper.HTTP.GetForm(c, &items)
+	//if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	//	return
+	//}
+	//err = h.filesService.Upload(c, &items, files)
+	//if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	//	return
+	//}
+	err := h.service.UpdateMany(items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	err = h.service.UpsertMany(items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, err)
+	c.JSON(http.StatusOK, items)
 }
 
 func (h *Handler) Delete(c *gin.Context) {
@@ -91,19 +86,4 @@ func (h *Handler) Delete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
-}
-
-func (h *Handler) FillApplicationTemplate(c *gin.Context) {
-	var item models.ResidencyApplication
-	err := c.Bind(&item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	doc, err := h.filesService.FillApplicationTemplate(&item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	//c.Header("Content-Description", "File Transfer")
-	//c.Header("Content-Disposition", "filename=\"response.docx\"")
-	c.Data(http.StatusOK, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", doc)
 }

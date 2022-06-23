@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -12,11 +13,18 @@ type ResidencyApplication struct {
 	PointsAchievements int `json:"pointsAchievements"`
 	PointsEntrance     int `json:"pointsEntrance"`
 
+	PrimaryAccreditation       bool   `json:"primaryAccreditation"`
+	PrimaryAccreditationPoints int    `json:"primaryAccreditationPoints"`
+	PrimaryAccreditationPlace  string `json:"primaryAccreditationPlace"`
+
 	Main bool `json:"main"`
 	Paid bool `json:"paid"`
 
 	ResidencyCourse   *ResidencyCourse `bun:"rel:belongs-to" json:"residencyCourse"`
 	ResidencyCourseID uuid.NullUUID    `bun:"type:uuid" json:"residencyCourseId"`
+
+	ResidencyApplicationPointsAchievements          ResidencyApplicationPointsAchievements `bun:"rel:has-many" json:"residencyApplicationPointsAchievements"`
+	ResidencyApplicationPointsAchievementsForDelete []uuid.UUID                            `bun:"-" json:"residencyApplicationPointsAchievementsForDelete"`
 
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
 	FormValueID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
@@ -36,8 +44,29 @@ func (item *ResidencyApplication) SetForeignKeys() {
 
 func (item *ResidencyApplication) SetFilePath(fileID *string) *string {
 	path := item.FormValue.SetFilePath(fileID)
-	return path
+	if path != nil {
+		return path
+	}
+	path = item.ResidencyApplicationPointsAchievements.SetFilePath(fileID)
+	if path != nil {
+		return path
+	}
+	return nil
 }
 
 func (item *ResidencyApplication) SetIdForChildren() {
+	for i := range item.ResidencyApplicationPointsAchievements {
+		item.ResidencyApplicationPointsAchievements[i].ResidencyApplicationID = item.ID
+	}
+}
+
+func (item *ResidencyApplication) GetCourseName() string {
+	name := ""
+	for _, course := range item.ResidencyCourse.ResidencyCoursesSpecializations {
+		if course.Main {
+			fmt.Println(course.Specialization.Name)
+			name = course.Specialization.Name
+		}
+	}
+	return name
 }

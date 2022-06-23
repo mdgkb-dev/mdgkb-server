@@ -1,4 +1,4 @@
-package residencyApplications
+package pointsAchievements
 
 import (
 	"context"
@@ -14,41 +14,35 @@ import (
 type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
-	EmailExists(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
+	UpdateMany(c *gin.Context)
 	Delete(c *gin.Context)
-	UpsertMany(c *gin.Context)
-
-	FillApplicationTemplate(c *gin.Context)
 }
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
-	GetAll() (models.ResidencyApplicationsWithCount, error)
-	Get(*string) (*models.ResidencyApplication, error)
-	EmailExists(string, string) (bool, error)
-	Create(*models.ResidencyApplication) error
-	Update(*models.ResidencyApplication) error
-	UpsertMany(models.ResidencyApplications) error
+	GetAll() (models.PointsAchievements, error)
+	Get(*string) (*models.PointsAchievement, error)
+	Create(*models.PointsAchievement) error
+	Update(*models.PointsAchievement) error
+	UpdateMany(models.PointsAchievements) error
 	Delete(*string) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
-	getAll() (models.ResidencyApplicationsWithCount, error)
-	get(*string) (*models.ResidencyApplication, error)
-	emailExists(string, string) (bool, error)
-	create(*models.ResidencyApplication) error
-	update(*models.ResidencyApplication) error
-	upsertMany(models.ResidencyApplications) (err error)
+	getAll() (models.PointsAchievements, error)
+	get(*string) (*models.PointsAchievement, error)
+	create(*models.PointsAchievement) error
+	update(*models.PointsAchievement) error
+	upsertMany(models.PointsAchievements) error
 	delete(*string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.ResidencyApplication, map[string][]*multipart.FileHeader) error
-	FillApplicationTemplate(*models.ResidencyApplication) ([]byte, error)
+	Upload(*gin.Context, *models.PointsAchievement, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

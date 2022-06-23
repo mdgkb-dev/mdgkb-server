@@ -3,6 +3,7 @@ package residencyApplications
 import (
 	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/handlers/meta"
+	"mdgkb/mdgkb-server/handlers/residencyApplicationsPointsAchievements"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -38,6 +39,16 @@ func (s *Service) Create(item *models.ResidencyApplication) error {
 	if err != nil {
 		return err
 	}
+	item.SetIdForChildren()
+	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.repository.getDB())
+	err = residencyApplicationsPointsAchievementsService.CreateMany(item.ResidencyApplicationPointsAchievements)
+	if err != nil {
+		return err
+	}
+	err = residencyApplicationsPointsAchievementsService.DeleteMany(item.ResidencyApplicationPointsAchievementsForDelete)
+	if err != nil {
+		return err
+	}
 	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
@@ -56,6 +67,15 @@ func (s *Service) Update(item *models.ResidencyApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
+	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.repository.getDB())
+	err = residencyApplicationsPointsAchievementsService.UpsertMany(item.ResidencyApplicationPointsAchievements)
+	if err != nil {
+		return err
+	}
+	err = residencyApplicationsPointsAchievementsService.DeleteMany(item.ResidencyApplicationPointsAchievementsForDelete)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

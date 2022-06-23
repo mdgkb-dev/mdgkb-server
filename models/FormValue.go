@@ -77,3 +77,22 @@ func (item *FormValue) GetFiles() []FileInfo {
 	}
 	return files
 }
+
+func (item *FormValue) GetFieldValueByCode(code string) interface{} {
+	var value interface{} = ""
+	for _, fieldValue := range item.FieldValues {
+		if fieldValue.Field.Code == code {
+			if fieldValue.Field.ValueType.Name == "string" {
+				value = fieldValue.ValueString
+			}
+			if fieldValue.Field.ValueType.Name == "number" {
+				value = fieldValue.ValueNumber
+			}
+			if fieldValue.Field.ValueType.Name == "date" {
+				value = fieldValue.ValueDate
+			}
+			break
+		}
+	}
+	return value
+}

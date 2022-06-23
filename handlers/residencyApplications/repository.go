@@ -25,6 +25,7 @@ func (r *Repository) getAll() (item models.ResidencyApplicationsWithCount, err e
 		Model(&item.ResidencyApplications).
 		Relation("ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
 		Relation("FormValue.FieldValues.File").
+		Relation("ResidencyApplicationPointsAchievements.PointsAchievement").
 		Relation("FormValue.FieldValues.Field").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("FormValue.User.Human")
@@ -45,6 +46,8 @@ func (r *Repository) get(id *string) (*models.ResidencyApplication, error) {
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Relation("ResidencyApplicationPointsAchievements.FileInfo").
+		Relation("ResidencyApplicationPointsAchievements.PointsAchievement").
 		Where("residency_applications_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

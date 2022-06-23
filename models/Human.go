@@ -16,9 +16,12 @@ type Human struct {
 	Surname       string        `json:"surname"`
 	Patronymic    string        `json:"patronymic"`
 	Snils         string        `json:"snils"`
-	IsMale        bool          `json:"isMale"`
-	DateBirth     *time.Time    `json:"dateBirth,omitempty"`
-	Slug          string        `json:"slug"`
+
+	IsMale      bool       `json:"isMale"`
+	DateBirth   *time.Time `json:"dateBirth"`
+	PlaceBirth  string     `json:"placeBirth"`
+	Citizenship string     `json:"citizenship"`
+	Slug        string     `json:"slug"`
 
 	Photo   *FileInfo     `bun:"rel:belongs-to" json:"photo"`
 	PhotoID uuid.NullUUID `bun:"type:uuid" json:"photoId"`

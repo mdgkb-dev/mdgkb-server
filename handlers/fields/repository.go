@@ -32,6 +32,7 @@ func (r *Repository) upsertMany(items models.Fields) (err error) {
 		Set("form_pattern_id = EXCLUDED.form_pattern_id").
 		Set("value_type_id = EXCLUDED.value_type_id").
 		Set("file_id = EXCLUDED.file_id").
+		Set("code = EXCLUDED.code").
 		Exec(r.ctx)
 	return err
 }
