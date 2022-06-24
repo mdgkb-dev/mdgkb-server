@@ -21,7 +21,9 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 
 func (r *Repository) getAll() (models.PointsAchievements, error) {
 	items := make(models.PointsAchievements, 0)
-	query := r.db.NewSelect().Model(&items)
+	query := r.db.NewSelect().
+		Model(&items).
+		Order("points_achievements_order")
 	err := query.Scan(r.ctx)
 	return items, err
 }
