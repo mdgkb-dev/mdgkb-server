@@ -23,22 +23,22 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	GetAll() (models.Gates, error)
-	Get(*string) (*models.Gate, error)
+	Get(string) (*models.Gate, error)
 	Create(*models.Gate) error
 	Update(*models.Gate) error
 	UpdateMany(models.Gates) error
-	Delete(*string) error
+	Delete(string) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	getDB() *bun.DB
 	getAll() (models.Gates, error)
-	get(*string) (*models.Gate, error)
+	get(string) (*models.Gate, error)
 	create(*models.Gate) error
 	update(*models.Gate) error
 	upsertMany(models.Gates) error
-	delete(*string) error
+	delete(string) error
 }
 
 type IFilesService interface {

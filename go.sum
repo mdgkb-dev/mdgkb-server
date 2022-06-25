@@ -227,6 +227,8 @@ github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINE
 github.com/pkg/sftp v1.13.1/go.mod h1:3HaPG6Dq1ILlpPZRO0HVMrsydcdLt6HRDccSgb87qRg=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/pro-assistance/pro-assister v0.0.51 h1:bbGc7o3kbqnZJZ07iZlQtz4AXPURgdSdwXpM119bscI=
+github.com/pro-assistance/pro-assister v0.0.51/go.mod h1:Uwn9cRRexbe5j188f6O88CgC8Qcl3F5D1UyyfuDEj7s=
 github.com/pro-assistance/pro-assister v0.0.83 h1:6dz1AOZsVts09krL8rxAiEVeoIG+0mzUdsyRLzzeSCg=
 github.com/pro-assistance/pro-assister v0.0.83/go.mod h1:zb7TPIWLh6mDgU5jALgB4HMJyx4frXE3kmcef0oGbKY=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
@@ -265,12 +267,17 @@ github.com/ugorji/go/codec v1.2.7/go.mod h1:WGN1fab3R1fzQlVQTkfxVtIBhWDRqOviHU95
 github.com/unidoc/unidoc v2.2.0+incompatible h1:AVVdSa11YROyMPxcAsp3j4Wz7zHSrXGjcVmHwgEvD+Y=
 github.com/unidoc/unidoc v2.2.0+incompatible/go.mod h1:xz5DRu10sgNndY6/LrqtXytidQ/aXastVtkIVSxIj3Q=
 github.com/uptrace/bun v0.3.9/go.mod h1:aL6D9vPw8DXaTQTwGrEPtUderBYXx7ShUmPfnxnqscw=
+github.com/uptrace/bun v1.1.4 h1:AtWqxVons0l8sNHE5y0uoWyBPo/CziCp6IVcRzstjBw=
+github.com/uptrace/bun v1.1.4/go.mod h1:aQbKvxs7/n9MMef/b8lYOh5Rwlo4Jd5A31E4HlYNqSc=
 github.com/uptrace/bun v1.1.5 h1:YqQvSXWXTOhz1uqkYO2F2XV6BqY9a/tXuA8lQlW0FjE=
 github.com/uptrace/bun v1.1.5/go.mod h1:Z2Pd3cRvNKbrYuL6Gp1XGjA9QEYz+rDz5KkEi9MZLnQ=
+github.com/uptrace/bun/dialect/sqlitedialect v1.1.4/go.mod h1:eNpD0dseDymRkIj1ahJ1jZUlp5NPj2Grv/lrCeIvtIA=
 github.com/uptrace/bun/dialect/sqlitedialect v1.1.5 h1:dCB4bBJbxJDtiAuIXtVDwJ0w8e38B0J42KnV9Pye8V0=
 github.com/uptrace/bun/dialect/sqlitedialect v1.1.5/go.mod h1:UFtR6BfHq+XVdeIdp5suEWfi8SuIgvAlo0miHCzUIHs=
+github.com/uptrace/bun/driver/pgdriver v1.1.4/go.mod h1:O/e06r5DQpi0c2c7Mpxa+aWKUM4p3NsmnjGJuKlAkvg=
 github.com/uptrace/bun/driver/pgdriver v1.1.5 h1:yzncHN/OU81JBI8SI98sOjTaNS/4kMOEgMOm6OO+1Vw=
 github.com/uptrace/bun/driver/pgdriver v1.1.5/go.mod h1:vt6JPw7j4UQ/pPWCLAt75XTHV4te58ayfyohHptXFu0=
+github.com/uptrace/bun/extra/bundebug v1.1.4/go.mod h1:iHwvVUmgmb80ymz894DfJL1XCvUXLzB8cH9NPJ8QgYs=
 github.com/uptrace/bun/extra/bundebug v1.1.5 h1:exf4y7l2YXuLzUqixOVuWEI/Fql6oy1zeUbK2HUtwtY=
 github.com/uptrace/bun/extra/bundebug v1.1.5/go.mod h1:hu22GRUV/DZK+Uf8ZjvZjLAzmN/z1Tqn5Mabdjq4Mlg=
 github.com/vmihailenco/bufpool v0.1.11 h1:gOq2WmBrq0i2yW5QJ16ykccQ4wH9UyEsgLm6czKAd94=

@@ -16,6 +16,8 @@ type ResidencyApplication struct {
 	PrimaryAccreditation       bool   `json:"primaryAccreditation"`
 	PrimaryAccreditationPoints int    `json:"primaryAccreditationPoints"`
 	PrimaryAccreditationPlace  string `json:"primaryAccreditationPlace"`
+	//EntranceExamPlace          string `json:"entranceExamPlace"`
+	//EntranceExamSpecialisation string `json:"entranceExamSpecialisation"`
 
 	Main bool `json:"main"`
 	Paid bool `json:"paid"`

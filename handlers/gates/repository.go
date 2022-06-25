@@ -29,19 +29,29 @@ func (r *Repository) getAll() (models.Gates, error) {
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.Gate, error) {
-	item := models.Gate{}
-	err := r.db.NewSelect().Model(&item).
+func (r *Repository) get(id string) (*models.Gate, error) {
+	item := new(models.Gate)
+	rows, err := r.db.
+		NewSelect().
+		Model((*models.Gate)(nil)).
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
-		Relation("FormPattern.Fields.File").
-		Relation("FormPattern.DefaultFormStatus").
-		Relation("FormPattern.FormStatusGroup").
-		Relation("FormPattern.Fields.ValueType").
+		//Relation("FormPattern.Fields.File").
+		//Relation("FormPattern.DefaultFormStatus").
+		//Relation("FormPattern.FormStatusGroup").
+		//Relation("FormPattern.Fields.ValueType").
 		Relation("FormPattern.PersonalDataAgreement").
-		Where("gates.id = ?", *id).Scan(r.ctx)
-	return &item, err
+		Where("gates.id = ?", id).
+		Rows(r.ctx)
+
+	for rows.Next() {
+		if err := r.db.ScanRow(r.ctx, rows, item); err != nil {
+			return nil, err
+		}
+	}
+
+	return item, err
 }
 
 func (r *Repository) create(item *models.Gate) (err error) {
@@ -49,8 +59,8 @@ func (r *Repository) create(item *models.Gate) (err error) {
 	return err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.Gate{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) delete(id string) (err error) {
+	_, err = r.db.NewDelete().Model(&models.Gate{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 

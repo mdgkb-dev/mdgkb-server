@@ -2,9 +2,11 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"github.com/uptrace/bun"
 )
 
 type FileInfo struct {
+	bun.BaseModel  `bun:"file_infos,alias:file_infos"`
 	ID             uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	OriginalName   string        `json:"originalName"`
 	FileSystemPath string        `json:"fileSystemPath"`
