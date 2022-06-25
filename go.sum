@@ -231,6 +231,8 @@ github.com/pro-assistance/pro-assister v0.0.51 h1:bbGc7o3kbqnZJZ07iZlQtz4AXPURgd
 github.com/pro-assistance/pro-assister v0.0.51/go.mod h1:Uwn9cRRexbe5j188f6O88CgC8Qcl3F5D1UyyfuDEj7s=
 github.com/pro-assistance/pro-assister v0.0.83 h1:6dz1AOZsVts09krL8rxAiEVeoIG+0mzUdsyRLzzeSCg=
 github.com/pro-assistance/pro-assister v0.0.83/go.mod h1:zb7TPIWLh6mDgU5jALgB4HMJyx4frXE3kmcef0oGbKY=
+github.com/pro-assistance/pro-assister v0.0.84-0.20220625132100-1e95dc6b2271 h1:okDY+C/R2VrL4MuzZynGFH/GsS+2PbhxdSznm5OcxUk=
+github.com/pro-assistance/pro-assister v0.0.84-0.20220625132100-1e95dc6b2271/go.mod h1:zb7TPIWLh6mDgU5jALgB4HMJyx4frXE3kmcef0oGbKY=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
