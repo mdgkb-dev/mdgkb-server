@@ -30,28 +30,18 @@ func (r *Repository) getAll() (models.Gates, error) {
 }
 
 func (r *Repository) get(id string) (*models.Gate, error) {
-	item := new(models.Gate)
-	rows, err := r.db.
-		NewSelect().
-		Model((*models.Gate)(nil)).
+	item := models.Gate{}
+	err := r.db.NewSelect().Model(&item).
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
-		//Relation("FormPattern.Fields.File").
-		//Relation("FormPattern.DefaultFormStatus").
-		//Relation("FormPattern.FormStatusGroup").
-		//Relation("FormPattern.Fields.ValueType").
+		Relation("FormPattern.Fields.File").
+		Relation("FormPattern.DefaultFormStatus").
+		Relation("FormPattern.FormStatusGroup").
+		Relation("FormPattern.Fields.ValueType").
 		Relation("FormPattern.PersonalDataAgreement").
-		Where("gates.id = ?", id).
-		Rows(r.ctx)
-
-	for rows.Next() {
-		if err := r.db.ScanRow(r.ctx, rows, item); err != nil {
-			return nil, err
-		}
-	}
-
-	return item, err
+		Where("gates.id = ?", id).Scan(r.ctx)
+	return &item, err
 }
 
 func (r *Repository) create(item *models.Gate) (err error) {
