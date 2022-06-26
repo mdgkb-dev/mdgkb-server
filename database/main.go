@@ -8,26 +8,19 @@ import (
 	"log"
 	"mdgkb/mdgkb-server/database/connect"
 	"mdgkb/mdgkb-server/database/migrations"
-	"mdgkb/mdgkb-server/database/seeding"
 
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/migrate"
 )
 
 func main() {
-	mode := flag.String("mode", "migration", "init/create")
 	action := flag.String("action", "", "init/create/createSql/run/rollback")
 	name := flag.String("name", "", "init/create/createSql/run/rollback")
 	flag.Parse()
 
 	db := getDb()
 	defer db.Close()
-	var migrator *migrate.Migrator
-	if *mode == "migration" {
-		migrator = migrate.NewMigrator(db, migrations.Migrations)
-	} else {
-		migrator = migrate.NewMigrator(db, seeding.Migrations)
-	}
+	migrator := migrate.NewMigrator(db, migrations.Migrations)
 	doAction(migrator, action, name)
 }
 
