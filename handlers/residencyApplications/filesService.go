@@ -1,9 +1,12 @@
 package residencyApplications
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -18,7 +21,7 @@ func (s *FilesService) Upload(c *gin.Context, item *models.ResidencyApplication,
 }
 
 func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication) ([]byte, error) {
-	const point = "✔"
+	const point = `✓`
 	m := map[string]interface{}{
 		"item.FormValue.User.Human.Surname":     item.FormValue.User.Human.Surname,
 		"item.FormValue.User.Human.Name":        item.FormValue.User.Human.Name,
@@ -51,5 +54,21 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 		m["AdditionalApplication"] = ""
 	}
 
+	m["PrimaryAccreditation"] = ""
+	m["PrimaryAccreditationNotPass"] = point
+	m["PrimaryAccreditationPlace"] = ""
+	m["PrimaryAccreditationPoints"] = ""
+	if item.PrimaryAccreditation {
+		m["PrimaryAccreditation"] = point
+		m["PrimaryAccreditationNotPass"] = ""
+		m["PrimaryAccreditationPoints"] = item.PrimaryAccreditationPoints
+		m["PrimaryAccreditationPlace"] = item.PrimaryAccreditationPlace
+	}
+	p := []string{}
+	for i, point := range item.ResidencyApplicationPointsAchievements {
+		p = append(p, strconv.Itoa(i+1)+". "+point.PointsAchievement.Name)
+	}
+	m["PointsAchievements"] = strings.Join(p, "\n")
+	fmt.Println(m["PointsAchievements"])
 	return s.helper.Templater.ReplaceDoc(m, "residencyApplication.docx")
 }
