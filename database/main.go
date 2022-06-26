@@ -14,13 +14,19 @@ import (
 )
 
 func main() {
+	mode := flag.String("mode", "migration", "init/create")
 	action := flag.String("action", "", "init/create/createSql/run/rollback")
 	name := flag.String("name", "", "init/create/createSql/run/rollback")
 	flag.Parse()
 
 	db := getDb()
 	defer db.Close()
-	migrator := migrate.NewMigrator(db, migrations.Migrations)
+	var migrator *migrate.Migrator
+	if *mode == "migration" {
+		migrator = migrate.NewMigrator(db, migrations.Migrations)
+	} else {
+		migrator = migrate.NewMigrator(db, migrations.Migrations)
+	}
 	doAction(migrator, action, name)
 }
 
