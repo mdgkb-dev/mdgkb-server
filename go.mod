@@ -10,7 +10,6 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/mmcloughlin/meow v0.0.0-20200201185800-3501c7c05d21
 	github.com/oiime/logrusbun v0.1.1
-	github.com/pro-assistance/pro-assister v0.0.84-0.20220626082232-1212610d8b4d
 	github.com/sirupsen/logrus v1.8.1
 	github.com/uptrace/bun v1.1.5
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.5
@@ -45,6 +44,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
+	github.com/pro-assistance/pro-assister v0.0.85 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
