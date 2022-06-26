@@ -11,6 +11,7 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/pgdriver"
+	"github.com/uptrace/bun/extra/bundebug"
 	"log"
 	"mdgkb/mdgkb-server/models"
 	"os"
@@ -50,7 +51,10 @@ func createLogger(conf config.DB, db *bun.DB) {
 		PrettyPrint:       false,
 	})
 	//defer f.Close()
-
+	db.AddQueryHook(bundebug.NewQueryHook(
+		bundebug.WithVerbose(true),
+		//bundebug.WithVerbose(false),
+	))
 	//bun.SetLogger(log)
 	db.AddQueryHook(logrusbun.NewQueryHook(logrusbun.QueryHookOptions{
 		LogSlow:         time.Second,

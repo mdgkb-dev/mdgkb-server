@@ -9,7 +9,7 @@ func (s *Service) GetAll() (models.Gates, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id *string) (*models.Gate, error) {
+func (s *Service) Get(id string) (*models.Gate, error) {
 	item, err := s.repository.get(id)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (s *Service) UpdateMany(items models.Gates) error {
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
+func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
 

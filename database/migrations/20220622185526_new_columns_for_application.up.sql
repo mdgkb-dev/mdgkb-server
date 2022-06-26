@@ -1,6 +1,6 @@
 alter table humans
-add column place_birth int,
-add column citizenship boolean;
+add column place_birth varchar,
+add column citizenship varchar;
 
 alter table residency_applications
 add column primary_accreditation boolean,

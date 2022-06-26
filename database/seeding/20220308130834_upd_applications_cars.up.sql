@@ -1,4 +1,0 @@
-insert into public.applications_cars (id, car_number, car_brand, hospitalization_date, division_id, gate_id, user_id, moved_in, moved_out)
-values  ('92c37829-7d19-4d5e-98a4-d6d6f323b1d0', '111111', 'Марка 1', '2022-03-08', null, '8ccf8e9b-b487-493e-b451-60b193181f07', '770e082b-6bc1-460e-91ed-1e251b46a26e', false, false),
-        ('458c14a0-49b8-461f-aa56-0e28165b2bee', '222222', 'Марка 2', '2022-03-07', null, '8ccf8e9b-b487-493e-b451-60b193181f07', '770e082b-6bc1-460e-91ed-1e251b46a26e', true, false),
-        ('2df596ec-f075-414a-8af2-fe5a1fbe9cdb', '333333', 'Марка 3', '2022-03-06', null, '8ccf8e9b-b487-493e-b451-60b193181f07', '770e082b-6bc1-460e-91ed-1e251b46a26e', true, true);

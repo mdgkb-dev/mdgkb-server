@@ -16,7 +16,7 @@ type FormPattern struct {
 	DefaultFormStatusID       uuid.NullUUID    `bun:"type:uuid" json:"defaultFormStatusId"`
 	WithPersonalDataAgreement bool             `json:"withPersonalDataAgreement"`
 	PersonalDataAgreement     *FileInfo        `bun:"rel:belongs-to" json:"personalDataAgreement"`
-	PersonalDataAgreementID   uuid.NullUUID    `bun:"type:uuid,nullzero,default:NULL" json:"personalDataAgreementId"`
+	PersonalDataAgreementID   uuid.NullUUID    `bun:"type:uuid" json:"personalDataAgreementId"`
 	Form
 }
 

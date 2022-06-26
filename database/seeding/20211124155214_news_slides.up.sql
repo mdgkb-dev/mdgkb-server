@@ -1,2 +1,0 @@
-insert into public.news_slides (id, title, content, color, news_slide_order, desktop_img_id, laptop_img_id, tablet_img_id, mobile_img_id)
-values  ('3de810ea-4f76-4493-afc5-020c2de81ab9', 'Лунц-Мазуринские чтения', 'Приглашаем принять участие молодых специалистов', '#FFFFFF', 3, '9699e8aa-7c11-4d63-9f66-f11cc3e6f99b', 'f3da8f76-326e-4ea2-867f-0bbb1c5169f9', 'dcffe912-a7be-4b72-bc14-e4ac770ea65c', '79387488-688f-42cb-89dc-46719680920f');

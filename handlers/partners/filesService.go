@@ -1,10 +1,9 @@
 package partners
 
 import (
+	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
-
-	"github.com/gin-gonic/gin"
 )
 
 func (s *FilesService) Upload(c *gin.Context, item *models.Partner, files map[string][]*multipart.FileHeader) (err error) {

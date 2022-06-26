@@ -1,2 +1,0 @@
-INSERT INTO public.timetable_patterns (id, description, title) VALUES ('bf1efac3-c810-4601-9b6c-10809b00f448', '', 'Стандарт');
-INSERT INTO public.timetable_patterns (id, description, title) VALUES ('29539ddd-a753-4022-9e35-f994b0f7c5d0', '', 'Круглосуточно');

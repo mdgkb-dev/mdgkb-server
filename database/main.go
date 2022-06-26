@@ -8,7 +8,6 @@ import (
 	"log"
 	"mdgkb/mdgkb-server/database/connect"
 	"mdgkb/mdgkb-server/database/migrations"
-	"mdgkb/mdgkb-server/database/seeding"
 
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/migrate"
@@ -26,7 +25,7 @@ func main() {
 	if *mode == "migration" {
 		migrator = migrate.NewMigrator(db, migrations.Migrations)
 	} else {
-		migrator = migrate.NewMigrator(db, seeding.Migrations)
+		migrator = migrate.NewMigrator(db, migrations.Migrations)
 	}
 	doAction(migrator, action, name)
 }
