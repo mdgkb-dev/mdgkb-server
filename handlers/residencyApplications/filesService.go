@@ -37,6 +37,7 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 		"CourseName":                            item.GetCourseName(),
 		"DiplomaSeries":                         item.FormValue.GetFieldValueByCode("DiplomaSeries"),
 		"DiplomaNumber":                         item.FormValue.GetFieldValueByCode("DiplomaNumber"),
+		"DiplomaSpeciality":                     item.FormValue.GetFieldValueByCode("DiplomaSpeciality"),
 		"DiplomaDate":                           item.FormValue.GetFieldValueByCode("DiplomaDate").(*time.Time).Format("01.02.2006"),
 		"UniversityEndYear":                     item.FormValue.GetFieldValueByCode("UniversityEndYear").(*time.Time).Format("2006"),
 		"UniversityName":                        item.FormValue.GetFieldValueByCode("UniversityName").(string),
@@ -45,7 +46,7 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 	m["PaidApplication"] = ""
 	if item.Paid {
 		m["FreeApplication"] = ""
-		m["FreeApplication"] = point
+		m["PaidApplication"] = point
 	}
 	m["AdditionalApplication"] = point
 	m["MainApplication"] = ""
