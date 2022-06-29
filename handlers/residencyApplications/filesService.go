@@ -1,7 +1,6 @@
 package residencyApplications
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
@@ -55,21 +54,36 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 		m["AdditionalApplication"] = ""
 	}
 
-	m["PrimaryAccreditation"] = ""
-	m["PrimaryAccreditationNotPass"] = point
-	m["PrimaryAccreditationPlace"] = ""
-	m["PrimaryAccreditationPoints"] = ""
-	if item.PrimaryAccreditation {
-		m["PrimaryAccreditation"] = point
-		m["PrimaryAccreditationNotPass"] = ""
-		m["PrimaryAccreditationPoints"] = item.PrimaryAccreditationPoints
-		m["PrimaryAccreditationPlace"] = item.PrimaryAccreditationPlace
+	m["PrimaryAccreditation"] = point
+	m["PrimaryAccreditationPlace"] = item.PrimaryAccreditationPlace
+	m["PrimaryAccreditationPoints"] = item.PrimaryAccreditationPoints
+	m["PrimaryAccreditationSpecialisation"] = item.GetCourseName()
+
+	m["PrimaryAccreditationNotPass"] = ""
+	m["EntranceExamPlace"] = ""
+	m["MdgkbExam"] = ""
+	m["EntranceExamSpecialisation"] = ""
+
+	if !item.PrimaryAccreditation {
+		m["PrimaryAccreditation"] = ""
+		m["PrimaryAccreditationPlace"] = ""
+		m["PrimaryAccreditationPoints"] = ""
+		m["PrimaryAccreditationSpecialisation"] = ""
+
+		m["PrimaryAccreditationNotPass"] = point
+		m["EntranceExamPlace"] = item.PrimaryAccreditationPlace
+
+		if item.MdgkbExam {
+			m["MdgkbExam"] = point
+			m["EntranceExamPlace"] = ""
+			m["EntranceExamSpecialisation"] = item.EntranceExamSpecialisation
+		}
 	}
+
 	p := []string{}
 	for i, point := range item.ResidencyApplicationPointsAchievements {
 		p = append(p, strconv.Itoa(i+1)+". "+point.PointsAchievement.Name)
 	}
 	m["PointsAchievements"] = strings.Join(p, "\n")
-	fmt.Println(m["PointsAchievements"])
 	return s.helper.Templater.ReplaceDoc(m, "residencyApplication.docx")
 }
