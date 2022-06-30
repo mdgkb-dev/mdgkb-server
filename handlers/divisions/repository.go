@@ -48,7 +48,7 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("Schedule.ScheduleItems").
 		Relation("DivisionImages.FileInfo").
 		Relation("DivisionPaidServices.PaidService").
-		Relation("DivisionComments.Comment.User").
+		Relation("DivisionComments.Comment.User.Human").
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("HospitalizationContactInfo.Emails").
