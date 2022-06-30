@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -27,6 +28,10 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 	res, err := h.service.Login(&item)
+	fmt.Println(res)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 
 	c.JSON(http.StatusOK, res)
 }
@@ -84,8 +89,18 @@ func (h *Handler) RestorePassword(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	restoreLink := h.helper.HTTP.GetRestorePasswordURL(findedUser.ID.UUID.String(), findedUser.UUID.String())
-	err = h.helper.Email.SendEmail([]string{user.Email}, "Восстановление пароля для портала МДГКБ", restoreLink)
+	emailStruct := struct {
+		RestoreLink string
+		Host        string
+	}{
+		h.helper.HTTP.GetRestorePasswordURL(findedUser.ID.UUID.String(), findedUser.UUID.String()),
+		h.helper.HTTP.Host,
+	}
+	mail, err := h.helper.Templater.ParseTemplate(emailStruct, "email/passwordRestore.gohtml")
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.helper.Email.SendEmail([]string{user.Email}, "Восстановление пароля для портала МДГКБ", mail)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
