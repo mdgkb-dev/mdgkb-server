@@ -13,6 +13,7 @@ type FormValue struct {
 	IsNew         bool          `json:"isNew"`
 	ViewedByUser  bool          `json:"viewedByUser"`
 	EmailNotify   bool          `bun:"-" json:"emailNotify"`
+	ModComment    string        `json:"modComment"`
 	User          *User         `bun:"rel:belongs-to" json:"user"`
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
 
