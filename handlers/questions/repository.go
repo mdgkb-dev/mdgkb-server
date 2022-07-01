@@ -77,7 +77,7 @@ func (r *Repository) publish(id string) (err error) {
 	return err
 }
 
-func (r *Repository) upsertMany(items models.ResidencyCourses) (err error) {
+func (r *Repository) upsertMany(items models.Questions) (err error) {
 	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
