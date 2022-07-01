@@ -1,8 +1,9 @@
 package questions
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
 )
@@ -72,6 +73,15 @@ func (r *Repository) publish(id string) (err error) {
 		Set("published = NOT published").
 		Set("is_new = false ").
 		Where("id = ?", id).
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) upsertMany(items models.ResidencyCourses) (err error) {
+	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
+		Model(&items).
+		Set("id = EXCLUDED.id").
+		Set("published = EXCLUDED.published").
 		Exec(r.ctx)
 	return err
 }
