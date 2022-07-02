@@ -17,4 +17,5 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.PUT("/new/:id", h.ChangeNewStatus)
 	r.PUT("/read-answers/:user-id", h.ReadAnswers)
 	r.PUT("/publish/:id", h.Publish)
+	r.PUT("/many", h.UpsertMany)
 }

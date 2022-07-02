@@ -1,9 +1,10 @@
 package questions
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Question) error {
@@ -54,4 +55,15 @@ func (s *Service) Publish(id string) error {
 func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 	err = s.repository.setQueryFilter(c)
 	return err
+}
+
+func (s *Service) UpsertMany(items models.Questions) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	return nil
 }
