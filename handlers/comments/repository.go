@@ -42,7 +42,7 @@ func (r *Repository) get(id uuid.UUID) (item models.Comment, err error) {
 		Relation("DoctorComment.Doctor.Human").
 		Relation("DivisionComment.Division").
 		Relation("User.Human").
-		Where("comment.id = ?", id).Scan(r.ctx)
+		Where("comments.id = ?", id).Scan(r.ctx)
 
 	return item, err
 }
@@ -61,7 +61,7 @@ func (r *Repository) getAll() (item models.CommentsWithCount, err error) {
 
 func (r *Repository) getAllMain() (models.Comments, error) {
 	items := make(models.Comments, 0)
-	query := r.db.NewSelect().Model(&items).Where("comment.positive = true").Order("published_on desc").Limit(4)
+	query := r.db.NewSelect().Model(&items).Where("comments.positive = true").Order("published_on desc").Limit(4)
 	err := query.Scan(r.ctx)
 
 	return items, err
