@@ -54,7 +54,9 @@ func (r *Repository) getAll() (items models.Doctors, err error) {
 		Relation("Position").
 		Relation("MedicalProfile").
 		Relation("Regalias").
-		Relation("DoctorComments.Comment")
+		Relation("DoctorComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("comment.published_on DESC")
+		})
 	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
 
 	r.queryFilter.HandleQuery(query)
