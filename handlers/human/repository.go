@@ -2,8 +2,9 @@ package human
 
 import (
 	"fmt"
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/uptrace/bun"
 )
 
 func (r *Repository) getDB() *bun.DB {
@@ -44,6 +45,8 @@ func (r *Repository) upsertMany(items models.Humans) (err error) {
 		Set("is_male = EXCLUDED.is_male").
 		Set("date_birth = EXCLUDED.date_birth").
 		Set("slug = EXCLUDED.slug").
+		Set("citizenship = EXCLUDED.citizenship").
+		Set("place_birth = EXCLUDED.place_birth").
 		Model(&items).
 		Exec(r.ctx)
 	return err
@@ -60,6 +63,8 @@ func (r *Repository) upsert(item *models.Human) (err error) {
 		Set("photo_id = EXCLUDED.photo_id").
 		Set("date_birth = EXCLUDED.date_birth").
 		Set("slug = EXCLUDED.slug").
+		Set("citizenship = EXCLUDED.citizenship").
+		Set("place_birth = EXCLUDED.place_birth").
 		Model(item).
 		Exec(r.ctx)
 	return err

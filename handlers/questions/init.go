@@ -2,10 +2,11 @@ package questions
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
-	httpHelper2 "github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"github.com/pro-assistance/pro-assister/helper"
+	httpHelper2 "github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -17,6 +18,7 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+	UpsertMany(c *gin.Context)
 
 	ChangeNewStatus(c *gin.Context)
 	ReadAnswers(c *gin.Context)
@@ -31,6 +33,7 @@ type IService interface {
 	Create(*models.Question) error
 	Update(*models.Question) error
 	Delete(string) error
+	UpsertMany(models.Questions) error
 
 	ChangeNewStatus(string, bool) error
 	ReadAnswers(string) error
@@ -46,6 +49,7 @@ type IRepository interface {
 	get(string) (*models.Question, error)
 	update(*models.Question) error
 	delete(string) error
+	upsertMany(models.Questions) (err error)
 
 	changeNewStatus(string, bool) error
 	readAnswers(string) error
