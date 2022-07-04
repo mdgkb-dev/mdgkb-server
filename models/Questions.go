@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type Question struct {
@@ -22,6 +23,9 @@ type Question struct {
 	UserID           uuid.UUID `bun:"type:uuid" json:"userId"`
 	IsNew            bool      `json:"isNew"`
 	AnswerIsRead     bool      `json:"answerIsRead"`
+
+	File   *FileInfo     `bun:"rel:belongs-to" json:"file"`
+	FileID uuid.NullUUID `json:"fileId"`
 }
 
 type Questions []*Question

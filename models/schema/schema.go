@@ -34,6 +34,9 @@ type Schema struct {
 	FormStatus                       map[string]string `json:"formStatus"`
 	Question                         map[string]string `json:"question"`
 	TreatDirection                   map[string]string `json:"treatDirection"`
+	DoctorComment                    map[string]string `json:"doctorComment"`
+	DivisionComment                  map[string]string `json:"divisionComment"`
+	NewsComment                      map[string]string `json:"newsComment"`
 }
 
 func CreateSchema() Schema {
@@ -71,6 +74,9 @@ func CreateSchema() Schema {
 		FormStatus:                       createFormStatusSchema(),
 		Question:                         createQuestionSchema(),
 		TreatDirection:                   createTreatDirectionSchema(),
+		DoctorComment:                    createDoctorCommentSchema(),
+		DivisionComment:                  createDivisionCommentSchema(),
+		NewsComment:                      createNewsCommentSchema(),
 	}
 }
 
@@ -85,7 +91,7 @@ func createHumanSchema() map[string]string {
 
 func createCommentsSchema() map[string]string {
 	return map[string]string{
-		"tableName":   "comment",
+		"tableName":   "comments",
 		"publishedOn": "published_on",
 		"positive":    "positive",
 		"key":         "text",
@@ -501,5 +507,35 @@ func createTreatDirectionSchema() map[string]string {
 		"name":       "name",
 		"sortColumn": "name",
 		"label":      "name",
+	}
+}
+
+func createDoctorCommentSchema() map[string]string {
+	return map[string]string{
+		"tableName": "doctor_comments",
+		"key":       "doctorComment",
+		"id":        "id",
+		"commentId": "comment_id",
+		"doctorId":  "doctor_id",
+	}
+}
+
+func createDivisionCommentSchema() map[string]string {
+	return map[string]string{
+		"tableName": "division_comments",
+		"key":       "divisionComment",
+		"id":        "id",
+		"commentId": "comment_id",
+		"doctorId":  "division_id",
+	}
+}
+
+func createNewsCommentSchema() map[string]string {
+	return map[string]string{
+		"tableName": "news_comments",
+		"key":       "newsComment",
+		"id":        "id",
+		"commentId": "comment_id",
+		"doctorId":  "doctor_id",
 	}
 }

@@ -91,3 +91,16 @@ func (h *Handler) Publish(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{})
 }
+
+func (h *Handler) UpsertMany(c *gin.Context) {
+	var items models.Questions
+	err := c.Bind(&items)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.UpsertMany(items)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, err)
+}

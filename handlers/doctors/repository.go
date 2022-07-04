@@ -53,8 +53,7 @@ func (r *Repository) getAll() (items models.Doctors, err error) {
 		Relation("PhotoMini").
 		Relation("Position").
 		Relation("MedicalProfile").
-		Relation("Regalias").
-		Relation("DoctorComments.Comment")
+		Relation("Regalias")
 	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
 
 	r.queryFilter.HandleQuery(query)
@@ -106,6 +105,9 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("Educations.EducationCertification").
 		Relation("Educations.EducationAccreditation").
+		Relation("DoctorComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("comment.published_on DESC")
+		}).
 		Relation("DoctorComments.Comment.User.Human").
 		Relation("NewsDoctors.News").
 		Relation("EducationalOrganizationAcademic").

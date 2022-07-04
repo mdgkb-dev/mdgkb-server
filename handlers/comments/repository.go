@@ -39,10 +39,10 @@ func (r *Repository) upsertMany(items models.Comments) (err error) {
 func (r *Repository) get(id uuid.UUID) (item models.Comment, err error) {
 	err = r.db.NewSelect().Model(&item).
 		Relation("NewsComment.News").
-		Relation("DoctorComments.Doctor.Human").
-		Relation("DivisionComments.Division").
-		Relation("User").
-		Where("comment.id = ?", id).Scan(r.ctx)
+		Relation("DoctorComment.Doctor.Human").
+		Relation("DivisionComment.Division").
+		Relation("User.Human").
+		Where("comments.id = ?", id).Scan(r.ctx)
 
 	return item, err
 }
@@ -51,9 +51,9 @@ func (r *Repository) getAll() (item models.CommentsWithCount, err error) {
 	item.Comments = make(models.Comments, 0)
 	query := r.db.NewSelect().Model(&item.Comments).
 		Relation("NewsComment.News").
-		Relation("DoctorComments.Doctor.Human").
-		Relation("DivisionComments.Division").
-		Relation("User")
+		Relation("DoctorComment.Doctor.Human").
+		Relation("DivisionComment.Division").
+		Relation("User.Human")
 	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
@@ -61,7 +61,7 @@ func (r *Repository) getAll() (item models.CommentsWithCount, err error) {
 
 func (r *Repository) getAllMain() (models.Comments, error) {
 	items := make(models.Comments, 0)
-	query := r.db.NewSelect().Model(&items).Where("comment.positive = true").Order("published_on desc").Limit(4)
+	query := r.db.NewSelect().Model(&items).Where("comments.positive = true").Order("published_on desc").Limit(4)
 	err := query.Scan(r.ctx)
 
 	return items, err
