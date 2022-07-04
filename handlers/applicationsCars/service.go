@@ -1,6 +1,7 @@
 package applicationsCars
 
 import (
+	"mdgkb/mdgkb-server/handlers/visits"
 	"mdgkb/mdgkb-server/handlers/formValues"
 	"mdgkb/mdgkb-server/models"
 
@@ -29,6 +30,11 @@ func (s *Service) Create(item *models.ApplicationCar) error {
 	if err != nil {
 		return err
 	}
+	item.SetIdForChildren()
+	err = visits.CreateService(s.repository.GetDB(), s.helper).UpsertMany(item.Visits)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -41,6 +47,16 @@ func (s *Service) Update(item *models.ApplicationCar) error {
 	err = s.repository.update(item)
 	if err != nil {
 		return err
+	}
+	err = visits.CreateService(s.repository.GetDB(), s.helper).UpsertMany(item.Visits)
+	if err != nil {
+		return err
+	}
+	if len(item.VisitsForDelete) > 0 {
+		err = visits.CreateService(s.repository.GetDB(), s.helper).DeleteMany(item.VisitsForDelete)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
