@@ -24,6 +24,8 @@ type ResidencyApplication struct {
 	Main bool `json:"main"`
 	Paid bool `json:"paid"`
 
+	AdmissionCommittee bool `json:"admissionCommittee"`
+
 	ResidencyCourse   *ResidencyCourse `bun:"rel:belongs-to" json:"residencyCourse"`
 	ResidencyCourseID uuid.NullUUID    `bun:"type:uuid" json:"residencyCourseId"`
 
