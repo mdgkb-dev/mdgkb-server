@@ -17,6 +17,9 @@ type ApplicationCar struct {
 
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
 	FormValueID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
+
+	Visits          Visits      `bun:"rel:has-many" json:"visits"`
+	VisitsForDelete []uuid.UUID `bun:"-" json:"visitsForDelete"`
 }
 
 type ApplicationsCars []*ApplicationCar
@@ -30,4 +33,10 @@ func (item *ApplicationCar) SetForeignKeys() {
 func (item *ApplicationCar) SetFilePath(fileID *string) *string {
 	path := item.FormValue.SetFilePath(fileID)
 	return path
+}
+
+func (item *ApplicationCar) SetIdForChildren() {
+	for i := range item.Visits {
+		item.Visits[i].ApplicationCarID = item.ID
+	}
 }

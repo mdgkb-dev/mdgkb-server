@@ -43,6 +43,7 @@ func (r *Repository) get(id *string) (*models.ApplicationCar, error) {
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Relation("Visits").
 		Where("applications_cars_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
