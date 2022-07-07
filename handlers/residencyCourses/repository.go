@@ -81,6 +81,7 @@ func (r *Repository) upsertMany(items models.ResidencyCourses) (err error) {
 		Set("id = EXCLUDED.id").
 		Set("cost = EXCLUDED.cost").
 		Set("free_places = EXCLUDED.free_places").
+		Set("paid_places = EXCLUDED.paid_places").
 		Exec(r.ctx)
 	return err
 }
