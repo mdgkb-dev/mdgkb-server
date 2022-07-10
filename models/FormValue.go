@@ -50,7 +50,9 @@ func (item *FormValue) SetIdForChildren() {
 	}
 	for i := range item.FieldValues {
 		item.FieldValues[i].FormValueID = item.ID
-		item.FieldValues[i].Field.FormValueID = item.ID
+		if item.FieldValues[i].Field != nil {
+			item.FieldValues[i].Field.FormValueID = item.ID
+		}
 	}
 }
 

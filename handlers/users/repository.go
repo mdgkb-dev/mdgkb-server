@@ -47,6 +47,8 @@ func (r *Repository) get(id string) (*models.User, error) {
 			return q.Order("form_values.created_at desc")
 		}).
 		Relation("FormValues.User").
+		Relation("FormValues.FieldValues.Field").
+		Relation("FormValues.Fields.File").
 		Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
 		Relation("FormValues.DpoApplication.DpoCourse").
 		Relation("FormValues.PostgraduateApplication.PostgraduateCourse", func(query *bun.SelectQuery) *bun.SelectQuery {
