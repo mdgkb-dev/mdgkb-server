@@ -1,0 +1,1 @@
+ALTER TABLE fields ADD COLUMN required_for_cancel boolean default false;

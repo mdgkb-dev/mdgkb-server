@@ -140,7 +140,9 @@ func (items FieldValues) SetForeignKeys() {
 func (items FieldValues) GetFields() Fields {
 	itemsForGet := make(Fields, 0)
 	for _, item := range items {
-		itemsForGet = append(itemsForGet, item.Field)
+		if item.Field != nil {
+			itemsForGet = append(itemsForGet, item.Field)
+		}
 	}
 	return itemsForGet
 }

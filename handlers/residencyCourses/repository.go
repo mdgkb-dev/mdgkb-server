@@ -29,6 +29,7 @@ func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error)
 		Relation("ResidencyApplications.FormValue.User.Human").
 		Relation("ResidencyApplications.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("ResidencyApplications.ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
+		Relation("ResidencyApplications.ResidencyApplicationPointsAchievements.PointsAchievement").
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("StartYear").
