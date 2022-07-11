@@ -84,6 +84,7 @@ func (r *Repository) upsertMany(items models.ResidencyApplications) (err error) 
 		Set("residency_course_id = EXCLUDED.residency_course_id").
 		Set("points_achievements = EXCLUDED.points_achievements").
 		Set("points_entrance = EXCLUDED.points_entrance").
+		Set("application_num = EXCLUDED.application_num").
 		Exec(r.ctx)
 	return err
 }

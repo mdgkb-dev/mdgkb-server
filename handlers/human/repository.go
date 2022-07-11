@@ -47,6 +47,8 @@ func (r *Repository) upsertMany(items models.Humans) (err error) {
 		Set("slug = EXCLUDED.slug").
 		Set("citizenship = EXCLUDED.citizenship").
 		Set("place_birth = EXCLUDED.place_birth").
+		Set("post_index = EXCLUDED.post_index").
+		Set("address = EXCLUDED.address").
 		Model(&items).
 		Exec(r.ctx)
 	return err
@@ -65,6 +67,8 @@ func (r *Repository) upsert(item *models.Human) (err error) {
 		Set("slug = EXCLUDED.slug").
 		Set("citizenship = EXCLUDED.citizenship").
 		Set("place_birth = EXCLUDED.place_birth").
+		Set("post_index = EXCLUDED.post_index").
+		Set("address = EXCLUDED.address").
 		Model(item).
 		Exec(r.ctx)
 	return err
