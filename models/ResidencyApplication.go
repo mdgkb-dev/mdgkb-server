@@ -10,9 +10,9 @@ type ResidencyApplication struct {
 	bun.BaseModel `bun:"residency_applications,select:residency_applications_view,alias:residency_applications_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
-	PointsAchievements int `json:"pointsAchievements"`
-	PointsEntrance     int `json:"pointsEntrance"`
-
+	PointsAchievements         int    `json:"pointsAchievements"`
+	PointsEntrance             int    `json:"pointsEntrance"`
+	ApplicationNum             string `json:"applicationNum"`
 	PrimaryAccreditation       bool   `json:"primaryAccreditation"`
 	PrimaryAccreditationPoints int    `json:"primaryAccreditationPoints"`
 	PrimaryAccreditationPlace  string `json:"primaryAccreditationPlace"`
