@@ -21,3 +21,10 @@ func (item FileInfo) GetOriginalName() string {
 func (item FileInfo) GetFullPath() string {
 	return item.FileSystemPath
 }
+func (items FileInfos) GetPathsAndNames() (paths []string, names []string) {
+	for _, item := range items {
+		paths = append(paths, item.FileSystemPath)
+		names = append(names, item.OriginalName)
+	}
+	return paths, names
+}

@@ -15,6 +15,7 @@ type IHandler interface {
 	UpdateMany(c *gin.Context)
 	Get(c *gin.Context)
 	DocumentsToPDF(c *gin.Context)
+	DocumentsToZip(c *gin.Context)
 }
 
 type IService interface {
@@ -32,6 +33,7 @@ type IRepository interface {
 
 type IFilesService interface {
 	Upload(*gin.Context, *models.FormValue, map[string][]*multipart.FileHeader) error
+	FilesToZip(models.FileInfos) ([]byte, error)
 }
 
 type Handler struct {
