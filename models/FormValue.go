@@ -16,9 +16,9 @@ type FormValue struct {
 	ModComment    string        `json:"modComment"`
 	User          *User         `bun:"rel:belongs-to" json:"user"`
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
-
-	Fields      Fields      `bun:"rel:has-many" json:"fields"`
-	FieldValues FieldValues `bun:"rel:has-many" json:"fieldValues"`
+	ApprovingDate *time.Time    `json:"approvingDate"`
+	Fields        Fields        `bun:"rel:has-many" json:"fields"`
+	FieldValues   FieldValues   `bun:"rel:has-many" json:"fieldValues"`
 
 	FormStatus   *FormStatus   `bun:"rel:belongs-to" json:"formStatus"`
 	FormStatusID uuid.NullUUID `bun:"type:uuid" json:"formStatusId"`
