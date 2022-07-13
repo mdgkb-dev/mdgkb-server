@@ -1,8 +1,9 @@
-package applicationsCars
+package visitsApplications
 
 import (
+	handler "mdgkb/mdgkb-server/handlers/visitsApplications"
+
 	"github.com/gin-gonic/gin"
-	handler "mdgkb/mdgkb-server/handlers/applicationsCars"
 
 	_ "github.com/go-pg/pg/v10/orm"
 )

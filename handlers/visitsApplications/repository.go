@@ -1,4 +1,4 @@
-package applicationsCars
+package visitsApplications
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -19,21 +19,22 @@ func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (item models.ApplicationsCarsWithCount, err error) {
-	item.ApplicationsCars = make(models.ApplicationsCars, 0)
-	query := r.db.NewSelect().Model(&item.ApplicationsCars).
+func (r *Repository) getAll() (item models.VisitsApplicationsWithCount, err error) {
+	item.VisitsApplications = make(models.VisitsApplications, 0)
+	query := r.db.NewSelect().Model(&item.VisitsApplications).
 		Relation("Gate").
 		Relation("Division").
 		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
+		Relation("Visits").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus")
-	r.queryFilter.HandleQuery(query)
+		r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }
 
-func (r *Repository) get(id *string) (*models.ApplicationCar, error) {
-	item := models.ApplicationCar{}
+func (r *Repository) get(id *string) (*models.VisitsApplication, error) {
+	item := models.VisitsApplication{}
 	err := r.db.NewSelect().Model(&item).
 		Relation("Gate").
 		Relation("Division").
@@ -44,21 +45,21 @@ func (r *Repository) get(id *string) (*models.ApplicationCar, error) {
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("Visits").
-		Where("applications_cars_view.id = ?", *id).Scan(r.ctx)
+		Where("visits_applications_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 
-func (r *Repository) create(item *models.ApplicationCar) (err error) {
+func (r *Repository) create(item *models.VisitsApplication) (err error) {
 	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.ApplicationCar{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.db.NewDelete().Model(&models.VisitsApplication{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) update(item *models.ApplicationCar) (err error) {
+func (r *Repository) update(item *models.VisitsApplication) (err error) {
 	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }

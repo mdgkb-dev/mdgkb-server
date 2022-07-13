@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type FormValue struct {
@@ -30,7 +31,7 @@ type FormValue struct {
 	PostgraduateApplication *PostgraduateApplication `bun:"rel:has-one" json:"postgraduateApplication"`
 	CandidateApplication    *CandidateApplication    `bun:"rel:has-one" json:"candidateApplication"`
 	ResidencyApplication    *ResidencyApplication    `bun:"rel:has-one" json:"residencyApplication"`
-	ApplicationCar          *ApplicationCar          `bun:"rel:has-one" json:"applicationCar"`
+	VisitsApplication       *VisitsApplication       `bun:"rel:has-one" json:"visitsApplication"`
 	VacancyResponse         *VacancyResponse         `bun:"rel:has-one" json:"vacancyResponse"`
 }
 

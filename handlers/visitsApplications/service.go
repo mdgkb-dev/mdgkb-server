@@ -1,18 +1,18 @@
-package applicationsCars
+package visitsApplications
 
 import (
-	"mdgkb/mdgkb-server/handlers/visits"
 	"mdgkb/mdgkb-server/handlers/formValues"
+	"mdgkb/mdgkb-server/handlers/visits"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.ApplicationsCarsWithCount, error) {
+func (s *Service) GetAll() (models.VisitsApplicationsWithCount, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id *string) (*models.ApplicationCar, error) {
+func (s *Service) Get(id *string) (*models.VisitsApplication, error) {
 	item, err := s.repository.get(id)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func (s *Service) Get(id *string) (*models.ApplicationCar, error) {
 	return item, nil
 }
 
-func (s *Service) Create(item *models.ApplicationCar) error {
+func (s *Service) Create(item *models.VisitsApplication) error {
 	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func (s *Service) Create(item *models.ApplicationCar) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.ApplicationCar) error {
+func (s *Service) Update(item *models.VisitsApplication) error {
 	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err

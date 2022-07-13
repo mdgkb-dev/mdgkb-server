@@ -6,10 +6,10 @@ import (
 )
 
 type Gate struct {
-	bun.BaseModel    `bun:"gates,alias:gates"`
-	ID               uuid.NullUUID    `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name             string           `json:"name"`
-	ApplicationsCars ApplicationsCars `bun:"rel:has-many" json:"applicationsCars"`
+	bun.BaseModel      `bun:"gates,alias:gates"`
+	ID                 uuid.NullUUID      `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name               string             `json:"name"`
+	VisitsApplications VisitsApplications `bun:"rel:has-many" json:"visitsApplications"`
 
 	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
 	FormPatternID uuid.NullUUID `bun:"type:uuid" json:"formPatternId"`
