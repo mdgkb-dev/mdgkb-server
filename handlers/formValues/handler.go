@@ -1,6 +1,7 @@
 package formValues
 
 import (
+	"fmt"
 	"github.com/pro-assistance/pro-assister/pdfHelper"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
@@ -67,4 +68,20 @@ func (h *Handler) DocumentsToPDF(c *gin.Context) {
 	c.Header("Content-Description", "File Transfer")
 	c.Header("Content-Disposition", "attachment; filename=response")
 	c.Data(http.StatusOK, "application/pdf", mergedPDF)
+}
+
+func (h *Handler) DocumentsToZip(c *gin.Context) {
+	id := c.Param("id")
+	item, err := h.service.Get(&id)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	mergedPDF, err := h.filesService.FilesToZip(item.GetFiles())
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.Header("Content-Description", "File Transfer")
+	fileName := fmt.Sprintf("%s.zip", item.User.Human.GetFullName())
+	h.helper.HTTP.SetFileHeaders(c, fileName)
+	c.Data(http.StatusOK, "application/zip", mergedPDF)
 }

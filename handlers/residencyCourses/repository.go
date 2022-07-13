@@ -29,6 +29,7 @@ func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error)
 		Relation("ResidencyApplications.FormValue.User.Human").
 		Relation("ResidencyApplications.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("ResidencyApplications.ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
+		Relation("ResidencyApplications.ResidencyApplicationPointsAchievements.PointsAchievement").
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("StartYear").
@@ -81,6 +82,7 @@ func (r *Repository) upsertMany(items models.ResidencyCourses) (err error) {
 		Set("id = EXCLUDED.id").
 		Set("cost = EXCLUDED.cost").
 		Set("free_places = EXCLUDED.free_places").
+		Set("paid_places = EXCLUDED.paid_places").
 		Exec(r.ctx)
 	return err
 }

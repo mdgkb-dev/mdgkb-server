@@ -47,7 +47,9 @@ func (r *Repository) get(id *string) (*models.ResidencyApplication, error) {
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("ResidencyApplicationPointsAchievements.FileInfo").
-		Relation("ResidencyApplicationPointsAchievements.PointsAchievement").
+		Relation("ResidencyApplicationPointsAchievements.PointsAchievement", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("points_achievement.points_achievements_order")
+		}).
 		Where("residency_applications_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
@@ -82,6 +84,7 @@ func (r *Repository) upsertMany(items models.ResidencyApplications) (err error) 
 		Set("residency_course_id = EXCLUDED.residency_course_id").
 		Set("points_achievements = EXCLUDED.points_achievements").
 		Set("points_entrance = EXCLUDED.points_entrance").
+		Set("application_num = EXCLUDED.application_num").
 		Exec(r.ctx)
 	return err
 }

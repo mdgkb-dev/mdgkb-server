@@ -7,23 +7,24 @@ import (
 )
 
 type Field struct {
-	bun.BaseModel `bun:"fields,alias:fields"`
-	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name          string        `json:"name"`
-	Code          string        `json:"code"`
-	Order         uint          `bun:"field_order" json:"order"`
-	Comment       string        `json:"comment"`
-	Required      bool          `json:"required"`
-	Form          *Form         `bun:"rel:belongs-to" json:"form"`
-	FormID        uuid.NullUUID `bun:"type:uuid" json:"formId"`
-	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
-	FormPatternID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formPatternId"`
-	ValueType     *ValueType    `bun:"rel:belongs-to" json:"valueType"`
-	ValueTypeID   uuid.UUID     `bun:"type:uuid" json:"valueTypeId"`
-	File          *FileInfo     `bun:"rel:belongs-to" json:"file"`
-	FileID        uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"fileId"`
-	FormValue     *FormValue    `bun:"rel:belongs-to" json:"formValue"`
-	FormValueID   uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
+	bun.BaseModel     `bun:"fields,alias:fields"`
+	ID                uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name              string        `json:"name"`
+	Code              string        `json:"code"`
+	Order             uint          `bun:"field_order" json:"order"`
+	Comment           string        `json:"comment"`
+	Required          bool          `json:"required"`
+	RequiredForCancel bool          `json:"requiredForCancel"`
+	Form              *Form         `bun:"rel:belongs-to" json:"form"`
+	FormID            uuid.NullUUID `bun:"type:uuid" json:"formId"`
+	FormPattern       *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
+	FormPatternID     uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formPatternId"`
+	ValueType         *ValueType    `bun:"rel:belongs-to" json:"valueType"`
+	ValueTypeID       uuid.UUID     `bun:"type:uuid" json:"valueTypeId"`
+	File              *FileInfo     `bun:"rel:belongs-to" json:"file"`
+	FileID            uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"fileId"`
+	FormValue         *FormValue    `bun:"rel:belongs-to" json:"formValue"`
+	FormValueID       uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
 }
 
 type Fields []*Field

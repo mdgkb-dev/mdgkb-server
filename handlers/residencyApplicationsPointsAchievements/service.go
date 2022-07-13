@@ -27,7 +27,13 @@ func (s *Service) UpsertMany(items models.ResidencyApplicationPointsAchievements
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	err := fileInfosService.UpsertMany(items.GetFileInfos())
+	if err != nil {
+		return err
+	}
+	items.SetForeignKeys()
+	err = s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}
