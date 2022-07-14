@@ -16,7 +16,7 @@ type Schema struct {
 	Vacancy                          map[string]string `json:"vacancy"`
 	VacancyResponse                  map[string]string `json:"vacancyResponse"`
 	DpoCourseSpecialization          map[string]string `json:"dpoCourseSpecialization"`
-	ApplicationCar                   map[string]string `json:"applicationCar"`
+	VisitsApplication                map[string]string `json:"visitsApplication"`
 	DpoApplication                   map[string]string `json:"dpoApplication"`
 	ResidencyApplication             map[string]string `json:"residencyApplication"`
 	PostgraduateApplication          map[string]string `json:"postgraduateApplication"`
@@ -56,7 +56,7 @@ func CreateSchema() Schema {
 		Vacancy:                          createVacancySchema(),
 		VacancyResponse:                  createVacancyResponseSchema(),
 		DpoCourseSpecialization:          createDpoCourseSpecializationSchema(),
-		ApplicationCar:                   createApplicationsCarsSchema(),
+		VisitsApplication:                createVisitsApplicationsSchema(),
 		DpoApplication:                   createDpoApplicationsSchema(),
 		PostgraduateApplication:          createPostgraduateApplicationsSchema(),
 		ResidencyApplication:             createResidencyApplicationsSchema(),
@@ -193,10 +193,10 @@ func createDpoCourseSchema() map[string]string {
 	}
 }
 
-func createApplicationsCarsSchema() map[string]string {
+func createVisitsApplicationsSchema() map[string]string {
 	return map[string]string{
-		"tableName":     "applications_cars_view",
-		"key":           "applicationCar",
+		"tableName":     "visits_applications_view",
+		"key":           "visitsApplication",
 		"id":            "id",
 		"createdAt":     "created_at",
 		"formStatusId":  "form_status_id",
@@ -204,6 +204,7 @@ func createApplicationsCarsSchema() map[string]string {
 		"childFullName": "child_full_name",
 		"gateName":      "gate_name",
 		"divisionName":  "division_name",
+		"withCar":       "with_car",
 	}
 }
 

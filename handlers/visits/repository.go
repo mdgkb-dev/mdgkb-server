@@ -15,7 +15,7 @@ func (r *Repository) upsertMany(items models.Visits) (err error) {
 	_, err = r.db.NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("date = EXCLUDED.date").
-		Set("application_car_id = EXCLUDED.application_car_id").
+		Set("visits_application_id = EXCLUDED.visits_application_id").
 		Set("entered = EXCLUDED.entered").
 		Set("exited = EXCLUDED.exited").
 		Exec(r.ctx)

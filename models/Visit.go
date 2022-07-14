@@ -14,8 +14,8 @@ type Visit struct {
 	Entered       bool          `json:"entered"`
 	Exited        bool          `json:"exited"`
 
-	ApplicationCar   *ApplicationCar `bun:"rel:belongs-to" json:"applicationCar"`
-	ApplicationCarID uuid.NullUUID   `bun:"type:uuid" json:"applicationCarId,omitempty"`
+	VisitsApplication   *VisitsApplication `bun:"rel:belongs-to" json:"visitsApplication"`
+	VisitsApplicationID uuid.NullUUID      `bun:"type:uuid" json:"visitsApplicationId,omitempty"`
 }
 
 type Visits []*Visit

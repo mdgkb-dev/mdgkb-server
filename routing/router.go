@@ -2,7 +2,6 @@ package routing
 
 import (
 	"mdgkb/mdgkb-server/handlers/admissionCommitteeDocumentTypes"
-	"mdgkb/mdgkb-server/handlers/applicationsCars"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
@@ -68,9 +67,9 @@ import (
 	"mdgkb/mdgkb-server/handlers/vacancyResponse"
 	"mdgkb/mdgkb-server/handlers/valueTypes"
 	"mdgkb/mdgkb-server/handlers/visitingRules"
+	"mdgkb/mdgkb-server/handlers/visitsApplications"
 	"mdgkb/mdgkb-server/middleware"
 	admissionCommitteeDocumentTypesRouter "mdgkb/mdgkb-server/routing/admissionCommitteeDocumentTypes"
-	applicationsCarsRouter "mdgkb/mdgkb-server/routing/applicationsCars"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
@@ -141,6 +140,7 @@ import (
 	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyResponse"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valueTypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
+	visitsApplicationsRouter "mdgkb/mdgkb-server/routing/visitsApplications"
 
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/gin-gonic/gin"
@@ -208,7 +208,7 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalProfiles.CreateHandler(db, helper))
 	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatDirections.CreateHandler(db, helper))
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackRequests.CreateHandler(db, helper))
-	applicationsCarsRouter.Init(api.Group("/applications-cars"), applicationsCars.CreateHandler(db, helper))
+	visitsApplicationsRouter.Init(api.Group("/visits-applications"), visitsApplications.CreateHandler(db, helper))
 	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
 	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduateCourses.CreateHandler(db, helper))
