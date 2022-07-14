@@ -107,3 +107,20 @@ func (h *Handler) FillApplicationTemplate(c *gin.Context) {
 	//c.Header("Content-Disposition", "filename=\"response.docx\"")
 	c.Data(http.StatusOK, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", doc)
 }
+
+func (h *Handler) UpdateWithForm(c *gin.Context) {
+	var item models.FormValue
+	files, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.filesService.UploadFormFiles(c, &item, files)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.service.UpdateWithForm(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}
