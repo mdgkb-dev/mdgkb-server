@@ -20,7 +20,7 @@ func (r *Repository) getAll() (models.AdmissionCommitteeDocumentTypes, error) {
 	items := make(models.AdmissionCommitteeDocumentTypes, 0)
 	err := r.db.NewSelect().Model(&items).
 		Relation("DocumentType.Documents", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("documents.document_order DESC")
+			return q.Order("documents.document_order ASC")
 		}).
 		Relation("DocumentType.Documents.DocumentsScans.Scan").
 		Order("admission_committee_document_type_order").
@@ -32,7 +32,7 @@ func (r *Repository) get(id string) (*models.AdmissionCommitteeDocumentType, err
 	item := models.AdmissionCommitteeDocumentType{}
 	err := r.db.NewSelect().Model(&item).Where("admission_committee_document_types.id = ?", id).
 		Relation("DocumentType.Documents", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("documents.document_order DESC")
+			return q.Order("documents.document_order")
 		}).
 		Relation("DocumentType.Documents.DocumentsScans.Scan").
 		Scan(r.ctx)

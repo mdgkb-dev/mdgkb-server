@@ -1,4 +1,4 @@
-package applicationsCars
+package visitsApplications
 
 import (
 	"context"
@@ -23,24 +23,24 @@ type IHandler interface {
 
 type IService interface {
 	baseHandler.IService
-	GetAll() (models.ApplicationsCarsWithCount, error)
-	Get(*string) (*models.ApplicationCar, error)
-	Create(*models.ApplicationCar) error
-	Update(*models.ApplicationCar) error
+	GetAll() (models.VisitsApplicationsWithCount, error)
+	Get(*string) (*models.VisitsApplication, error)
+	Create(*models.VisitsApplication) error
+	Update(*models.VisitsApplication) error
 	Delete(*string) error
 }
 
 type IRepository interface {
 	baseHandler.IRepository
-	getAll() (models.ApplicationsCarsWithCount, error)
-	get(*string) (*models.ApplicationCar, error)
-	create(*models.ApplicationCar) error
-	update(*models.ApplicationCar) error
+	getAll() (models.VisitsApplicationsWithCount, error)
+	get(*string) (*models.VisitsApplication, error)
+	create(*models.VisitsApplication) error
+	update(*models.VisitsApplication) error
 	delete(*string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.ApplicationCar, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.VisitsApplication, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -55,9 +55,9 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
-	ctx    context.Context
-	helper *helper.Helper
+	db          *bun.DB
+	ctx         context.Context
+	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
 }
 

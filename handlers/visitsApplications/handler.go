@@ -1,4 +1,4 @@
-package applicationsCars
+package visitsApplications
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -29,7 +29,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.ApplicationCar
+	var item models.VisitsApplication
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -46,7 +46,7 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.ApplicationCar
+	var item models.VisitsApplication
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

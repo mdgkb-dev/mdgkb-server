@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type FormValue struct {
@@ -16,9 +17,9 @@ type FormValue struct {
 	ModComment    string        `json:"modComment"`
 	User          *User         `bun:"rel:belongs-to" json:"user"`
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
-
-	Fields      Fields      `bun:"rel:has-many" json:"fields"`
-	FieldValues FieldValues `bun:"rel:has-many" json:"fieldValues"`
+	ApprovingDate *time.Time    `json:"approvingDate"`
+	Fields        Fields        `bun:"rel:has-many" json:"fields"`
+	FieldValues   FieldValues   `bun:"rel:has-many" json:"fieldValues"`
 
 	FormStatus   *FormStatus   `bun:"rel:belongs-to" json:"formStatus"`
 	FormStatusID uuid.NullUUID `bun:"type:uuid" json:"formStatusId"`
@@ -30,7 +31,7 @@ type FormValue struct {
 	PostgraduateApplication *PostgraduateApplication `bun:"rel:has-one" json:"postgraduateApplication"`
 	CandidateApplication    *CandidateApplication    `bun:"rel:has-one" json:"candidateApplication"`
 	ResidencyApplication    *ResidencyApplication    `bun:"rel:has-one" json:"residencyApplication"`
-	ApplicationCar          *ApplicationCar          `bun:"rel:has-one" json:"applicationCar"`
+	VisitsApplication       *VisitsApplication       `bun:"rel:has-one" json:"visitsApplication"`
 	VacancyResponse         *VacancyResponse         `bun:"rel:has-one" json:"vacancyResponse"`
 }
 
@@ -71,11 +72,11 @@ func (item *FormValue) SetFilePath(fileID *string) *string {
 	return nil
 }
 
-func (item *FormValue) GetFiles() []FileInfo {
-	files := make([]FileInfo, 0)
+func (item *FormValue) GetFiles() FileInfos {
+	files := make(FileInfos, 0)
 	for i := range item.FieldValues {
 		if item.FieldValues[i].File != nil && item.FieldValues[i].File.FileSystemPath != "" {
-			files = append(files, *item.FieldValues[i].File)
+			files = append(files, item.FieldValues[i].File)
 		}
 	}
 	return files

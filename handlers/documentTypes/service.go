@@ -48,13 +48,13 @@ func (s *Service) Update(item *models.DocumentType) error {
 		return err
 	}
 	item.SetIdForChildren()
-	DocumentFieldsService := documentTypeFields.CreateService(s.repository.getDB())
-	err = DocumentFieldsService.UpsertMany(item.DocumentTypeFields)
+	documentFieldsService := documentTypeFields.CreateService(s.repository.getDB())
+	err = documentFieldsService.UpsertMany(item.DocumentTypeFields)
 	if err != nil {
 		return err
 	}
 	if len(item.DocumentFieldsForDelete) > 0 {
-		err = DocumentFieldsService.DeleteMany(item.DocumentFieldsForDelete)
+		err = documentFieldsService.DeleteMany(item.DocumentFieldsForDelete)
 		if err != nil {
 			return err
 		}

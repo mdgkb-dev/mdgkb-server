@@ -2,8 +2,9 @@ package users
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 
 	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
@@ -58,7 +59,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("FormValues.ResidencyApplication.ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
 		Relation("FormValues.CandidateApplication.CandidateExam").
 		Relation("FormValues.VacancyResponse.Vacancy").
-		Relation("FormValues.ApplicationCar.Division").
+		Relation("FormValues.VisitsApplication.Division").
 		Where("users.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
