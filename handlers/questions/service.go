@@ -1,14 +1,25 @@
 package questions
 
 import (
-	"mdgkb/mdgkb-server/handlers/human"
+	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Question) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Update(item.User.Human)
+	usersService := users.CreateService(s.repository.getDB(), s.helper)
+	err := usersService.UpsertEmail(item.User)
+	if err != nil {
+		return err
+	}
+
+	item.User, err = usersService.Get(item.User.ID.UUID.String())
+	if err != nil {
+		return err
+	}
+	err = fileInfos.CreateService(s.repository.getDB()).Create(item.File)
 	if err != nil {
 		return err
 	}

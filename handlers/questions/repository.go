@@ -38,7 +38,11 @@ func (r *Repository) getAll() (item models.QuestionsWithCount, err error) {
 
 func (r *Repository) get(id string) (*models.Question, error) {
 	item := models.Question{}
-	err := r.db.NewSelect().Model(&item).Relation("User.Human").Where("questions.id = ?", id).Scan(r.ctx)
+	err := r.db.NewSelect().
+		Model(&item).
+		Relation("User.Human").
+		Relation("File").
+		Where("questions.id = ?", id).Scan(r.ctx)
 	return &item, err
 }
 
