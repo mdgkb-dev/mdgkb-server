@@ -1,8 +1,9 @@
 package gates
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
 )
@@ -24,7 +25,7 @@ func (r *Repository) getAll() (models.Gates, error) {
 	query := r.db.NewSelect().
 		Model(&items).
 		Relation("FormPattern").
-		Relation("ApplicationsCars.Division")
+		Relation("VisitsApplication.Division")
 	err := query.Scan(r.ctx)
 	return items, err
 }

@@ -5,9 +5,10 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type ApplicationCar struct {
-	bun.BaseModel `bun:"applications_cars,select:applications_cars_view,alias:applications_cars_view"`
+type VisitsApplication struct {
+	bun.BaseModel `bun:"visits_applications,select:visits_applications_view,alias:visits_applications_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	WithCar       bool          `json:"withCar"`
 
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`
 	DivisionID uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
@@ -22,21 +23,21 @@ type ApplicationCar struct {
 	VisitsForDelete []uuid.UUID `bun:"-" json:"visitsForDelete"`
 }
 
-type ApplicationsCars []*ApplicationCar
+type VisitsApplications []*VisitsApplication
 
-func (item *ApplicationCar) SetForeignKeys() {
+func (item *VisitsApplication) SetForeignKeys() {
 	item.DivisionID = item.Division.ID
 	item.GateID = item.Gate.ID
 	item.FormValueID = item.FormValue.ID
 }
 
-func (item *ApplicationCar) SetFilePath(fileID *string) *string {
+func (item *VisitsApplication) SetFilePath(fileID *string) *string {
 	path := item.FormValue.SetFilePath(fileID)
 	return path
 }
 
-func (item *ApplicationCar) SetIdForChildren() {
+func (item *VisitsApplication) SetIdForChildren() {
 	for i := range item.Visits {
-		item.Visits[i].ApplicationCarID = item.ID
+		item.Visits[i].VisitsApplicationID = item.ID
 	}
 }

@@ -52,7 +52,7 @@ func createLogger(conf config.DB, db *bun.DB) {
 	})
 	//defer f.Close()
 	db.AddQueryHook(bundebug.NewQueryHook(
-		bundebug.WithVerbose(true),
+		bundebug.WithVerbose(false),
 		//bundebug.WithVerbose(false),
 	))
 	//bun.SetLogger(log)
