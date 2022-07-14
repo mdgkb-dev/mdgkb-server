@@ -19,6 +19,16 @@ func (s *FilesService) Upload(c *gin.Context, item *models.ResidencyApplication,
 	return nil
 }
 
+func (s *FilesService) UploadFormFiles(c *gin.Context, item *models.FormValue, files map[string][]*multipart.FileHeader) (err error) {
+	for i, file := range files {
+		err = s.helper.Uploader.Upload(c, file, item.SetFilePath(&i))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication) ([]byte, error) {
 	const point = `✓`
 	m := map[string]interface{}{
