@@ -36,6 +36,11 @@ func (r *Repository) get(id *string) (*models.FormValue, error) {
 		Relation("FieldValues.File").
 		Relation("FieldValues.Field.ValueType").
 		Relation("FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Relation("ResidencyApplication.FormValue.User.Human").
+		Relation("ResidencyApplication.FormValue.Fields.File").
+		Relation("ResidencyApplication.FormValue.FieldValues.File").
+		Relation("ResidencyApplication.FormValue.Fields.ValueType").
+		Relation("ResidencyApplication.FormValue.FieldValues.Field.ValueType").
 		Where("form_values.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

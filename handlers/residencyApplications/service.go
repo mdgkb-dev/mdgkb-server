@@ -79,6 +79,27 @@ func (s *Service) Update(item *models.ResidencyApplication) error {
 	return nil
 }
 
+func (s *Service) UpdateWithForm(item *models.FormValue) error {
+	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item)
+	if err != nil {
+		return err
+	}
+	err = s.repository.update(item.ResidencyApplication)
+	if err != nil {
+		return err
+	}
+	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.repository.getDB())
+	err = residencyApplicationsPointsAchievementsService.UpsertMany(item.ResidencyApplication.ResidencyApplicationPointsAchievements)
+	if err != nil {
+		return err
+	}
+	err = residencyApplicationsPointsAchievementsService.DeleteMany(item.ResidencyApplication.ResidencyApplicationPointsAchievementsForDelete)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Service) UpsertMany(items models.ResidencyApplications) error {
 	if len(items) == 0 {
 		return nil

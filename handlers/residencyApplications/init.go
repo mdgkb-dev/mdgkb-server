@@ -17,6 +17,7 @@ type IHandler interface {
 	EmailExists(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
+	UpdateWithForm(c *gin.Context)
 	Delete(c *gin.Context)
 	UpsertMany(c *gin.Context)
 
@@ -30,6 +31,7 @@ type IService interface {
 	EmailExists(string, string) (bool, error)
 	Create(*models.ResidencyApplication) error
 	Update(*models.ResidencyApplication) error
+	UpdateWithForm(*models.FormValue) error
 	UpsertMany(models.ResidencyApplications) error
 	Delete(*string) error
 }
@@ -48,6 +50,7 @@ type IRepository interface {
 
 type IFilesService interface {
 	Upload(*gin.Context, *models.ResidencyApplication, map[string][]*multipart.FileHeader) error
+	UploadFormFiles(*gin.Context, *models.FormValue, map[string][]*multipart.FileHeader) error
 	FillApplicationTemplate(*models.ResidencyApplication) ([]byte, error)
 }
 
@@ -78,6 +81,11 @@ func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
+}
+
+func CreateService(db *bun.DB, helper *helper.Helper) *Service {
+	repo := NewRepository(db, helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor
