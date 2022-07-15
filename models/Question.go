@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
 )
 
@@ -34,4 +35,20 @@ func (item *Question) SetForeignKeys() {
 	if item.User != nil {
 		item.UserID = item.User.ID.UUID
 	}
+	if item.File != nil {
+		item.FileID = item.File.ID
+	}
+}
+
+// func (item *Question) SetFilePath(fileID *string) *string {
+// 	path := item....SetFilePath(fileID)
+// 	return path
+// }
+
+func (item *Question) SetFilePath(fileID *string) *string {
+	if item.File.ID.UUID.String() == *fileID {
+		item.File.FileSystemPath = uploadHelper.BuildPath(fileID)
+		return &item.File.FileSystemPath
+	}
+	return nil
 }
