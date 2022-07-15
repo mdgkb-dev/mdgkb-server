@@ -30,6 +30,7 @@ func (r *Repository) upsertMany(items models.FieldValues) (err error) {
 		Set("mod_checked = EXCLUDED.mod_checked").
 		Set("mod_comment = EXCLUDED.mod_comment").
 		Set("field_id = EXCLUDED.field_id").
+		Set("file_id = EXCLUDED.file_id").
 		Set("event_application_id = EXCLUDED.event_application_id").
 		Exec(r.ctx)
 	return err

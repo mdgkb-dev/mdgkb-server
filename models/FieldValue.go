@@ -134,6 +134,7 @@ func (items FieldValues) SetForeignKeys() {
 		if items[i].Field != nil {
 			items[i].FieldID = items[i].Field.ID
 		}
+		fmt.Println(items[i].FileID)
 	}
 }
 

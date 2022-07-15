@@ -49,6 +49,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		}).
 		Relation("FormValues.User").
 		Relation("FormValues.FieldValues.Field").
+		Relation("FormValues.FieldValues.File").
 		Relation("FormValues.Fields.File").
 		Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
 		Relation("FormValues.DpoApplication.DpoCourse").
