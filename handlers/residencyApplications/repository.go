@@ -57,7 +57,7 @@ func (r *Repository) get(id *string) (*models.ResidencyApplication, error) {
 func (r *Repository) emailExists(email string, courseId string) (bool, error) {
 	exists, err := r.db.NewSelect().Model((*models.ResidencyApplication)(nil)).
 		Join("JOIN form_values ON residency_applications_view.form_value_id = form_values.id").
-		Join("JOIN users ON users.id = form_values.user_id and users.email = ?", email).
+		Join("JOIN users ON users.id = form_values.user_id and lower(users.email) = lower(?)", email).
 		Where("residency_applications_view.residency_course_id = ?", courseId).Exists(r.ctx)
 	return exists, err
 }
