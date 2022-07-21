@@ -68,7 +68,12 @@ func (item *FormValue) SetFilePath(fileID *string) *string {
 			return filePath
 		}
 	}
-
+	if item.ResidencyApplication != nil {
+		filePath := item.ResidencyApplication.SetFilePath(fileID)
+		if filePath != nil {
+			return filePath
+		}
+	}
 	return nil
 }
 

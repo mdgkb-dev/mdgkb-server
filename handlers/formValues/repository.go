@@ -41,6 +41,10 @@ func (r *Repository) get(id *string) (*models.FormValue, error) {
 		Relation("ResidencyApplication.FormValue.FieldValues.File").
 		Relation("ResidencyApplication.FormValue.Fields.ValueType").
 		Relation("ResidencyApplication.FormValue.FieldValues.Field.ValueType").
+		Relation("ResidencyApplication.ResidencyApplicationPointsAchievements.FileInfo").
+		Relation("ResidencyApplication.ResidencyApplicationPointsAchievements.PointsAchievement", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("points_achievement.points_achievements_order")
+		}).
 		Where("form_values.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

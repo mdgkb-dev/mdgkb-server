@@ -88,6 +88,7 @@ func (s *Service) UpdateWithForm(item *models.FormValue) error {
 	if err != nil {
 		return err
 	}
+	item.ResidencyApplication.SetIdForChildren()
 	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.repository.getDB())
 	err = residencyApplicationsPointsAchievementsService.UpsertMany(item.ResidencyApplication.ResidencyApplicationPointsAchievements)
 	if err != nil {

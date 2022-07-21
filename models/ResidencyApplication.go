@@ -51,11 +51,13 @@ func (item *ResidencyApplication) SetForeignKeys() {
 }
 
 func (item *ResidencyApplication) SetFilePath(fileID *string) *string {
-	path := item.FormValue.SetFilePath(fileID)
-	if path != nil {
-		return path
+	if item.FormValue != nil {
+		path := item.FormValue.SetFilePath(fileID)
+		if path != nil {
+			return path
+		}
 	}
-	path = item.ResidencyApplicationPointsAchievements.SetFilePath(fileID)
+	path := item.ResidencyApplicationPointsAchievements.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}
