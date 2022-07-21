@@ -10,6 +10,7 @@ type Role struct {
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          RoleName      `json:"name"`
 	Label         string        `json:"label"`
+	StartPage     string        `json:"startPage"`
 }
 
 type Roles []*Role
