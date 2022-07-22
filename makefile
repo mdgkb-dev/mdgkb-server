@@ -22,19 +22,13 @@ migrate:
 migrate_create:
 	go run $(main) -mode=migrate -action=create -name=${name}
 
-seed:
-	go run $(database) -mode=seed -action=migrate
-
-seed_create:
-	go run $(database) -mode=seed -action=create -name=${name}
-
 migrate_rollback:
 	go run $(migrates) rollback
 
 drop_database:
 	go run $(database) -action=dropDatabase
 
-dump_from_remote:
+dump_from_remote: migrate
 	 @./database/dump_pg.sh $(DB_PASSWORD)
 
 dump: dump_from_remote migrate
