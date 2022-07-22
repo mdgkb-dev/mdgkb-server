@@ -10,7 +10,7 @@ else
 	main := cmd/server/main.go
 endif
 
-run:
+run: migrate
 	reflex -r '\.go' -s -- sh -c "go run $(main)"
 
 run_cold:
@@ -38,7 +38,6 @@ deploy:
 
 kill:
 	kill -9 `lsof -t -i:$(SERVER_PORT)`
-
 
 #####
 #GIT#
