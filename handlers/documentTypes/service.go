@@ -15,11 +15,11 @@ func (s *Service) Create(item *models.DocumentType) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = documentTypeFields.CreateService(s.repository.getDB()).CreateMany(item.DocumentTypeFields)
+	err = documentTypeFields.CreateService(s.helper).CreateMany(item.DocumentTypeFields)
 	if err != nil {
 		return err
 	}
-	err = documents.CreateService(s.repository.getDB()).UpsertMany(item.Documents)
+	err = documents.CreateService(s.helper).UpsertMany(item.Documents)
 	if err != nil {
 		return err
 	}
@@ -48,7 +48,7 @@ func (s *Service) Update(item *models.DocumentType) error {
 		return err
 	}
 	item.SetIdForChildren()
-	documentFieldsService := documentTypeFields.CreateService(s.repository.getDB())
+	documentFieldsService := documentTypeFields.CreateService(s.helper)
 	err = documentFieldsService.UpsertMany(item.DocumentTypeFields)
 	if err != nil {
 		return err
@@ -60,7 +60,7 @@ func (s *Service) Update(item *models.DocumentType) error {
 		}
 	}
 
-	documentService := documents.CreateService(s.repository.getDB())
+	documentService := documents.CreateService(s.helper)
 	if len(item.DocumentsForDelete) > 0 {
 		err = documentService.DeleteMany(item.DocumentsForDelete)
 		if err != nil {
@@ -89,7 +89,7 @@ func (s *Service) Upsert(item *models.DocumentType) error {
 		return err
 	}
 	item.SetIdForChildren()
-	documentService := documents.CreateService(s.repository.getDB())
+	documentService := documents.CreateService(s.helper)
 	err = documentService.DeleteMany(item.DocumentsForDelete)
 	if err != nil {
 		return err
@@ -110,7 +110,7 @@ func (s *Service) UpsertMany(items models.DocumentTypes) error {
 		return err
 	}
 	items.SetIdForChildren()
-	documentService := documents.CreateService(s.repository.getDB())
+	documentService := documents.CreateService(s.helper)
 	err = documentService.DeleteMany(items.GetDocumentsIdForDelete())
 	if err != nil {
 		return err

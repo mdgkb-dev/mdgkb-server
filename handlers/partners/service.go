@@ -18,7 +18,7 @@ func (s *Service) Get(id *string) (*models.Partner, error) {
 }
 
 func (s *Service) Create(item *models.Partner) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(item.GetFileInfos())
+	err := fileInfos.CreateService(s.helper).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (s *Service) Create(item *models.Partner) error {
 }
 
 func (s *Service) Update(item *models.Partner) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(item.GetFileInfos())
+	err := fileInfos.CreateService(s.helper).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
 	}

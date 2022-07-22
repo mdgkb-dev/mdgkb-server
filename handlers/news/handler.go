@@ -127,7 +127,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	c.JSON(200, item)
+	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) RemoveComment(c *gin.Context) {

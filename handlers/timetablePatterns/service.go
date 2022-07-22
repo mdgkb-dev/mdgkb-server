@@ -27,7 +27,7 @@ func (s *Service) Create(item *models.TimetablePattern) error {
 		return err
 	}
 	item.SetIdForChildren()
-	timetableDaysService := timetableDays.CreateService(s.repository.getDB())
+	timetableDaysService := timetableDays.CreateService(s.helper)
 	err = timetableDaysService.CreateMany(item.TimetableDays)
 	if err != nil {
 		return err
@@ -41,7 +41,7 @@ func (s *Service) Update(item *models.TimetablePattern) error {
 		return err
 	}
 	item.SetIdForChildren()
-	timetableDaysService := timetableDays.CreateService(s.repository.getDB())
+	timetableDaysService := timetableDays.CreateService(s.helper)
 	err = timetableDaysService.UpsertMany(item.TimetableDays)
 	if err != nil {
 		return err

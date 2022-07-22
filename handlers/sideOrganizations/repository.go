@@ -9,26 +9,13 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type IRepository interface {
-	create(*gin.Context, *models.SideOrganization) error
-	getAll(*gin.Context) ([]models.SideOrganization, error)
-	get(*gin.Context, string) (models.SideOrganization, error)
-	update(*gin.Context, *models.SideOrganization) error
-	updateStatus(*gin.Context, *models.SideOrganization) error
-	delete(*gin.Context, string) error
-}
-
-type Repository struct {
-	db *bun.DB
-}
-
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db}
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganization) (err error) {
 	var contactInfo models.ContactInfo
-	_, err = r.db.NewInsert().Model(&contactInfo).Exec(ctx)
+	_, err = r.db().NewInsert().Model(&contactInfo).Exec(ctx)
 	if err != nil {
 		return err
 	}
@@ -40,7 +27,7 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 			mail.ContactInfoId = contactInfo.ID
 		}
 
-		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Emails).Exec(ctx)
+		_, err = r.db().NewInsert().Model(&organization.ContactInfo.Emails).Exec(ctx)
 
 		if err != nil {
 			return err
@@ -52,7 +39,7 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 			address.ContactInfoId = contactInfo.ID
 		}
 
-		_, err = r.db.NewInsert().Model(&organization.ContactInfo.PostAddresses).Exec(ctx)
+		_, err = r.db().NewInsert().Model(&organization.ContactInfo.PostAddresses).Exec(ctx)
 
 		if err != nil {
 			return err
@@ -64,7 +51,7 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 			phone.ContactInfoId = contactInfo.ID
 		}
 
-		_, err = r.db.NewInsert().Model(&organization.ContactInfo.TelephoneNumbers).Exec(ctx)
+		_, err = r.db().NewInsert().Model(&organization.ContactInfo.TelephoneNumbers).Exec(ctx)
 
 		if err != nil {
 			return err
@@ -76,19 +63,19 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 			site.ContactInfoId = contactInfo.ID
 		}
 
-		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Websites).Exec(ctx)
+		_, err = r.db().NewInsert().Model(&organization.ContactInfo.Websites).Exec(ctx)
 
 		if err != nil {
 			return err
 		}
 	}
 
-	_, err = r.db.NewInsert().Model(organization).Exec(ctx)
+	_, err = r.db().NewInsert().Model(organization).Exec(ctx)
 	return err
 }
 
 func (r *Repository) getAll(ctx *gin.Context) (items []models.SideOrganization, err error) {
-	err = r.db.NewSelect().Model(&items).
+	err = r.db().NewSelect().Model(&items).
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.PostAddresses").
@@ -101,7 +88,7 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.SideOrganization, 
 }
 
 func (r *Repository) get(ctx *gin.Context, id string) (item models.SideOrganization, err error) {
-	err = r.db.NewSelect().Model(&item).
+	err = r.db().NewSelect().Model(&item).
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.PostAddresses").
@@ -116,7 +103,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 	organization.ContactInfoId = organization.ContactInfo.ID
 	var existingOrg models.SideOrganization
 
-	_ = r.db.NewSelect().Model(&existingOrg).
+	_ = r.db().NewSelect().Model(&existingOrg).
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.PostAddresses").
@@ -133,7 +120,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 			incomingSet[mail.ID] = true
 		}
 
-		deleteQuery := r.db.NewDelete().Model(&models.Email{}).Where("1 = 0")
+		deleteQuery := r.db().NewDelete().Model(&models.Email{}).Where("1 = 0")
 
 		for _, mail := range existingOrg.ContactInfo.Emails {
 			if !incomingSet[mail.ID] {
@@ -147,7 +134,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 			return err
 		}
 
-		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Emails).
+		_, err = r.db().NewInsert().Model(&organization.ContactInfo.Emails).
 			On("conflict (id) do update").
 			Set("address = EXCLUDED.address").
 			Set("description = EXCLUDED.description").
@@ -166,7 +153,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 			incomingSet[address.ID] = true
 		}
 
-		deleteQuery := r.db.NewDelete().Model(&models.PostAddress{}).Where("1 = 0")
+		deleteQuery := r.db().NewDelete().Model(&models.PostAddress{}).Where("1 = 0")
 
 		for _, address := range existingOrg.ContactInfo.PostAddresses {
 			if !incomingSet[address.ID] {
@@ -180,7 +167,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 			return err
 		}
 
-		_, err = r.db.NewInsert().Model(&organization.ContactInfo.PostAddresses).
+		_, err = r.db().NewInsert().Model(&organization.ContactInfo.PostAddresses).
 			On("conflict (id) do update").
 			Set("address = EXCLUDED.address").
 			Set("description = EXCLUDED.description").
@@ -199,7 +186,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 			incomingSet[phone.ID] = true
 		}
 
-		deleteQuery := r.db.NewDelete().Model(&models.TelephoneNumber{}).Where("1 = 0")
+		deleteQuery := r.db().NewDelete().Model(&models.TelephoneNumber{}).Where("1 = 0")
 
 		for _, phone := range existingOrg.ContactInfo.TelephoneNumbers {
 			if !incomingSet[phone.ID] {
@@ -213,7 +200,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 			return err
 		}
 
-		_, err = r.db.NewInsert().Model(&organization.ContactInfo.TelephoneNumbers).
+		_, err = r.db().NewInsert().Model(&organization.ContactInfo.TelephoneNumbers).
 			On("conflict (id) do update").
 			Set("number = EXCLUDED.number").
 			Set("description = EXCLUDED.description").
@@ -232,7 +219,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 			incomingSet[site.ID] = true
 		}
 
-		deleteQuery := r.db.NewDelete().Model(&models.Website{}).Where("1 = 0")
+		deleteQuery := r.db().NewDelete().Model(&models.Website{}).Where("1 = 0")
 
 		for _, site := range existingOrg.ContactInfo.Websites {
 			if !incomingSet[site.ID] {
@@ -246,7 +233,7 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 			return err
 		}
 
-		_, err = r.db.NewInsert().Model(&organization.ContactInfo.Websites).
+		_, err = r.db().NewInsert().Model(&organization.ContactInfo.Websites).
 			On("conflict (id) do update").
 			Set("address = EXCLUDED.address").
 			Set("description = EXCLUDED.description").
@@ -257,19 +244,19 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 		}
 	}
 
-	_, err = r.db.NewUpdate().Model(organization).Where("id = ?", organization.ID).Exec(ctx)
+	_, err = r.db().NewUpdate().Model(organization).Where("id = ?", organization.ID).Exec(ctx)
 	return err
 }
 
 func (r *Repository) updateStatus(ctx *gin.Context, item *models.SideOrganization) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Exec(ctx)
+	_, err = r.db().NewUpdate().Model(item).Exec(ctx)
 	return err
 }
 
 func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 	var organization models.SideOrganization
 
-	err = r.db.NewSelect().Model(&organization).
+	err = r.db().NewSelect().Model(&organization).
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.PostAddresses").
@@ -282,37 +269,37 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 		return err
 	}
 
-	_, err = r.db.NewDelete().Model(&models.Email{}).Where("contact_info_id = ?", organization.ContactInfo.ID).Exec(ctx)
+	_, err = r.db().NewDelete().Model(&models.Email{}).Where("contact_info_id = ?", organization.ContactInfo.ID).Exec(ctx)
 
 	if err != nil {
 		return err
 	}
 
-	_, err = r.db.NewDelete().Model(&models.PostAddress{}).Where("contact_info_id = ?", organization.ContactInfo.ID).Exec(ctx)
+	_, err = r.db().NewDelete().Model(&models.PostAddress{}).Where("contact_info_id = ?", organization.ContactInfo.ID).Exec(ctx)
 
 	if err != nil {
 		return err
 	}
 
-	_, err = r.db.NewDelete().Model(&models.TelephoneNumber{}).Where("contact_info_id = ?", organization.ContactInfo.ID).Exec(ctx)
+	_, err = r.db().NewDelete().Model(&models.TelephoneNumber{}).Where("contact_info_id = ?", organization.ContactInfo.ID).Exec(ctx)
 
 	if err != nil {
 		return err
 	}
 
-	_, err = r.db.NewDelete().Model(&models.Website{}).Where("contact_info_id = ?", organization.ContactInfo.ID).Exec(ctx)
+	_, err = r.db().NewDelete().Model(&models.Website{}).Where("contact_info_id = ?", organization.ContactInfo.ID).Exec(ctx)
 
 	if err != nil {
 		return err
 	}
 
-	_, err = r.db.NewDelete().Model(&models.SideOrganization{}).Where("id = ?", id).Exec(ctx)
+	_, err = r.db().NewDelete().Model(&models.SideOrganization{}).Where("id = ?", id).Exec(ctx)
 
 	if err != nil {
 		return err
 	}
 
-	_, err = r.db.NewDelete().Model(&models.ContactInfo{}).Where("id = ?", organization.ContactInfo.ID).Exec(ctx)
+	_, err = r.db().NewDelete().Model(&models.ContactInfo{}).Where("id = ?", organization.ContactInfo.ID).Exec(ctx)
 
 	return err
 }

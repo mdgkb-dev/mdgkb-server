@@ -10,7 +10,7 @@ func (s *Service) Create(item *models.Event) error {
 	if item == nil {
 		return nil
 	}
-	err := forms.CreateService(s.repository.getDB()).Upsert(item.Form)
+	err := forms.CreateService(s.helper).Upsert(item.Form)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func (s *Service) Update(item *models.Event) error {
 	if item == nil {
 		return nil
 	}
-	err := forms.CreateService(s.repository.getDB()).Upsert(item.Form)
+	err := forms.CreateService(s.helper).Upsert(item.Form)
 	if err != nil {
 		return err
 	}
@@ -60,7 +60,7 @@ func (s *Service) Upsert(item *models.Event) error {
 	if item == nil {
 		return nil
 	}
-	err := forms.CreateService(s.repository.getDB()).Upsert(item.Form)
+	err := forms.CreateService(s.helper).Upsert(item.Form)
 	if err != nil {
 		return err
 	}
@@ -85,7 +85,7 @@ func (s *Service) CreateEventApplication(item *models.EventApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
+	err = fieldsValues.CreateService(s.helper).UpsertMany(item.FieldValues)
 	if err != nil {
 		return err
 	}

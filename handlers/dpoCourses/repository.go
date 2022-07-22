@@ -7,8 +7,8 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
@@ -21,7 +21,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 
 func (r *Repository) getAll() (item models.DpoCoursesWithCount, err error) {
 	item.DpoCourses = make(models.DpoCourses, 0)
-	query := r.db.NewSelect().
+	query := r.db().NewSelect().
 		Model(&item.DpoCourses).
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
@@ -36,7 +36,7 @@ func (r *Repository) getAll() (item models.DpoCoursesWithCount, err error) {
 
 func (r *Repository) get() (*models.DpoCourse, error) {
 	item := models.DpoCourse{}
-	err := r.db.NewSelect().Model(&item).
+	err := r.db().NewSelect().Model(&item).
 		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
@@ -54,22 +54,22 @@ func (r *Repository) get() (*models.DpoCourse, error) {
 }
 
 func (r *Repository) create(item *models.DpoCourse) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.DpoCourse{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.DpoCourse{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.DpoCourse) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) upsertMany(items models.DpoCourses) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
+	_, err = r.db().NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").

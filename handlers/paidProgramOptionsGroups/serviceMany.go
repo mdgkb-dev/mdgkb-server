@@ -15,7 +15,7 @@ func (s *Service) CreateMany(items models.PaidProgramOptionsGroups) error {
 	if err != nil {
 		return err
 	}
-	err = paidProgramOptions.CreateService(s.repository.getDB()).CreateMany(items.GetPaidProgramOptions())
+	err = paidProgramOptions.CreateService(s.helper).CreateMany(items.GetPaidProgramOptions())
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (s *Service) UpsertMany(items models.PaidProgramOptionsGroups) error {
 		return err
 	}
 	items.SetIdForChildren()
-	paidProgramOptionsService := paidProgramOptions.CreateService(s.repository.getDB())
+	paidProgramOptionsService := paidProgramOptions.CreateService(s.helper)
 	err = paidProgramOptionsService.UpsertMany(items.GetPaidProgramOptions())
 	if err != nil {
 		return err

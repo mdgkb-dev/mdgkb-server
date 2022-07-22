@@ -29,15 +29,15 @@ func (s *Service) Create(item *models.DpoCourse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = dpoCourseTeachers.CreateService(s.repository.getDB()).UpsertMany(item.DpoCoursesTeachers)
+	err = dpoCourseTeachers.CreateService(s.helper).UpsertMany(item.DpoCoursesTeachers)
 	if err != nil {
 		return err
 	}
-	err = dpoCourseDates.CreateService(s.repository.getDB()).UpsertMany(item.DpoCoursesDates)
+	err = dpoCourseDates.CreateService(s.helper).UpsertMany(item.DpoCoursesDates)
 	if err != nil {
 		return err
 	}
-	err = dpoCourseSpecializations.CreateService(s.repository.getDB()).UpsertMany(item.DpoCoursesSpecializations)
+	err = dpoCourseSpecializations.CreateService(s.helper).UpsertMany(item.DpoCoursesSpecializations)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (s *Service) Update(item *models.DpoCourse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	dpoCourseTeachersService := dpoCourseTeachers.CreateService(s.repository.getDB())
+	dpoCourseTeachersService := dpoCourseTeachers.CreateService(s.helper)
 	err = dpoCourseTeachersService.UpsertMany(item.DpoCoursesTeachers)
 	if err != nil {
 		return err
@@ -61,7 +61,7 @@ func (s *Service) Update(item *models.DpoCourse) error {
 	if err != nil {
 		return err
 	}
-	dpoCourseDatesService := dpoCourseDates.CreateService(s.repository.getDB())
+	dpoCourseDatesService := dpoCourseDates.CreateService(s.helper)
 	err = dpoCourseDatesService.UpsertMany(item.DpoCoursesDates)
 	if err != nil {
 		return err
@@ -70,7 +70,7 @@ func (s *Service) Update(item *models.DpoCourse) error {
 	if err != nil {
 		return err
 	}
-	dpoCourseSpecializationsService := dpoCourseSpecializations.CreateService(s.repository.getDB())
+	dpoCourseSpecializationsService := dpoCourseSpecializations.CreateService(s.helper)
 	err = dpoCourseSpecializationsService.UpsertMany(item.DpoCoursesSpecializations)
 	if err != nil {
 		return err
@@ -92,7 +92,6 @@ func (s *Service) UpsertMany(items models.DpoCourses) error {
 	}
 	return nil
 }
-
 
 func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)

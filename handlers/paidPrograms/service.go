@@ -16,12 +16,12 @@ func (s *Service) CreateMany(items models.PaidPrograms) error {
 		return err
 	}
 	items.SetIdForChildren()
-	err = paidProgramsPackages.CreateService(s.repository.getDB()).CreateMany(items.GetPaidProgramPackages())
+	err = paidProgramsPackages.CreateService(s.helper).CreateMany(items.GetPaidProgramPackages())
 	if err != nil {
 		return err
 	}
 
-	err = paidProgramOptionsGroups.CreateService(s.repository.getDB()).CreateMany(items.GetPaidProgramOptionsGroups())
+	err = paidProgramOptionsGroups.CreateService(s.helper).CreateMany(items.GetPaidProgramOptionsGroups())
 	if err != nil {
 		return err
 	}
@@ -37,11 +37,11 @@ func (s *Service) UpsertMany(items models.PaidPrograms) error {
 		return err
 	}
 	items.SetIdForChildren()
-	err = paidProgramsPackages.CreateService(s.repository.getDB()).UpsertMany(items.GetPaidProgramPackages())
+	err = paidProgramsPackages.CreateService(s.helper).UpsertMany(items.GetPaidProgramPackages())
 	if err != nil {
 		return err
 	}
-	err = paidProgramOptionsGroups.CreateService(s.repository.getDB()).UpsertMany(items.GetPaidProgramOptionsGroups())
+	err = paidProgramOptionsGroups.CreateService(s.helper).UpsertMany(items.GetPaidProgramOptionsGroups())
 	if err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func (s *Service) Update(item *models.PaidProgram) error {
 		return err
 	}
 	item.SetIdForChildren()
-	paidProgramsPackagesService := paidProgramsPackages.CreateService(s.repository.getDB())
+	paidProgramsPackagesService := paidProgramsPackages.CreateService(s.helper)
 	err = paidProgramsPackagesService.UpsertMany(item.PaidProgramPackages)
 	if err != nil {
 		return err
@@ -79,7 +79,7 @@ func (s *Service) Update(item *models.PaidProgram) error {
 		return err
 	}
 
-	paidProgramOptionsGroupsService := paidProgramOptionsGroups.CreateService(s.repository.getDB())
+	paidProgramOptionsGroupsService := paidProgramOptionsGroups.CreateService(s.helper)
 	err = paidProgramOptionsGroupsService.UpsertMany(item.PaidProgramOptionsGroups)
 	if err != nil {
 		return err

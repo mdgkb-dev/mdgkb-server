@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Service) Create(item *models.Question) error {
-	usersService := users.CreateService(s.repository.getDB(), s.helper)
+	usersService := users.CreateService(s.helper)
 	err := usersService.UpsertEmail(item.User)
 	if err != nil {
 		return err
@@ -19,7 +19,7 @@ func (s *Service) Create(item *models.Question) error {
 	if err != nil {
 		return err
 	}
-	err = fileInfos.CreateService(s.repository.getDB()).Create(item.File)
+	err = fileInfos.CreateService(s.helper).Create(item.File)
 	if err != nil {
 		return err
 	}

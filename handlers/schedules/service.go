@@ -11,7 +11,7 @@ func (s *Service) Create(item *models.Schedule) error {
 		return err
 	}
 	item.SetIdForChildren()
-	scheduleItemsService := scheduleItems.CreateService(s.repository.getDB())
+	scheduleItemsService := scheduleItems.CreateService(s.helper)
 	err = scheduleItemsService.CreateMany(item.ScheduleItems)
 	if err != nil {
 		return err
@@ -25,7 +25,7 @@ func (s *Service) Upsert(item *models.Schedule) error {
 		return err
 	}
 	item.SetIdForChildren()
-	scheduleItemsService := scheduleItems.CreateService(s.repository.getDB())
+	scheduleItemsService := scheduleItems.CreateService(s.helper)
 	err = scheduleItemsService.UpsertMany(item.ScheduleItems)
 	if err != nil {
 		return err

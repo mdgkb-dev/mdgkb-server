@@ -30,7 +30,7 @@ func (s *Service) EmailExists(email string, courseId string) (bool, error) {
 }
 
 func (s *Service) Create(item *models.ResidencyApplication) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func (s *Service) Create(item *models.ResidencyApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.repository.getDB())
+	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.helper)
 	err = residencyApplicationsPointsAchievementsService.CreateMany(item.ResidencyApplicationPointsAchievements)
 	if err != nil {
 		return err
@@ -49,7 +49,7 @@ func (s *Service) Create(item *models.ResidencyApplication) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (s *Service) Create(item *models.ResidencyApplication) error {
 }
 
 func (s *Service) Update(item *models.ResidencyApplication) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (s *Service) Update(item *models.ResidencyApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.repository.getDB())
+	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.helper)
 	err = residencyApplicationsPointsAchievementsService.UpsertMany(item.ResidencyApplicationPointsAchievements)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (s *Service) Update(item *models.ResidencyApplication) error {
 }
 
 func (s *Service) UpdateWithForm(item *models.FormValue) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item)
+	err := formValues.CreateService(s.helper).Upsert(item)
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func (s *Service) UpdateWithForm(item *models.FormValue) error {
 		return err
 	}
 	item.ResidencyApplication.SetIdForChildren()
-	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.repository.getDB())
+	residencyApplicationsPointsAchievementsService := residencyApplicationsPointsAchievements.CreateService(s.helper)
 	err = residencyApplicationsPointsAchievementsService.UpsertMany(item.ResidencyApplication.ResidencyApplicationPointsAchievements)
 	if err != nil {
 		return err

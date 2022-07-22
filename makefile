@@ -1,31 +1,26 @@
 include .env
 
 ifeq ($(OS),Windows_NT)
-	database := .\database
-	migrations := .\database\migrations
+	migrations := .\migrations
 	cli := .\cmd\cli
 	main := .\cmd\server\main.go
 else
-	database := database/*.go
-	migrations := database/migrations/*.go
+	migrations := database/*.go
 	cli := cmd/cli/*.go
 	main := cmd/server/main.go
 endif
 
-run: migrate
-	reflex -r '\.go' -s -- sh -c "go run cmd/server/main.go"
+run:
+	reflex -r '\.go' -s -- sh -c "go run $(main)"
 
-run_cold: migrate
-	go run $(main)	
-
-migrate_init:
-	go run $(database) -action=init
+run_cold:
+	go run $(main)
 
 migrate:
-	go run $(database) -mode=migration -action=migrate
+	go run $(main) -mode=migrate -action=migrate
 
 migrate_create:
-	go run $(database) -mode=migration -action=create -name=${name}
+	go run $(main) -mode=migrate -action=create -name=${name}
 
 seed:
 	go run $(database) -mode=seed -action=migrate
@@ -34,7 +29,7 @@ seed_create:
 	go run $(database) -mode=seed -action=create -name=${name}
 
 migrate_rollback:
-	go run $(migrations) rollback
+	go run $(migrates) rollback
 
 drop_database:
 	go run $(database) -action=dropDatabase

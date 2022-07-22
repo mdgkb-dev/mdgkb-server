@@ -10,7 +10,7 @@ func (s *Service) CreateMany(items models.PageImages) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.GetFileInfos())
+	err := fileInfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func (s *Service) UpsertMany(items models.PageImages) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.GetFileInfos())
+	err := fileInfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err
 	}

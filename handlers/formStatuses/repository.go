@@ -7,8 +7,8 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
@@ -21,7 +21,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 
 func (r *Repository) getAll() (models.FormStatuses, error) {
 	items := make(models.FormStatuses, 0)
-	query := r.db.NewSelect().
+	query := r.db().NewSelect().
 		Model(&items).
 		Relation("Icon").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon")
@@ -32,7 +32,7 @@ func (r *Repository) getAll() (models.FormStatuses, error) {
 
 func (r *Repository) GetAllByGroupId(id *string) (models.FormStatuses, error) {
 	items := make(models.FormStatuses, 0)
-	query := r.db.NewSelect().
+	query := r.db().NewSelect().
 		Model(&items).
 		Relation("Icon").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
@@ -44,7 +44,7 @@ func (r *Repository) GetAllByGroupId(id *string) (models.FormStatuses, error) {
 
 func (r *Repository) get(id *string) (*models.FormStatus, error) {
 	item := models.FormStatus{}
-	err := r.db.NewSelect().Model(&item).
+	err := r.db().NewSelect().Model(&item).
 		Relation("Icon").
 		Relation("FormStatusGroup").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
@@ -53,7 +53,7 @@ func (r *Repository) get(id *string) (*models.FormStatus, error) {
 }
 
 func (r *Repository) upsert(item *models.FormStatus) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(item).
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
@@ -70,7 +70,7 @@ func (r *Repository) upsert(item *models.FormStatus) (err error) {
 }
 
 func (r *Repository) upsertMany(items models.FormStatuses) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
@@ -85,6 +85,6 @@ func (r *Repository) upsertMany(items models.FormStatuses) (err error) {
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.FormStatus{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.FormStatus{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }

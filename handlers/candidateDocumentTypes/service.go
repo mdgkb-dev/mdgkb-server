@@ -28,7 +28,7 @@ func (s *Service) Create(item *models.CandidateDocumentType) error {
 		return err
 	}
 	//item.SetIdForChildren()
-	//err = documentTypes.CreateService(s.repository.getDB(), s.helper).UpsertMany(item.DocumentTypes)
+	//err = documentTypes.CreateService(s.helper).UpsertMany(item.DocumentTypes)
 	//if err != nil {
 	//	return err
 	//}
@@ -41,7 +41,7 @@ func (s *Service) Update(item *models.CandidateDocumentType) error {
 		return err
 	}
 	//item.SetIdForChildren()
-	//documentTypeService := documentTypes.CreateService(s.repository.getDB(), s.helper)
+	//documentTypeService := documentTypes.CreateService(s.helper)
 	//err = documentTypeService.DeleteMany(item.DocumentTypesForDelete)
 	//if err != nil {
 	//	return err
@@ -58,7 +58,7 @@ func (s *Service) Delete(id string) error {
 }
 
 func (s *Service) UpsertMany(items CandidateDocumentTypesWithDelete) error {
-	documentService := documentTypes.CreateService(s.repository.getDB(), s.helper)
+	documentService := documentTypes.CreateService(s.helper)
 	if len(items.CandidateDocumentTypes) > 0 {
 		err := documentService.UpsertMany(items.CandidateDocumentTypes.GetDocumentTypes())
 		if err != nil {

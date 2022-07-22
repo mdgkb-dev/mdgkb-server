@@ -8,8 +8,8 @@ import (
 	_ "github.com/go-pg/pg/v10/orm"
 )
 
-func (r *Repository) GetDB() *bun.DB {
-	return r.db
+func (r *Repository) DB() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
@@ -21,13 +21,13 @@ func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) create(item *models.Head) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.DB().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAll() (models.Heads, error) {
 	items := make(models.Heads, 0)
-	query := r.db.NewSelect().Model(&items).
+	query := r.DB().NewSelect().Model(&items).
 		Relation("Human").
 		Relation("Photo").
 		Relation("Departments.Division").
@@ -44,7 +44,7 @@ func (r *Repository) getAll() (models.Heads, error) {
 
 func (r *Repository) get(id string) (*models.Head, error) {
 	item := models.Head{}
-	err := r.db.NewSelect().Model(&item).Where("heads.id = ?", id).
+	err := r.DB().NewSelect().Model(&item).Where("heads.id = ?", id).
 		Relation("Human").
 		Relation("Photo").
 		Relation("Regalias").
@@ -60,11 +60,11 @@ func (r *Repository) get(id string) (*models.Head, error) {
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.Head{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.DB().NewDelete().Model(&models.Head{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.Head) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.DB().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }

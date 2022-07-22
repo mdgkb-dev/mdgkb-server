@@ -23,7 +23,7 @@ func (s *Service) Get(id string) (*models.AdmissionCommitteeDocumentType, error)
 }
 
 func (s *Service) Create(item *models.AdmissionCommitteeDocumentType) error {
-	err := documentTypes.CreateService(s.repository.getDB(), s.helper).Create(item.DocumentType)
+	err := documentTypes.CreateService(s.helper).Create(item.DocumentType)
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func (s *Service) Create(item *models.AdmissionCommitteeDocumentType) error {
 }
 
 func (s *Service) Update(item *models.AdmissionCommitteeDocumentType) error {
-	err := documentTypes.CreateService(s.repository.getDB(), s.helper).Update(item.DocumentType)
+	err := documentTypes.CreateService(s.helper).Update(item.DocumentType)
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (s *Service) UpdateOrder(items models.AdmissionCommitteeDocumentTypes) erro
 }
 
 func (s *Service) UpsertMany(items AdmissionCommitteeDocumentTypesWithDelete) error {
-	documentService := documentTypes.CreateService(s.repository.getDB(), s.helper)
+	documentService := documentTypes.CreateService(s.helper)
 	if len(items.AdmissionCommitteeDocumentTypes) > 0 {
 		err := documentService.UpsertMany(items.AdmissionCommitteeDocumentTypes.GetDocumentTypes())
 		if err != nil {

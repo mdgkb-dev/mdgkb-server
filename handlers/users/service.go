@@ -14,7 +14,7 @@ func (s *Service) Create(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
+	err = human.CreateService(s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
@@ -25,7 +25,7 @@ func (s *Service) Create(item *models.User) error {
 		return err
 	}
 	item.SetIdForChildren()
-	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	childrenService := children.CreateService(s.helper)
 	err = childrenService.CreateMany(item.Children)
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func (s *Service) Create(item *models.User) error {
 }
 
 func (s *Service) Update(item *models.User) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (s *Service) Update(item *models.User) error {
 		return err
 	}
 	item.SetIdForChildren()
-	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	childrenService := children.CreateService(s.helper)
 	err = childrenService.UpsertMany(item.Children)
 	if err != nil {
 		return err
@@ -65,7 +65,7 @@ func (s *Service) Update(item *models.User) error {
 }
 
 func (s *Service) Upsert(item *models.User) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func (s *Service) Upsert(item *models.User) error {
 		return err
 	}
 	item.SetIdForChildren()
-	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	childrenService := children.CreateService(s.helper)
 	err = childrenService.UpsertMany(item.Children)
 	if err != nil {
 		return err
@@ -92,7 +92,7 @@ func (s *Service) Upsert(item *models.User) error {
 }
 
 func (s *Service) UpsertEmail(item *models.User) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
 	}
@@ -164,7 +164,7 @@ func (s *Service) SetAccessLink(item *models.User) error {
 	if findedUser.IsActive {
 		return nil
 	}
-	role, err := roles.CreateService(s.repository.getDB(), s.helper).GetDefaultRole()
+	role, err := roles.CreateService(s.helper).GetDefaultRole()
 	if err != nil {
 		return err
 	}

@@ -2,89 +2,68 @@ package buildings
 
 import (
 	"mdgkb/mdgkb-server/models"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
 
-type Handler interface {
-	GetAll(c *gin.Context) error
-	GetByFloorId(c *gin.Context) error
-	GetById(c *gin.Context) error
-	Create(c *gin.Context) error
-	Delete(c *gin.Context) error
-	Update(c *gin.Context) error
-}
-
-type AHandler struct {
-	repository Repository
-	//uploader   helper.Uploader
-}
-
-// NewHandler constructor
-func NewHandler(repository Repository) *AHandler {
-	return &AHandler{
-		//uploader:   uploader,
-		repository: repository,
-	}
-}
-
-func (h *AHandler) Create(c *gin.Context) {
+func (h *Handler) Create(c *gin.Context) {
 	var item models.Building
 	err := c.ShouldBindWith(&item, binding.FormMultipart)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
 
 	err = h.repository.create(c, &item)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
 
-	c.JSON(200, gin.H{})
+	c.JSON(http.StatusOK, gin.H{})
 }
 
-func (h *AHandler) GetAll(c *gin.Context) {
+func (h *Handler) GetAll(c *gin.Context) {
 	buildings, err := h.repository.getAll(c)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, buildings)
+	c.JSON(http.StatusOK, buildings)
 }
 
-func (h *AHandler) GetByFloorId(c *gin.Context) {
+func (h *Handler) GetByFloorId(c *gin.Context) {
 	item, err := h.repository.getByFloorId(c, c.Param("id"))
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, item)
+	c.JSON(http.StatusOK, item)
 }
 
-func (h *AHandler) GetById(c *gin.Context) {
+func (h *Handler) GetById(c *gin.Context) {
 	item, err := h.repository.getById(c, c.Param("id"))
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, item)
+	c.JSON(http.StatusOK, item)
 }
 
-func (h *AHandler) Delete(c *gin.Context) {
+func (h *Handler) Delete(c *gin.Context) {
 	err := h.repository.delete(c, c.Param("id"))
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, gin.H{})
+	c.JSON(http.StatusOK, gin.H{})
 }
 
-func (h *AHandler) Update(c *gin.Context) {
+func (h *Handler) Update(c *gin.Context) {
 	var building models.Building
 	err := c.Bind(&building)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
 	err = h.repository.update(c, &building)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, gin.H{})
+	c.JSON(http.StatusOK, gin.H{})
 }

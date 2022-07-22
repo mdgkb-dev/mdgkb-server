@@ -15,7 +15,7 @@ func (s *Service) Create(item *models.Form) error {
 	}
 	item.SetIdForChildren()
 
-	err = fields.CreateService(s.repository.getDB()).UpsertMany(item.Fields)
+	err = fields.CreateService(s.helper).UpsertMany(item.Fields)
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (s *Service) Update(item *models.Form) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = fields.CreateService(s.repository.getDB()).UpsertMany(item.Fields)
+	err = fields.CreateService(s.helper).UpsertMany(item.Fields)
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func (s *Service) Upsert(item *models.Form) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = fields.CreateService(s.repository.getDB()).UpsertMany(item.Fields)
+	err = fields.CreateService(s.helper).UpsertMany(item.Fields)
 	if err != nil {
 		return err
 	}

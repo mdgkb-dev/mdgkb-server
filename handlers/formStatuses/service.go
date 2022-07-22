@@ -30,7 +30,7 @@ func (s *Service) Get(id *string) (*models.FormStatus, error) {
 }
 
 func (s *Service) Upsert(item *models.FormStatus) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.Icon)
+	err := fileInfos.CreateService(s.helper).Upsert(item.Icon)
 	if err != nil {
 		return err
 	}
@@ -40,11 +40,11 @@ func (s *Service) Upsert(item *models.FormStatus) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = formStatusToFormStatuses.CreateService(s.repository.getDB()).UpsertMany(item.FormStatusToFormStatuses)
+	err = formStatusToFormStatuses.CreateService(s.helper).UpsertMany(item.FormStatusToFormStatuses)
 	if err != nil {
 		return err
 	}
-	err = formStatusToFormStatuses.CreateService(s.repository.getDB()).DeleteMany(item.FormStatusToFormStatusesForDelete)
+	err = formStatusToFormStatuses.CreateService(s.helper).DeleteMany(item.FormStatusToFormStatusesForDelete)
 	return nil
 }
 
@@ -57,12 +57,12 @@ func (s *Service) UpsertMany(items models.FormStatuses) error {
 		return err
 	}
 	items.SetIdForChildren()
-	err = formStatusToFormStatuses.CreateService(s.repository.getDB()).UpsertMany(items.GetFormStatusToFormStatuses())
+	err = formStatusToFormStatuses.CreateService(s.helper).UpsertMany(items.GetFormStatusToFormStatuses())
 	if err != nil {
 		return err
 	}
 	if len(items.GetFormStatusToFormStatusesForDelete()) > 0 {
-		err = formStatusToFormStatuses.CreateService(s.repository.getDB()).DeleteMany(items.GetFormStatusToFormStatusesForDelete())
+		err = formStatusToFormStatuses.CreateService(s.helper).DeleteMany(items.GetFormStatusToFormStatusesForDelete())
 		if err != nil {
 			return err
 		}

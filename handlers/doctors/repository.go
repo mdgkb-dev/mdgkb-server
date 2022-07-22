@@ -10,8 +10,8 @@ import (
 	_ "github.com/go-pg/pg/v10/orm"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
@@ -23,12 +23,12 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) create(item *models.Doctor) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAllMain() (items models.Doctors, err error) {
-	err = r.db.NewSelect().Model(&items).
+	err = r.db().NewSelect().Model(&items).
 		Relation("Human").
 		Relation("Division.Floor").
 		Relation("FileInfo").
@@ -46,7 +46,7 @@ func (r *Repository) getAllMain() (items models.Doctors, err error) {
 }
 
 func (r *Repository) getAll() (items models.Doctors, err error) {
-	query := r.db.NewSelect().Model(&items).
+	query := r.db().NewSelect().Model(&items).
 		Relation("Human").
 		Relation("Division.Floor").
 		Relation("FileInfo").
@@ -63,7 +63,7 @@ func (r *Repository) getAll() (items models.Doctors, err error) {
 
 func (r *Repository) getAllAdmin() (item models.DoctorsWithCount, err error) {
 	item.Doctors = make(models.Doctors, 0)
-	query := r.db.NewSelect().Model(&item.Doctors).
+	query := r.db().NewSelect().Model(&item.Doctors).
 		Relation("Human").
 		Relation("Division.Floor").
 		Relation("FileInfo").
@@ -81,7 +81,7 @@ func (r *Repository) getAllAdmin() (item models.DoctorsWithCount, err error) {
 
 func (r *Repository) getAllTimetables() (models.Doctors, error) {
 	items := make(models.Doctors, 0)
-	err := r.db.NewSelect().Model(&items).
+	err := r.db().NewSelect().Model(&items).
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Scan(r.ctx)
@@ -90,7 +90,7 @@ func (r *Repository) getAllTimetables() (models.Doctors, error) {
 
 func (r *Repository) get(slug string) (*models.Doctor, error) {
 	item := models.Doctor{}
-	err := r.db.NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
+	err := r.db().NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
 		Relation("Human").
 		Relation("FileInfo").
 		Relation("PhotoMini").
@@ -117,7 +117,7 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 
 func (r *Repository) getByDivisionID(id string) (models.Doctors, error) {
 	items := make(models.Doctors, 0)
-	err := r.db.NewSelect().
+	err := r.db().NewSelect().
 		Model(&items).
 		Where("doctors_view.id = ?", id).
 		Relation("Human").
@@ -126,32 +126,32 @@ func (r *Repository) getByDivisionID(id string) (models.Doctors, error) {
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.Doctor{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.Doctor{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.Doctor) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) createComment(item *models.DoctorComment) error {
-	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) updateComment(item *models.DoctorComment) error {
-	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err := r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) removeComment(id string) error {
-	_, err := r.db.NewDelete().Model(&models.DoctorComment{}).Where("id = ?", id).Exec(r.ctx)
+	_, err := r.db().NewDelete().Model(&models.DoctorComment{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) upsertMany(items models.Doctors) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").
 		Set("show = EXCLUDED.show").
 		Set("division_id = EXCLUDED.division_id").
@@ -162,7 +162,7 @@ func (r *Repository) upsertMany(items models.Doctors) (err error) {
 
 func (r *Repository) search(search string) (models.Doctors, error) {
 	items := make(models.Doctors, 0)
-	err := r.db.NewSelect().
+	err := r.db().NewSelect().
 		Model(&items).
 		Relation("Human").
 		Where("lower(regexp_replace(human.name, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", "%"+search+"%").
@@ -173,7 +173,7 @@ func (r *Repository) search(search string) (models.Doctors, error) {
 }
 
 func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
-	_, err = r.db.NewDelete().
+	_, err = r.db().NewDelete().
 		Model((*models.Doctor)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)

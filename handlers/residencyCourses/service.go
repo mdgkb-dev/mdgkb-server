@@ -22,7 +22,7 @@ func (s *Service) Get() (*models.ResidencyCourse, error) {
 }
 
 func (s *Service) Create(item *models.ResidencyCourse) error {
-	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	fileInfosService := fileInfos.CreateService(s.helper)
 	err := fileInfosService.Create(item.Program)
 	if err != nil {
 		return err
@@ -45,11 +45,11 @@ func (s *Service) Create(item *models.ResidencyCourse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = residencyCourseTeachers.CreateService(s.repository.getDB()).UpsertMany(item.ResidencyCoursesTeachers)
+	err = residencyCourseTeachers.CreateService(s.helper).UpsertMany(item.ResidencyCoursesTeachers)
 	if err != nil {
 		return err
 	}
-	err = residencyCourseSpecializations.CreateService(s.repository.getDB()).UpsertMany(item.ResidencyCoursesSpecializations)
+	err = residencyCourseSpecializations.CreateService(s.helper).UpsertMany(item.ResidencyCoursesSpecializations)
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (s *Service) Create(item *models.ResidencyCourse) error {
 }
 
 func (s *Service) Update(item *models.ResidencyCourse) error {
-	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	fileInfosService := fileInfos.CreateService(s.helper)
 	err := fileInfosService.Upsert(item.Program)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (s *Service) Update(item *models.ResidencyCourse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	residencyCourseTeachersService := residencyCourseTeachers.CreateService(s.repository.getDB())
+	residencyCourseTeachersService := residencyCourseTeachers.CreateService(s.helper)
 	err = residencyCourseTeachersService.UpsertMany(item.ResidencyCoursesTeachers)
 	if err != nil {
 		return err
@@ -89,7 +89,7 @@ func (s *Service) Update(item *models.ResidencyCourse) error {
 	if err != nil {
 		return err
 	}
-	residencyCourseSpecializationsService := residencyCourseSpecializations.CreateService(s.repository.getDB())
+	residencyCourseSpecializationsService := residencyCourseSpecializations.CreateService(s.helper)
 	err = residencyCourseSpecializationsService.UpsertMany(item.ResidencyCoursesSpecializations)
 	if err != nil {
 		return err

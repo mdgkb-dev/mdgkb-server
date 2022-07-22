@@ -12,32 +12,32 @@ import (
 func (s *Service) Get() (*models.EducationalOrganization, error) {
 	item := models.EducationalOrganization{}
 	var err error
-	propertiesService := educationalOrganizationProperties.CreateService(s.repository.getDB())
+	propertiesService := educationalOrganizationProperties.CreateService(s.helper)
 	item.EducationalOrganizationProperties, err = propertiesService.GetAll()
 	if err != nil {
 		return nil, err
 	}
-	managersService := educationalOrganizationManagers.CreateService(s.repository.getDB())
+	managersService := educationalOrganizationManagers.CreateService(s.helper)
 	item.EducationalOrganizationManagers, err = managersService.GetAll()
 	if err != nil {
 		return nil, err
 	}
-	teachersService := teachers.CreateService(s.repository.getDB(), s.helper)
+	teachersService := teachers.CreateService(s.helper)
 	item.EducationalOrganizationTeachers, err = teachersService.GetAll()
 	if err != nil {
 		return nil, err
 	}
-	academicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB(), s.helper)
+	academicsService := educationalOrganizationAcademics.CreateService(s.helper)
 	item.EducationalOrganizationAcademics, err = academicsService.GetAll()
 	if err != nil {
 		return nil, err
 	}
-	//educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.repository.getDB())
+	//educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.helper)
 	//item.EducationalOrganizationDocumentTypes, err = educationalOrganizationDocumentTypesService.GetAll()
 	if err != nil {
 		return nil, err
 	}
-	//item.EducationalOrganizationPages, err = educationalOrganizationPages.CreateService(s.repository.getDB()).GetAll()
+	//item.EducationalOrganizationPages, err = educationalOrganizationPages.CreateService(s.helper).GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (s *Service) Get() (*models.EducationalOrganization, error) {
 }
 
 func (s *Service) Update(item *models.EducationalOrganization) error {
-	propertiesService := educationalOrganizationProperties.CreateService(s.repository.getDB())
+	propertiesService := educationalOrganizationProperties.CreateService(s.helper)
 	err := propertiesService.DeleteMany(item.EducationalOrganizationPropertiesForDelete)
 	if err != nil {
 		return err
@@ -55,7 +55,7 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 		return err
 	}
 
-	managersService := educationalOrganizationManagers.CreateService(s.repository.getDB())
+	managersService := educationalOrganizationManagers.CreateService(s.helper)
 	err = managersService.DeleteMany(item.EducationalOrganizationManagersForDelete)
 	if err != nil {
 		return err
@@ -65,7 +65,7 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 		return err
 	}
 
-	teachersService := teachers.CreateService(s.repository.getDB(), s.helper)
+	teachersService := teachers.CreateService(s.helper)
 	err = teachersService.DeleteMany(item.TeachersForDelete)
 	if err != nil {
 		return err
@@ -75,7 +75,7 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 		return err
 	}
 
-	educationalOrganizationAcademicsService := educationalOrganizationAcademics.CreateService(s.repository.getDB(), s.helper)
+	educationalOrganizationAcademicsService := educationalOrganizationAcademics.CreateService(s.helper)
 	err = educationalOrganizationAcademicsService.DeleteMany(item.EducationalOrganizationAcademicsForDelete)
 	if err != nil {
 		return err
@@ -85,7 +85,7 @@ func (s *Service) Update(item *models.EducationalOrganization) error {
 		return err
 	}
 
-	educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.repository.getDB())
+	educationalOrganizationDocumentTypesService := educationalOrganizationDocumentTypes.CreateService(s.helper)
 	err = educationalOrganizationDocumentTypesService.DeleteMany(item.EducationalOrganizationDocumentTypesForDelete)
 	if err != nil {
 		return err

@@ -8,8 +8,8 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
@@ -21,13 +21,13 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) create(item *models.Question) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAll() (item models.QuestionsWithCount, err error) {
 	item.Questions = make(models.Questions, 0)
-	query := r.db.NewSelect().
+	query := r.db().NewSelect().
 		Model(&item.Questions).
 		Relation("User.Human")
 	r.queryFilter.HandleQuery(query)
@@ -38,7 +38,7 @@ func (r *Repository) getAll() (item models.QuestionsWithCount, err error) {
 
 func (r *Repository) get(id string) (*models.Question, error) {
 	item := models.Question{}
-	err := r.db.NewSelect().
+	err := r.db().NewSelect().
 		Model(&item).
 		Relation("User.Human").
 		Relation("File").
@@ -47,17 +47,17 @@ func (r *Repository) get(id string) (*models.Question, error) {
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.Question{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.Question{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.Question) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) readAnswers(userID string) (err error) {
-	_, err = r.db.NewUpdate().Model(&models.Question{}).
+	_, err = r.db().NewUpdate().Model(&models.Question{}).
 		Set("answer_is_read = true").
 		Where("user_id = ?", userID).
 		Exec(r.ctx)
@@ -65,7 +65,7 @@ func (r *Repository) readAnswers(userID string) (err error) {
 }
 
 func (r *Repository) changeNewStatus(id string, isNew bool) (err error) {
-	_, err = r.db.NewUpdate().Model(&models.Question{}).
+	_, err = r.db().NewUpdate().Model(&models.Question{}).
 		Set("is_new = ?", isNew).
 		Where("id = ?", id).
 		Exec(r.ctx)
@@ -73,7 +73,7 @@ func (r *Repository) changeNewStatus(id string, isNew bool) (err error) {
 }
 
 func (r *Repository) publish(id string) (err error) {
-	_, err = r.db.NewUpdate().Model(&models.Question{}).
+	_, err = r.db().NewUpdate().Model(&models.Question{}).
 		Set("published = NOT published").
 		Set("is_new = false ").
 		Where("id = ?", id).
@@ -82,7 +82,7 @@ func (r *Repository) publish(id string) (err error) {
 }
 
 func (r *Repository) upsertMany(items models.Questions) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
+	_, err = r.db().NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("published = EXCLUDED.published").

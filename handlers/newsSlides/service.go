@@ -7,7 +7,7 @@ import (
 )
 
 func (s *Service) Create(item *models.NewsSlide) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(item.GetFileInfos())
+	err := fileInfos.CreateService(s.helper).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
 	}
@@ -17,7 +17,7 @@ func (s *Service) Create(item *models.NewsSlide) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = newsSlideButtons.CreateService(s.repository.getDB()).CreateMany(item.NewsSlideButtons)
+	err = newsSlideButtons.CreateService(s.helper).CreateMany(item.NewsSlideButtons)
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func (s *Service) Get(id string) (*models.NewsSlide, error) {
 }
 
 func (s *Service) Update(item *models.NewsSlide) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(item.GetFileInfos())
+	err := fileInfos.CreateService(s.helper).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func (s *Service) Update(item *models.NewsSlide) error {
 		return err
 	}
 	item.SetIdForChildren()
-	newsSlideButtonsService := newsSlideButtons.CreateService(s.repository.getDB())
+	newsSlideButtonsService := newsSlideButtons.CreateService(s.helper)
 	err = newsSlideButtonsService.UpsertMany(item.NewsSlideButtons)
 	if err != nil {
 		return err

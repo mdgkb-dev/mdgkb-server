@@ -6,17 +6,17 @@ import (
 	"mdgkb/mdgkb-server/models"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) createMany(items models.PaidPrograms) (err error) {
-	_, err = r.db.NewInsert().Model(&items).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(&items).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
-	_, err = r.db.NewDelete().
+	_, err = r.db().NewDelete().
 		Model((*models.PaidProgram)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
@@ -24,7 +24,7 @@ func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 }
 
 func (r *Repository) upsertMany(items models.PaidPrograms) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
 		Set("paid_programs_group_id = EXCLUDED.paid_programs_group_id").
@@ -34,13 +34,13 @@ func (r *Repository) upsertMany(items models.PaidPrograms) (err error) {
 }
 
 func (r *Repository) update(item *models.PaidProgram) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) get(id string) (*models.PaidProgram, error) {
 	item := models.PaidProgram{}
-	err := r.db.NewSelect().
+	err := r.db().NewSelect().
 		Model(&item).
 		Relation("PaidProgramPackages.PaidProgramServicesGroups.PaidProgramServices").
 		Relation("PaidProgramPackages.PaidProgramPackagesOptions").

@@ -23,7 +23,7 @@ func (s *Service) UpsertMany(items models.PostgraduateCoursePlans) error {
 	if len(items) == 0 {
 		return nil
 	}
-	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	fileInfosService := fileInfos.CreateService(s.helper)
 	err := fileInfosService.UpsertMany(items.GetPlans())
 	if err != nil {
 		return err

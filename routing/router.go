@@ -1,10 +1,12 @@
 package routing
 
 import (
+	"github.com/elastic/go-elasticsearch/v8"
 	"mdgkb/mdgkb-server/handlers/admissionCommitteeDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
+	"mdgkb/mdgkb-server/handlers/buildings"
 	"mdgkb/mdgkb-server/handlers/callbackRequests"
 	"mdgkb/mdgkb-server/handlers/candidateApplications"
 	"mdgkb/mdgkb-server/handlers/candidateDocumentTypes"
@@ -58,9 +60,12 @@ import (
 	"mdgkb/mdgkb-server/handlers/residencyDocumentTypes"
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/search"
+	"mdgkb/mdgkb-server/handlers/sideOrganizations"
 	"mdgkb/mdgkb-server/handlers/specializations"
+	"mdgkb/mdgkb-server/handlers/tags"
 	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/handlers/timetablePatterns"
+	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/handlers/treatDirections"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
@@ -73,7 +78,7 @@ import (
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
-	"mdgkb/mdgkb-server/routing/buildings"
+	buildingsRouter "mdgkb/mdgkb-server/routing/buildings"
 	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackRequests"
 	candidateApplicationsRouter "mdgkb/mdgkb-server/routing/candidateApplications"
 	candidateDocumentTypesRouter "mdgkb/mdgkb-server/routing/candidateDocumentTypes"
@@ -128,12 +133,12 @@ import (
 	residencyDocumentTypesRouter "mdgkb/mdgkb-server/routing/residencyDocumentTypes"
 	rolesRouter "mdgkb/mdgkb-server/routing/roles"
 	searchRouter "mdgkb/mdgkb-server/routing/search"
-	"mdgkb/mdgkb-server/routing/sideOrganizations"
+	sideOrganizationsRouter "mdgkb/mdgkb-server/routing/sideOrganizations"
 	specializationsRouter "mdgkb/mdgkb-server/routing/specializations"
-	"mdgkb/mdgkb-server/routing/tags"
+	tagsRouter "mdgkb/mdgkb-server/routing/tags"
 	teachersRouter "mdgkb/mdgkb-server/routing/teachers"
 	timetablePatternsRouter "mdgkb/mdgkb-server/routing/timetablePatterns"
-	"mdgkb/mdgkb-server/routing/timetables"
+	timetablesRouter "mdgkb/mdgkb-server/routing/timetables"
 	treatDirectionsRouter "mdgkb/mdgkb-server/routing/treatDirections"
 	usersRouter "mdgkb/mdgkb-server/routing/users"
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
@@ -142,15 +147,12 @@ import (
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingRules"
 	visitsApplicationsRouter "mdgkb/mdgkb-server/routing/visitsApplications"
 
-	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-pg/pg/v10/orm"
-	"github.com/go-redis/redis/v7"
 	helperPack "github.com/pro-assistance/pro-assister/helper"
-	"github.com/uptrace/bun"
 )
 
-func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchClient *elasticsearch.Client, helper *helperPack.Helper) {
+func Init(r *gin.Engine, helper *helperPack.Helper, elasticSearchClient elasticsearch.Client) {
 	m := middleware.CreateMiddleware(helper)
 
 	r.Use(m.CORSMiddleware())
@@ -159,82 +161,82 @@ func Init(r *gin.Engine, db *bun.DB, redisClient *redis.Client, elasticSearchCli
 
 	r.Static("/api/v1/static", "./static/")
 	authGroup := r.Group("/api/v1/auth")
-	authRouter.Init(authGroup.Group(""), auth.CreateHandler(db, helper))
+	authRouter.Init(authGroup.Group(""), auth.CreateHandler(helper))
 
 	api := r.Group("/api/v1")
 	//api.Use(m.Authentication())
 	api.Use(m.CORSMiddleware())
 	api.GET("/subscribe/:channel", helper.Broker.ServeHTTP)
 
-	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(db, helper))
-	buildings.Init(api.Group("/buildings"), db)
-	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(db, helper))
-	hospitalizationRouter.Init(api.Group("/hospitalizations"), db, helper)
-	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(db, helper))
-	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(db, helper))
-	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(db, helper))
-	newsRouter.Init(api.Group("/news"), news.CreateHandler(db, helper))
-	sideOrganizations.Init(api.Group("/side-organizations"), db)
-	tags.Init(api.Group("/tags"), db)
-	usersRouter.Init(api.Group("/users"), users.CreateHandler(db, helper))
-	timetables.Init(api.Group("/timetables"), db)
-	educationalOraganizationRouter.Init(api.Group("/educational-organization"), educationalOrganization.CreateHandler(db, helper))
-	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(db, helper))
-	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(db, helper))
-	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(db, helper))
-	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(db, helper))
-	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(db, helper))
-	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(db, helper))
-	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(db, helper))
-	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(db, helper))
-	searchRouter.Init(api.Group("/search"), search.CreateHandler(db, helper, elasticSearchClient))
-	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(db, helper))
-	visitingRulesRouter.Init(api.Group("/visiting-rules"), visitingRules.CreateHandler(db, helper))
-	newsSlidesRouter.Init(api.Group("/news-slides"), newsSlides.CreateHandler(db, helper))
-	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(db, helper))
-	eventsRouter.Init(api.Group("/events"), events.CreateHandler(db, helper))
-	timetablePatternsRouter.Init(api.Group("/timetable-patterns"), timetablePatterns.CreateHandler(db, helper))
-	formPatternsRouter.Init(api.Group("/form-patterns"), formPatterns.CreateHandler(db, helper))
-	paidProgramsRouter.Init(api.Group("/paid-programs"), paidPrograms.CreateHandler(db, helper))
-	paidProgramsGroupsRouter.Init(api.Group("/paid-programs-groups"), paidProgramsGroups.CreateHandler(db, helper))
-	partnerTypesRouter.Init(api.Group("/partner-types"), partnerTypes.CreateHandler(db, helper))
-	publicDocumentTypesRouter.Init(api.Group("/public-document-types"), publicDocumentTypes.CreateHandler(db, helper))
-	partnersRouter.Init(api.Group("/partners"), partners.CreateHandler(db, helper))
-	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(db, helper))
-	donorRulesRouter.Init(api.Group("/donor-rules"), donorRules.CreateHandler(db, helper))
-	certificatesRouter.Init(api.Group("/certificates"), certificates.CreateHandler(db, helper))
-	metaRouter.Init(api.Group("/meta"), meta.CreateHandler(db, helper))
-	paidServicesRouter.Init(api.Group("/paid-services"), paidServices.CreateHandler(db, helper))
-	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalProfiles.CreateHandler(db, helper))
-	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatDirections.CreateHandler(db, helper))
-	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackRequests.CreateHandler(db, helper))
-	visitsApplicationsRouter.Init(api.Group("/visits-applications"), visitsApplications.CreateHandler(db, helper))
-	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(db, helper))
-	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(db, helper))
-	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduateCourses.CreateHandler(db, helper))
-	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(db, helper))
-	educationalOrganizationAcademicsRouter.Init(api.Group("/educational-organization-academics"), educationalOrganizationAcademics.CreateHandler(db, helper))
-	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyApplications.CreateHandler(db, helper))
-	formValuesRouter.Init(api.Group("/form-values"), formValues.CreateHandler(db, helper))
-	formStatusesRouter.Init(api.Group("/form-statuses"), formStatuses.CreateHandler(db, helper))
-	formStatusGroupsRouter.Init(api.Group("/form-status-groups"), formStatusGroups.CreateHandler(db, helper))
-	postgraduateApplicationsRouter.Init(api.Group("/postgraduate-applications"), postgraduateApplications.CreateHandler(db, helper))
-	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(db, helper))
-	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalManagers.CreateHandler(db, helper))
-	appointmentsRouter.Init(api.Group("/appointments"), appointments.CreateHandler(db, helper))
-	childrenRouter.Init(api.Group("/children"), children.CreateHandler(db, helper))
-	gatesRouter.Init(api.Group("/gates"), gates.CreateHandler(db, helper))
-	specializationsRouter.Init(api.Group("/specializations"), specializations.CreateHandler(db, helper))
-	candidateApplicationsRouter.Init(api.Group("/candidate-applications"), candidateApplications.CreateHandler(db, helper))
-	candidateExamsRouter.Init(api.Group("/candidate-exams"), candidateExams.CreateHandler(db, helper))
-	postgraduateDocumentTypesRouter.Init(api.Group("/postgraduate-document-types"), postgraduateDocumentTypes.CreateHandler(db, helper))
-	dpoDocumentTypesRouter.Init(api.Group("/dpo-document-types"), dpoDocumentTypes.CreateHandler(db, helper))
-	candidateDocumentTypesRouter.Init(api.Group("/candidate-document-types"), candidateDocumentTypes.CreateHandler(db, helper))
-	rolesRouter.Init(api.Group("/roles"), roles.CreateHandler(db, helper))
-	residencyCoursesRouter.Init(api.Group("/residency-courses"), residencyCourses.CreateHandler(db, helper))
-	residencyDocumentTypesRouter.Init(api.Group("/residency-document-types"), residencyDocumentTypes.CreateHandler(db, helper))
-	educationYearsRouter.Init(api.Group("/education-years"), educationYears.CreateHandler(db, helper))
-	educationPublicDocumentTypesRouter.Init(api.Group("/education-public-document-types"), educationPublicDocumentTypes.CreateHandler(db, helper))
-	admissionCommitteeDocumentTypesRouter.Init(api.Group("/admission-committee-document-types"), admissionCommitteeDocumentTypes.CreateHandler(db, helper))
-	pointsAchievementsRouter.Init(api.Group("/points-achievements"), pointsAchievements.CreateHandler(db, helper))
+	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(helper))
+	buildingsRouter.Init(api.Group("/buildings"), buildings.CreateHandler(helper))
+	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(helper))
+	hospitalizationRouter.Init(api.Group("/hospitalizations"), helper)
+	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(helper))
+	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(helper))
+	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(helper))
+	newsRouter.Init(api.Group("/news"), news.CreateHandler(helper))
+	sideOrganizationsRouter.Init(api.Group("/side-organizations"), sideOrganizations.CreateHandler(helper))
+	tagsRouter.Init(api.Group("/tags"), tags.CreateHandler(helper))
+	usersRouter.Init(api.Group("/users"), users.CreateHandler(helper))
+	timetablesRouter.Init(api.Group("/timetables"), timetables.CreateHandler(helper))
+	educationalOraganizationRouter.Init(api.Group("/educational-organization"), educationalOrganization.CreateHandler(helper))
+	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(helper))
+	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(helper))
+	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(helper))
+	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(helper))
+	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(helper))
+	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyResponse.CreateHandler(helper))
+	documentTypesRouter.Init(api.Group("/document-types"), documentTypes.CreateHandler(helper))
+	valueTypesRouter.Init(api.Group("/value-types"), valueTypes.CreateHandler(helper))
+	searchRouter.Init(api.Group("/search"), search.CreateHandler(helper))
+	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(helper))
+	visitingRulesRouter.Init(api.Group("/visiting-rules"), visitingRules.CreateHandler(helper))
+	newsSlidesRouter.Init(api.Group("/news-slides"), newsSlides.CreateHandler(helper))
+	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(helper))
+	eventsRouter.Init(api.Group("/events"), events.CreateHandler(helper))
+	timetablePatternsRouter.Init(api.Group("/timetable-patterns"), timetablePatterns.CreateHandler(helper))
+	formPatternsRouter.Init(api.Group("/form-patterns"), formPatterns.CreateHandler(helper))
+	paidProgramsRouter.Init(api.Group("/paid-programs"), paidPrograms.CreateHandler(helper))
+	paidProgramsGroupsRouter.Init(api.Group("/paid-programs-groups"), paidProgramsGroups.CreateHandler(helper))
+	partnerTypesRouter.Init(api.Group("/partner-types"), partnerTypes.CreateHandler(helper))
+	publicDocumentTypesRouter.Init(api.Group("/public-document-types"), publicDocumentTypes.CreateHandler(helper))
+	partnersRouter.Init(api.Group("/partners"), partners.CreateHandler(helper))
+	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(helper))
+	donorRulesRouter.Init(api.Group("/donor-rules"), donorRules.CreateHandler(helper))
+	certificatesRouter.Init(api.Group("/certificates"), certificates.CreateHandler(helper))
+	metaRouter.Init(api.Group("/meta"), meta.CreateHandler(helper))
+	paidServicesRouter.Init(api.Group("/paid-services"), paidServices.CreateHandler(helper))
+	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalProfiles.CreateHandler(helper))
+	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatDirections.CreateHandler(helper))
+	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackRequests.CreateHandler(helper))
+	visitsApplicationsRouter.Init(api.Group("/visits-applications"), visitsApplications.CreateHandler(helper))
+	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(helper))
+	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpoCourses.CreateHandler(helper))
+	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduateCourses.CreateHandler(helper))
+	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoApplications.CreateHandler(helper))
+	educationalOrganizationAcademicsRouter.Init(api.Group("/educational-organization-academics"), educationalOrganizationAcademics.CreateHandler(helper))
+	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyApplications.CreateHandler(helper))
+	formValuesRouter.Init(api.Group("/form-values"), formValues.CreateHandler(helper))
+	formStatusesRouter.Init(api.Group("/form-statuses"), formStatuses.CreateHandler(helper))
+	formStatusGroupsRouter.Init(api.Group("/form-status-groups"), formStatusGroups.CreateHandler(helper))
+	postgraduateApplicationsRouter.Init(api.Group("/postgraduate-applications"), postgraduateApplications.CreateHandler(helper))
+	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(helper))
+	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalManagers.CreateHandler(helper))
+	appointmentsRouter.Init(api.Group("/appointments"), appointments.CreateHandler(helper))
+	childrenRouter.Init(api.Group("/children"), children.CreateHandler(helper))
+	gatesRouter.Init(api.Group("/gates"), gates.CreateHandler(helper))
+	specializationsRouter.Init(api.Group("/specializations"), specializations.CreateHandler(helper))
+	candidateApplicationsRouter.Init(api.Group("/candidate-applications"), candidateApplications.CreateHandler(helper))
+	candidateExamsRouter.Init(api.Group("/candidate-exams"), candidateExams.CreateHandler(helper))
+	postgraduateDocumentTypesRouter.Init(api.Group("/postgraduate-document-types"), postgraduateDocumentTypes.CreateHandler(helper))
+	dpoDocumentTypesRouter.Init(api.Group("/dpo-document-types"), dpoDocumentTypes.CreateHandler(helper))
+	candidateDocumentTypesRouter.Init(api.Group("/candidate-document-types"), candidateDocumentTypes.CreateHandler(helper))
+	rolesRouter.Init(api.Group("/roles"), roles.CreateHandler(helper))
+	residencyCoursesRouter.Init(api.Group("/residency-courses"), residencyCourses.CreateHandler(helper))
+	residencyDocumentTypesRouter.Init(api.Group("/residency-document-types"), residencyDocumentTypes.CreateHandler(helper))
+	educationYearsRouter.Init(api.Group("/education-years"), educationYears.CreateHandler(helper))
+	educationPublicDocumentTypesRouter.Init(api.Group("/education-public-document-types"), educationPublicDocumentTypes.CreateHandler(helper))
+	admissionCommitteeDocumentTypesRouter.Init(api.Group("/admission-committee-document-types"), admissionCommitteeDocumentTypes.CreateHandler(helper))
+	pointsAchievementsRouter.Init(api.Group("/points-achievements"), pointsAchievements.CreateHandler(helper))
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Service) Upsert(item *models.FormValue) error {
-	usersService := users.CreateService(s.repository.getDB(), s.helper)
+	usersService := users.CreateService(s.helper)
 	err := usersService.UpsertEmail(item.User)
 	if err != nil {
 		return err
@@ -18,7 +18,7 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	if err != nil {
 		return err
 	}
-	err = children.CreateService(s.repository.getDB(), s.helper).Upsert(item.Child)
+	err = children.CreateService(s.helper).Upsert(item.Child)
 	if err != nil {
 		return err
 	}
@@ -28,7 +28,7 @@ func (s *Service) Upsert(item *models.FormValue) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
+	err = fieldsValues.CreateService(s.helper).UpsertMany(item.FieldValues)
 	if err != nil {
 		return err
 	}

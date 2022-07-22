@@ -2,6 +2,7 @@ package timetableDays
 
 import (
 	"context"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -12,7 +13,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	db() *bun.DB
 	createMany(models.TimetableDays) error
 	upsertMany(models.TimetableDays) error
 	deleteMany([]string) error
@@ -24,22 +25,23 @@ type Handler struct {
 
 type Service struct {
 	repository IRepository
+	helper     *helper.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	ctx    context.Context
+	helper *helper.Helper
 }
 
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
+func CreateService(h *helper.Helper) *Service {
+	repo := NewRepository(h)
+	return NewService(repo, h)
 }
 
-func NewService(repository IRepository) *Service {
+func NewService(repository IRepository, h *helper.Helper) *Service {
 	return &Service{repository: repository}
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(h *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: h}
 }

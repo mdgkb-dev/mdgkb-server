@@ -6,12 +6,12 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) upsert(item *models.FormValue) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(item).
 		Set("id = EXCLUDED.id").
 		Set("created_at = EXCLUDED.created_at").
@@ -28,7 +28,7 @@ func (r *Repository) upsert(item *models.FormValue) (err error) {
 
 func (r *Repository) get(id *string) (*models.FormValue, error) {
 	item := models.FormValue{}
-	err := r.db.NewSelect().Model(&item).
+	err := r.db().NewSelect().Model(&item).
 		Relation("User.Human").
 		Relation("Child.Human").
 		Relation("Fields.File").
@@ -50,7 +50,7 @@ func (r *Repository) get(id *string) (*models.FormValue, error) {
 }
 
 func (r *Repository) upsertMany(items models.FormValues) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("viewed_by_user = EXCLUDED.viewed_by_user").
 		Set("approving_date = EXCLUDED.approving_date").

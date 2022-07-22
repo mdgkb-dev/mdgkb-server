@@ -15,7 +15,7 @@ func (s *Service) CreateMany(items models.PreparationRulesGroups) error {
 		return err
 	}
 	items.SetIdForChildren()
-	err = preparationRules.CreateService(s.repository.getDB()).CreateMany(items.GetPreparationRules())
+	err = preparationRules.CreateService(s.helper).CreateMany(items.GetPreparationRules())
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (s *Service) UpsertMany(items models.PreparationRulesGroups) error {
 		return err
 	}
 	items.SetIdForChildren()
-	preparationRulesGroupsService := preparationRules.CreateService(s.repository.getDB())
+	preparationRulesGroupsService := preparationRules.CreateService(s.helper)
 	err = preparationRulesGroupsService.UpsertMany(items.GetPreparationRules())
 	if err != nil {
 		return err

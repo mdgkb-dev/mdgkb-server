@@ -7,35 +7,35 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) create(item *models.Human) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAllBySlug(slug string) (models.Humans, error) {
 	items := make(models.Humans, 0)
-	err := r.db.NewSelect().Model(&items).Where("slug like ?", fmt.Sprintf("%s", slug)+"%").
+	err := r.db().NewSelect().Model(&items).Where("slug like ?", fmt.Sprintf("%s", slug)+"%").
 		Order("slug desc").
 		Scan(r.ctx)
 	return items, err
 }
 
 func (r *Repository) createMany(items models.Humans) (err error) {
-	_, err = r.db.NewInsert().Model(&items).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(&items).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.Human) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("humans.id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("humans.id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) upsertMany(items models.Humans) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
 		Set("surname = EXCLUDED.surname").
@@ -57,7 +57,7 @@ func (r *Repository) upsertMany(items models.Humans) (err error) {
 }
 
 func (r *Repository) upsert(item *models.Human) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
 		Set("surname = EXCLUDED.surname").

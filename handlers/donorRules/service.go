@@ -11,7 +11,7 @@ func (s *Service) GetAll(userId *uuid.UUID) (models.DonorRules, error) {
 }
 
 func (s *Service) UpsertMany(items DonorRulesWithDeleted) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.DonorRules.GetImages())
+	err := fileInfos.CreateService(s.helper).UpsertMany(items.DonorRules.GetImages())
 	if err != nil {
 		return err
 	}

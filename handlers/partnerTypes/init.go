@@ -2,10 +2,10 @@ package partnerTypes
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
-	"mdgkb/mdgkb-server/models"
 	"github.com/gin-gonic/gin"
+	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/uptrace/bun"
+	"mdgkb/mdgkb-server/models"
 )
 
 type IHandler interface {
@@ -25,7 +25,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	db() *bun.DB
 	getAll() (models.PartnerTypes, error)
 	get(string) (*models.PartnerType, error)
 	create(*models.PartnerType) error
@@ -44,7 +44,6 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
 	ctx    context.Context
 	helper *helper.Helper
 }
@@ -53,8 +52,8 @@ type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
-	repo := NewRepository(db, helper)
+func CreateHandler(helper *helper.Helper) *Handler {
+	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	return NewHandler(service, helper)
 }
@@ -68,6 +67,6 @@ func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper}
+func NewRepository(helper *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: helper}
 }

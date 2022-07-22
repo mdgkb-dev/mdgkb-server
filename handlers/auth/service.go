@@ -14,14 +14,14 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	role, err := roles.CreateService(s.repository.getDB(), s.helper).GetDefaultRole()
+	role, err := roles.CreateService(s.helper).GetDefaultRole()
 	if err != nil {
 		return nil, err
 	}
 	item.Role = role
 	item.RoleID = role.ID
 	item.IsActive = true
-	err = users.CreateService(s.repository.getDB(), s.helper).Upsert(item)
+	err = users.CreateService(s.helper).Upsert(item)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 }
 
 func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
-	findedUser, err := users.CreateService(s.repository.getDB(), s.helper).GetByEmail(item.Email)
+	findedUser, err := users.CreateService(s.helper).GetByEmail(item.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
 }
 
 func (s *Service) FindUserByEmail(email string) (*models.User, error) {
-	findedUser, err := users.CreateService(s.repository.getDB(), s.helper).GetByEmail(email)
+	findedUser, err := users.CreateService(s.helper).GetByEmail(email)
 	if err != nil {
 		return nil, err
 	}
@@ -56,11 +56,11 @@ func (s *Service) FindUserByEmail(email string) (*models.User, error) {
 }
 
 func (s *Service) GetUserByID(id string) (*models.User, error) {
-	return users.CreateService(s.repository.getDB(), s.helper).Get(id)
+	return users.CreateService(s.helper).Get(id)
 }
 
 func (s *Service) DropUUID(item *models.User) error {
-	return users.CreateService(s.repository.getDB(), s.helper).DropUUID(item)
+	return users.CreateService(s.helper).DropUUID(item)
 }
 
 func (s *Service) UpdatePassword(item *models.User) error {
@@ -69,7 +69,7 @@ func (s *Service) UpdatePassword(item *models.User) error {
 		return err
 	}
 	item.IsActive = true
-	return users.CreateService(s.repository.getDB(), s.helper).UpdatePassword(item)
+	return users.CreateService(s.helper).UpdatePassword(item)
 }
 
 func (s *Service) UpsertManyPathPermissions(paths models.PathPermissions) error {

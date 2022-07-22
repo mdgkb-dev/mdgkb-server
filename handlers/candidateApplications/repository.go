@@ -7,8 +7,8 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
@@ -21,7 +21,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 
 func (r *Repository) getAll() (models.CandidateApplications, error) {
 	items := make(models.CandidateApplications, 0)
-	query := r.db.NewSelect().
+	query := r.db().NewSelect().
 		Model(&items).
 		Relation("CandidateExam").
 		Relation("FormValue.FieldValues.File").
@@ -37,7 +37,7 @@ func (r *Repository) getAll() (models.CandidateApplications, error) {
 
 func (r *Repository) get(id *string) (*models.CandidateApplication, error) {
 	item := models.CandidateApplication{}
-	err := r.db.NewSelect().Model(&item).
+	err := r.db().NewSelect().Model(&item).
 		Relation("CandidateApplicationSpecializations.Specialization").
 		Relation("CandidateExam.FormPattern.Fields.File").
 		Relation("CandidateExam.FormPattern.Fields.ValueType").
@@ -52,23 +52,23 @@ func (r *Repository) get(id *string) (*models.CandidateApplication, error) {
 }
 
 func (r *Repository) emailExists(email string, examId string) (bool, error) {
-	exists, err := r.db.NewSelect().Model((*models.CandidateApplication)(nil)).
+	exists, err := r.db().NewSelect().Model((*models.CandidateApplication)(nil)).
 		Join("JOIN users ON users.email = ?", email).
 		Where("candidate_applications.candidate_exam_id = ?", examId).Exists(r.ctx)
 	return exists, err
 }
 
 func (r *Repository) create(item *models.CandidateApplication) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.CandidateApplication{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.CandidateApplication{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.CandidateApplication) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }

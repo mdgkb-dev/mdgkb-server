@@ -9,7 +9,6 @@ import (
 	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
@@ -67,7 +66,6 @@ type Service struct {
 }
 
 type Repository struct {
-	db          *bun.DB
 	ctx         context.Context
 	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
@@ -77,8 +75,8 @@ type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
-	repo := NewRepository(db, helper)
+func CreateHandler(helper *helper.Helper) *Handler {
+	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
@@ -93,8 +91,8 @@ func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper}
+func NewRepository(helper *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: helper}
 }
 
 func NewFilesService(helper *helper.Helper) *FilesService {

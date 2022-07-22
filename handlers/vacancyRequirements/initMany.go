@@ -3,7 +3,7 @@ package vacancyRequirements
 import (
 	"context"
 	"github.com/google/uuid"
-	"github.com/uptrace/bun"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -21,22 +21,23 @@ type IRepository interface {
 
 type Service struct {
 	repository IRepository
+	helper     *helper.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	helper *helper.Helper
+	ctx    context.Context
 }
 
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
+func CreateService(h *helper.Helper) *Service {
+	repo := NewRepository(h)
+	return NewService(repo, h)
 }
 
-func NewService(repository IRepository) *Service {
+func NewService(repository IRepository, h *helper.Helper) *Service {
 	return &Service{repository: repository}
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(h *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: h}
 }

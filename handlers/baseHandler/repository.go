@@ -5,8 +5,8 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) GetDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {

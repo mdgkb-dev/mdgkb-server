@@ -13,15 +13,15 @@ func (s *Service) Create(item *models.Page) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = pagesDocuments.CreateService(s.repository.getDB()).CreateMany(item.PageDocuments)
+	err = pagesDocuments.CreateService(s.helper).CreateMany(item.PageDocuments)
 	if err != nil {
 		return err
 	}
-	err = pageImages.CreateService(s.repository.getDB()).CreateMany(item.PageImages)
+	err = pageImages.CreateService(s.helper).CreateMany(item.PageImages)
 	if err != nil {
 		return err
 	}
-	//pagesCommentsService := .CreateService(s.repository.getDB())
+	//pagesCommentsService := .CreateService(s.helper)
 	//err = pagesCommentsService.CreateMany(item.PageComments)
 	//if err != nil {
 	//	return err
@@ -47,7 +47,7 @@ func (s *Service) Update(item *models.Page) error {
 		return err
 	}
 	item.SetIdForChildren()
-	pagesDocumentsService := pagesDocuments.CreateService(s.repository.getDB())
+	pagesDocumentsService := pagesDocuments.CreateService(s.helper)
 	err = pagesDocumentsService.UpsertMany(item.PageDocuments)
 	if err != nil {
 		return err
@@ -56,7 +56,7 @@ func (s *Service) Update(item *models.Page) error {
 	if err != nil {
 		return err
 	}
-	pageImagesService := pageImages.CreateService(s.repository.getDB())
+	pageImagesService := pageImages.CreateService(s.helper)
 	err = pageImagesService.UpsertMany(item.PageImages)
 	if err != nil {
 		return err

@@ -23,7 +23,7 @@ func (s *Service) Get(id *string) (*models.Appointment, error) {
 }
 
 func (s *Service) Create(item *models.Appointment) error {
-	err := children.CreateService(s.repository.getDB(), s.helper).Upsert(item.Child)
+	err := children.CreateService(s.helper).Upsert(item.Child)
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func (s *Service) Create(item *models.Appointment) error {
 }
 
 func (s *Service) Update(item *models.Appointment) error {
-	err := children.CreateService(s.repository.getDB(), s.helper).Upsert(item.Child)
+	err := children.CreateService(s.helper).Upsert(item.Child)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (s *Service) DeleteMany(id []string) error {
 }
 
 func (s *Service) Init() error {
-	doctorsWithTimetable, err := doctors.CreateService(s.repository.getDB(), s.helper).GetAllTimetables()
+	doctorsWithTimetable, err := doctors.CreateService(s.helper).GetAllTimetables()
 	if err != nil {
 		return err
 	}

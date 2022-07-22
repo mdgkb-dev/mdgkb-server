@@ -10,7 +10,7 @@ func (s *Service) CreateMany(items models.ResidencyApplicationPointsAchievements
 	if len(items) == 0 {
 		return nil
 	}
-	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	fileInfosService := fileInfos.CreateService(s.helper)
 	err := fileInfosService.UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err
@@ -27,7 +27,7 @@ func (s *Service) UpsertMany(items models.ResidencyApplicationPointsAchievements
 	if len(items) == 0 {
 		return nil
 	}
-	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	fileInfosService := fileInfos.CreateService(s.helper)
 	err := fileInfosService.UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err

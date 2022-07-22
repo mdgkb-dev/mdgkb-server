@@ -26,7 +26,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	db() *bun.DB
 	getGroups(string) (models.SearchGroups, error)
 	search(*models.SearchModel) error
 	elasticSearch(*models.SearchModel) error
@@ -49,7 +49,6 @@ type Service struct {
 }
 
 type Repository struct {
-	db            *bun.DB
 	ctx           context.Context
 	helper        *helper.Helper
 	elasticsearch *elasticsearch.Client
@@ -59,8 +58,8 @@ type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper, elasticSearchClient *elasticsearch.Client) *Handler {
-	repo := NewRepository(db, helper, elasticSearchClient)
+func CreateHandler(helper *helper.Helper) *Handler {
+	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
@@ -75,8 +74,8 @@ func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helper.Helper, elasticSearchClient *elasticsearch.Client) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper, elasticsearch: elasticSearchClient}
+func NewRepository(helper *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: helper}
 }
 
 func NewFilesService(helper *helper.Helper) *FilesService {

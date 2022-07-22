@@ -8,8 +8,8 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
@@ -22,7 +22,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 
 func (r *Repository) getAll() (item models.PostgraduateApplicationsWithCount, err error) {
 	item.PostgraduateApplications = make(models.PostgraduateApplications, 0)
-	query := r.db.NewSelect().
+	query := r.db().NewSelect().
 		Model(&item.PostgraduateApplications).
 		Relation("PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
 		Relation("FormValue.FieldValues.File").
@@ -37,7 +37,7 @@ func (r *Repository) getAll() (item models.PostgraduateApplicationsWithCount, er
 
 func (r *Repository) get(id *string) (*models.PostgraduateApplication, error) {
 	item := models.PostgraduateApplication{}
-	err := r.db.NewSelect().Model(&item).
+	err := r.db().NewSelect().Model(&item).
 		Relation("PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
 		Relation("PostgraduateCourse.FormPattern.Fields.File").
 		Relation("PostgraduateCourse.FormPattern.Fields.ValueType").
@@ -52,7 +52,7 @@ func (r *Repository) get(id *string) (*models.PostgraduateApplication, error) {
 }
 
 func (r *Repository) emailExists(email string, courseId string) (bool, error) {
-	exists, err := r.db.NewSelect().Model((*models.PostgraduateApplication)(nil)).
+	exists, err := r.db().NewSelect().Model((*models.PostgraduateApplication)(nil)).
 		Join("JOIN form_values ON postgraduate_applications_view.form_value_id = form_values.id").
 		Join("JOIN users ON users.id = form_values.user_id and users.email = ?", email).
 		Where("postgraduate_applications_view.postgraduate_course_id = ?", courseId).Exists(r.ctx)
@@ -60,16 +60,16 @@ func (r *Repository) emailExists(email string, courseId string) (bool, error) {
 }
 
 func (r *Repository) create(item *models.PostgraduateApplication) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.PostgraduateApplication{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.PostgraduateApplication{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.PostgraduateApplication) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }

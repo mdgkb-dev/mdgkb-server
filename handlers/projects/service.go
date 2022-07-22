@@ -12,7 +12,7 @@ func (s *Service) Create(item *models.Project) error {
 		return err
 	}
 	item.SetIdForChildren()
-	projectItemsService := projectItems.CreateService(s.repository.getDB(), s.helper)
+	projectItemsService := projectItems.CreateService(s.helper)
 	err = projectItemsService.UpsertMany(item.ProjectItems)
 	if err != nil {
 		return err
@@ -26,7 +26,7 @@ func (s *Service) Update(item *models.Project) error {
 		return err
 	}
 	item.SetIdForChildren()
-	projectItemsService := projectItems.CreateService(s.repository.getDB(), s.helper)
+	projectItemsService := projectItems.CreateService(s.helper)
 	err = projectItemsService.UpsertMany(item.ProjectItems)
 	if err != nil {
 		return err

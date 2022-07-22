@@ -27,11 +27,11 @@ func (s *Service) UpsertMany(items models.FieldValues) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.GetFileInfos())
+	err := fileInfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err
 	}
-	err = fields.CreateService(s.repository.getDB()).UpsertMany(items.GetFields())
+	err = fields.CreateService(s.helper).UpsertMany(items.GetFields())
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func (s *Service) UpsertMany(items models.FieldValues) error {
 		return err
 	}
 	items.SetIdForChildren()
-	fieldValuesFilesService := fieldValuesFiles.CreateService(s.repository.getDB())
+	fieldValuesFilesService := fieldValuesFiles.CreateService(s.helper)
 	err = fieldValuesFilesService.UpsertMany(items.GetFieldValuesFiles())
 	if err != nil {
 		return err

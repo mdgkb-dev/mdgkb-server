@@ -17,12 +17,12 @@ func (s *Service) Create(item *models.Vacancy) error {
 		return err
 	}
 	item.SetIdForChildren()
-	vacancyDutiesService := vacancyDuties.CreateService(s.repository.GetDB())
+	vacancyDutiesService := vacancyDuties.CreateService(s.helper)
 	err = vacancyDutiesService.UpsertMany(item.VacancyDuties)
 	if err != nil {
 		return err
 	}
-	vacancyRequirementsService := vacancyRequirements.CreateService(s.repository.GetDB())
+	vacancyRequirementsService := vacancyRequirements.CreateService(s.helper)
 	err = vacancyRequirementsService.UpsertMany(item.VacancyRequirements)
 	if err != nil {
 		return err
@@ -54,7 +54,7 @@ func (s *Service) Update(item *models.Vacancy) error {
 		return err
 	}
 	item.SetIdForChildren()
-	vacancyDutiesService := vacancyDuties.CreateService(s.repository.GetDB())
+	vacancyDutiesService := vacancyDuties.CreateService(s.helper)
 	err = vacancyDutiesService.UpsertMany(item.VacancyDuties)
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ func (s *Service) Update(item *models.Vacancy) error {
 		return err
 	}
 
-	vacancyRequirementsService := vacancyRequirements.CreateService(s.repository.GetDB())
+	vacancyRequirementsService := vacancyRequirements.CreateService(s.helper)
 	err = vacancyRequirementsService.UpsertMany(item.VacancyRequirements)
 	if err != nil {
 		return err
@@ -74,7 +74,7 @@ func (s *Service) Update(item *models.Vacancy) error {
 		return err
 	}
 
-	err = vacancyResponse.CreateService(s.repository.GetDB(), s.helper).DeleteMany(item.VacancyResponsesForDelete)
+	err = vacancyResponse.CreateService(s.helper).DeleteMany(item.VacancyResponsesForDelete)
 	if err != nil {
 		return err
 	}
@@ -86,7 +86,7 @@ func (s *Service) Delete(id *string) error {
 }
 
 func (s *Service) CreateResponse(item *models.VacancyResponse) error {
-	//err := human.CreateService(s.repository.GetDB(), s.helper).Create(item.Human)
+	//err := human.CreateService(s.helper).Create(item.Human)
 	//if err != nil {
 	//	return err
 	//}

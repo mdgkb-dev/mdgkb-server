@@ -7,7 +7,7 @@ import (
 )
 
 func (s *Service) Create(item *models.Menu) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(models.FileInfos{item.Icon})
+	err := fileInfos.CreateService(s.helper).UpsertMany(models.FileInfos{item.Icon})
 	if err != nil {
 		return err
 	}
@@ -17,7 +17,7 @@ func (s *Service) Create(item *models.Menu) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = subMenus.CreateService(s.repository.getDB()).CreateMany(item.SubMenus)
+	err = subMenus.CreateService(s.helper).CreateMany(item.SubMenus)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func (s *Service) Get(id *string) (*models.Menu, error) {
 }
 
 func (s *Service) Update(item *models.Menu) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(models.FileInfos{item.Icon})
+	err := fileInfos.CreateService(s.helper).UpsertMany(models.FileInfos{item.Icon})
 	if err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func (s *Service) Update(item *models.Menu) error {
 	}
 	item.SetIdForChildren()
 
-	subMenuService := subMenus.CreateService(s.repository.getDB())
+	subMenuService := subMenus.CreateService(s.helper)
 	err = subMenuService.DeleteMany(item.SubMenusForDelete)
 	if err != nil {
 		return err
@@ -66,7 +66,7 @@ func (s *Service) Delete(id *string) error {
 }
 
 func (s *Service) UpsertMany(items MenusWithDeleted) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.Menus.GetIcons())
+	err := fileInfos.CreateService(s.helper).UpsertMany(items.Menus.GetIcons())
 	if err != nil {
 		return err
 	}
@@ -83,7 +83,7 @@ func (s *Service) UpsertMany(items MenusWithDeleted) error {
 		}
 		items.Menus.SetIdForChildren()
 	}
-	subMenuService := subMenus.CreateService(s.repository.getDB())
+	subMenuService := subMenus.CreateService(s.helper)
 	err = subMenuService.DeleteMany(items.Menus.GetSubMenusForDelete())
 	if err != nil {
 		return err

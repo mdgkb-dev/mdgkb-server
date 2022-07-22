@@ -21,7 +21,7 @@ func (s *Service) Get(id *string) (*models.VisitsApplication, error) {
 }
 
 func (s *Service) Create(item *models.VisitsApplication) error {
-	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (s *Service) Create(item *models.VisitsApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = visits.CreateService(s.repository.GetDB(), s.helper).UpsertMany(item.Visits)
+	err = visits.CreateService(s.helper).UpsertMany(item.Visits)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (s *Service) Create(item *models.VisitsApplication) error {
 }
 
 func (s *Service) Update(item *models.VisitsApplication) error {
-	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -48,12 +48,12 @@ func (s *Service) Update(item *models.VisitsApplication) error {
 	if err != nil {
 		return err
 	}
-	err = visits.CreateService(s.repository.GetDB(), s.helper).UpsertMany(item.Visits)
+	err = visits.CreateService(s.helper).UpsertMany(item.Visits)
 	if err != nil {
 		return err
 	}
 	if len(item.VisitsForDelete) > 0 {
-		err = visits.CreateService(s.repository.GetDB(), s.helper).DeleteMany(item.VisitsForDelete)
+		err = visits.CreateService(s.helper).DeleteMany(item.VisitsForDelete)
 		if err != nil {
 			return err
 		}

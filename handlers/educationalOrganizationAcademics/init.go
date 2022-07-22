@@ -8,7 +8,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
-	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
@@ -21,7 +20,7 @@ type IService interface {
 	UpsertMany(models.EducationalOrganizationAcademics) error
 	Upsert(*models.EducationalOrganizationAcademic) error
 	DeleteMany([]string) error
-	DeleteByDoctorID(id uuid.NullUUID) (error)
+	DeleteByDoctorID(id uuid.NullUUID) error
 }
 
 type IRepository interface {
@@ -30,7 +29,7 @@ type IRepository interface {
 	upsertMany(models.EducationalOrganizationAcademics) error
 	upsert(*models.EducationalOrganizationAcademic) error
 	deleteMany([]string) error
-	deleteByDoctorID(id uuid.NullUUID) (error)
+	deleteByDoctorID(id uuid.NullUUID) error
 }
 
 type Handler struct {
@@ -44,31 +43,30 @@ type Service struct {
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	ctx         context.Context
 	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
-	repo := NewRepository(db, helper)
+func CreateHandler(helper *helper.Helper) *Handler {
+	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	return NewHandler(service, helper)
 }
 
-func CreateService(db *bun.DB, helper *helper.Helper) *Service {
-	repo := NewRepository(db, helper)
+func CreateService(helper *helper.Helper) *Service {
+	repo := NewRepository(helper)
 	return NewService(repo, helper)
 }
 
 func NewHandler(s IService, helper *helper.Helper) *Handler {
 	return &Handler{service: s, helper: helper}
-}	
+}
 
 func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper}
+func NewRepository(helper *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: helper}
 }

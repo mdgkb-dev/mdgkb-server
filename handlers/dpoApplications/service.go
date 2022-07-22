@@ -29,7 +29,7 @@ func (s *Service) EmailExists(email string, courseId string) (bool, error) {
 }
 
 func (s *Service) Create(item *models.DpoApplication) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func (s *Service) Create(item *models.DpoApplication) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func (s *Service) Create(item *models.DpoApplication) error {
 }
 
 func (s *Service) Update(item *models.DpoApplication) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}

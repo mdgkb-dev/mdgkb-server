@@ -9,7 +9,7 @@ func (s *Service) CreateMany(items models.PageDocuments) error {
 	if len(items) == 0 {
 		return nil
 	}
-	documentsService := document.CreateService(s.repository.getDB())
+	documentsService := document.CreateService(s.helper)
 	err := documentsService.UpsertMany(items.GetDocuments())
 	if err != nil {
 		return err
@@ -27,7 +27,7 @@ func (s *Service) UpsertMany(items models.PageDocuments) error {
 	if len(items) == 0 {
 		return nil
 	}
-	documentsService := document.CreateService(s.repository.getDB())
+	documentsService := document.CreateService(s.helper)
 	err := documentsService.UpsertMany(items.GetDocuments())
 	if err != nil {
 		return err

@@ -11,11 +11,11 @@ func (s *Service) CreateMany(items models.Educations) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := educationCertification.CreateService(s.repository.getDB()).CreateMany(items.GetEducationCertifications())
+	err := educationCertification.CreateService(s.helper).CreateMany(items.GetEducationCertifications())
 	if err != nil {
 		return err
 	}
-	err = educationAccreditation.CreateService(s.repository.getDB()).CreateMany(items.GetEducationQualification())
+	err = educationAccreditation.CreateService(s.helper).CreateMany(items.GetEducationQualification())
 	if err != nil {
 		return err
 	}
@@ -31,11 +31,11 @@ func (s *Service) UpsertMany(items models.Educations) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := educationCertification.CreateService(s.repository.getDB()).UpsertMany(items.GetEducationCertifications())
+	err := educationCertification.CreateService(s.helper).UpsertMany(items.GetEducationCertifications())
 	if err != nil {
 		return err
 	}
-	err = educationAccreditation.CreateService(s.repository.getDB()).UpsertMany(items.GetEducationQualification())
+	err = educationAccreditation.CreateService(s.helper).UpsertMany(items.GetEducationQualification())
 	if err != nil {
 		return err
 	}

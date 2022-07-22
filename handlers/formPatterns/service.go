@@ -20,7 +20,7 @@ func (s *Service) Get(id string) (*models.FormPattern, error) {
 }
 
 func (s *Service) Create(item *models.FormPattern) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Create(item.PersonalDataAgreement)
+	err := fileInfos.CreateService(s.helper).Create(item.PersonalDataAgreement)
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (s *Service) Create(item *models.FormPattern) error {
 	}
 	item.SetIdForChildren()
 
-	err = fields.CreateService(s.repository.getDB()).UpsertMany(item.Fields)
+	err = fields.CreateService(s.helper).UpsertMany(item.Fields)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (s *Service) Create(item *models.FormPattern) error {
 }
 
 func (s *Service) Update(item *models.FormPattern) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.PersonalDataAgreement)
+	err := fileInfos.CreateService(s.helper).Upsert(item.PersonalDataAgreement)
 	if err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ func (s *Service) Update(item *models.FormPattern) error {
 	}
 	item.SetIdForChildren()
 
-	fieldsService := fields.CreateService(s.repository.getDB())
+	fieldsService := fields.CreateService(s.helper)
 	if len(item.Fields) > 0 {
 		err = fieldsService.UpsertMany(item.Fields)
 		if err != nil {

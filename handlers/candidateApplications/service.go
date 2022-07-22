@@ -29,7 +29,7 @@ func (s *Service) EmailExists(email string, examId string) (bool, error) {
 }
 
 func (s *Service) Create(item *models.CandidateApplication) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (s *Service) Create(item *models.CandidateApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = candidateApplicationSpecializations.CreateService(s.repository.getDB()).UpsertMany(item.CandidateApplicationSpecializations)
+	err = candidateApplicationSpecializations.CreateService(s.helper).UpsertMany(item.CandidateApplicationSpecializations)
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func (s *Service) Create(item *models.CandidateApplication) error {
 }
 
 func (s *Service) Update(item *models.CandidateApplication) error {
-	err := formValues.CreateService(s.repository.getDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func (s *Service) Update(item *models.CandidateApplication) error {
 		return err
 	}
 	item.SetIdForChildren()
-	candidateApplicationSpecializationsService := candidateApplicationSpecializations.CreateService(s.repository.getDB())
+	candidateApplicationSpecializationsService := candidateApplicationSpecializations.CreateService(s.helper)
 	err = candidateApplicationSpecializationsService.UpsertMany(item.CandidateApplicationSpecializations)
 	if err != nil {
 		return err

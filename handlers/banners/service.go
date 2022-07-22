@@ -6,7 +6,7 @@ import (
 )
 
 func (s *Service) Create(item *models.Banner) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Create(item.FileInfo)
+	err := fileInfos.CreateService(s.helper).Create(item.FileInfo)
 	if err != nil {
 		return err
 	}
@@ -20,7 +20,7 @@ func (s *Service) Create(item *models.Banner) error {
 }
 
 func (s *Service) Update(item *models.Banner) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.FileInfo)
+	err := fileInfos.CreateService(s.helper).Upsert(item.FileInfo)
 	if err != nil {
 		return err
 	}

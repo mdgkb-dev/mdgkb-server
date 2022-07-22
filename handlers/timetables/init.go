@@ -2,6 +2,7 @@ package timetables
 
 import (
 	"context"
+	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +10,7 @@ import (
 )
 
 type IHandler interface {
-	GetValueTypes(c *gin.Context) error
+	GetAllWeekdays(c *gin.Context)
 }
 
 type IService interface {
@@ -19,7 +20,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	db() *bun.DB
 	create(timetable *models.Timetable) error
 	upsert(timetable *models.Timetable) error
 	getAllWeekdays() (models.Weekdays, error)
@@ -27,37 +28,39 @@ type IRepository interface {
 
 type Handler struct {
 	service IService
+	helper  *helper.Helper
 }
 
 type Service struct {
 	repository IRepository
+	helper     *helper.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	ctx    context.Context
+	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB) *Handler {
-	repo := NewRepository(db)
-	service := NewService(repo)
-	return NewHandler(service)
+func CreateHandler(h *helper.Helper) *Handler {
+	repo := NewRepository(h)
+	service := NewService(repo, h)
+	return NewHandler(service, h)
 }
 
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
+func CreateService(h *helper.Helper) *Service {
+	repo := NewRepository(h)
+	return NewService(repo, h)
 }
 
 // NewHandler constructor
-func NewHandler(s IService) *Handler {
-	return &Handler{service: s}
+func NewHandler(s IService, h *helper.Helper) *Handler {
+	return &Handler{service: s, helper: h}
 }
 
-func NewService(repository IRepository) *Service {
+func NewService(repository IRepository, h *helper.Helper) *Service {
 	return &Service{repository: repository}
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(h *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: h}
 }

@@ -2,77 +2,57 @@ package tags
 
 import (
 	"mdgkb/mdgkb-server/models"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type IHandler interface {
-	GetAll(c *gin.Context) error
-	Get(c *gin.Context) error
-	Create(c *gin.Context) error
-	Delete(c *gin.Context) error
-	UpdateStatus(c *gin.Context) error
-}
-
-type Handler struct {
-	repository IRepository
-	//uploader   helper.Uploader
-}
-
-// NewHandler constructor
-func NewHandler(repository IRepository) *Handler {
-	return &Handler{
-		//uploader:   uploader,
-		repository: repository,
-	}
-}
-
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Tag
 	err := c.Bind(&item)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
 	err = h.repository.create(c, &item)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, item)
+	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
 	items, err := h.repository.getAll(c)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, items)
+	c.JSON(http.StatusOK, items)
 }
 
 func (h *Handler) Get(c *gin.Context) {
 	item, err := h.repository.get(c, c.Param("id"))
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, item)
+	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) UpdateStatus(c *gin.Context) {
 	var item models.Tag
 	err := c.Bind(&item)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
 	err = h.repository.updateStatus(c, &item)
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, gin.H{})
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (h *Handler) Delete(c *gin.Context) {
 	err := h.repository.delete(c, c.Param("id"))
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, gin.H{})
+	c.JSON(http.StatusOK, gin.H{})
 }

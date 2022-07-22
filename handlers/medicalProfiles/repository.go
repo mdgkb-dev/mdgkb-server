@@ -7,18 +7,18 @@ import (
 	_ "github.com/go-pg/pg/v10/orm"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) create(item *models.MedicalProfile) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAll() (models.MedicalProfiles, error) {
 	items := make(models.MedicalProfiles, 0)
-	query := r.db.NewSelect().Model(&items).
+	query := r.db().NewSelect().Model(&items).
 		Relation("MedicalProfilesDivisions.Division").
 		Relation("MedicalProfilesNews.News.PreviewImage").
 		Order("medical_profiles.name")
@@ -28,7 +28,7 @@ func (r *Repository) getAll() (models.MedicalProfiles, error) {
 
 func (r *Repository) get(id string) (*models.MedicalProfile, error) {
 	item := models.MedicalProfile{}
-	err := r.db.NewSelect().Model(&item).
+	err := r.db().NewSelect().Model(&item).
 		Relation("MedicalProfilesDivisions.Division").
 		Relation("MedicalProfilesNews.News.PreviewImage").
 		Relation("MedicalProfilesNews.News.NewsViews").
@@ -38,11 +38,11 @@ func (r *Repository) get(id string) (*models.MedicalProfile, error) {
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.MedicalProfile{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.MedicalProfile{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.MedicalProfile) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }

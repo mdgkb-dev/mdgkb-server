@@ -24,7 +24,7 @@ func (s *Service) Get() (*models.PostgraduateCourse, error) {
 }
 
 func (s *Service) Create(item *models.PostgraduateCourse) error {
-	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	fileInfosService := fileInfos.CreateService(s.helper)
 	err := fileInfosService.Create(item.QuestionsFile)
 	if err != nil {
 		return err
@@ -47,19 +47,19 @@ func (s *Service) Create(item *models.PostgraduateCourse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	err = postgraduateCourseTeachers.CreateService(s.repository.getDB()).UpsertMany(item.PostgraduateCoursesTeachers)
+	err = postgraduateCourseTeachers.CreateService(s.helper).UpsertMany(item.PostgraduateCoursesTeachers)
 	if err != nil {
 		return err
 	}
-	err = postgraduateCourseDates.CreateService(s.repository.getDB()).UpsertMany(item.PostgraduateCoursesDates)
+	err = postgraduateCourseDates.CreateService(s.helper).UpsertMany(item.PostgraduateCoursesDates)
 	if err != nil {
 		return err
 	}
-	err = postgraduateCourseSpecializations.CreateService(s.repository.getDB()).UpsertMany(item.PostgraduateCoursesSpecializations)
+	err = postgraduateCourseSpecializations.CreateService(s.helper).UpsertMany(item.PostgraduateCoursesSpecializations)
 	if err != nil {
 		return err
 	}
-	postgraduateCoursePlansService := postgraduateCoursePlans.CreateService(s.repository.getDB())
+	postgraduateCoursePlansService := postgraduateCoursePlans.CreateService(s.helper)
 	err = postgraduateCoursePlansService.UpsertMany(item.PostgraduateCoursePlans)
 	if err != nil {
 		return err
@@ -68,7 +68,7 @@ func (s *Service) Create(item *models.PostgraduateCourse) error {
 }
 
 func (s *Service) Update(item *models.PostgraduateCourse) error {
-	fileInfosService := fileInfos.CreateService(s.repository.getDB())
+	fileInfosService := fileInfos.CreateService(s.helper)
 	err := fileInfosService.Upsert(item.QuestionsFile)
 	if err != nil {
 		return err
@@ -91,7 +91,7 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 		return err
 	}
 	item.SetIdForChildren()
-	postgraduateCourseTeachersService := postgraduateCourseTeachers.CreateService(s.repository.getDB())
+	postgraduateCourseTeachersService := postgraduateCourseTeachers.CreateService(s.helper)
 	err = postgraduateCourseTeachersService.UpsertMany(item.PostgraduateCoursesTeachers)
 	if err != nil {
 		return err
@@ -100,7 +100,7 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 	if err != nil {
 		return err
 	}
-	postgraduateCourseDatesService := postgraduateCourseDates.CreateService(s.repository.getDB())
+	postgraduateCourseDatesService := postgraduateCourseDates.CreateService(s.helper)
 	err = postgraduateCourseDatesService.UpsertMany(item.PostgraduateCoursesDates)
 	if err != nil {
 		return err
@@ -109,7 +109,7 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 	if err != nil {
 		return err
 	}
-	postgraduateCourseSpecializationsService := postgraduateCourseSpecializations.CreateService(s.repository.getDB())
+	postgraduateCourseSpecializationsService := postgraduateCourseSpecializations.CreateService(s.helper)
 	err = postgraduateCourseSpecializationsService.UpsertMany(item.PostgraduateCoursesSpecializations)
 	if err != nil {
 		return err
@@ -118,7 +118,7 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 	if err != nil {
 		return err
 	}
-	postgraduateCoursePlansService := postgraduateCoursePlans.CreateService(s.repository.getDB())
+	postgraduateCoursePlansService := postgraduateCoursePlans.CreateService(s.helper)
 	err = postgraduateCoursePlansService.UpsertMany(item.PostgraduateCoursePlans)
 	if err != nil {
 		return err

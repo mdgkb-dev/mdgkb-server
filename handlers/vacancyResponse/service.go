@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Service) Create(item *models.VacancyResponse) error {
-	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func (s *Service) Get(id string) (*models.VacancyResponse, error) {
 }
 
 func (s *Service) Update(item *models.VacancyResponse) error {
-	err := formValues.CreateService(s.repository.GetDB(), s.helper).Upsert(item.FormValue)
+	err := formValues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}

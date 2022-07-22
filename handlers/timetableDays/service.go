@@ -14,7 +14,7 @@ func (s *Service) CreateMany(items models.TimetableDays) error {
 		return err
 	}
 	items.SetIdForChildren()
-	err = timePeriods.CreateService(s.repository.getDB()).CreateMany(items.GetTimePeriods())
+	err = timePeriods.CreateService(s.helper).CreateMany(items.GetTimePeriods())
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (s *Service) UpsertMany(items models.TimetableDays) error {
 		return err
 	}
 	items.SetIdForChildren()
-	timePeriodService := timePeriods.CreateService(s.repository.getDB())
+	timePeriodService := timePeriods.CreateService(s.helper)
 	err = timePeriodService.DeleteMany(items.GetIDForDelete())
 	if err != nil {
 		return err

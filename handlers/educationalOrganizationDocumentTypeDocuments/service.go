@@ -21,7 +21,7 @@ func (s *Service) UpsertMany(items models.EducationalOrganizationDocumentTypeDoc
 	if len(items) == 0 {
 		return nil
 	}
-	documentsService := document.CreateService(s.repository.getDB())
+	documentsService := document.CreateService(s.helper)
 	err := documentsService.UpsertMany(items.GetDocuments())
 	if err != nil {
 		return err

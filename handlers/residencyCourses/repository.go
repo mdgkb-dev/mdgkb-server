@@ -8,8 +8,8 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
@@ -22,7 +22,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 
 func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error) {
 	item.ResidencyCourses = make(models.ResidencyCourses, 0)
-	query := r.db.NewSelect().
+	query := r.db().NewSelect().
 		Model(&item.ResidencyCourses).
 		Relation("ResidencyCoursesTeachers.Teacher.Doctor.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
@@ -41,7 +41,7 @@ func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error)
 
 func (r *Repository) get() (*models.ResidencyCourse, error) {
 	item := models.ResidencyCourse{}
-	err := r.db.NewSelect().Model(&item).
+	err := r.db().NewSelect().Model(&item).
 		Relation("ResidencyCoursesTeachers.Teacher.Doctor.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
@@ -62,22 +62,22 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 }
 
 func (r *Repository) create(item *models.ResidencyCourse) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.ResidencyCourse{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.ResidencyCourse{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.ResidencyCourse) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) upsertMany(items models.ResidencyCourses) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT (id) DO UPDATE").
+	_, err = r.db().NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("cost = EXCLUDED.cost").

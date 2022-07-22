@@ -17,7 +17,7 @@ type IService interface {
 
 type IRepository interface {
 	SetQueryFilter(*gin.Context) error
-	GetDB() *bun.DB
+	DB() *bun.DB
 }
 
 type IFilesService interface {
@@ -36,7 +36,6 @@ type Service struct {
 }
 
 type Repository struct {
-	db          *bun.DB
 	ctx         context.Context
 	helper      *helper.Helper
 	queryFilter *httpHelper2.QueryFilter

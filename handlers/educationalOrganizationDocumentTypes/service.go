@@ -34,7 +34,7 @@ func (s *Service) UpsertMany(items models.EducationalOrganizationDocumentTypes) 
 		return err
 	}
 	items.SetChildrenForeignKeys()
-	educationalOrganizationDocumentTypeDocumentsService := educationalOrganizationDocumentTypeDocuments.CreateService(s.repository.getDB())
+	educationalOrganizationDocumentTypeDocumentsService := educationalOrganizationDocumentTypeDocuments.CreateService(s.helper)
 	err = educationalOrganizationDocumentTypeDocumentsService.DeleteMany(items.GetIDForDelete())
 	if err != nil {
 		return err

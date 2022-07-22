@@ -13,12 +13,12 @@ func (s *Service) Create(item *models.PaidProgramsGroup) error {
 	}
 	item.SetIdForChildren()
 
-	err = paidPrograms.CreateService(s.repository.getDB(), s.helper).CreateMany(item.PaidPrograms)
+	err = paidPrograms.CreateService(s.helper).CreateMany(item.PaidPrograms)
 	if err != nil {
 		return err
 	}
 
-	err = paidProgramServices.CreateService(s.repository.getDB()).CreateMany(item.PaidProgramServices)
+	err = paidProgramServices.CreateService(s.helper).CreateMany(item.PaidProgramServices)
 	if err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func (s *Service) Update(item *models.PaidProgramsGroup) error {
 	}
 	item.SetIdForChildren()
 
-	paidProgramsService := paidPrograms.CreateService(s.repository.getDB(), s.helper)
+	paidProgramsService := paidPrograms.CreateService(s.helper)
 	err = paidProgramsService.UpsertMany(item.PaidPrograms)
 	if err != nil {
 		return err
@@ -56,19 +56,16 @@ func (s *Service) Get(id string) (*models.PaidProgramsGroup, error) {
 	return item, nil
 }
 
-
-
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
-
 
 func (s *Service) UpsertMany(item models.PaidProgramsGroupsStruct) error {
 	err := s.repository.upsertMany(item.PaidProgramsGroups)
 	if err != nil {
 		return err
 	}
-	if len(item.PaidProgramsGroupsForDelete) > 0{
+	if len(item.PaidProgramsGroupsForDelete) > 0 {
 		err = s.repository.deleteMany(item.PaidProgramsGroupsForDelete)
 		if err != nil {
 			return err
@@ -76,7 +73,7 @@ func (s *Service) UpsertMany(item models.PaidProgramsGroupsStruct) error {
 	}
 
 	item.PaidProgramsGroups.SetIdForChildren()
-	paidProgramsService := paidPrograms.CreateService(s.repository.getDB(), s.helper)
+	paidProgramsService := paidPrograms.CreateService(s.helper)
 	err = paidProgramsService.UpsertMany(item.PaidProgramsGroups.GetPaidPrograms())
 	if err != nil {
 		return err
