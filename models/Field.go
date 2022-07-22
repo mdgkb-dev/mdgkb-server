@@ -8,26 +8,69 @@ import (
 
 type Field struct {
 	bun.BaseModel     `bun:"fields,alias:fields"`
-	ID                uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name              string        `json:"name"`
-	Code              string        `json:"code"`
-	Order             uint          `bun:"field_order" json:"order"`
-	Comment           string        `json:"comment"`
-	Required          bool          `json:"required"`
-	RequiredForCancel bool          `json:"requiredForCancel"`
-	Form              *Form         `bun:"rel:belongs-to" json:"form"`
-	FormID            uuid.NullUUID `bun:"type:uuid" json:"formId"`
-	FormPattern       *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
-	FormPatternID     uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formPatternId"`
-	ValueType         *ValueType    `bun:"rel:belongs-to" json:"valueType"`
-	ValueTypeID       uuid.UUID     `bun:"type:uuid" json:"valueTypeId"`
-	File              *FileInfo     `bun:"rel:belongs-to" json:"file"`
-	FileID            uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"fileId"`
-	FormValue         *FormValue    `bun:"rel:belongs-to" json:"formValue"`
-	FormValueID       uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
+	ID                uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name              string    `json:"name"`
+	Code              string    `json:"code"`
+	Order             uint      `bun:"field_order" json:"order"`
+	Comment           string    `json:"comment"`
+	Required          bool      `json:"required"`
+	RequiredForCancel bool      `json:"requiredForCancel"`
+	Mask              string    `json:"mask"`
+
+	Form   *Form         `bun:"rel:belongs-to" json:"form"`
+	FormID uuid.NullUUID `bun:"type:uuid" json:"formId"`
+
+	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
+	FormPatternID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formPatternId"`
+
+	ValueType   *ValueType `bun:"rel:belongs-to" json:"valueType"`
+	ValueTypeID uuid.UUID  `bun:"type:uuid" json:"valueTypeId"`
+
+	File   *FileInfo     `bun:"rel:belongs-to" json:"file"`
+	FileID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"fileId"`
+
+	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
+	FormValueID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
+
+	MaskTokens          MaskTokens  `bun:"rel:has-many" json:"maskTokens"`
+	MaskTokensForDelete []uuid.UUID `bun:"-" json:"maskTokensForDelete"`
 }
 
 type Fields []*Field
+
+func (item *Field) SetIdForChildren() {
+	for i := range item.MaskTokens {
+		item.MaskTokens[i].FieldID = item.ID
+	}
+}
+
+func (items Fields) SetIdForChildren() {
+	for i := range items {
+		items[i].SetIdForChildren()
+	}
+}
+
+func (item *Field) GetMaskTokens() MaskTokens {
+	items := make(MaskTokens, 0)
+	items = append(items, item.MaskTokens...)
+	return items
+}
+
+func (items Fields) GetMaskTokens() MaskTokens {
+	itemsForGet := make(MaskTokens, 0)
+	for i := range items {
+		itemsForGet = append(itemsForGet, items[i].GetMaskTokens()...)
+	}
+	return itemsForGet
+}
+
+func (items Fields) GetMaskTokensForDelete() []uuid.UUID {
+	itemsForGet := make([]uuid.UUID, 0)
+	for i := range items {
+		itemsForGet = append(itemsForGet, items[i].MaskTokensForDelete...)
+	}
+	return itemsForGet
+}
 
 func (item *Field) SetForeignKeys() {
 	item.ValueTypeID = item.ValueType.ID
