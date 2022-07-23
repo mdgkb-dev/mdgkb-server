@@ -6,7 +6,7 @@ if [ -z "$STAGED_GO_FILES" ]; then
   exit 0
 fi
 
-sh ./cmd/golangci.sh
+sh ../cmd/golangci.sh
 if [ $? -gt 0 ]; then
   printf "COMMIT FAILED\n"
   exit 1
