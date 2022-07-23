@@ -58,7 +58,7 @@ func NewHandler(s IService, h *helper.Helper) *Handler {
 }
 
 func NewService(repository IRepository, h *helper.Helper) *Service {
-	return &Service{repository: repository}
+	return &Service{repository: repository, helper: h}
 }
 
 func NewRepository(h *helper.Helper) *Repository {

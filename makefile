@@ -28,10 +28,10 @@ migrate_rollback:
 drop_database:
 	go run $(database) -action=dropDatabase
 
-dump_from_remote: migrate
-	 @./database/dump_pg.sh $(DB_PASSWORD)
+dump_from_remote:
+	@./cmd/dump_pg.sh $(DB_NAME) $(DB_USER) $(DB_PASSWORD) $(DB_REMOTE_USER) $(DB_REMOTE_PASSWORD)
 
-dump: dump_from_remote migrate
+dump: dump_from_remote
 
 deploy:
 	./cmd/server/deploy.sh DEPLOY_PATH=$(DEPLOY_PATH) DEPLOY_BRANCH=$(DEPLOY_BRANCH)

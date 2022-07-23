@@ -1,12 +1,16 @@
 package email
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) db() *bun.DB {
+	fmt.Println(r.helper)
+	fmt.Println(r.helper.DB)
+	fmt.Println(*r.helper.DB.DB)
 	return r.helper.DB.DB
 }
 

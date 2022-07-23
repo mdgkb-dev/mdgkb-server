@@ -35,7 +35,7 @@ func CreateService(h *helper.Helper) *Service {
 }
 
 func NewService(repository IRepository, h *helper.Helper) *Service {
-	return &Service{repository: repository}
+	return &Service{repository: repository, helper: h}
 }
 
 func NewRepository(h *helper.Helper) *Repository {

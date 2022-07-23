@@ -229,6 +229,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pro-assistance/pro-assister v0.0.86-0.20220721134903-d34db6cfc771 h1:8nZw1LXYidMf+/zTlkDWxfqxfFkNmj2ub/tRDcoH7eE=
 github.com/pro-assistance/pro-assister v0.0.86-0.20220721134903-d34db6cfc771/go.mod h1:MvP8nRGVJw60ZDegGfRIFfHgecd72vRK6Afn43HTnCw=
+github.com/pro-assistance/pro-assister v0.0.100 h1:PVx6VV/mcXW77dmslGxaL1oEGXKkM2WqdeqHCm3MNZc=
+github.com/pro-assistance/pro-assister v0.0.100/go.mod h1:52dZxSj8EYGf5nBObqcPLCuwGjHbSwt4sYv238LPsgc=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
