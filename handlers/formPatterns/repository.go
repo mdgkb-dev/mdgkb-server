@@ -42,6 +42,7 @@ func (r *Repository) get(id string) (*models.FormPattern, error) {
 		Relation("FormStatusGroup.FormStatuses").
 		Relation("DefaultFormStatus").
 		Relation("PersonalDataAgreement").
+		Relation("Fields.MaskTokens").
 		Where("form_patterns.id = ?", id).Scan(r.ctx)
 	return &item, err
 }

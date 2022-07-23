@@ -54,6 +54,7 @@ func (r *Repository) get() (*models.PostgraduateCourse, error) {
 		}).
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
+		Relation("FormPattern.Fields.MaskTokens").
 		Where("postgraduate_courses_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
 	return &item, err
 }
