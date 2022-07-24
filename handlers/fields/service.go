@@ -1,7 +1,7 @@
 package fields
 
 import (
-	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
@@ -27,7 +27,7 @@ func (s *Service) UpsertMany(items models.Fields) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := fileInfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
+	err := fileinfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err
 	}

@@ -2,9 +2,10 @@ package comments
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) CreateMany(items models.Comments) error {

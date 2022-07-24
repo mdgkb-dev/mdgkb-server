@@ -1,9 +1,9 @@
 package specializations
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 

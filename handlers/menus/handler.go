@@ -1,9 +1,10 @@
 package menus
 
 import (
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
+
+	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,7 +32,6 @@ func (h *Handler) GetAll(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
-	return
 }
 
 func (h *Handler) Get(c *gin.Context) {
@@ -69,13 +69,13 @@ func (h *Handler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-type MenusWithDeleted struct {
+type WithDeleted struct {
 	Menus           models.Menus `json:"menus"`
 	MenusForDeleted []uuid.UUID  `json:"menusForDeleted"`
 }
 
 func (h *Handler) UpdateMany(c *gin.Context) {
-	var items MenusWithDeleted
+	var items WithDeleted
 	_, err := h.helper.HTTP.GetForm(c, &items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

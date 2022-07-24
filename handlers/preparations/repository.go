@@ -1,12 +1,12 @@
 package preparations
 
 import (
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/uptrace/bun"
+	"github.com/google/uuid"
 
-	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/uptrace/bun"
+	//_ "github.com/go-pg/pg/v10/orm"
 )
 
 func (r *Repository) db() *bun.DB {

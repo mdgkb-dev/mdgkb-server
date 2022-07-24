@@ -17,11 +17,11 @@ type PaidProgramService struct {
 
 type PaidProgramServices []*PaidProgramService
 
-func (item *PaidProgramService) SetIdForChildren() {
+func (item *PaidProgramService) SetIDForChildren() {
 }
 
-func (items PaidProgramServices) SetIdForChildren() {
+func (items PaidProgramServices) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }

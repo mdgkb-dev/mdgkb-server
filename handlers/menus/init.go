@@ -2,11 +2,12 @@ package menus
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
-	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -28,7 +29,7 @@ type IService interface {
 	Update(*models.Menu) error
 	Delete(*string) error
 
-	UpsertMany(MenusWithDeleted) error
+	UpsertMany(WithDeleted) error
 }
 
 type IRepository interface {

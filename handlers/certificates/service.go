@@ -1,9 +1,10 @@
 package certificates
 
 import (
-	"github.com/google/uuid"
-	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) GetAll() (models.Certificates, error) {
@@ -14,7 +15,7 @@ func (s *Service) CreateMany(items models.Certificates) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := fileInfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
+	err := fileinfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err
 	}
@@ -31,7 +32,7 @@ func (s *Service) UpsertMany(items models.Certificates) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := fileInfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
+	err := fileinfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err
 	}

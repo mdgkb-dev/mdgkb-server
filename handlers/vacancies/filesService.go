@@ -3,6 +3,7 @@ package vacancies
 import (
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
 	"github.com/gin-gonic/gin"
 )
 

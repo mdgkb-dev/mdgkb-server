@@ -1,8 +1,8 @@
 package preparations
 
 import (
-	"mdgkb/mdgkb-server/handlers/preparationRulesGroups"
-	"mdgkb/mdgkb-server/handlers/preparationsToTags"
+	"mdgkb/mdgkb-server/handlers/preparationrulesgroups"
+	"mdgkb/mdgkb-server/handlers/preparationstotags"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -11,14 +11,14 @@ func (s *Service) Create(item *models.Preparation) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
-	err = preparationRulesGroups.CreateService(s.helper).CreateMany(item.PreparationRulesGroups)
+	err = preparationrulesgroups.CreateService(s.helper).CreateMany(item.PreparationRulesGroups)
 	if err != nil {
 		return err
 	}
 
-	err = preparationsToTags.CreateService(s.helper).CreateMany(item.PreparationsToTags)
+	err = preparationstotags.CreateService(s.helper).CreateMany(item.PreparationsToTags)
 	if err != nil {
 		return err
 	}
@@ -30,9 +30,9 @@ func (s *Service) Update(item *models.Preparation) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
-	preparationRulesGroupsService := preparationRulesGroups.CreateService(s.helper)
+	preparationRulesGroupsService := preparationrulesgroups.CreateService(s.helper)
 	err = preparationRulesGroupsService.UpsertMany(item.PreparationRulesGroups)
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func (s *Service) Update(item *models.Preparation) error {
 		return err
 	}
 
-	preparationsToTagsService := preparationsToTags.CreateService(s.helper)
+	preparationsToTagsService := preparationstotags.CreateService(s.helper)
 	err = preparationsToTagsService.UpsertMany(item.PreparationsToTags)
 	if err != nil {
 		return err
@@ -71,7 +71,7 @@ func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
 
-func (s *Service) UpsertMany(item PreparationsWithDeleted) error {
+func (s *Service) UpsertMany(item WithDeleted) error {
 	err := s.repository.upsertMany(item.Preparations)
 	if err != nil {
 		return err
@@ -83,8 +83,8 @@ func (s *Service) UpsertMany(item PreparationsWithDeleted) error {
 		}
 	}
 
-	item.Preparations.SetIdForChildren()
-	preparationRulesGroupsService := preparationRulesGroups.CreateService(s.helper)
+	item.Preparations.SetIDForChildren()
+	preparationRulesGroupsService := preparationrulesgroups.CreateService(s.helper)
 	err = preparationRulesGroupsService.UpsertMany(item.Preparations.GetPreparationRulesGroups())
 	if err != nil {
 		return err
@@ -94,7 +94,7 @@ func (s *Service) UpsertMany(item PreparationsWithDeleted) error {
 		return err
 	}
 
-	preparationsToTagsService := preparationsToTags.CreateService(s.helper)
+	preparationsToTagsService := preparationstotags.CreateService(s.helper)
 	err = preparationsToTagsService.UpsertMany(item.Preparations.GetPreparationsToTags())
 	if err != nil {
 		return err

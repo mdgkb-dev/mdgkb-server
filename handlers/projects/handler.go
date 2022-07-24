@@ -26,7 +26,6 @@ func (h *Handler) GetAll(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
-	return
 }
 
 func (h *Handler) Get(c *gin.Context) {

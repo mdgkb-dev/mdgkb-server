@@ -4,7 +4,6 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
 )
 

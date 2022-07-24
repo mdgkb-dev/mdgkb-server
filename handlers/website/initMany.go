@@ -2,9 +2,10 @@ package website
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"mdgkb/mdgkb-server/models"
 )
 
 type IService interface {

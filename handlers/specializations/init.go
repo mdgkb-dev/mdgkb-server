@@ -2,12 +2,12 @@ package specializations
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/gin-gonic/gin"
+	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"github.com/uptrace/bun"
 )
 

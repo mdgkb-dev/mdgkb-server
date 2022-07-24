@@ -2,12 +2,13 @@ package heads
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/handlers/basehandler"
+	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
+
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
-	"mdgkb/mdgkb-server/handlers/baseHandler"
-	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +22,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	baseHandler.IService
+	basehandler.IService
 	Create(*models.Head) error
 	GetAll() (models.Heads, error)
 	Get(string) (*models.Head, error)
@@ -30,7 +31,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	baseHandler.IRepository
+	basehandler.IRepository
 	create(*models.Head) error
 	getAll() (models.Heads, error)
 	get(string) (*models.Head, error)

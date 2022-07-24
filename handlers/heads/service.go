@@ -1,22 +1,23 @@
 package heads
 
 import (
-	"github.com/gin-gonic/gin"
-	"mdgkb/mdgkb-server/handlers/contactInfo"
+	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/departments"
-	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Head) error {
-	err := fileInfos.CreateService(s.helper).Create(item.Photo)
+	err := fileinfos.CreateService(s.helper).Create(item.Photo)
 	if err != nil {
 		return err
 	}
-	err = contactInfo.CreateService(s.helper).Create(item.ContactInfo)
+	err = contactinfo.CreateService(s.helper).Create(item.ContactInfo)
 	if err != nil {
 		return err
 	}
@@ -33,7 +34,7 @@ func (s *Service) Create(item *models.Head) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
 	err = regalias.CreateService(s.helper).CreateMany(item.Regalias)
 	if err != nil {
@@ -47,11 +48,11 @@ func (s *Service) Create(item *models.Head) error {
 }
 
 func (s *Service) Update(item *models.Head) error {
-	err := fileInfos.CreateService(s.helper).Upsert(item.Photo)
+	err := fileinfos.CreateService(s.helper).Upsert(item.Photo)
 	if err != nil {
 		return err
 	}
-	err = contactInfo.CreateService(s.helper).Upsert(item.ContactInfo)
+	err = contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
@@ -68,7 +69,7 @@ func (s *Service) Update(item *models.Head) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 	regaliasService := regalias.CreateService(s.helper)
 	err = regaliasService.UpsertMany(item.Regalias)
 	if err != nil {

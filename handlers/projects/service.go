@@ -1,7 +1,7 @@
 package projects
 
 import (
-	"mdgkb/mdgkb-server/handlers/projectItems"
+	"mdgkb/mdgkb-server/handlers/projectitems"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -11,8 +11,8 @@ func (s *Service) Create(item *models.Project) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	projectItemsService := projectItems.CreateService(s.helper)
+	item.SetIDForChildren()
+	projectItemsService := projectitems.CreateService(s.helper)
 	err = projectItemsService.UpsertMany(item.ProjectItems)
 	if err != nil {
 		return err
@@ -25,8 +25,8 @@ func (s *Service) Update(item *models.Project) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	projectItemsService := projectItems.CreateService(s.helper)
+	item.SetIDForChildren()
+	projectItemsService := projectitems.CreateService(s.helper)
 	err = projectItemsService.UpsertMany(item.ProjectItems)
 	if err != nil {
 		return err

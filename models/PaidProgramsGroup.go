@@ -24,15 +24,15 @@ type PaidProgramsGroupsStruct struct {
 	PaidProgramsGroupsForDelete []uuid.UUID        `json:"paidProgramsGroupsForDelete"`
 }
 
-func (item *PaidProgramsGroup) SetIdForChildren() {
+func (item *PaidProgramsGroup) SetIDForChildren() {
 	for i := range item.PaidPrograms {
 		item.PaidPrograms[i].PaidProgramsGroupID = item.ID
 	}
 }
 
-func (items PaidProgramsGroups) SetIdForChildren() {
+func (items PaidProgramsGroups) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 

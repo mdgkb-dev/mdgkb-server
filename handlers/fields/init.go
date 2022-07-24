@@ -34,9 +34,9 @@ type IFilesService interface {
 }
 
 type Handler struct {
-	service      IService
-	filesService IFilesService
-	helper       *helper.Helper
+	service IService
+	//filesService IFilesService
+	helper *helper.Helper
 }
 
 type Service struct {

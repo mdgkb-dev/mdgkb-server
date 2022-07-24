@@ -1,8 +1,8 @@
 package human
 
 import (
-	"mdgkb/mdgkb-server/handlers/contactInfo"
-	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/contactinfo"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -10,7 +10,7 @@ func (s *Service) Create(item *models.Human) error {
 	if item == nil {
 		return nil
 	}
-	err := contactInfo.CreateService(s.helper).Create(item.ContactInfo)
+	err := contactinfo.CreateService(s.helper).Create(item.ContactInfo)
 	if err != nil {
 		return err
 	}
@@ -23,7 +23,7 @@ func (s *Service) CreateMany(items models.Humans) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := contactInfo.CreateService(s.helper).CreateMany(items.GetContactInfos())
+	err := contactinfo.CreateService(s.helper).CreateMany(items.GetContactInfos())
 	if err != nil {
 		return err
 	}
@@ -38,11 +38,11 @@ func (s *Service) Update(item *models.Human) error {
 	if item == nil {
 		return nil
 	}
-	err := fileInfos.CreateService(s.helper).Upsert(item.Photo)
+	err := fileinfos.CreateService(s.helper).Upsert(item.Photo)
 	if err != nil {
 		return err
 	}
-	err = contactInfo.CreateService(s.helper).Upsert(item.ContactInfo)
+	err = contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
@@ -55,11 +55,11 @@ func (s *Service) UpsertMany(items models.Humans) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := contactInfo.CreateService(s.helper).UpsertMany(items.GetContactInfos())
+	err := contactinfo.CreateService(s.helper).UpsertMany(items.GetContactInfos())
 	if err != nil {
 		return err
 	}
-	err = fileInfos.CreateService(s.helper).UpsertMany(items.GetPhotos())
+	err = fileinfos.CreateService(s.helper).UpsertMany(items.GetPhotos())
 	if err != nil {
 		return err
 	}
@@ -74,11 +74,11 @@ func (s *Service) Upsert(item *models.Human) error {
 	if item == nil {
 		return nil
 	}
-	err := contactInfo.CreateService(s.helper).Upsert(item.ContactInfo)
+	err := contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
-	err = fileInfos.CreateService(s.helper).Upsert(item.Photo)
+	err = fileinfos.CreateService(s.helper).Upsert(item.Photo)
 	if err != nil {
 		return err
 	}

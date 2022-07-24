@@ -1,7 +1,7 @@
 package events
 
 import (
-	"mdgkb/mdgkb-server/handlers/fieldsValues"
+	"mdgkb/mdgkb-server/handlers/fieldsvalues"
 	"mdgkb/mdgkb-server/handlers/forms"
 	"mdgkb/mdgkb-server/models"
 )
@@ -84,8 +84,8 @@ func (s *Service) CreateEventApplication(item *models.EventApplication) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	err = fieldsValues.CreateService(s.helper).UpsertMany(item.FieldValues)
+	item.SetIDForChildren()
+	err = fieldsvalues.CreateService(s.helper).UpsertMany(item.FieldValues)
 	if err != nil {
 		return err
 	}

@@ -1,9 +1,10 @@
 package children
 
 import (
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) Create(item *models.Child) error {
@@ -16,7 +17,7 @@ func (s *Service) Create(item *models.Child) error {
 	if err != nil {
 		return err
 	}
-	//items.SetIdForChildren()
+	//items.SetIDForChildren()
 	return nil
 }
 
@@ -33,7 +34,7 @@ func (s *Service) CreateMany(items models.Children) error {
 	if err != nil {
 		return err
 	}
-	//items.SetIdForChildren()
+	//items.SetIDForChildren()
 	return nil
 }
 

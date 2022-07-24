@@ -10,9 +10,9 @@ type PageComment struct {
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 
 	Page      *Page     `bun:"rel:belongs-to" json:"page"`
-	PageId    uuid.UUID `bun:"type:uuid" json:"pageId"`
+	PageID    uuid.UUID `bun:"type:uuid" json:"pageId"`
 	Comment   *Comment  `bun:"rel:belongs-to" json:"comment"`
-	CommentId uuid.UUID `bun:"type:uuid" json:"commentId"`
+	CommentID uuid.UUID `bun:"type:uuid" json:"commentId"`
 }
 
 type PageComments []*PageComment
@@ -27,6 +27,6 @@ func (items PageComments) GetComments() Comments {
 
 func (items PageComments) SetForeignKeys() {
 	for i := range items {
-		items[i].CommentId = items[i].Comment.ID
+		items[i].CommentID = items[i].Comment.ID
 	}
 }

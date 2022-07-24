@@ -123,6 +123,9 @@ func (h *Handler) CreateComment(c *gin.Context) {
 func (h *Handler) UpdateComment(c *gin.Context) {
 	var item models.NewsComment
 	err := c.Bind(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.UpdateComment(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -153,8 +156,14 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 	}
 	item.ViewsCount = len(item.NewsViews)
 	ip, err := h.helper.HTTP.GetClientIPHelper(c.Request)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	newsView := models.NewsView{IPAddress: ip, NewsID: item.ID}
 	err = h.service.CreateViewOfNews(&newsView)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	if newsView.ID.Valid {
 		item.ViewsCount++
 	}

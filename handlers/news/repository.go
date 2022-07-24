@@ -1,11 +1,11 @@
 package news
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 
-	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
+	//_ "github.com/go-pg/pg/v10/orm"
 )
 
 func (r *Repository) DB() *bun.DB {

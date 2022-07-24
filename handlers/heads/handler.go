@@ -10,9 +10,9 @@ import (
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Head
 	_, err := h.helper.HTTP.GetForm(c, &item)
-	//if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-	//	return
-	//}
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	//err = h.filesService.Upload(c, &item, files)
 
 	err = h.service.Create(&item)
@@ -58,7 +58,9 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Update(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

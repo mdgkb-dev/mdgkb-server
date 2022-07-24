@@ -1,9 +1,10 @@
 package middleware
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
-	"net/http"
 )
 
 type Middleware struct {
@@ -22,9 +23,7 @@ func (m *Middleware) Authentication() gin.HandlerFunc {
 		//	c.JSON(http.StatusUnauthorized, err)
 		//	return
 		//}
-		return
 	}
-
 }
 
 func (m *Middleware) methodIsAllowed(requestMethod string) bool {

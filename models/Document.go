@@ -22,7 +22,7 @@ type Document struct {
 
 type Documents []*Document
 
-func (item *Document) SetIdForChildren() {
+func (item *Document) SetIDForChildren() {
 	for i := range item.DocumentFieldsValues {
 		item.DocumentFieldsValues[i].DocumentID = item.ID
 	}
@@ -31,9 +31,9 @@ func (item *Document) SetIdForChildren() {
 	}
 }
 
-func (items Documents) SetIdForChildren() {
+func (items Documents) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 
@@ -46,7 +46,7 @@ func (items Documents) GetDocumentsScans() DocumentsScans {
 	return itemsForGet
 }
 
-func (items Documents) GetDocumentsScansIdForDelete() []uuid.UUID {
+func (items Documents) GetDocumentsScansIDForDelete() []uuid.UUID {
 	idPool := make([]uuid.UUID, 0)
 	for _, item := range items {
 		idPool = append(idPool, item.DocumentsScansForDelete...)

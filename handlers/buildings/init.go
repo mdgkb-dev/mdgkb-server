@@ -2,23 +2,24 @@ package buildings
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
-	"mdgkb/mdgkb-server/models"
 )
 
 type IRepository interface {
 	create(*gin.Context, *models.Building) error
 	getAll(*gin.Context) ([]models.Building, error)
-	getByFloorId(*gin.Context, string) (models.Building, error)
-	getById(*gin.Context, string) (models.Building, error)
+	getByFloorID(*gin.Context, string) (models.Building, error)
+	getByID(*gin.Context, string) (models.Building, error)
 	delete(*gin.Context, string) error
 	update(*gin.Context, *models.Building) error
 }
 type IHandler interface {
 	GetAll(c *gin.Context)
-	GetByFloorId(c *gin.Context)
-	GetById(c *gin.Context)
+	GetByFloorID(c *gin.Context)
+	GetByID(c *gin.Context)
 	Create(c *gin.Context)
 	Delete(c *gin.Context)
 	Update(c *gin.Context)

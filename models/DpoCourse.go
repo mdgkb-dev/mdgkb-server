@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type DpoCourse struct {
@@ -33,7 +34,7 @@ type DpoCourse struct {
 
 type DpoCourses []*DpoCourse
 
-func (item *DpoCourse) SetIdForChildren() {
+func (item *DpoCourse) SetIDForChildren() {
 	for i := range item.DpoCoursesTeachers {
 		item.DpoCoursesTeachers[i].DpoCourseID = item.ID
 	}

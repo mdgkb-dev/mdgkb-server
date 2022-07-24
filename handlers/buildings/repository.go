@@ -4,7 +4,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
+	//_ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -30,15 +30,15 @@ func (r *Repository) getAll(ctx *gin.Context) (buildings []models.Building, err 
 	return buildings, err
 }
 
-func (r *Repository) getByFloorId(ctx *gin.Context, floorId string) (item models.Building, err error) {
+func (r *Repository) getByFloorID(ctx *gin.Context, floorID string) (item models.Building, err error) {
 	err = r.db().NewSelect().Model(&item).
 		Relation("Floors").
 		Relation("Floors.Divisions").
-		Where("exists (select * from floors where floors.id = ? and floors.building_id = building.id)", floorId).Scan(ctx)
+		Where("exists (select * from floors where floors.id = ? and floors.building_id = building.id)", floorID).Scan(ctx)
 	return item, err
 }
 
-func (r *Repository) getById(ctx *gin.Context, id string) (item models.Building, err error) {
+func (r *Repository) getByID(ctx *gin.Context, id string) (item models.Building, err error) {
 	err = r.db().NewSelect().Model(&item).
 		Relation("Floors").
 		Relation("Floors.Divisions").
@@ -56,8 +56,14 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 // ! TODO Стас посмотри, плз
 func (r *Repository) update(ctx *gin.Context, building *models.Building) (err error) {
 	_, err = r.db().NewUpdate().Model(building).Where("id = ?", building.ID).Exec(ctx)
+	if err != nil {
+		return err
+	}
 	floor := new([]models.Floor)
-	r.db().NewSelect().Model(floor).Where("building_id = ?", building.ID).Scan(ctx)
+	err = r.db().NewSelect().Model(floor).Where("building_id = ?", building.ID).Scan(ctx)
+	if err != nil {
+		return err
+	}
 	for j := 0; j < len(*floor); j++ {
 		found := false
 		for i := 0; i < len(building.Floors); i++ {
@@ -67,17 +73,29 @@ func (r *Repository) update(ctx *gin.Context, building *models.Building) (err er
 		}
 		if !found {
 			_, err = r.db().NewDelete().Model(floor).Where("id = ?", (*floor)[j].ID).Exec(ctx)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	for _, floors := range building.Floors {
 		_, err = r.db().NewUpdate().Model(floors).Where("id = ?", floors.ID).Exec(ctx)
+		if err != nil {
+			return err
+		}
 		if floors.ID.UUID == uuid.Nil {
 			_, err = r.db().NewInsert().Model(floors).Exec(ctx)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
 	entrance := new([]models.Entrance)
-	r.db().NewSelect().Model(entrance).Where("building_id = ?", building.ID).Scan(ctx)
+	err = r.db().NewSelect().Model(entrance).Where("building_id = ?", building.ID).Scan(ctx)
+	if err != nil {
+		return err
+	}
 	for j := 0; j < len(*entrance); j++ {
 		found := false
 		for i := 0; i < len(building.Entrances); i++ {

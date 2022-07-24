@@ -2,12 +2,12 @@ package divisions
 
 import (
 	"mdgkb/mdgkb-server/handlers/comments"
-	"mdgkb/mdgkb-server/handlers/contactInfo"
-	"mdgkb/mdgkb-server/handlers/divisionImages"
+	"mdgkb/mdgkb-server/handlers/contactinfo"
+	"mdgkb/mdgkb-server/handlers/divisionimages"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/schedules"
 	"mdgkb/mdgkb-server/handlers/timetables"
-	"mdgkb/mdgkb-server/handlers/visitingRules"
+	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +26,7 @@ func (s *Service) Create(item *models.Division) error {
 	}
 	item.Slug = s.helper.Util.MakeSlug(item.Name, true)
 
-	contactInfoService := contactInfo.CreateService(s.helper)
+	contactInfoService := contactinfo.CreateService(s.helper)
 	err = contactInfoService.Create(item.ContactInfo)
 	if err != nil {
 		return err
@@ -43,13 +43,13 @@ func (s *Service) Create(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	visitingRulesService := visitingRules.CreateService(s.helper)
+	item.SetIDForChildren()
+	visitingRulesService := visitingrules.CreateService(s.helper)
 	err = visitingRulesService.UpsertMany(item.VisitingRules)
 	if err != nil {
 		return err
 	}
-	divisionImagesService := divisionImages.CreateService(s.helper)
+	divisionImagesService := divisionimages.CreateService(s.helper)
 	err = divisionImagesService.CreateMany(item.DivisionImages)
 	if err != nil {
 		return err
@@ -70,7 +70,7 @@ func (s *Service) Update(item *models.Division) error {
 		return err
 	}
 
-	contactInfoService := contactInfo.CreateService(s.helper)
+	contactInfoService := contactinfo.CreateService(s.helper)
 	err = contactInfoService.Upsert(item.ContactInfo)
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func (s *Service) Update(item *models.Division) error {
 		return err
 	}
 
-	divisionImagesService := divisionImages.CreateService(s.helper)
+	divisionImagesService := divisionimages.CreateService(s.helper)
 	err = divisionImagesService.DeleteMany(item.DivisionImagesForDelete)
 	if err != nil {
 		return err
@@ -96,8 +96,8 @@ func (s *Service) Update(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	visitingRulesService := visitingRules.CreateService(s.helper)
+	item.SetIDForChildren()
+	visitingRulesService := visitingrules.CreateService(s.helper)
 	err = visitingRulesService.UpsertMany(item.VisitingRules)
 	if err != nil {
 		return err

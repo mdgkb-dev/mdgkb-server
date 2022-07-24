@@ -1,8 +1,9 @@
 package preparations
 
 import (
-	"github.com/google/uuid"
 	"net/http"
+
+	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
 
@@ -16,7 +17,9 @@ func (h *Handler) Create(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Create(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -56,7 +59,9 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Update(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -64,13 +69,13 @@ func (h *Handler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-type PreparationsWithDeleted struct {
+type WithDeleted struct {
 	Preparations           models.Preparations `json:"preparations"`
 	PreparationsForDeleted []uuid.UUID         `json:"preparationsForDeleted"`
 }
 
 func (h *Handler) UpdateMany(c *gin.Context) {
-	var items PreparationsWithDeleted
+	var items WithDeleted
 	_, err := h.helper.HTTP.GetForm(c, &items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

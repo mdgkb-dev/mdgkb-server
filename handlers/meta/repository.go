@@ -2,8 +2,9 @@ package meta
 
 import (
 	"fmt"
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/uptrace/bun"
 )
 
 func (r *Repository) db() *bun.DB {
@@ -20,8 +21,10 @@ func (r *Repository) getCount(table *string) (res *int, err error) {
 func (r *Repository) getOptions(optionModel *models.OptionModel) (models.Options, error) {
 	options := make(models.Options, 0)
 	query := fmt.Sprintf("SELECT %s::varchar as value, %s as label FROM %s ORDER BY %s", optionModel.Value, optionModel.Label, optionModel.TableName, optionModel.SortColumn)
-	fmt.Println(query)
 	queryContext, err := r.db().QueryContext(r.ctx, query)
+	if err != nil {
+		return nil, err
+	}
 	err = r.db().ScanRows(r.ctx, queryContext, &options)
 	return options, err
 }

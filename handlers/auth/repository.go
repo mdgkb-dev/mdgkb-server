@@ -1,11 +1,13 @@
 package auth
 
 import (
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
+
+	// _ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) db() *bun.DB {
@@ -86,10 +88,9 @@ func (r *Repository) checkPathPermissions(path string, roleID string) error {
 		Join("JOIN path_permissions_roles ppr on ppr.path_permission_id = path_permissions.id and ppr.role_id = ?", roleID).
 		Where("path_permissions.resource = ?", path).
 		Scan(r.ctx)
-
 }
 
-func (r *Repository) getPathPermissionsByRoleId(id string) (models.PathPermissions, error) {
+func (r *Repository) getPathPermissionsByRoleID(id string) (models.PathPermissions, error) {
 	items := make(models.PathPermissions, 0)
 	err := r.db().NewSelect().
 		Model(&items).

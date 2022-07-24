@@ -2,11 +2,12 @@ package news
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
-	"mdgkb/mdgkb-server/handlers/baseHandler"
+	"mdgkb/mdgkb-server/handlers/basehandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	baseHandler.IService
+	basehandler.IService
 	Create(*models.News) error
 	Update(*models.News) error
 	CreateLike(*models.NewsLike) error
@@ -44,7 +45,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	baseHandler.IRepository
+	basehandler.IRepository
 	create(*models.News) error
 	update(*models.News) error
 	createLike(*models.NewsLike) error
@@ -71,7 +72,7 @@ type Handler struct {
 }
 
 type Service struct {
-	//baseHandler.Service
+	//basehandler.Service
 	repository IRepository
 	helper     *helper.Helper
 }

@@ -20,7 +20,7 @@ type EventApplication struct {
 
 type EventApplications []*EventApplication
 
-func (item *EventApplication) SetIdForChildren() {
+func (item *EventApplication) SetIDForChildren() {
 	for i := range item.FieldValues {
 		item.FieldValues[i].EventApplicationID = item.ID
 	}

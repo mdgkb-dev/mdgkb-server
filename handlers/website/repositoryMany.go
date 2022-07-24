@@ -1,9 +1,10 @@
 package website
 
 import (
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) db() *bun.DB {

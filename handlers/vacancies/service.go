@@ -1,9 +1,9 @@
 package vacancies
 
 import (
-	"mdgkb/mdgkb-server/handlers/vacancyDuties"
-	"mdgkb/mdgkb-server/handlers/vacancyRequirements"
-	"mdgkb/mdgkb-server/handlers/vacancyResponse"
+	"mdgkb/mdgkb-server/handlers/vacancyduties"
+	"mdgkb/mdgkb-server/handlers/vacancyrequirements"
+	"mdgkb/mdgkb-server/handlers/vacancyresponse"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -16,13 +16,13 @@ func (s *Service) Create(item *models.Vacancy) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	vacancyDutiesService := vacancyDuties.CreateService(s.helper)
+	item.SetIDForChildren()
+	vacancyDutiesService := vacancyduties.CreateService(s.helper)
 	err = vacancyDutiesService.UpsertMany(item.VacancyDuties)
 	if err != nil {
 		return err
 	}
-	vacancyRequirementsService := vacancyRequirements.CreateService(s.helper)
+	vacancyRequirementsService := vacancyrequirements.CreateService(s.helper)
 	err = vacancyRequirementsService.UpsertMany(item.VacancyRequirements)
 	if err != nil {
 		return err
@@ -53,8 +53,8 @@ func (s *Service) Update(item *models.Vacancy) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	vacancyDutiesService := vacancyDuties.CreateService(s.helper)
+	item.SetIDForChildren()
+	vacancyDutiesService := vacancyduties.CreateService(s.helper)
 	err = vacancyDutiesService.UpsertMany(item.VacancyDuties)
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ func (s *Service) Update(item *models.Vacancy) error {
 		return err
 	}
 
-	vacancyRequirementsService := vacancyRequirements.CreateService(s.helper)
+	vacancyRequirementsService := vacancyrequirements.CreateService(s.helper)
 	err = vacancyRequirementsService.UpsertMany(item.VacancyRequirements)
 	if err != nil {
 		return err
@@ -74,7 +74,7 @@ func (s *Service) Update(item *models.Vacancy) error {
 		return err
 	}
 
-	err = vacancyResponse.CreateService(s.helper).DeleteMany(item.VacancyResponsesForDelete)
+	err = vacancyresponse.CreateService(s.helper).DeleteMany(item.VacancyResponsesForDelete)
 	if err != nil {
 		return err
 	}
@@ -95,7 +95,7 @@ func (s *Service) CreateResponse(item *models.VacancyResponse) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 	return nil
 }
 

@@ -109,8 +109,8 @@ func (s *Service) CheckPathPermissions(path string, roleID string) error {
 	return s.repository.checkPathPermissions(path, roleID)
 }
 
-func (s *Service) GetPathPermissionsByRoleId(id string) (models.PathPermissions, error) {
-	return s.repository.getPathPermissionsByRoleId(id)
+func (s *Service) GetPathPermissionsByRoleID(id string) (models.PathPermissions, error) {
+	return s.repository.getPathPermissionsByRoleID(id)
 }
 
 func (s *Service) setQueryFilter(c *gin.Context) (err error) {

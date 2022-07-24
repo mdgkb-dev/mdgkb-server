@@ -2,10 +2,11 @@ package comments
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	httpHelper2 "github.com/pro-assistance/pro-assister/sqlHelper"
-	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"

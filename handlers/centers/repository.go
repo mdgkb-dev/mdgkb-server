@@ -1,9 +1,10 @@
 package centers
 
 import (
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
 )

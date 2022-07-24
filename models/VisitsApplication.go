@@ -36,7 +36,7 @@ func (item *VisitsApplication) SetFilePath(fileID *string) *string {
 	return path
 }
 
-func (item *VisitsApplication) SetIdForChildren() {
+func (item *VisitsApplication) SetIDForChildren() {
 	for i := range item.Visits {
 		item.Visits[i].VisitsApplicationID = item.ID
 	}

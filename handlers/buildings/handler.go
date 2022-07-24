@@ -31,16 +31,16 @@ func (h *Handler) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, buildings)
 }
 
-func (h *Handler) GetByFloorId(c *gin.Context) {
-	item, err := h.repository.getByFloorId(c, c.Param("id"))
+func (h *Handler) GetByFloorID(c *gin.Context) {
+	item, err := h.repository.getByFloorID(c, c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
 }
 
-func (h *Handler) GetById(c *gin.Context) {
-	item, err := h.repository.getById(c, c.Param("id"))
+func (h *Handler) GetByID(c *gin.Context) {
+	item, err := h.repository.getByID(c, c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

@@ -6,8 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
-
-	_ "github.com/go-pg/pg/v10/orm"
+	// _ "github.com/go-pg/pg/v10/orm"
 )
 
 func (r *Repository) db() *bun.DB {

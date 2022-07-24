@@ -33,5 +33,5 @@ func (item *PostgraduateApplication) SetFilePath(fileID *string) *string {
 	return path
 }
 
-func (item *PostgraduateApplication) SetIdForChildren() {
+func (item *PostgraduateApplication) SetIDForChildren() {
 }

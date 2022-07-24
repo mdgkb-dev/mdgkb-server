@@ -1,8 +1,9 @@
 package children
 
 import (
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 
 	"github.com/uptrace/bun"
 )

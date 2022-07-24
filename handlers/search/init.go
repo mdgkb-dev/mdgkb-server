@@ -2,10 +2,11 @@ package search
 
 import (
 	"context"
-	"github.com/elastic/go-elasticsearch/v8"
-	"github.com/pro-assistance/pro-assister/helper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/pro-assistance/pro-assister/helper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"

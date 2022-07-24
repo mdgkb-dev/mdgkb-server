@@ -1,9 +1,10 @@
 package vacancies
 
 import (
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) DB() *bun.DB {

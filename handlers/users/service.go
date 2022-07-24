@@ -2,11 +2,12 @@ package users
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.User) error {
@@ -24,7 +25,7 @@ func (s *Service) Create(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 	childrenService := children.CreateService(s.helper)
 	err = childrenService.CreateMany(item.Children)
 	if err != nil {
@@ -51,7 +52,7 @@ func (s *Service) Update(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 	childrenService := children.CreateService(s.helper)
 	err = childrenService.UpsertMany(item.Children)
 	if err != nil {
@@ -78,7 +79,7 @@ func (s *Service) Upsert(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 	childrenService := children.CreateService(s.helper)
 	err = childrenService.UpsertMany(item.Children)
 	if err != nil {
@@ -174,7 +175,7 @@ func (s *Service) SetAccessLink(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	link := fmt.Sprintf("%s/access-profile/%s/%s", s.helper.HTTP.Host, item.ID, item.UUID)
+	link := fmt.Sprintf("%s/access-profile/%s/%s", s.helper.HTTP.Host, item.ID.UUID, item.UUID)
 	mail, err := s.helper.Templater.ParseTemplate(link, "email/profile_access.gohtml")
 	if err != nil {
 		return err

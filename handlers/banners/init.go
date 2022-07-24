@@ -2,10 +2,10 @@ package banners
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"github.com/pro-assistance/pro-assister/helper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -55,9 +55,9 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
+	ctx    context.Context
+	helper *helper.Helper
+	//queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

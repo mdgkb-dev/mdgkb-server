@@ -19,7 +19,7 @@ type Preparation struct {
 
 type Preparations []*Preparation
 
-func (item *Preparation) SetIdForChildren() {
+func (item *Preparation) SetIDForChildren() {
 	for i := range item.PreparationRulesGroups {
 		item.PreparationRulesGroups[i].PreparationID = item.ID
 	}
@@ -28,9 +28,9 @@ func (item *Preparation) SetIdForChildren() {
 	}
 }
 
-func (items Preparations) SetIdForChildren() {
+func (items Preparations) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 

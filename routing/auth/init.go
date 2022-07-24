@@ -4,7 +4,6 @@ import (
 	handler "mdgkb/mdgkb-server/handlers/auth"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
 )
 
 // Init func
@@ -21,6 +20,6 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/path-permissions/admin", h.GetAllPathPermissionsAdmin)
 	r.GET("/path-permissions", h.GetAllPathPermissions)
 	r.PUT("/path-permissions", h.SavePathPermissions)
-	r.GET("/path-permissions/:roleId", h.GetPathPermissionsByRoleId)
+	r.GET("/path-permissions/:roleId", h.GetPathPermissionsByRoleID)
 	//r.GET("/logout", handler.Logout)
 }

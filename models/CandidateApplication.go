@@ -31,7 +31,7 @@ func (item *CandidateApplication) SetFilePath(fileID *string) *string {
 	return path
 }
 
-func (item *CandidateApplication) SetIdForChildren() {
+func (item *CandidateApplication) SetIDForChildren() {
 	for i := range item.CandidateApplicationSpecializations {
 		item.CandidateApplicationSpecializations[i].CandidateApplicationID = item.ID
 	}

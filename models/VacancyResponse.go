@@ -20,14 +20,14 @@ type VacancyResponses []*VacancyResponse
 
 type VacancyResponsesWithCount struct {
 	VacancyResponses VacancyResponses `json:"vacancyResponses"`
-	Count     int       `json:"count"`
+	Count            int              `json:"count"`
 }
 
 func (item *VacancyResponse) SetForeignKeys() {
 	item.FormValueID = item.FormValue.ID
 }
 
-func (item *VacancyResponse) SetIdForChildren() {
+func (item *VacancyResponse) SetIDForChildren() {
 }
 
 func (item *VacancyResponse) SetFilePath(fileID *string) *string {

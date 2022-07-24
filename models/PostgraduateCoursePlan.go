@@ -1,10 +1,11 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type PostgraduateCoursePlan struct {
@@ -38,9 +39,9 @@ func (items PostgraduateCoursePlans) SetForeignKeys() {
 	}
 }
 
-func (items PostgraduateCoursePlans) SetFilePath(fileId string) *string {
+func (items PostgraduateCoursePlans) SetFilePath(fileID string) *string {
 	for i := range items {
-		filePath := items[i].SetFilePath(fileId)
+		filePath := items[i].SetFilePath(fileID)
 		if filePath != nil {
 			return filePath
 		}

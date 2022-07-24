@@ -7,7 +7,7 @@ import (
 
 type Form struct {
 	bun.BaseModel `bun:"forms,alias:forms"`
-	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 
 	Fields          Fields      `bun:"rel:has-many" json:"fields"`
 	FieldsForDelete []uuid.UUID `bun:"-" json:"fieldsForDelete"`
@@ -15,15 +15,15 @@ type Form struct {
 
 type Forms []*Form
 
-func (item *Form) SetIdForChildren() {
+func (item *Form) SetIDForChildren() {
 	for i := range item.Fields {
 		item.Fields[i].FormID = item.ID
 	}
 }
 
-func (items Forms) SetIdForChildren() {
+func (items Forms) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 

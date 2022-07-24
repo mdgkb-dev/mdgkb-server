@@ -29,7 +29,7 @@ func (item PublicDocumentType) SetFilePath(fileID *string) *string {
 	return nil
 }
 
-func (item *PublicDocumentType) SetIdForChildren() {
+func (item *PublicDocumentType) SetIDForChildren() {
 	for i := range item.DocumentTypes {
 		item.DocumentTypes[i].PublicDocumentTypeID = item.ID
 	}

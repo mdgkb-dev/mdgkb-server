@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/elastic/go-elasticsearch/v8/esutil"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 func (r *Repository) db() *bun.DB {
@@ -88,6 +89,9 @@ func (r *Repository) elasticSuggester(model *models.SearchModel) error {
 		//r.elasticsearch.Get.
 		r.elasticsearch.Search.WithPretty(),
 	)
+	if err != nil {
+		return err
+	}
 	defer res.Body.Close()
 	err = json.NewDecoder(res.Body).Decode(&re)
 	if err != nil {

@@ -1,8 +1,9 @@
 package search
 
 import (
-	"github.com/gin-gonic/gin"
 	handler "mdgkb/mdgkb-server/handlers/search"
+
+	"github.com/gin-gonic/gin"
 )
 
 // Init func

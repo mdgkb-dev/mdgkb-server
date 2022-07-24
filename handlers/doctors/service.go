@@ -3,11 +3,11 @@ package doctors
 import (
 	certificates "mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/comments"
-	"mdgkb/mdgkb-server/handlers/doctorPaidServices"
-	"mdgkb/mdgkb-server/handlers/educationalOrganizationAcademics"
+	"mdgkb/mdgkb-server/handlers/doctorpaidservices"
+	"mdgkb/mdgkb-server/handlers/educationalorganizationacademics"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
-	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/timetables"
@@ -18,11 +18,11 @@ import (
 )
 
 func (s *Service) Create(item *models.Doctor) error {
-	err := fileInfos.CreateService(s.helper).Create(item.FileInfo)
+	err := fileinfos.CreateService(s.helper).Create(item.FileInfo)
 	if err != nil {
 		return err
 	}
-	err = fileInfos.CreateService(s.helper).Create(item.PhotoMini)
+	err = fileinfos.CreateService(s.helper).Create(item.PhotoMini)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (s *Service) Create(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
 	err = regalias.CreateService(s.helper).CreateMany(item.Regalias)
 	if err != nil {
@@ -57,11 +57,11 @@ func (s *Service) Create(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	err = doctorPaidServices.CreateService(s.helper).CreateMany(item.DoctorPaidServices)
+	err = doctorpaidservices.CreateService(s.helper).CreateMany(item.DoctorPaidServices)
 	if err != nil {
 		return err
 	}
-	educationalOrganizationAcademicsService := educationalOrganizationAcademics.CreateService(s.helper)
+	educationalOrganizationAcademicsService := educationalorganizationacademics.CreateService(s.helper)
 	if item.EducationalOrganizationAcademic != nil {
 		item.EducationalOrganizationAcademic.DoctorID = item.ID
 		err = educationalOrganizationAcademicsService.Upsert(item.EducationalOrganizationAcademic)
@@ -73,11 +73,11 @@ func (s *Service) Create(item *models.Doctor) error {
 }
 
 func (s *Service) Update(item *models.Doctor) error {
-	err := fileInfos.CreateService(s.helper).Upsert(item.FileInfo)
+	err := fileinfos.CreateService(s.helper).Upsert(item.FileInfo)
 	if err != nil {
 		return err
 	}
-	err = fileInfos.CreateService(s.helper).Upsert(item.PhotoMini)
+	err = fileinfos.CreateService(s.helper).Upsert(item.PhotoMini)
 	if err != nil {
 		return err
 	}
@@ -94,7 +94,7 @@ func (s *Service) Update(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 	doctorRegaliaService := regalias.CreateService(s.helper)
 	err = doctorRegaliaService.UpsertMany(item.Regalias)
 	if err != nil {
@@ -132,7 +132,7 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 
-	doctorPaidServicesService := doctorPaidServices.CreateService(s.helper)
+	doctorPaidServicesService := doctorpaidservices.CreateService(s.helper)
 	err = doctorPaidServicesService.UpsertMany(item.DoctorPaidServices)
 	if err != nil {
 		return err
@@ -141,7 +141,7 @@ func (s *Service) Update(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	educationalOrganizationAcademicsService := educationalOrganizationAcademics.CreateService(s.helper)
+	educationalOrganizationAcademicsService := educationalorganizationacademics.CreateService(s.helper)
 	err = educationalOrganizationAcademicsService.Upsert(item.EducationalOrganizationAcademic)
 	if err != nil {
 		return err

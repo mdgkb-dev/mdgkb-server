@@ -80,6 +80,9 @@ func (h *Handler) ReadAnswers(c *gin.Context) {
 func (h *Handler) ChangeNewStatus(c *gin.Context) {
 	id := c.Param("id")
 	isNew, err := strconv.ParseBool(c.Query("isNew"))
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.ChangeNewStatus(id, isNew)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

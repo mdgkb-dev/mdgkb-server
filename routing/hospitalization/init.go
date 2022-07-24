@@ -1,11 +1,11 @@
 package hospitalization
 
 import (
-	"github.com/pro-assistance/pro-assister/helper"
 	handler "mdgkb/mdgkb-server/handlers/hospitalization"
 
+	"github.com/pro-assistance/pro-assister/helper"
+
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
 )
 
 // Init func

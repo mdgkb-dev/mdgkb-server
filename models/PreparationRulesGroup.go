@@ -35,14 +35,14 @@ func (items PreparationRulesGroups) GetPreparationRulesForDelete() []uuid.UUID {
 	return itemsForGet
 }
 
-func (item *PreparationRulesGroup) SetIdForChildren() {
+func (item *PreparationRulesGroup) SetIDForChildren() {
 	for i := range item.PreparationRules {
 		item.PreparationRules[i].PreparationRulesGroupID = item.ID
 	}
 }
 
-func (items PreparationRulesGroups) SetIdForChildren() {
+func (items PreparationRulesGroups) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }

@@ -1,8 +1,8 @@
 package pages
 
 import (
-	"mdgkb/mdgkb-server/handlers/pageImages"
-	"mdgkb/mdgkb-server/handlers/pagesDocuments"
+	"mdgkb/mdgkb-server/handlers/pageimages"
+	"mdgkb/mdgkb-server/handlers/pagesdocuments"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -12,12 +12,12 @@ func (s *Service) Create(item *models.Page) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	err = pagesDocuments.CreateService(s.helper).CreateMany(item.PageDocuments)
+	item.SetIDForChildren()
+	err = pagesdocuments.CreateService(s.helper).CreateMany(item.PageDocuments)
 	if err != nil {
 		return err
 	}
-	err = pageImages.CreateService(s.helper).CreateMany(item.PageImages)
+	err = pageimages.CreateService(s.helper).CreateMany(item.PageImages)
 	if err != nil {
 		return err
 	}
@@ -46,8 +46,8 @@ func (s *Service) Update(item *models.Page) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	pagesDocumentsService := pagesDocuments.CreateService(s.helper)
+	item.SetIDForChildren()
+	pagesDocumentsService := pagesdocuments.CreateService(s.helper)
 	err = pagesDocumentsService.UpsertMany(item.PageDocuments)
 	if err != nil {
 		return err
@@ -56,7 +56,7 @@ func (s *Service) Update(item *models.Page) error {
 	if err != nil {
 		return err
 	}
-	pageImagesService := pageImages.CreateService(s.helper)
+	pageImagesService := pageimages.CreateService(s.helper)
 	err = pageImagesService.UpsertMany(item.PageImages)
 	if err != nil {
 		return err

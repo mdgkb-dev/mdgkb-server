@@ -3,12 +3,12 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	//"github.com/casbin/casbin/v2/model"
 	//"github.com/casbin/casbin/v2/persist"
 	"github.com/google/uuid"
-	"github.com/mmcloughlin/meow"
 	"github.com/uptrace/bun"
-	"strings"
 )
 
 const DefaultTableName = "casbin_rules"
@@ -19,7 +19,7 @@ type CasbinRule struct {
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Ptype         string
 	V0            string
-	V1            string `bun:unique`
+	V1            string
 	V2            string
 	V3            string
 	V4            string
@@ -113,8 +113,6 @@ func (a *Adapter) AddPolicy(sec string, ptype string, rule []string) error {
 		Exec(context.Background())
 
 	return err
-
-	return err
 }
 
 // LoadPolicy loads policy from database.
@@ -162,11 +160,11 @@ func savePolicyLine(ptype string, rule []string) *CasbinRule {
 	return line
 }
 
-func policyID(ptype string, rule []string) string {
-	data := strings.Join(append([]string{ptype}, rule...), ",")
-	sum := meow.Checksum(0, []byte(data))
-	return fmt.Sprintf("%x", sum)
-}
+//func policyID(ptype string, rule []string) string {
+//	data := strings.Join(append([]string{ptype}, rule...), ",")
+//	sum := meow.Checksum(0, []byte(data))
+//	return fmt.Sprintf("%x", sum)
+//}
 
 // RemoveFilteredPolicy removes policy rules that match the filter from the storage.
 func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int, fieldValues ...string) error {
@@ -194,7 +192,6 @@ func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int,
 
 	_, err := query.Exec(context.Background())
 	return err
-
 }
 
 // RemovePolicy removes a policy rule from the storage.

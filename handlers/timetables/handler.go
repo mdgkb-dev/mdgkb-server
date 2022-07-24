@@ -1,8 +1,9 @@
 package timetables
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) GetAllWeekdays(c *gin.Context) {

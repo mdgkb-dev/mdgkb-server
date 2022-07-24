@@ -1,7 +1,6 @@
 package human
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -18,7 +17,7 @@ func (r *Repository) create(item *models.Human) (err error) {
 
 func (r *Repository) getAllBySlug(slug string) (models.Humans, error) {
 	items := make(models.Humans, 0)
-	err := r.db().NewSelect().Model(&items).Where("slug like ?", fmt.Sprintf("%s", slug)+"%").
+	err := r.db().NewSelect().Model(&items).Where("slug like ?", slug+"%").
 		Order("slug desc").
 		Scan(r.ctx)
 	return items, err

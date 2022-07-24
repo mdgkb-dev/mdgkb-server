@@ -1,9 +1,10 @@
 package tags
 
 import (
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
-	"mdgkb/mdgkb-server/models"
 )
 
 type IRepository interface {

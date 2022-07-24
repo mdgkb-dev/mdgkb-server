@@ -19,7 +19,7 @@ type Project struct {
 
 type Projects []*Project
 
-func (item *Project) SetIdForChildren() {
+func (item *Project) SetIDForChildren() {
 	for i := range item.ProjectItems {
 		item.ProjectItems[i].ProjectID = item.ID
 	}

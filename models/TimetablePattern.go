@@ -10,7 +10,7 @@ type TimetablePattern struct {
 
 type TimetablePatterns []*TimetablePattern
 
-func (item *TimetablePattern) SetIdForChildren() {
+func (item *TimetablePattern) SetIDForChildren() {
 	if len(item.TimetableDays) == 0 {
 		return
 	}

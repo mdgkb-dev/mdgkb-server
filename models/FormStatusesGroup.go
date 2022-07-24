@@ -14,15 +14,15 @@ type FormStatusGroup struct {
 
 type FormStatusGroups []*FormStatusGroup
 
-func (item *FormStatusGroup) SetIdForChildren() {
+func (item *FormStatusGroup) SetIDForChildren() {
 	for i := range item.FormStatuses {
 		item.FormStatuses[i].FormStatusGroupID = item.ID
 	}
 }
 
-func (items FormStatusGroups) SetIdForChildren() {
+func (items FormStatusGroups) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 

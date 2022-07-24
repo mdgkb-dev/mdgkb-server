@@ -45,7 +45,7 @@ func (item *FormValue) SetForeignKeys() {
 	}
 }
 
-func (item *FormValue) SetIdForChildren() {
+func (item *FormValue) SetIDForChildren() {
 	for i := range item.Fields {
 		item.Fields[i].FormValueID = item.ID
 	}

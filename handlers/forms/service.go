@@ -13,7 +13,7 @@ func (s *Service) Create(item *models.Form) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
 	err = fields.CreateService(s.helper).UpsertMany(item.Fields)
 	if err != nil {
@@ -30,7 +30,7 @@ func (s *Service) Update(item *models.Form) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 	err = fields.CreateService(s.helper).UpsertMany(item.Fields)
 	if err != nil {
 		return err
@@ -57,7 +57,7 @@ func (s *Service) Upsert(item *models.Form) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 	err = fields.CreateService(s.helper).UpsertMany(item.Fields)
 	if err != nil {
 		return err

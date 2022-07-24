@@ -2,11 +2,12 @@ package preparations
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
-	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -28,7 +29,7 @@ type IService interface {
 	Get(string) (*models.Preparation, error)
 	Delete(string) error
 	Update(*models.Preparation) error
-	UpsertMany(PreparationsWithDeleted) error
+	UpsertMany(WithDeleted) error
 	GetTags() (models.PreparationsTags, error)
 }
 
