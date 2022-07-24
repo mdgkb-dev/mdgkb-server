@@ -24,16 +24,13 @@ linters:
     - misspell
     - nakedret
     - nolintlint
-    - rowserrcheck
     - staticcheck
     - revive
     - unconvert
     - unparam
-#    - unused
     - varcheck
     - whitespace
     - asciicheck
-#    - wsl
 linters-settings:
   dupl:
     threshold: 1000
