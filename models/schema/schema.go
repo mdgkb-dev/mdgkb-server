@@ -236,6 +236,8 @@ func createResidencyApplicationsSchema() map[string]string {
 		"startYear":          "start_year",
 		"endYear":            "end_year",
 		"fullName":           "full_name",
+		"main":               "main",
+		"paid":               "paid",
 		"courseName":         "course_name",
 		"admissionCommittee": "admission_committee",
 	}

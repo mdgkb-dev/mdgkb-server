@@ -2,6 +2,7 @@ package fields
 
 import (
 	"mdgkb/mdgkb-server/handlers/fileinfos"
+	"mdgkb/mdgkb-server/handlers/masktokens"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
@@ -39,6 +40,21 @@ func (s *Service) UpsertMany(items models.Fields) error {
 	if err != nil {
 		return err
 	}
+	items.SetIDForChildren()
+	maskTokensService := masktokens.CreateService(s.repository.db())
+	if len(items.GetMaskTokens()) > 0 {
+		err = maskTokensService.UpsertMany(items.GetMaskTokens())
+		if err != nil {
+			return err
+		}
+	}
+	if len(items.GetMaskTokensForDelete()) > 0 {
+		err = maskTokensService.DeleteMany(items.GetMaskTokensForDelete())
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
