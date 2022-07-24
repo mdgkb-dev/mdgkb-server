@@ -45,5 +45,5 @@ type Repository struct {
 }
 
 func NewRepository(h *helper.Helper) *Repository {
-	return &Repository{}
+	return &Repository{helper: h}
 }

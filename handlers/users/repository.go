@@ -1,7 +1,6 @@
 package users
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -124,7 +123,7 @@ func (r *Repository) addToUser(values map[string]interface{}, table string) erro
 func (r *Repository) removeFromUser(values map[string]interface{}, table string) error {
 	q := r.db().NewDelete().Table(table)
 	for key, value := range values {
-		q = q.Where(fmt.Sprintf("%s = ?", key), value)
+		q = q.Where("? = ?", bun.Ident(key), value)
 	}
 	_, err := q.Exec(r.ctx)
 	return err
