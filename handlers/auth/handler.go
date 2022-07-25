@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -28,12 +27,23 @@ func (h *Handler) Login(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	res, err := h.service.Login(&item)
-	fmt.Println(res)
+	res, err := h.service.Login(&item, false)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	c.JSON(http.StatusOK, res)
+}
 
+func (h *Handler) LoginAs(c *gin.Context) {
+	var item models.User
+	err := c.Bind(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	res, err := h.service.Login(&item, true)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	c.JSON(http.StatusOK, res)
 }
 

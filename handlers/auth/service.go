@@ -32,12 +32,12 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	return &models.TokensWithUser{Tokens: ts, User: *item}, nil
 }
 
-func (s *Service) Login(item *models.User) (*models.TokensWithUser, error) {
+func (s *Service) Login(item *models.User, skipPassword bool) (*models.TokensWithUser, error) {
 	findedUser, err := users.CreateService(s.helper).GetByEmail(item.Email)
 	if err != nil {
 		return nil, err
 	}
-	if !findedUser.CompareWithHashPassword(item.Password) {
+	if !findedUser.CompareWithHashPassword(item.Password) && !skipPassword {
 		return nil, errors.New("wrong login or password")
 	}
 	ts, err := s.helper.Token.CreateToken(findedUser.ID.UUID.String(), string(findedUser.Role.Name), findedUser.Role.ID.UUID.String())

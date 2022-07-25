@@ -9,6 +9,7 @@ import (
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.POST("/login", h.Login)
+	r.POST("/login-as", h.LoginAs)
 	r.POST("/register", h.Register)
 	r.POST("/refresh-token", h.RefreshToken)
 	r.POST("/logout", h.Logout)

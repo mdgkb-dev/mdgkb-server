@@ -14,6 +14,7 @@ import (
 type IHandler interface {
 	Register(c *gin.Context)
 	Login(c *gin.Context)
+	LoginAs(c *gin.Context)
 	Logout(c *gin.Context)
 	RefreshToken(c *gin.Context)
 	RefreshPassword(c *gin.Context)
@@ -29,7 +30,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	Register(user *models.User) (*models.TokensWithUser, error)
-	Login(user *models.User) (*models.TokensWithUser, error)
+	Login(user *models.User, skipPassword bool) (*models.TokensWithUser, error)
 	FindUserByEmail(email string) (*models.User, error)
 	GetUserByID(id string) (*models.User, error)
 	DropUUID(*models.User) error
