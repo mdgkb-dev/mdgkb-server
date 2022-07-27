@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/uptrace/bun"
 	"time"
+
+	"github.com/uptrace/bun"
 
 	"github.com/google/uuid"
 )
@@ -10,7 +11,7 @@ import (
 type Comment struct {
 	bun.BaseModel `bun:"comments,alias:comments"`
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	UserId        uuid.UUID `bun:"type:uuid" json:"userId"`
+	UserID        uuid.UUID `bun:"type:uuid" json:"userId"`
 	Text          string    `json:"text"`
 	ModChecked    bool      `json:"modChecked"`
 	Positive      bool      `json:"positive"`

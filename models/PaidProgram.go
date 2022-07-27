@@ -23,13 +23,13 @@ type PaidProgram struct {
 
 type PaidPrograms []*PaidProgram
 
-func (items PaidPrograms) SetIdForChildren() {
+func (items PaidPrograms) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 
-func (item *PaidProgram) SetIdForChildren() {
+func (item *PaidProgram) SetIDForChildren() {
 	for i := range item.PaidProgramPackages {
 		item.PaidProgramPackages[i].PaidProgramID = item.ID
 	}

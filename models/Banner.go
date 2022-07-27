@@ -13,7 +13,7 @@ type Banner struct {
 	Link          string        `json:"link"`
 	ListNumber    int           `bun:"type:integer" json:"listNumber"`
 	FileInfo      *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoId    uuid.UUID     `bun:"type:uuid" json:"fileInfoId"`
+	FileInfoID    uuid.UUID     `bun:"type:uuid" json:"fileInfoId"`
 }
 
 type Banners []*Banner
@@ -28,6 +28,6 @@ func (item *Banner) SetFilePath(fileID *string) *string {
 
 func (item *Banner) SetForeignKeys() {
 	if item.FileInfo != nil {
-		item.FileInfoId = item.FileInfo.ID.UUID
+		item.FileInfoID = item.FileInfo.ID.UUID
 	}
 }

@@ -2,9 +2,10 @@ package comments
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) CreateMany(items models.Comments) error {
@@ -15,7 +16,7 @@ func (s *Service) CreateMany(items models.Comments) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -30,7 +31,7 @@ func (s *Service) UpsertMany(items models.Comments) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -58,7 +59,7 @@ func (s *Service) UpdateOne(item *models.Comment) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -70,7 +71,7 @@ func (s *Service) UpsertOne(item *models.Comment) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -79,7 +80,7 @@ func (s *Service) UpsertOne(item *models.Comment) error {
 		return err
 	}
 	s.helper.Broker.SendEvent("comment-create", newComment)
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}

@@ -1,9 +1,10 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"log"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type TimetableDay struct {
@@ -15,7 +16,7 @@ type TimetableDay struct {
 	AroundTheClock bool      `json:"aroundTheClock"`
 
 	Weekday               *Weekday          `bun:"rel:belongs-to" json:"weekday"`
-	WeekdayId             uuid.UUID         `bun:",nullzero,notnull,type:uuid" json:"weekdayId"`
+	WeekdayID             uuid.UUID         `bun:",nullzero,notnull,type:uuid" json:"weekdayId"`
 	TimetablePattern      *TimetablePattern `bun:"rel:belongs-to" json:"timetablePattern"`
 	TimetablePatternID    uuid.UUID         `bun:"type:uuid,nullzero,default:NULL" json:"timetablePatternId"`
 	Timetable             *Timetable        `bun:"rel:belongs-to" json:"timetable"`
@@ -64,7 +65,7 @@ func (items TimetableDays) InitAppointmentsSlots() {
 	}
 }
 
-func (item *TimetableDay) SetIdForChildren() {
+func (item *TimetableDay) SetIDForChildren() {
 	if len(item.BreakPeriods) == 0 {
 		return
 	}
@@ -73,9 +74,9 @@ func (item *TimetableDay) SetIdForChildren() {
 	}
 }
 
-func (items TimetableDays) SetIdForChildren() {
+func (items TimetableDays) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 

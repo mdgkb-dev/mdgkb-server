@@ -6,22 +6,21 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
-
-	_ "github.com/go-pg/pg/v10/orm"
+	// _ "github.com/go-pg/pg/v10/orm"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) create(item *models.Division) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAll() (item models.DivisionsWithCount, err error) {
 	item.Divisions = make(models.Divisions, 0)
-	query := r.db.NewSelect().Model(&item.Divisions).
+	query := r.db().NewSelect().Model(&item.Divisions).
 		Relation("Entrance.Building").
 		Relation("DivisionImages.FileInfo").
 		Relation("ContactInfo.Emails").
@@ -41,7 +40,7 @@ func (r *Repository) getAll() (item models.DivisionsWithCount, err error) {
 
 func (r *Repository) get() (*models.Division, error) {
 	item := models.Division{}
-	q := r.db.NewSelect().
+	q := r.db().NewSelect().
 		Model(&item).
 		Relation("Entrance.Building").
 		Relation("Timetable.TimetableDays.Weekday").
@@ -85,34 +84,34 @@ func (r *Repository) get() (*models.Division, error) {
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.Division{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.Division{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.Division) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) createComment(item *models.DivisionComment) error {
-	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) updateComment(item *models.DivisionComment) error {
-	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err := r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) removeComment(id string) error {
-	_, err := r.db.NewDelete().Model(&models.DivisionComment{}).Where("id = ?", id).Exec(r.ctx)
+	_, err := r.db().NewDelete().Model(&models.DivisionComment{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getBySearch(search string) (models.Divisions, error) {
 	items := make(models.Divisions, 0)
 
-	err := r.db.NewSelect().
+	err := r.db().NewSelect().
 		Model(&items).
 		Column("divisions_view.id", "divisions_view.name", "divisions_view.slug").
 		Where(r.helper.SQL.WhereLikeWithLowerTranslit("divisions_view.name", search)).

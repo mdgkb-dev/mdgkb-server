@@ -1,9 +1,10 @@
 package events
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) CreateEventApplication(c *gin.Context) {
@@ -13,7 +14,13 @@ func (h *Handler) CreateEventApplication(c *gin.Context) {
 		return
 	}
 	userID, err := h.helper.Token.GetUserID(c)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.CreateEventApplication(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	item.UserID = *userID
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

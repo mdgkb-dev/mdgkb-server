@@ -1,12 +1,12 @@
 package banners
 
 import (
-	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.Banner) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Create(item.FileInfo)
+	err := fileinfos.CreateService(s.helper).Create(item.FileInfo)
 	if err != nil {
 		return err
 	}
@@ -20,7 +20,7 @@ func (s *Service) Create(item *models.Banner) error {
 }
 
 func (s *Service) Update(item *models.Banner) error {
-	err := fileInfos.CreateService(s.repository.getDB()).Upsert(item.FileInfo)
+	err := fileinfos.CreateService(s.helper).Upsert(item.FileInfo)
 	if err != nil {
 		return err
 	}

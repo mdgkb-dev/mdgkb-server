@@ -16,9 +16,9 @@ type Menu struct {
 	Side          bool          `json:"side"`
 	Order         uint          `bun:"menu_order" json:"order"`
 	Page          *Page         `bun:"rel:belongs-to" json:"page"`
-	PageId        uuid.NullUUID `bun:"type:uuid" json:"pageId"`
+	PageID        uuid.NullUUID `bun:"type:uuid" json:"pageId"`
 	Icon          *FileInfo     `bun:"rel:belongs-to" json:"icon"`
-	IconId        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
+	IconID        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
 	Hide          bool          `json:"hide"`
 
 	SubMenus          SubMenus    `bun:"rel:has-many" json:"subMenus"`
@@ -51,18 +51,18 @@ func (items Menus) GetSubMenusForDelete() []uuid.UUID {
 	return itemsForGet
 }
 
-func (item *Menu) SetIdForChildren() {
+func (item *Menu) SetIDForChildren() {
 	if len(item.SubMenus) == 0 {
 		return
 	}
 	for i := range item.SubMenus {
-		item.SubMenus[i].MenuId = item.ID
+		item.SubMenus[i].MenuID = item.ID
 	}
 }
 
-func (items Menus) SetIdForChildren() {
+func (items Menus) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 
@@ -79,7 +79,7 @@ func (item *Menu) SetFilePath(fileID *string) *string {
 }
 
 func (item *Menu) SetForeignKeys() {
-	item.IconId = item.Icon.ID
+	item.IconID = item.Icon.ID
 }
 
 func (items Menus) SetForeignKeys() {

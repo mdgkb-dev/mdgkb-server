@@ -18,12 +18,12 @@ type EducationalOrganizationDocumentTypeDocument struct {
 
 type EducationalOrganizationDocumentTypeDocuments []*EducationalOrganizationDocumentTypeDocument
 
-func (i EducationalOrganizationDocumentTypeDocuments) GetDocuments() Documents {
-	items := make(Documents, 0)
-	for _, item := range i {
-		items = append(items, item.Document)
+func (items EducationalOrganizationDocumentTypeDocuments) GetDocuments() Documents {
+	itemsForGet := make(Documents, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.Document)
 	}
-	return items
+	return itemsForGet
 }
 
 func (items EducationalOrganizationDocumentTypeDocuments) SetForeignKeys() {
@@ -32,8 +32,8 @@ func (items EducationalOrganizationDocumentTypeDocuments) SetForeignKeys() {
 	}
 }
 
-func (i EducationalOrganizationDocumentTypeDocuments) SetFilePath(fileID *string) *string {
-	for _ = range i {
+func (items EducationalOrganizationDocumentTypeDocuments) SetFilePath(fileID *string) *string {
+	for range items {
 		//if item.Document.Scan.ID.UUID.String() == *fileID {
 		//	item.Document.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
 		//	return &item.Document.Scan.FileSystemPath

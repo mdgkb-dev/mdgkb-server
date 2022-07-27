@@ -2,10 +2,11 @@ package models
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
-	"time"
 	// "time"
 )
 
@@ -25,9 +26,9 @@ type Human struct {
 	PlaceBirth  string     `json:"placeBirth"`
 	Citizenship string     `json:"citizenship"`
 	Slug        string     `json:"slug"`
-	
-	CarNumber   string     `json:"carNumber"`
-	CarModel    string     `json:"carModel"`
+
+	CarNumber string `json:"carNumber"`
+	CarModel  string `json:"carModel"`
 
 	Photo   *FileInfo     `bun:"rel:belongs-to" json:"photo"`
 	PhotoID uuid.NullUUID `bun:"type:uuid" json:"photoId"`

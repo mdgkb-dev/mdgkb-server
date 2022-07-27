@@ -33,7 +33,7 @@ func (items PageDocuments) SetForeignKeys() {
 }
 
 func (items PageDocuments) SetFilePath(fileID *string) *string {
-	for _ = range items {
+	for range items {
 		//if item.Document.Scan.ID.UUID.String() == *fileID {
 		//	item.Document.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
 		//	return &item.Document.Scan.FileSystemPath

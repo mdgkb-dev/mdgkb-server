@@ -22,7 +22,7 @@ type IHandler interface {
 	SavePathPermissions(c *gin.Context)
 	GetAllPathPermissions(c *gin.Context)
 	GetAllPathPermissionsAdmin(c *gin.Context)
-	GetPathPermissionsByRoleId(c *gin.Context)
+	GetPathPermissionsByRoleID(c *gin.Context)
 	CheckPathPermissions(c *gin.Context)
 }
 
@@ -37,16 +37,16 @@ type IService interface {
 	UpsertManyPathPermissions(models.PathPermissions) error
 	GetAllPathPermissions() (models.PathPermissions, error)
 	GetAllPathPermissionsAdmin() (models.PathPermissionsWithCount, error)
-	GetPathPermissionsByRoleId(id string) (models.PathPermissions, error)
+	GetPathPermissionsByRoleID(id string) (models.PathPermissions, error)
 	CheckPathPermissions(path string, roleID string) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
-	getDB() *bun.DB
+	db() *bun.DB
 	getAllPathPermissions() (models.PathPermissions, error)
 	getAllPathPermissionsAdmin() (models.PathPermissionsWithCount, error)
-	getPathPermissionsByRoleId(id string) (models.PathPermissions, error)
+	getPathPermissionsByRoleID(id string) (models.PathPermissions, error)
 	upsertManyPathPermissions(items models.PathPermissions) (err error)
 	deleteManyPathPermissions(idPool []uuid.UUID) (err error)
 	upsertManyPathPermissionsRoles(items models.PathPermissionsRoles) (err error)
@@ -70,7 +70,6 @@ type Service struct {
 }
 
 type Repository struct {
-	db          *bun.DB
 	ctx         context.Context
 	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
@@ -80,8 +79,8 @@ type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
-	repo := NewRepository(db, helper)
+func CreateHandler(helper *helper.Helper) *Handler {
+	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
@@ -96,8 +95,8 @@ func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper}
+func NewRepository(helper *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: helper}
 }
 
 func NewFilesService(helper *helper.Helper) *FilesService {

@@ -1,24 +1,25 @@
 package news
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/events"
-	"mdgkb/mdgkb-server/handlers/fileInfos"
-	"mdgkb/mdgkb-server/handlers/newsDivisions"
-	"mdgkb/mdgkb-server/handlers/newsDoctors"
-	"mdgkb/mdgkb-server/handlers/newsImages"
-	"mdgkb/mdgkb-server/handlers/newsToCategories"
-	"mdgkb/mdgkb-server/handlers/newsToTags"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
+	"mdgkb/mdgkb-server/handlers/newsdivisions"
+	"mdgkb/mdgkb-server/handlers/newsdoctors"
+	"mdgkb/mdgkb-server/handlers/newsimages"
+	"mdgkb/mdgkb-server/handlers/newstocategories"
+	"mdgkb/mdgkb-server/handlers/newstotags"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.News) error {
-	err := fileInfos.CreateService(s.repository.GetDB()).UpsertMany(item.GetFileInfos())
+	err := fileinfos.CreateService(s.helper).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
 	}
-	err = events.CreateService(s.repository.GetDB(), s.helper).Create(item.Event)
+	err = events.CreateService(s.helper).Create(item.Event)
 	if err != nil {
 		return err
 	}
@@ -28,25 +29,25 @@ func (s *Service) Create(item *models.News) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
-	err = newsToCategories.CreateService(s.repository.GetDB()).CreateMany(item.NewsToCategories)
+	err = newstocategories.CreateService(s.helper).CreateMany(item.NewsToCategories)
 	if err != nil {
 		return err
 	}
-	err = newsToTags.CreateService(s.repository.GetDB()).CreateMany(item.NewsToTags)
+	err = newstotags.CreateService(s.helper).CreateMany(item.NewsToTags)
 	if err != nil {
 		return err
 	}
-	err = newsImages.CreateService(s.repository.GetDB()).CreateMany(item.NewsImages)
+	err = newsimages.CreateService(s.helper).CreateMany(item.NewsImages)
 	if err != nil {
 		return err
 	}
-	err = newsDoctors.CreateService(s.repository.GetDB()).CreateMany(item.NewsDoctors)
+	err = newsdoctors.CreateService(s.helper).CreateMany(item.NewsDoctors)
 	if err != nil {
 		return err
 	}
-	err = newsDivisions.CreateService(s.repository.GetDB()).CreateMany(item.NewsDivisions)
+	err = newsdivisions.CreateService(s.helper).CreateMany(item.NewsDivisions)
 	if err != nil {
 		return err
 	}
@@ -70,7 +71,7 @@ func (s *Service) CreateLike(item *models.NewsLike) error {
 }
 
 func (s *Service) CreateComment(item *models.NewsComment) error {
-	commentsService := comments.CreateService(s.repository.GetDB(), s.helper)
+	commentsService := comments.CreateService(s.helper)
 	err := commentsService.UpsertOne(item.Comment)
 	if err != nil {
 		return err
@@ -80,7 +81,7 @@ func (s *Service) CreateComment(item *models.NewsComment) error {
 }
 
 func (s *Service) UpdateComment(item *models.NewsComment) error {
-	commentsService := comments.CreateService(s.repository.GetDB(), s.helper)
+	commentsService := comments.CreateService(s.helper)
 	err := commentsService.UpdateOne(item.Comment)
 	if err != nil {
 		return err
@@ -106,11 +107,11 @@ func (s *Service) GetBySlug(slug string) (*models.News, error) {
 }
 
 func (s *Service) Update(item *models.News) error {
-	err := fileInfos.CreateService(s.repository.GetDB()).UpsertMany(item.GetFileInfos())
+	err := fileinfos.CreateService(s.helper).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
 	}
-	err = events.CreateService(s.repository.GetDB(), s.helper).Upsert(item.Event)
+	err = events.CreateService(s.helper).Upsert(item.Event)
 	if err != nil {
 		return err
 	}
@@ -119,17 +120,17 @@ func (s *Service) Update(item *models.News) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
-	err = newsToCategories.CreateService(s.repository.GetDB()).UpsertMany(item.NewsToCategories)
+	err = newstocategories.CreateService(s.helper).UpsertMany(item.NewsToCategories)
 	if err != nil {
 		return err
 	}
-	err = newsToTags.CreateService(s.repository.GetDB()).UpsertMany(item.NewsToTags)
+	err = newstotags.CreateService(s.helper).UpsertMany(item.NewsToTags)
 	if err != nil {
 		return err
 	}
-	newsImagersService := newsImages.CreateService(s.repository.GetDB())
+	newsImagersService := newsimages.CreateService(s.helper)
 	err = newsImagersService.UpsertMany(item.NewsImages)
 	if err != nil {
 		return err
@@ -138,7 +139,7 @@ func (s *Service) Update(item *models.News) error {
 	if err != nil {
 		return err
 	}
-	newsDoctorsService := newsDoctors.CreateService(s.repository.GetDB())
+	newsDoctorsService := newsdoctors.CreateService(s.helper)
 	err = newsDoctorsService.UpsertMany(item.NewsDoctors)
 	if err != nil {
 		return err
@@ -148,7 +149,7 @@ func (s *Service) Update(item *models.News) error {
 		return err
 	}
 
-	newsDivisionsService := newsDivisions.CreateService(s.repository.GetDB())
+	newsDivisionsService := newsdivisions.CreateService(s.helper)
 	err = newsDivisionsService.UpsertMany(item.NewsDivisions)
 	if err != nil {
 		return err

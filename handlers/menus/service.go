@@ -1,13 +1,13 @@
 package menus
 
 import (
-	"mdgkb/mdgkb-server/handlers/fileInfos"
-	"mdgkb/mdgkb-server/handlers/subMenus"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
+	"mdgkb/mdgkb-server/handlers/submenus"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(item *models.Menu) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(models.FileInfos{item.Icon})
+	err := fileinfos.CreateService(s.helper).UpsertMany(models.FileInfos{item.Icon})
 	if err != nil {
 		return err
 	}
@@ -16,8 +16,8 @@ func (s *Service) Create(item *models.Menu) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	err = subMenus.CreateService(s.repository.getDB()).CreateMany(item.SubMenus)
+	item.SetIDForChildren()
+	err = submenus.CreateService(s.helper).CreateMany(item.SubMenus)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func (s *Service) Get(id *string) (*models.Menu, error) {
 }
 
 func (s *Service) Update(item *models.Menu) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(models.FileInfos{item.Icon})
+	err := fileinfos.CreateService(s.helper).UpsertMany(models.FileInfos{item.Icon})
 	if err != nil {
 		return err
 	}
@@ -47,9 +47,9 @@ func (s *Service) Update(item *models.Menu) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
-	subMenuService := subMenus.CreateService(s.repository.getDB())
+	subMenuService := submenus.CreateService(s.helper)
 	err = subMenuService.DeleteMany(item.SubMenusForDelete)
 	if err != nil {
 		return err
@@ -65,12 +65,12 @@ func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)
 }
 
-func (s *Service) UpsertMany(items MenusWithDeleted) error {
-	err := fileInfos.CreateService(s.repository.getDB()).UpsertMany(items.Menus.GetIcons())
+func (s *Service) UpsertMany(items WithDeleted) error {
+	err := fileinfos.CreateService(s.helper).UpsertMany(items.Menus.GetIcons())
 	if err != nil {
 		return err
 	}
-	items.Menus.SetIdForChildren()
+	items.Menus.SetIDForChildren()
 
 	err = s.repository.upsertMany(items.Menus)
 	if err != nil {
@@ -81,9 +81,9 @@ func (s *Service) UpsertMany(items MenusWithDeleted) error {
 		if err != nil {
 			return err
 		}
-		items.Menus.SetIdForChildren()
+		items.Menus.SetIDForChildren()
 	}
-	subMenuService := subMenus.CreateService(s.repository.getDB())
+	subMenuService := submenus.CreateService(s.helper)
 	err = subMenuService.DeleteMany(items.Menus.GetSubMenusForDelete())
 	if err != nil {
 		return err

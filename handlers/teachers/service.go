@@ -1,8 +1,9 @@
 package teachers
 
 import (
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) GetAll() (models.Teachers, error) {

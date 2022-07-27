@@ -1,10 +1,9 @@
 package teachers
 
 import (
-	"github.com/gin-gonic/gin"
 	handler "mdgkb/mdgkb-server/handlers/teachers"
 
-	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/gin-gonic/gin"
 )
 
 // Init func

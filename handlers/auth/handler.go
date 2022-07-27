@@ -3,9 +3,10 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) Register(c *gin.Context) {
@@ -158,8 +159,8 @@ func (h *Handler) GetAllPathPermissionsAdmin(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
-func (h *Handler) GetPathPermissionsByRoleId(c *gin.Context) {
-	items, err := h.service.GetPathPermissionsByRoleId(c.Param("roleId"))
+func (h *Handler) GetPathPermissionsByRoleID(c *gin.Context) {
+	items, err := h.service.GetPathPermissionsByRoleID(c.Param("roleId"))
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -172,15 +173,15 @@ func (h *Handler) CheckPathPermissions(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusForbidden) {
 		return
 	}
-	userRoleId := ""
+	userRoleID := ""
 	if c.Request.Header.Get("token") != "null" {
 		accessDetails, err := h.helper.Token.GetAccessDetail(c)
 		if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
 			return
 		}
-		userRoleId = accessDetails.UserRoleID
+		userRoleID = accessDetails.UserRoleID
 	}
-	err = h.service.CheckPathPermissions(path, userRoleId)
+	err = h.service.CheckPathPermissions(path, userRoleID)
 	if h.helper.HTTP.HandleError(c, err, http.StatusForbidden) {
 		return
 	}

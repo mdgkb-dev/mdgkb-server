@@ -21,7 +21,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	db() *bun.DB
 	create(info *models.Field) error
 	update(info *models.Field) error
 	upsert(info *models.Field) error
@@ -35,34 +35,35 @@ type IFilesService interface {
 
 type Handler struct {
 	service IService
-	filesService IFilesService
-	helper       *helper.Helper
+	//filesService IFilesService
+	helper *helper.Helper
 }
 
 type Service struct {
 	repository IRepository
+	helper     *helper.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	ctx    context.Context
+	helper *helper.Helper
 }
 
 type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
+func CreateService(h *helper.Helper) *Service {
+	repo := NewRepository(h)
+	return NewService(repo, h)
 }
 
-func NewService(repository IRepository) *Service {
-	return &Service{repository: repository}
+func NewService(repository IRepository, h *helper.Helper) *Service {
+	return &Service{repository: repository, helper: h}
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(h *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: h}
 }
 
 // func (s *FilesService) Upload(c *gin.Context, item *models.Field, files map[string][]*multipart.FileHeader) (err error) {

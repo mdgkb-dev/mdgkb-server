@@ -7,7 +7,7 @@ import (
 
 type DocumentScan struct {
 	bun.BaseModel `bun:"documents_scans,alias:documents_scans"`
-	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
+	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 
 	Document   *Document `bun:"rel:belongs-to" json:"document"`
 	DocumentID uuid.UUID `bun:"type:uuid" json:"documentId"`
@@ -24,15 +24,15 @@ func (items DocumentsScans) SetForeignKeys() {
 	}
 }
 
-//func (item *Document) SetIdForChildren() {
+//func (item *Document) SetIDForChildren() {
 //	for i := range item.DocumentFieldsValues {
 //		item.DocumentFieldsValues[i].DocumentID = item.ID
 //	}
 //}
 //
-//func (items Documents) SetIdForChildren() {
+//func (items Documents) SetIDForChildren() {
 //	for i := range items {
-//		items[i].SetIdForChildren()
+//		items[i].SetIDForChildren()
 //	}
 //}
 

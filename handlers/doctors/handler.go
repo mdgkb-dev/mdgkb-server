@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type doctorsParams struct {
-	Main  bool `form:"main"`
-	Limit int  `form:"limit"`
-}
+//type doctorsParams struct {
+//	Main  bool `form:"main"`
+//	Limit int  `form:"limit"`
+//}
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Doctor
@@ -93,7 +93,9 @@ func (h *Handler) Update(c *gin.Context) {
 	}
 
 	err = h.filesService.Upload(c, &item, files)
-
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Update(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -105,13 +107,13 @@ func (h *Handler) Update(c *gin.Context) {
 func (h *Handler) CreateComment(c *gin.Context) {
 	var item models.DoctorComment
 	err := c.ShouldBind(&item)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
 
 	err = h.service.CreateComment(&item)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
 
 	c.JSON(http.StatusOK, item)
@@ -120,9 +122,12 @@ func (h *Handler) CreateComment(c *gin.Context) {
 func (h *Handler) UpdateComment(c *gin.Context) {
 	var item models.DoctorComment
 	err := c.Bind(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.UpdateComment(&item)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
 	c.JSON(http.StatusOK, item)
 }

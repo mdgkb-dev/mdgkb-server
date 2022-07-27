@@ -26,13 +26,13 @@ type Division struct {
 	DivisionPaidServicesForDelete []uuid.UUID          `bun:"-" json:"divisionPaidServicesForDelete"`
 
 	Entrance                *Entrance        `bun:"rel:belongs-to" json:"entrance"`
-	EntranceId              uuid.NullUUID    `bun:"type:uuid" json:"entranceId"`
-	FloorId                 uuid.NullUUID    `bun:"type:uuid" json:"floorId"`
+	EntranceID              uuid.NullUUID    `bun:"type:uuid" json:"entranceId"`
+	FloorID                 uuid.NullUUID    `bun:"type:uuid" json:"floorId"`
 	Floor                   *Floor           `bun:"rel:belongs-to" json:"floor"`
 	Timetable               *Timetable       `bun:"rel:belongs-to" json:"timetable"`
-	TimetableId             uuid.UUID        `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+	TimetableID             uuid.UUID        `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 	Schedule                *Schedule        `bun:"rel:belongs-to" json:"schedule"`
-	ScheduleId              uuid.UUID        `bun:"type:uuid" json:"scheduleId"`
+	ScheduleID              uuid.UUID        `bun:"type:uuid" json:"scheduleId"`
 	DivisionImages          DivisionImages   `bun:"rel:has-many" json:"divisionImages"`
 	DivisionImagesForDelete []string         `bun:"-" json:"divisionImagesForDelete"`
 	DivisionImagesNames     []string         `bun:"-" json:"divisionImagesNames"`
@@ -40,7 +40,7 @@ type Division struct {
 	VisitingRules           VisitingRules    `bun:"rel:has-many" json:"visitingRules"`
 	VisitingRulesForDelete  []uuid.UUID      `bun:"-" json:"visitingRulesForDelete"`
 
-	HospitalizationContactInfoId uuid.UUID    `bun:"type:uuid" json:"hospitalizationContactInfoId"`
+	HospitalizationContactInfoID uuid.UUID    `bun:"type:uuid" json:"hospitalizationContactInfoId"`
 	HospitalizationContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"hospitalizationContactInfo"`
 
 	HospitalizationDoctorID uuid.NullUUID `bun:"type:uuid" json:"hospitalizationDoctorId"`
@@ -55,32 +55,32 @@ type Division struct {
 
 type Divisions []*Division
 
-func (i Division) SetFilePath(fileID *string) *string {
-	path := i.DivisionImages.SetFilePath(fileID)
+func (item *Division) SetFilePath(fileID *string) *string {
+	path := item.DivisionImages.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}
 	return nil
 }
 
-func (i *Division) SetForeignKeys() {
-	if i.HospitalizationContactInfo != nil {
-		i.HospitalizationContactInfoId = i.HospitalizationContactInfo.ID
+func (item *Division) SetForeignKeys() {
+	if item.HospitalizationContactInfo != nil {
+		item.HospitalizationContactInfoID = item.HospitalizationContactInfo.ID
 	}
-	if i.ContactInfo != nil {
-		i.ContactInfoID = i.ContactInfo.ID
+	if item.ContactInfo != nil {
+		item.ContactInfoID = item.ContactInfo.ID
 	}
-	if i.HospitalizationDoctor != nil {
-		i.HospitalizationDoctorID = i.HospitalizationDoctor.ID
+	if item.HospitalizationDoctor != nil {
+		item.HospitalizationDoctorID = item.HospitalizationDoctor.ID
 	}
-	if i.Timetable != nil {
-		i.TimetableId = i.Timetable.ID
+	if item.Timetable != nil {
+		item.TimetableID = item.Timetable.ID
 	}
-	if i.Schedule != nil {
-		i.ScheduleId = i.Schedule.ID
+	if item.Schedule != nil {
+		item.ScheduleID = item.Schedule.ID
 	}
-	if i.Chief != nil {
-		i.ChiefID = i.Chief.ID
+	if item.Chief != nil {
+		item.ChiefID = item.Chief.ID
 	}
 }
 
@@ -92,7 +92,7 @@ func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {
 	//}
 }
 
-func (item *Division) SetIdForChildren() {
+func (item *Division) SetIDForChildren() {
 	for i := range item.VisitingRules {
 		item.VisitingRules[i].DivisionID = item.ID
 	}

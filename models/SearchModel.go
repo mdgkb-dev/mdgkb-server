@@ -40,7 +40,6 @@ func (item *SearchModel) createSearchElement(resultElement interface{}, group Se
 				searchElementMeta.Name = metaCol.Name
 				searchElement.SearchElementMetas = append(searchElement.SearchElementMetas, &searchElementMeta)
 			}
-
 		}
 	}
 
@@ -77,7 +76,7 @@ func (item *SearchModel) BuildQuery() (map[string]interface{}, []string) {
 	indexes := make([]string, 0)
 	for _, group := range item.SearchGroups {
 		if group.Active && group.Label != "" {
-			fields = append(fields, fmt.Sprintf("%s", group.SearchColumn))
+			fields = append(fields, group.SearchColumn)
 			indexes = append(indexes, group.Table)
 		}
 	}

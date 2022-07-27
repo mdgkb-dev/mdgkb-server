@@ -11,7 +11,7 @@ type PageImage struct {
 	Description string        `json:"description"`
 	PageID      uuid.UUID     `bun:"type:uuid" json:"pageID" `
 	FileInfo    *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoId  uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
+	FileInfoID  uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
 }
 
 type PageImages []*PageImage
@@ -26,7 +26,7 @@ func (i PageImages) GetFileInfos() FileInfos {
 
 func (i PageImages) SetFileInfoID() {
 	for _, item := range i {
-		item.FileInfoId = item.FileInfo.ID
+		item.FileInfoID = item.FileInfo.ID
 	}
 }
 

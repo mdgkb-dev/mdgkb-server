@@ -4,7 +4,6 @@ import (
 	handler "mdgkb/mdgkb-server/handlers/vacancies"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
 )
 
 // Init func

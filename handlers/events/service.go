@@ -1,7 +1,7 @@
 package events
 
 import (
-	"mdgkb/mdgkb-server/handlers/fieldsValues"
+	"mdgkb/mdgkb-server/handlers/fieldsvalues"
 	"mdgkb/mdgkb-server/handlers/forms"
 	"mdgkb/mdgkb-server/models"
 )
@@ -10,7 +10,7 @@ func (s *Service) Create(item *models.Event) error {
 	if item == nil {
 		return nil
 	}
-	err := forms.CreateService(s.repository.getDB()).Upsert(item.Form)
+	err := forms.CreateService(s.helper).Upsert(item.Form)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func (s *Service) Update(item *models.Event) error {
 	if item == nil {
 		return nil
 	}
-	err := forms.CreateService(s.repository.getDB()).Upsert(item.Form)
+	err := forms.CreateService(s.helper).Upsert(item.Form)
 	if err != nil {
 		return err
 	}
@@ -60,7 +60,7 @@ func (s *Service) Upsert(item *models.Event) error {
 	if item == nil {
 		return nil
 	}
-	err := forms.CreateService(s.repository.getDB()).Upsert(item.Form)
+	err := forms.CreateService(s.helper).Upsert(item.Form)
 	if err != nil {
 		return err
 	}
@@ -84,8 +84,8 @@ func (s *Service) CreateEventApplication(item *models.EventApplication) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	err = fieldsValues.CreateService(s.repository.getDB()).UpsertMany(item.FieldValues)
+	item.SetIDForChildren()
+	err = fieldsvalues.CreateService(s.helper).UpsertMany(item.FieldValues)
 	if err != nil {
 		return err
 	}

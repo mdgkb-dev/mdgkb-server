@@ -4,6 +4,8 @@ import (
 	"context"
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/pro-assistance/pro-assister/helper"
+
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
@@ -18,7 +20,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	db() *bun.DB
 	create(timetable *models.Schedule) error
 	upsert(timetable *models.Schedule) error
 }
@@ -29,22 +31,23 @@ type Handler struct {
 
 type Service struct {
 	repository IRepository
+	helper     *helper.Helper
 }
 
 type Repository struct {
-	db  *bun.DB
-	ctx context.Context
+	ctx    context.Context
+	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB) *Handler {
-	repo := NewRepository(db)
-	service := NewService(repo)
+func CreateHandler(h *helper.Helper) *Handler {
+	repo := NewRepository(h)
+	service := NewService(repo, h)
 	return NewHandler(service)
 }
 
-func CreateService(db *bun.DB) *Service {
-	repo := NewRepository(db)
-	return NewService(repo)
+func CreateService(h *helper.Helper) *Service {
+	repo := NewRepository(h)
+	return NewService(repo, h)
 }
 
 // NewHandler constructor
@@ -52,10 +55,10 @@ func NewHandler(s IService) *Handler {
 	return &Handler{service: s}
 }
 
-func NewService(repository IRepository) *Service {
-	return &Service{repository: repository}
+func NewService(repository IRepository, h *helper.Helper) *Service {
+	return &Service{repository: repository, helper: h}
 }
 
-func NewRepository(db *bun.DB) *Repository {
-	return &Repository{db: db, ctx: context.Background()}
+func NewRepository(h *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: h}
 }

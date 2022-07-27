@@ -16,12 +16,12 @@ type SubMenu struct {
 	Link          string        `json:"link"`
 	Menu          *Menu         `bun:"rel:belongs-to" json:"menus"`
 	Hide          bool          `json:"hide"`
-	MenuId        uuid.UUID     `bun:"type:uuid" json:"menuId"`
+	MenuID        uuid.UUID     `bun:"type:uuid" json:"menuId"`
 	Order         uint          `bun:"sub_menu_order" json:"order"`
 	Page          *Page         `bun:"rel:belongs-to" json:"page"`
-	PageId        uuid.NullUUID `bun:"type:uuid" json:"PageId"`
+	PageID        uuid.NullUUID `bun:"type:uuid" json:"PageID"`
 	Icon          *FileInfo     `bun:"rel:belongs-to" json:"icon"`
-	IconId        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
+	IconID        uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
 	IconName      string        `json:"iconName"`
 	SvgCode       string        `json:"svgCode"`
 }
@@ -40,8 +40,8 @@ func (items SubMenus) SetFilePath(fileID *string) *string {
 
 func (items SubMenus) SetForeignKeys() {
 	for i := range items {
-		items[i].IconId.UUID = items[i].Icon.ID.UUID
-		items[i].IconId = items[i].Icon.ID
+		items[i].IconID.UUID = items[i].Icon.ID.UUID
+		items[i].IconID = items[i].Icon.ID
 	}
 }
 

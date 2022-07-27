@@ -2,11 +2,12 @@ package preparations
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+	"mime/multipart"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
-	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -28,12 +29,12 @@ type IService interface {
 	Get(string) (*models.Preparation, error)
 	Delete(string) error
 	Update(*models.Preparation) error
-	UpsertMany(PreparationsWithDeleted) error
+	UpsertMany(WithDeleted) error
 	GetTags() (models.PreparationsTags, error)
 }
 
 type IRepository interface {
-	getDB() *bun.DB
+	db() *bun.DB
 	create(*models.Preparation) error
 	getAll() (models.Preparations, error)
 	get(string) (*models.Preparation, error)
@@ -60,7 +61,6 @@ type Service struct {
 }
 
 type Repository struct {
-	db     *bun.DB
 	ctx    context.Context
 	helper *helper.Helper
 }
@@ -70,15 +70,15 @@ type FilesService struct {
 	helper   *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
-	repo := NewRepository(db, helper)
+func CreateHandler(helper *helper.Helper) *Handler {
+	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
 }
 
-func CreateService(db *bun.DB, helper *helper.Helper) *Service {
-	repo := NewRepository(db, helper)
+func CreateService(helper *helper.Helper) *Service {
+	repo := NewRepository(helper)
 	return NewService(repo, helper)
 }
 
@@ -91,8 +91,8 @@ func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper}
+func NewRepository(helper *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: helper}
 }
 
 func NewFilesService(helper *helper.Helper) *FilesService {

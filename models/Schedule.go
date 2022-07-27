@@ -12,7 +12,7 @@ type Schedule struct {
 	ScheduleItemsForDelete []string      `bun:"-" json:"scheduleItemsForDelete"`
 }
 
-func (item *Schedule) SetIdForChildren() {
+func (item *Schedule) SetIDForChildren() {
 	if len(item.ScheduleItems) == 0 {
 		return
 	}

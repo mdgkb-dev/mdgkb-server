@@ -13,7 +13,7 @@ type Department struct {
 	IsDivision    bool          `json:"isDivision"`
 
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`
-	DivisionId uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
+	DivisionID uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
 
 	Name string `json:"name"`
 }

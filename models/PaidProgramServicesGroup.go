@@ -20,15 +20,15 @@ type PaidProgramServicesGroup struct {
 
 type PaidProgramServicesGroups []*PaidProgramServicesGroup
 
-func (item *PaidProgramServicesGroup) SetIdForChildren() {
+func (item *PaidProgramServicesGroup) SetIDForChildren() {
 	for i := range item.PaidProgramServices {
 		item.PaidProgramServices[i].PaidProgramServicesGroupID = item.ID
 	}
 }
 
-func (items PaidProgramServicesGroups) SetIdForChildren() {
+func (items PaidProgramServicesGroups) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 

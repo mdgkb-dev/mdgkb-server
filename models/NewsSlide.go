@@ -47,12 +47,12 @@ func (item *NewsSlide) SetFilePath(fileID *string) *string {
 	return nil
 }
 
-func (item *NewsSlide) SetIdForChildren() {
+func (item *NewsSlide) SetIDForChildren() {
 	if len(item.NewsSlideButtons) == 0 {
 		return
 	}
 	for i := range item.NewsSlideButtons {
-		item.NewsSlideButtons[i].NewsSlideId = item.ID
+		item.NewsSlideButtons[i].NewsSlideID = item.ID
 	}
 }
 

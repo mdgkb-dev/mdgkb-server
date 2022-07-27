@@ -7,7 +7,7 @@ import (
 
 type DocumentType struct {
 	bun.BaseModel        `bun:"document_types,alias:document_types"`
-	ID                   uuid.NullUUID       `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" json:"id,omitempty"`
+	ID                   uuid.NullUUID       `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 	Name                 string              `json:"name,omitempty"`
 	Order                uint                `bun:"document_type_order" json:"order"`
 	Description          string              `json:"description,omitempty"`
@@ -23,7 +23,7 @@ type DocumentType struct {
 
 type DocumentTypes []*DocumentType
 
-func (item *DocumentType) SetIdForChildren() {
+func (item *DocumentType) SetIDForChildren() {
 	for i := range item.DocumentTypeFields {
 		item.DocumentTypeFields[i].DocumentTypeID = item.ID
 	}
@@ -32,9 +32,9 @@ func (item *DocumentType) SetIdForChildren() {
 	}
 }
 
-func (items DocumentTypes) SetIdForChildren() {
+func (items DocumentTypes) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 
@@ -56,7 +56,7 @@ func (items DocumentTypes) GetDocuments() Documents {
 	return itemsForGet
 }
 
-func (items DocumentTypes) GetDocumentsIdForDelete() []uuid.UUID {
+func (items DocumentTypes) GetDocumentsIDForDelete() []uuid.UUID {
 	idPool := make([]uuid.UUID, 0)
 	for _, item := range items {
 		idPool = append(idPool, item.DocumentsForDelete...)

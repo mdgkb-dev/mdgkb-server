@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type Vacancy struct {
@@ -29,7 +30,7 @@ type Vacancy struct {
 	VacancyRequirementsForDelete []uuid.UUID         `bun:"-" json:"vacancyRequirementsForDelete"`
 
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`
-	DivisionId uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
+	DivisionID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
 
 	ContactInfo   *ContactInfo  `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.NullUUID `bun:"type:uuid" json:"contactInfoId"`
@@ -43,7 +44,7 @@ type Vacancy struct {
 
 type Vacancies []*Vacancy
 
-func (item *Vacancy) SetIdForChildren() {
+func (item *Vacancy) SetIDForChildren() {
 	for i := range item.VacancyDuties {
 		item.VacancyDuties[i].VacancyID = item.ID
 	}

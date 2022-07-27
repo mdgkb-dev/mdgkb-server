@@ -2,6 +2,7 @@ package partners
 
 import (
 	handler "mdgkb/mdgkb-server/handlers/partners"
+
 	"github.com/gin-gonic/gin"
 )
 

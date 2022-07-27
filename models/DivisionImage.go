@@ -9,9 +9,9 @@ import (
 type DivisionImage struct {
 	ID          uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Description string        `json:"description"`
-	DivisionId  uuid.UUID     `bun:"type:uuid" json:"divisionId" `
+	DivisionID  uuid.UUID     `bun:"type:uuid" json:"divisionId" `
 	FileInfo    *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoId  uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
+	FileInfoID  uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
 }
 
 type DivisionImages []*DivisionImage
@@ -26,7 +26,7 @@ func (i DivisionImages) GetFileInfos() FileInfos {
 
 func (i DivisionImages) SetFileInfoID() {
 	for _, item := range i {
-		item.FileInfoId = item.FileInfo.ID
+		item.FileInfoID = item.FileInfo.ID
 	}
 }
 

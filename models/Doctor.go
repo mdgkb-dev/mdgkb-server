@@ -1,17 +1,18 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
-	"time"
 )
 
 type Doctor struct {
 	bun.BaseModel `bun:"doctors,select:doctors_view,alias:doctors_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Division      *Division     `bun:"rel:belongs-to" json:"division"`
-	DivisionId    uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
+	DivisionID    uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
 
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId,omitempty"`
@@ -56,7 +57,7 @@ type Doctor struct {
 	DoctorPaidServicesForDelete []uuid.UUID        `bun:"-" json:"doctorPaidServicesForDelete"`
 
 	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
-	TimetableId uuid.UUID  `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+	TimetableID uuid.UUID  `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 
 	EducationalOrganizationAcademic *EducationalOrganizationAcademic `bun:"rel:has-one" json:"educationalOrganizationAcademic"`
 }
@@ -95,14 +96,14 @@ func (item *Doctor) SetForeignKeys() {
 		item.PositionID = item.Position.ID
 	}
 	if item.Timetable != nil {
-		item.TimetableId = item.Timetable.ID
+		item.TimetableID = item.Timetable.ID
 	}
 	if item.MedicalProfile != nil {
 		item.MedicalProfileID = item.MedicalProfile.ID
 	}
 }
 
-func (item *Doctor) SetIdForChildren() {
+func (item *Doctor) SetIDForChildren() {
 	for i := range item.Educations {
 		item.Educations[i].DoctorID = item.ID
 	}

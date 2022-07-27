@@ -1,7 +1,7 @@
 package timetables
 
 import (
-	"mdgkb/mdgkb-server/handlers/timetableDays"
+	"mdgkb/mdgkb-server/handlers/timetabledays"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -10,8 +10,8 @@ func (s *Service) Create(item *models.Timetable) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	timetableDaysService := timetableDays.CreateService(s.repository.getDB())
+	item.SetIDForChildren()
+	timetableDaysService := timetabledays.CreateService(s.helper)
 	err = timetableDaysService.CreateMany(item.TimetableDays)
 	if err != nil {
 		return err
@@ -24,8 +24,8 @@ func (s *Service) Upsert(item *models.Timetable) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	timetableDaysService := timetableDays.CreateService(s.repository.getDB())
+	item.SetIDForChildren()
+	timetableDaysService := timetabledays.CreateService(s.helper)
 	err = timetableDaysService.UpsertMany(item.TimetableDays)
 	if err != nil {
 		return err

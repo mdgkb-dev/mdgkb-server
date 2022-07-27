@@ -1,30 +1,31 @@
 package heads
 
 import (
-	"github.com/gin-gonic/gin"
-	"mdgkb/mdgkb-server/handlers/contactInfo"
+	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/departments"
-	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Head) error {
-	err := fileInfos.CreateService(s.repository.GetDB()).Create(item.Photo)
+	err := fileinfos.CreateService(s.helper).Create(item.Photo)
 	if err != nil {
 		return err
 	}
-	err = contactInfo.CreateService(s.repository.GetDB()).Create(item.ContactInfo)
+	err = contactinfo.CreateService(s.helper).Create(item.ContactInfo)
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.repository.GetDB(), s.helper).Create(item.Human)
+	err = human.CreateService(s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
-	err = timetables.CreateService(s.repository.GetDB()).Create(item.Timetable)
+	err = timetables.CreateService(s.helper).Create(item.Timetable)
 	if err != nil {
 		return err
 	}
@@ -33,13 +34,13 @@ func (s *Service) Create(item *models.Head) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
+	item.SetIDForChildren()
 
-	err = regalias.CreateService(s.repository.GetDB()).CreateMany(item.Regalias)
+	err = regalias.CreateService(s.helper).CreateMany(item.Regalias)
 	if err != nil {
 		return err
 	}
-	err = departments.CreateService(s.repository.GetDB()).CreateMany(item.Departments)
+	err = departments.CreateService(s.helper).CreateMany(item.Departments)
 	if err != nil {
 		return err
 	}
@@ -47,19 +48,19 @@ func (s *Service) Create(item *models.Head) error {
 }
 
 func (s *Service) Update(item *models.Head) error {
-	err := fileInfos.CreateService(s.repository.GetDB()).Upsert(item.Photo)
+	err := fileinfos.CreateService(s.helper).Upsert(item.Photo)
 	if err != nil {
 		return err
 	}
-	err = contactInfo.CreateService(s.repository.GetDB()).Upsert(item.ContactInfo)
+	err = contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.repository.GetDB(), s.helper).Update(item.Human)
+	err = human.CreateService(s.helper).Update(item.Human)
 	if err != nil {
 		return err
 	}
-	err = timetables.CreateService(s.repository.GetDB()).Upsert(item.Timetable)
+	err = timetables.CreateService(s.helper).Upsert(item.Timetable)
 	if err != nil {
 		return err
 	}
@@ -68,8 +69,8 @@ func (s *Service) Update(item *models.Head) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	regaliasService := regalias.CreateService(s.repository.GetDB())
+	item.SetIDForChildren()
+	regaliasService := regalias.CreateService(s.helper)
 	err = regaliasService.UpsertMany(item.Regalias)
 	if err != nil {
 		return err
@@ -79,7 +80,7 @@ func (s *Service) Update(item *models.Head) error {
 		return err
 	}
 
-	departmentsService := departments.CreateService(s.repository.GetDB())
+	departmentsService := departments.CreateService(s.helper)
 	err = departmentsService.UpsertMany(item.Departments)
 	if err != nil {
 		return err

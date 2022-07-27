@@ -1,8 +1,9 @@
 package comments
 
 import (
-	"github.com/gin-gonic/gin"
 	handler "mdgkb/mdgkb-server/handlers/comments"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Init(r *gin.RouterGroup, h handler.IHandler) {

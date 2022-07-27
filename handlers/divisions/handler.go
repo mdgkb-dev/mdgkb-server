@@ -15,7 +15,9 @@ func (h *Handler) Create(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Create(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -25,7 +27,6 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-
 	err := h.service.setQueryFilter(c)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -64,7 +65,9 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	err = h.service.Update(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return

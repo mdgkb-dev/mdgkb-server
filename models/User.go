@@ -67,7 +67,7 @@ func (i *User) CompareWithHashPassword(password string) bool {
 
 func (i *User) SetForeignKeys() {
 	i.HumanID = i.Human.ID
-	if i.Role != nil && i.Role.ID.Valid != false {
+	if i.Role != nil && i.Role.ID.Valid {
 		i.RoleID = i.Role.ID
 	}
 }
@@ -80,7 +80,7 @@ func (i *User) SetFilePath(fileID *string) *string {
 	return nil
 }
 
-func (i *User) SetIdForChildren() {
+func (i *User) SetIDForChildren() {
 	for index := range i.Children {
 		i.Children[index].UserID = i.ID
 	}

@@ -9,7 +9,7 @@ type TelephoneNumber struct {
 	Number        string       `json:"number"`
 	Description   string       `json:"description"`
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
-	ContactInfoId uuid.UUID    `bun:"type:uuid"`
+	ContactInfoID uuid.UUID    `bun:"type:uuid"`
 	Main          bool         `json:"main"`
 }
 

@@ -2,15 +2,15 @@ package heads
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
-	"mdgkb/mdgkb-server/handlers/baseHandler"
+	"mdgkb/mdgkb-server/handlers/basehandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
+	"github.com/pro-assistance/pro-assister/uploadHelper"
+
 	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
@@ -22,7 +22,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	baseHandler.IService
+	basehandler.IService
 	Create(*models.Head) error
 	GetAll() (models.Heads, error)
 	Get(string) (*models.Head, error)
@@ -31,7 +31,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	baseHandler.IRepository
+	basehandler.IRepository
 	create(*models.Head) error
 	getAll() (models.Heads, error)
 	get(string) (*models.Head, error)
@@ -55,7 +55,6 @@ type Service struct {
 }
 
 type Repository struct {
-	db          *bun.DB
 	ctx         context.Context
 	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
@@ -66,15 +65,15 @@ type FilesService struct {
 	helper   *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
-	repo := NewRepository(db, helper)
+func CreateHandler(helper *helper.Helper) *Handler {
+	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
 }
 
-func CreateService(db *bun.DB, helper *helper.Helper) *Service {
-	repo := NewRepository(db, helper)
+func CreateService(helper *helper.Helper) *Service {
+	repo := NewRepository(helper)
 	return NewService(repo, helper)
 }
 
@@ -87,8 +86,8 @@ func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper}
+func NewRepository(helper *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: helper}
 }
 
 func NewFilesService(helper *helper.Helper) *FilesService {

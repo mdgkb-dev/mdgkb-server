@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -64,7 +65,7 @@ func (item *ResidencyApplication) SetFilePath(fileID *string) *string {
 	return nil
 }
 
-func (item *ResidencyApplication) SetIdForChildren() {
+func (item *ResidencyApplication) SetIDForChildren() {
 	for i := range item.ResidencyApplicationPointsAchievements {
 		item.ResidencyApplicationPointsAchievements[i].ResidencyApplicationID = item.ID
 	}

@@ -1,8 +1,9 @@
 package departments
 
 import (
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) CreateMany(items models.Departments) error {

@@ -1,13 +1,15 @@
 package timetables
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) GetAllWeekdays(c *gin.Context) {
 	items, err := h.service.GetAllWeekdays()
-	if err != nil {
-		c.JSON(500, err)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
 	}
-	c.JSON(200, items)
+	c.JSON(http.StatusOK, items)
 }

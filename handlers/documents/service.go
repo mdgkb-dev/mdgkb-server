@@ -1,7 +1,7 @@
 package documents
 
 import (
-	"mdgkb/mdgkb-server/handlers/documentsScans"
+	"mdgkb/mdgkb-server/handlers/documentsscans"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
@@ -16,8 +16,8 @@ func (s *Service) CreateMany(items models.Documents) error {
 	if err != nil {
 		return err
 	}
-	items.SetIdForChildren()
-	err = documentsScans.CreateService(s.repository.getDB()).UpsertMany(items.GetDocumentsScans())
+	items.SetIDForChildren()
+	err = documentsscans.CreateService(s.helper).UpsertMany(items.GetDocumentsScans())
 	if err != nil {
 		return err
 	}
@@ -33,9 +33,9 @@ func (s *Service) UpsertMany(items models.Documents) error {
 	if err != nil {
 		return err
 	}
-	items.SetIdForChildren()
-	documentsScanService := documentsScans.CreateService(s.repository.getDB())
-	err = documentsScanService.DeleteMany(items.GetDocumentsScansIdForDelete())
+	items.SetIDForChildren()
+	documentsScanService := documentsscans.CreateService(s.helper)
+	err = documentsScanService.DeleteMany(items.GetDocumentsScansIDForDelete())
 	if err != nil {
 		return err
 	}

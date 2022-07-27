@@ -70,10 +70,9 @@ func (item *News) SetForeignKeys() {
 	if item.Event != nil {
 		item.EventID = item.Event.ID
 	}
-
 }
 
-func (item *News) SetIdForChildren() {
+func (item *News) SetIDForChildren() {
 	for i := range item.NewsToCategories {
 		item.NewsToCategories[i].NewsID = item.ID
 	}

@@ -1,15 +1,15 @@
 package news
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 	"mdgkb/mdgkb-server/models"
 
-	_ "github.com/go-pg/pg/v10/orm"
+	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
+	//_ "github.com/go-pg/pg/v10/orm"
 )
 
-func (r *Repository) GetDB() *bun.DB {
-	return r.db
+func (r *Repository) DB() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
@@ -21,48 +21,48 @@ func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) create(news *models.News) (err error) {
-	_, err = r.db.NewInsert().Model(news).Exec(r.ctx)
+	_, err = r.DB().NewInsert().Model(news).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(news *models.News) (err error) {
-	_, err = r.db.NewUpdate().Model(news).Where("id = ?", news.ID).Exec(r.ctx)
+	_, err = r.DB().NewUpdate().Model(news).Where("id = ?", news.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) createLike(item *models.NewsLike) error {
-	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.DB().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) addTag(item *models.NewsToTag) error {
-	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.DB().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) removeTag(item *models.NewsToTag) error {
-	_, err := r.db.NewDelete().Model(&models.NewsToTag{}).Where("news_id = ? AND tag_id = ?", item.NewsID, item.TagID).Exec(r.ctx)
+	_, err := r.DB().NewDelete().Model(&models.NewsToTag{}).Where("news_id = ? AND tag_id = ?", item.NewsID, item.TagID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) createComment(item *models.NewsComment) error {
-	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.DB().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) updateComment(item *models.NewsComment) error {
-	_, err := r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err := r.DB().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) removeComment(id string) error {
-	_, err := r.db.NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(r.ctx)
+	_, err := r.DB().NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAll() (items models.NewsWithCount, err error) {
 	items.News = make([]*models.News, 0)
-	query := r.db.NewSelect().Model(&items.News).
+	query := r.DB().NewSelect().Model(&items.News).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
 		Relation("PreviewImage").
@@ -101,7 +101,7 @@ func (r *Repository) getAll() (items models.NewsWithCount, err error) {
 
 func (r *Repository) getBySlug(slug string) (*models.News, error) {
 	item := models.News{}
-	err := r.db.NewSelect().Model(&item).
+	err := r.DB().NewSelect().Model(&item).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
 		Relation("PreviewImage").
@@ -128,17 +128,17 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.News{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.DB().NewDelete().Model(&models.News{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) deleteLike(id string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.NewsLike{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.DB().NewDelete().Model(&models.NewsLike{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) createViewOfNews(newsView *models.NewsView) (err error) {
-	_, err = r.db.NewInsert().Model(newsView).On("CONFLICT (ip_address, news_id) DO NOTHING").Exec(r.ctx)
+	_, err = r.DB().NewInsert().Model(newsView).On("CONFLICT (ip_address, news_id) DO NOTHING").Exec(r.ctx)
 	return err
 }
 

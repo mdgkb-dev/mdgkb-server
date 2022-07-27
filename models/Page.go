@@ -26,12 +26,11 @@ type Page struct {
 
 type Pages []*Page
 
-func (item *Page) SetIdForChildren() {
-	if len(item.PageComments) < 0 {
-		return
-	}
-	for i := range item.PageComments {
-		item.PageComments[i].PageId = item.ID
+func (item *Page) SetIDForChildren() {
+	if len(item.PageComments) > 0 {
+		for i := range item.PageComments {
+			item.PageComments[i].PageID = item.ID
+		}
 	}
 	for i := range item.PageDocuments {
 		item.PageDocuments[i].PageID = item.ID

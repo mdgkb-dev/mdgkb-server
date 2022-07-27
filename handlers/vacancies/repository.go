@@ -1,13 +1,14 @@
 package vacancies
 
 import (
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
-func (r *Repository) GetDB() *bun.DB {
-	return r.db
+func (r *Repository) DB() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
@@ -19,13 +20,13 @@ func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) create(item *models.Vacancy) (err error) {
-	_, err = r.db.NewInsert().Model(item).ExcludeColumn("responses_count", "new_responses_count").Exec(r.ctx)
+	_, err = r.DB().NewInsert().Model(item).ExcludeColumn("responses_count", "new_responses_count").Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAll() (item models.VacanciesWithCount, err error) {
 	item.Vacancies = make(models.Vacancies, 0)
-	query := r.db.NewSelect().Model(&item.Vacancies).
+	query := r.DB().NewSelect().Model(&item.Vacancies).
 		Relation("VacancyResponses").
 		Relation("Division").
 		Relation("FormPattern").
@@ -43,7 +44,7 @@ func (r *Repository) getAll() (item models.VacanciesWithCount, err error) {
 
 func (r *Repository) get(id *string) (*models.Vacancy, error) {
 	item := models.Vacancy{}
-	err := r.db.NewSelect().
+	err := r.DB().NewSelect().
 		Model(&item).
 		Relation("Division").
 		Relation("VacancyDuties", func(q *bun.SelectQuery) *bun.SelectQuery {
@@ -77,7 +78,7 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 
 func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
 	item := models.Vacancy{}
-	err := r.db.NewSelect().
+	err := r.DB().NewSelect().
 		Model(&item).
 		Relation("Division").
 		Relation("VacancyDuties").
@@ -105,17 +106,17 @@ func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db.NewDelete().Model(&models.Vacancy{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.DB().NewDelete().Model(&models.Vacancy{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) update(item *models.Vacancy) (err error) {
-	_, err = r.db.NewUpdate().Model(item).ExcludeColumn("responses_count", "new_responses_count").Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.DB().NewUpdate().Model(item).ExcludeColumn("responses_count", "new_responses_count").Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) upsertMany(items models.Vacancies) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").Model(&items).ExcludeColumn("responses_count", "new_responses_count").
+	_, err = r.DB().NewInsert().On("conflict (id) do update").Model(&items).ExcludeColumn("responses_count", "new_responses_count").
 		Set("id = EXCLUDED.id").
 		Set("min_salary = EXCLUDED.min_salary").
 		Set("max_salary = EXCLUDED.max_salary").
@@ -125,6 +126,6 @@ func (r *Repository) upsertMany(items models.Vacancies) (err error) {
 }
 
 func (r *Repository) createResponse(item *models.VacancyResponse) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.DB().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }

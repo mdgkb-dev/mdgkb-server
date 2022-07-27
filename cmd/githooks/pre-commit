@@ -1,0 +1,16 @@
+#!/bin/sh
+# STAGED_GO_FILES=$(git diff --cached --name-only | grep ".go$")
+STAGED_GO_FILES=$(git diff --cached --name-status --diff-filter d -- '*.go' | awk '{ print $2 }')
+#if [ -z "$STAGED_GO_FILES" ]; then
+#  exit 0
+#fi
+
+sh ./cmd/golangci.sh
+if [ $? -gt 0 ]; then
+  printf "COMMIT FAILED\n"
+  exit 1
+else
+  printf "COMMIT SUCCEEDED\n"
+fi
+
+exit 0

@@ -55,7 +55,7 @@ func (item *ResidencyCourse) SetForeignKeys() {
 	item.ScheduleID = item.Schedule.ID
 }
 
-func (item *ResidencyCourse) SetIdForChildren() {
+func (item *ResidencyCourse) SetIDForChildren() {
 	for i := range item.ResidencyCoursesTeachers {
 		item.ResidencyCoursesTeachers[i].ResidencyCourseID = item.ID
 	}

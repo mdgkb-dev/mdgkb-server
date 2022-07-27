@@ -33,5 +33,5 @@ func (item *DpoApplication) SetFilePath(fileID *string) *string {
 	return path
 }
 
-func (item *DpoApplication) SetIdForChildren() {
+func (item *DpoApplication) SetIDForChildren() {
 }

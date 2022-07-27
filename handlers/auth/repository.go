@@ -1,15 +1,17 @@
 package auth
 
 import (
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
+
+	// _ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
@@ -21,7 +23,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT (resource) DO UPDATE").
+	_, err = r.db().NewInsert().On("CONFLICT (resource) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("guest_allow = EXCLUDED.guest_allow").
@@ -30,7 +32,7 @@ func (r *Repository) upsertManyPathPermissions(items models.PathPermissions) (er
 }
 
 func (r *Repository) deleteManyPathPermissions(idPool []uuid.UUID) (err error) {
-	_, err = r.db.NewDelete().
+	_, err = r.db().NewDelete().
 		Model((*models.PathPermission)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
@@ -38,7 +40,7 @@ func (r *Repository) deleteManyPathPermissions(idPool []uuid.UUID) (err error) {
 }
 
 func (r *Repository) upsertManyPathPermissionsRoles(items models.PathPermissionsRoles) (err error) {
-	_, err = r.db.NewInsert().On("CONFLICT (path_permission_id, role_id) DO UPDATE").
+	_, err = r.db().NewInsert().On("CONFLICT (path_permission_id, role_id) DO UPDATE").
 		Set("path_permission_id = EXCLUDED.path_permission_id").
 		Set("role_id = EXCLUDED.role_id").
 		Model(&items).
@@ -47,7 +49,7 @@ func (r *Repository) upsertManyPathPermissionsRoles(items models.PathPermissions
 }
 
 func (r *Repository) deleteManyPathPermissionsRoles(idPool []uuid.UUID) (err error) {
-	_, err = r.db.NewDelete().
+	_, err = r.db().NewDelete().
 		Model((*models.PathPermissionRole)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
@@ -56,7 +58,7 @@ func (r *Repository) deleteManyPathPermissionsRoles(idPool []uuid.UUID) (err err
 
 func (r *Repository) getAllPathPermissions() (models.PathPermissions, error) {
 	items := make(models.PathPermissions, 0)
-	err := r.db.NewSelect().
+	err := r.db().NewSelect().
 		Model(&items).
 		Relation("PathPermissionsRoles").
 		Scan(r.ctx)
@@ -65,7 +67,7 @@ func (r *Repository) getAllPathPermissions() (models.PathPermissions, error) {
 
 func (r *Repository) getAllPathPermissionsAdmin() (item models.PathPermissionsWithCount, err error) {
 	item.PathPermissions = make(models.PathPermissions, 0)
-	query := r.db.NewSelect().Model(&item.PathPermissions).
+	query := r.db().NewSelect().Model(&item.PathPermissions).
 		Relation("PathPermissionsRoles")
 
 	r.queryFilter.HandleQuery(query)
@@ -75,23 +77,22 @@ func (r *Repository) getAllPathPermissionsAdmin() (item models.PathPermissionsWi
 
 func (r *Repository) checkPathPermissions(path string, roleID string) error {
 	if roleID == "" {
-		return r.db.NewSelect().
+		return r.db().NewSelect().
 			Model(&models.PathPermission{}).
 			Where("path_permissions.resource = ? and path_permissions.guest_allow = true", path).
 			Scan(r.ctx)
 	}
 
-	return r.db.NewSelect().
+	return r.db().NewSelect().
 		Model(&models.PathPermission{}).
 		Join("JOIN path_permissions_roles ppr on ppr.path_permission_id = path_permissions.id and ppr.role_id = ?", roleID).
 		Where("path_permissions.resource = ?", path).
 		Scan(r.ctx)
-
 }
 
-func (r *Repository) getPathPermissionsByRoleId(id string) (models.PathPermissions, error) {
+func (r *Repository) getPathPermissionsByRoleID(id string) (models.PathPermissions, error) {
 	items := make(models.PathPermissions, 0)
-	err := r.db.NewSelect().
+	err := r.db().NewSelect().
 		Model(&items).
 		Relation("PathPermissionsRoles").
 		Join("JOIN path_permissions_roles ppr on ppr.path_permission_id = path_permissions.id and ppr.role_id = ?", id).

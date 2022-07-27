@@ -6,18 +6,18 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) getDB() *bun.DB {
-	return r.db
+func (r *Repository) db() *bun.DB {
+	return r.helper.DB.DB
 }
 
 func (r *Repository) create(item *models.Event) (err error) {
-	_, err = r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) get(id string) (*models.Event, error) {
 	item := new(models.Event)
-	err := r.db.NewSelect().Model(item).
+	err := r.db().NewSelect().Model(item).
 		Relation("News").
 		Relation("EventApplications.FieldValues.Field").
 		Relation("EventApplications.User.Human.ContactInfo.Emails").
@@ -27,12 +27,12 @@ func (r *Repository) get(id string) (*models.Event, error) {
 }
 
 func (r *Repository) update(item *models.Event) (err error) {
-	_, err = r.db.NewUpdate().Model(item).Where("file_infos.id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).Where("file_infos.id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) upsertMany(items models.Events) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("start_date = EXCLUDED.start_date").
 		Set("end_date = EXCLUDED.end_date").
@@ -42,7 +42,7 @@ func (r *Repository) upsertMany(items models.Events) (err error) {
 }
 
 func (r *Repository) upsert(item *models.Event) (err error) {
-	_, err = r.db.NewInsert().On("conflict (id) do update").
+	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(item).
 		Set("id = EXCLUDED.id").
 		Set("start_date = EXCLUDED.start_date").
@@ -53,7 +53,7 @@ func (r *Repository) upsert(item *models.Event) (err error) {
 }
 
 //func (r *Repository) deleteMany(idPool []string) (err error) {
-//	_, err = r.db.NewDelete().
+//	_, err = r.db().NewDelete().
 //		Model((*models.DocumentType)(nil)).
 //		Where("id IN (?)", bun.In(idPool)).
 //		Exec(r.ctx)
@@ -61,13 +61,13 @@ func (r *Repository) upsert(item *models.Event) (err error) {
 //}
 
 func (r *Repository) createEventApplication(item *models.EventApplication) error {
-	_, err := r.db.NewInsert().Model(item).Exec(r.ctx)
+	_, err := r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) getAllForMain() (models.Events, error) {
 	items := make(models.Events, 0)
-	err := r.db.NewSelect().Model(&items).
+	err := r.db().NewSelect().Model(&items).
 		Relation("News").
 		//Relation("Event").
 		//Join("JOIN events on news.event_id = event.id").

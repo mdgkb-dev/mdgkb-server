@@ -2,11 +2,12 @@ package users
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.User) error {
@@ -14,7 +15,7 @@ func (s *Service) Create(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.repository.getDB(), s.helper).Create(item.Human)
+	err = human.CreateService(s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
@@ -24,8 +25,8 @@ func (s *Service) Create(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	item.SetIDForChildren()
+	childrenService := children.CreateService(s.helper)
 	err = childrenService.CreateMany(item.Children)
 	if err != nil {
 		return err
@@ -38,7 +39,7 @@ func (s *Service) Create(item *models.User) error {
 }
 
 func (s *Service) Update(item *models.User) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
 	}
@@ -51,8 +52,8 @@ func (s *Service) Update(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	item.SetIDForChildren()
+	childrenService := children.CreateService(s.helper)
 	err = childrenService.UpsertMany(item.Children)
 	if err != nil {
 		return err
@@ -65,7 +66,7 @@ func (s *Service) Update(item *models.User) error {
 }
 
 func (s *Service) Upsert(item *models.User) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
 	}
@@ -78,8 +79,8 @@ func (s *Service) Upsert(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	childrenService := children.CreateService(s.repository.getDB(), s.helper)
+	item.SetIDForChildren()
+	childrenService := children.CreateService(s.helper)
 	err = childrenService.UpsertMany(item.Children)
 	if err != nil {
 		return err
@@ -92,7 +93,7 @@ func (s *Service) Upsert(item *models.User) error {
 }
 
 func (s *Service) UpsertEmail(item *models.User) error {
-	err := human.CreateService(s.repository.getDB(), s.helper).Upsert(item.Human)
+	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
 	}
@@ -164,7 +165,7 @@ func (s *Service) SetAccessLink(item *models.User) error {
 	if findedUser.IsActive {
 		return nil
 	}
-	role, err := roles.CreateService(s.repository.getDB(), s.helper).GetDefaultRole()
+	role, err := roles.CreateService(s.helper).GetDefaultRole()
 	if err != nil {
 		return err
 	}
@@ -174,7 +175,7 @@ func (s *Service) SetAccessLink(item *models.User) error {
 	if err != nil {
 		return err
 	}
-	link := fmt.Sprintf("%s/access-profile/%s/%s", s.helper.HTTP.Host, item.ID, item.UUID)
+	link := fmt.Sprintf("%s/access-profile/%s/%s", s.helper.HTTP.Host, item.ID.UUID, item.UUID)
 	mail, err := s.helper.Templater.ParseTemplate(link, "email/profile_access.gohtml")
 	if err != nil {
 		return err

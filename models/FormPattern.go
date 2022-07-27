@@ -34,7 +34,7 @@ func (item *FormPattern) SetForeignKeys() {
 	}
 }
 
-func (item *FormPattern) SetIdForChildren() {
+func (item *FormPattern) SetIDForChildren() {
 	if len(item.Fields) == 0 {
 		return
 	}

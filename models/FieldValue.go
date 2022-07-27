@@ -148,14 +148,14 @@ func (items FieldValues) GetFields() Fields {
 	return itemsForGet
 }
 
-func (item *FieldValue) SetIdForChildren() {
+func (item *FieldValue) SetIDForChildren() {
 	for i := range item.FieldValuesFiles {
 		item.FieldValuesFiles[i].FieldValueID = item.ID
 	}
 }
 
-func (items FieldValues) SetIdForChildren() {
+func (items FieldValues) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }

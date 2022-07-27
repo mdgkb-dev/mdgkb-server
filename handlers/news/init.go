@@ -2,14 +2,14 @@ package news
 
 import (
 	"context"
-	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
-	"mdgkb/mdgkb-server/handlers/baseHandler"
+	"mdgkb/mdgkb-server/handlers/basehandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
+
 	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
@@ -28,7 +28,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	baseHandler.IService
+	basehandler.IService
 	Create(*models.News) error
 	Update(*models.News) error
 	CreateLike(*models.NewsLike) error
@@ -45,7 +45,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	baseHandler.IRepository
+	basehandler.IRepository
 	create(*models.News) error
 	update(*models.News) error
 	createLike(*models.NewsLike) error
@@ -72,14 +72,14 @@ type Handler struct {
 }
 
 type Service struct {
-	//baseHandler.Service
+	//basehandler.Service
 	repository IRepository
 	helper     *helper.Helper
 }
 
 type Repository struct {
 	//baseHandler.Repository
-	db          *bun.DB
+
 	ctx         context.Context
 	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
@@ -89,8 +89,8 @@ type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateHandler(db *bun.DB, helper *helper.Helper) *Handler {
-	repo := NewRepository(db, helper)
+func CreateHandler(helper *helper.Helper) *Handler {
+	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
@@ -105,8 +105,8 @@ func NewService(repository IRepository, helper *helper.Helper) *Service {
 	return &Service{repository: repository, helper: helper}
 }
 
-func NewRepository(db *bun.DB, helper *helper.Helper) *Repository {
-	return &Repository{db: db, ctx: context.Background(), helper: helper}
+func NewRepository(helper *helper.Helper) *Repository {
+	return &Repository{ctx: context.Background(), helper: helper}
 }
 
 func NewFilesService(helper *helper.Helper) *FilesService {

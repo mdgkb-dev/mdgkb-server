@@ -54,7 +54,7 @@ func (item *PostgraduateCourse) SetForeignKeys() {
 	item.DocumentTypeID = item.DocumentType.ID
 }
 
-func (item *PostgraduateCourse) SetIdForChildren() {
+func (item *PostgraduateCourse) SetIDForChildren() {
 	for i := range item.PostgraduateCoursesTeachers {
 		item.PostgraduateCoursesTeachers[i].PostgraduateCourseID = item.ID
 	}

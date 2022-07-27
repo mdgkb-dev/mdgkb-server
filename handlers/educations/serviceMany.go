@@ -1,21 +1,22 @@
 package educations
 
 import (
-	"github.com/google/uuid"
-	"mdgkb/mdgkb-server/handlers/educationAccreditation"
-	"mdgkb/mdgkb-server/handlers/educationCertification"
+	"mdgkb/mdgkb-server/handlers/educationaccreditation"
+	"mdgkb/mdgkb-server/handlers/educationcertification"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) CreateMany(items models.Educations) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := educationCertification.CreateService(s.repository.getDB()).CreateMany(items.GetEducationCertifications())
+	err := educationcertification.CreateService(s.helper).CreateMany(items.GetEducationCertifications())
 	if err != nil {
 		return err
 	}
-	err = educationAccreditation.CreateService(s.repository.getDB()).CreateMany(items.GetEducationQualification())
+	err = educationaccreditation.CreateService(s.helper).CreateMany(items.GetEducationQualification())
 	if err != nil {
 		return err
 	}
@@ -31,11 +32,11 @@ func (s *Service) UpsertMany(items models.Educations) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := educationCertification.CreateService(s.repository.getDB()).UpsertMany(items.GetEducationCertifications())
+	err := educationcertification.CreateService(s.helper).UpsertMany(items.GetEducationCertifications())
 	if err != nil {
 		return err
 	}
-	err = educationAccreditation.CreateService(s.repository.getDB()).UpsertMany(items.GetEducationQualification())
+	err = educationaccreditation.CreateService(s.helper).UpsertMany(items.GetEducationQualification())
 	if err != nil {
 		return err
 	}

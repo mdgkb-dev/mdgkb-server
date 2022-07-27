@@ -1,9 +1,9 @@
 package menus
 
 import (
-	"github.com/gin-gonic/gin"
-	_ "github.com/go-pg/pg/v10/orm"
 	handler "mdgkb/mdgkb-server/handlers/menus"
+
+	"github.com/gin-gonic/gin"
 )
 
 // Init func

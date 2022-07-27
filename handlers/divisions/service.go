@@ -2,38 +2,38 @@ package divisions
 
 import (
 	"mdgkb/mdgkb-server/handlers/comments"
-	"mdgkb/mdgkb-server/handlers/contactInfo"
-	"mdgkb/mdgkb-server/handlers/divisionImages"
+	"mdgkb/mdgkb-server/handlers/contactinfo"
+	"mdgkb/mdgkb-server/handlers/divisionimages"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/schedules"
 	"mdgkb/mdgkb-server/handlers/timetables"
-	"mdgkb/mdgkb-server/handlers/visitingRules"
+	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Division) error {
-	timetableService := timetables.CreateService(s.repository.getDB())
+	timetableService := timetables.CreateService(s.helper)
 	err := timetableService.Create(item.Timetable)
 	if err != nil {
 		return err
 	}
-	schedulesService := schedules.CreateService(s.repository.getDB())
+	schedulesService := schedules.CreateService(s.helper)
 	err = schedulesService.Create(item.Schedule)
 	if err != nil {
 		return err
 	}
 	item.Slug = s.helper.Util.MakeSlug(item.Name, true)
 
-	contactInfoService := contactInfo.CreateService(s.repository.getDB())
+	contactInfoService := contactinfo.CreateService(s.helper)
 	err = contactInfoService.Create(item.ContactInfo)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
 
-	doctorsService := doctors.CreateService(s.repository.getDB(), s.helper)
+	doctorsService := doctors.CreateService(s.helper)
 	err = doctorsService.UpsertMany(item.Doctors)
 	if err != nil {
 		return err
@@ -43,13 +43,13 @@ func (s *Service) Create(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	visitingRulesService := visitingRules.CreateService(s.repository.getDB(), s.helper)
+	item.SetIDForChildren()
+	visitingRulesService := visitingrules.CreateService(s.helper)
 	err = visitingRulesService.UpsertMany(item.VisitingRules)
 	if err != nil {
 		return err
 	}
-	divisionImagesService := divisionImages.CreateService(s.repository.getDB())
+	divisionImagesService := divisionimages.CreateService(s.helper)
 	err = divisionImagesService.CreateMany(item.DivisionImages)
 	if err != nil {
 		return err
@@ -58,26 +58,26 @@ func (s *Service) Create(item *models.Division) error {
 }
 
 func (s *Service) Update(item *models.Division) error {
-	timetableService := timetables.CreateService(s.repository.getDB())
+	timetableService := timetables.CreateService(s.helper)
 	err := timetableService.Upsert(item.Timetable)
 	if err != nil {
 		return err
 	}
 
-	schedulesService := schedules.CreateService(s.repository.getDB())
+	schedulesService := schedules.CreateService(s.helper)
 	err = schedulesService.Upsert(item.Schedule)
 	if err != nil {
 		return err
 	}
 
-	contactInfoService := contactInfo.CreateService(s.repository.getDB())
+	contactInfoService := contactinfo.CreateService(s.helper)
 	err = contactInfoService.Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
 
-	doctorsService := doctors.CreateService(s.repository.getDB(), s.helper)
+	doctorsService := doctors.CreateService(s.helper)
 	err = doctorsService.DeleteMany(item.DoctorsForDelete)
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func (s *Service) Update(item *models.Division) error {
 		return err
 	}
 
-	divisionImagesService := divisionImages.CreateService(s.repository.getDB())
+	divisionImagesService := divisionimages.CreateService(s.helper)
 	err = divisionImagesService.DeleteMany(item.DivisionImagesForDelete)
 	if err != nil {
 		return err
@@ -96,8 +96,8 @@ func (s *Service) Update(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	item.SetIdForChildren()
-	visitingRulesService := visitingRules.CreateService(s.repository.getDB(), s.helper)
+	item.SetIDForChildren()
+	visitingRulesService := visitingrules.CreateService(s.helper)
 	err = visitingRulesService.UpsertMany(item.VisitingRules)
 	if err != nil {
 		return err
@@ -126,7 +126,7 @@ func (s *Service) Delete(id string) error {
 }
 
 func (s *Service) CreateComment(item *models.DivisionComment) error {
-	commentsService := comments.CreateService(s.repository.getDB(), s.helper)
+	commentsService := comments.CreateService(s.helper)
 	err := commentsService.UpsertOne(item.Comment)
 	if err != nil {
 		return err
@@ -136,7 +136,7 @@ func (s *Service) CreateComment(item *models.DivisionComment) error {
 }
 
 func (s *Service) UpdateComment(item *models.DivisionComment) error {
-	commentsService := comments.CreateService(s.repository.getDB(), s.helper)
+	commentsService := comments.CreateService(s.helper)
 	err := commentsService.UpdateOne(item.Comment)
 	if err != nil {
 		return err

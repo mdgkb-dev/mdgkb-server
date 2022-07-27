@@ -21,7 +21,7 @@ type FormStatus struct {
 	FormStatusToFormStatusesForDelete []string                 `bun:"-" json:"formStatusToFormStatusesForDelete"`
 
 	Icon   *FileInfo     `bun:"rel:belongs-to" json:"icon"`
-	IconId uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
+	IconID uuid.NullUUID `bun:"type:uuid"  json:"iconId"`
 
 	FormStatusGroup   *FormStatusGroup `bun:"rel:belongs-to" json:"formStatusGroup"`
 	FormStatusGroupID uuid.NullUUID    `bun:"type:uuid"  json:"formStatusGroupId"`
@@ -29,21 +29,21 @@ type FormStatus struct {
 
 type FormStatuses []*FormStatus
 
-func (item *FormStatus) SetIdForChildren() {
+func (item *FormStatus) SetIDForChildren() {
 	for i := range item.FormStatusToFormStatuses {
 		item.FormStatusToFormStatuses[i].FormStatusID = item.ID
 	}
 }
 
-func (items FormStatuses) SetIdForChildren() {
+func (items FormStatuses) SetIDForChildren() {
 	for i := range items {
-		items[i].SetIdForChildren()
+		items[i].SetIDForChildren()
 	}
 }
 
 func (item *FormStatus) SetForeignKeys() {
-	item.IconId.UUID = item.Icon.ID.UUID
-	item.IconId = item.Icon.ID
+	item.IconID.UUID = item.Icon.ID.UUID
+	item.IconID = item.Icon.ID
 	item.FormStatusGroupID = item.FormStatusGroup.ID
 }
 

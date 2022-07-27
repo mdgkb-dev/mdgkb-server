@@ -12,5 +12,5 @@ type DocumentFieldValueToHuman struct {
 	DocumentFieldID uuid.UUID          `bun:"type:uuid" json:"documentFieldId"`
 
 	Human   *Human    `bun:"rel:belongs-to" json:"human"`
-	HumanId uuid.UUID `bun:"type:uuid" json:"humanId"`
+	HumanID uuid.UUID `bun:"type:uuid" json:"humanId"`
 }

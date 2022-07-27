@@ -11,7 +11,7 @@ type Timetable struct {
 	TimetableDaysForDelete []string      `bun:"-" json:"timetableDaysForDelete"`
 }
 
-func (item *Timetable) SetIdForChildren() {
+func (item *Timetable) SetIDForChildren() {
 	if len(item.TimetableDays) == 0 {
 		return
 	}
