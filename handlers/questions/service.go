@@ -1,7 +1,7 @@
 package questions
 
 import (
-	"mdgkb/mdgkb-server/handlers/fileInfos"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
@@ -29,7 +29,7 @@ func (s *Service) Create(item *models.Question) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.repository.getDB(), s.helper).SendApplicationsCounts()
+	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
