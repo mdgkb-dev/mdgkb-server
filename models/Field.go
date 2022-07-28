@@ -90,7 +90,9 @@ func (item *Field) SetFilePath(fileID *string) *string {
 
 func (item *Field) GetFileInfos() FileInfos {
 	items := make(FileInfos, 0)
-	items = append(items, item.File)
+	if item.File.FileSystemPath != "" && item.File.OriginalName != "" {
+		items = append(items, item.File)
+	}
 	return items
 }
 
@@ -115,7 +117,9 @@ func (items Fields) GetFileInfos() FileInfos {
 func (items Fields) SetForeignKeys() {
 	for i := range items {
 		if items[i].File != nil {
-			items[i].FileID = items[i].File.ID
+			if items[i].File.FileSystemPath != "" && items[i].File.OriginalName != "" {
+				items[i].FileID = items[i].File.ID
+			}
 		}
 		if items[i].Form != nil {
 			items[i].FormID = items[i].Form.ID
