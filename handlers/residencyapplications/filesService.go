@@ -36,7 +36,7 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 		"item.FormValue.User.Human.Surname":     item.FormValue.User.Human.Surname,
 		"item.FormValue.User.Human.Name":        item.FormValue.User.Human.Name,
 		"item.FormValue.User.Human.Patronymic":  item.FormValue.User.Human.Patronymic,
-		"item.FormValue.User.Human.DateBirth":   item.FormValue.User.Human.DateBirth.Format("01.02.2006"),
+		"item.FormValue.User.Human.DateBirth":   item.FormValue.User.Human.DateBirth.Format("02.01.2006"),
 		"item.FormValue.User.Human.PlaceBirth":  item.FormValue.User.Human.PlaceBirth,
 		"item.FormValue.User.Human.Citizenship": item.FormValue.User.Human.Citizenship,
 		"item.FormValue.User.Human.Snils":       item.FormValue.User.Human.Snils,
@@ -48,7 +48,7 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 		"DiplomaSeries":                         item.FormValue.GetFieldValueByCode("DiplomaSeries"),
 		"DiplomaNumber":                         item.FormValue.GetFieldValueByCode("DiplomaNumber"),
 		"DiplomaSpeciality":                     item.FormValue.GetFieldValueByCode("DiplomaSpeciality"),
-		"DiplomaDate":                           item.FormValue.GetFieldValueByCode("DiplomaDate").(*time.Time).Format("01.02.2006"),
+		"DiplomaDate":                           item.FormValue.GetFieldValueByCode("DiplomaDate").(*time.Time).Format("02.01.2006"),
 		"UniversityEndYear":                     item.FormValue.GetFieldValueByCode("UniversityEndYear").(*time.Time).Format("2006"),
 		"UniversityName":                        item.FormValue.GetFieldValueByCode("UniversityName").(string),
 	}

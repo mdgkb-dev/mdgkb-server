@@ -3,6 +3,7 @@ package residencyapplications
 import (
 	"mdgkb/mdgkb-server/models"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -97,6 +98,9 @@ func (h *Handler) Delete(c *gin.Context) {
 func (h *Handler) FillApplicationTemplate(c *gin.Context) {
 	var item models.ResidencyApplication
 	err := c.Bind(&item)
+	t1 := item.FormValue.User.Human.DateBirth.Add(time.Hour * 3)
+	item.FormValue.User.Human.DateBirth = &t1
+	item.FormValue.NormalizeDateFields()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -104,8 +108,6 @@ func (h *Handler) FillApplicationTemplate(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	//c.Header("Content-Description", "File Transfer")
-	//c.Header("Content-Disposition", "filename=\"response.docx\"")
 	c.Data(http.StatusOK, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", doc)
 }
 

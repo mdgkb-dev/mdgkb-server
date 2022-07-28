@@ -105,3 +105,12 @@ func (item *FormValue) GetFieldValueByCode(code string) interface{} {
 	}
 	return value
 }
+
+func (item *FormValue) NormalizeDateFields() {
+	for i := range item.FieldValues {
+		if item.FieldValues[i].ValueDate != nil {
+			d := item.FieldValues[i].ValueDate.Add(time.Hour * 3)
+			item.FieldValues[i].ValueDate = &d
+		}
+	}
+}
