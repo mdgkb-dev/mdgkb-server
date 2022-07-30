@@ -90,9 +90,8 @@ func (r *Repository) getAllTimetables() (models.Doctors, error) {
 func (r *Repository) get(slug string) (*models.Doctor, error) {
 	item := models.Doctor{}
 	err := r.db().NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
-		Relation("Human").
-		Relation("FileInfo").
-		Relation("PhotoMini").
+		Relation("Human.Photo").
+		Relation("Human.PhotoMini").
 		Relation("Division.Timetable.TimetableDays.Weekday").
 		Relation("Regalias").
 		Relation("Experiences").

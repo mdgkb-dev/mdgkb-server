@@ -71,13 +71,9 @@ func (item *Doctor) SetFilePath(fileID *string) *string {
 			return &item.Certificates[i].Scan.FileSystemPath
 		}
 	}
-	if item.FileInfo.ID.UUID.String() == *fileID {
-		item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
-		return &item.FileInfo.FileSystemPath
-	}
-	if item.PhotoMini.ID.UUID.String() == *fileID {
-		item.PhotoMini.FileSystemPath = uploadHelper.BuildPath(fileID)
-		return &item.PhotoMini.FileSystemPath
+	path := item.Human.SetFilePath(fileID)
+	if path != nil {
+		return path
 	}
 	return nil
 }
