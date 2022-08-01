@@ -5,6 +5,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/fieldsvalues"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) Upsert(item *models.FormValue) error {
@@ -22,6 +24,15 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	if err != nil {
 		return err
 	}
+	var oldFormValue *models.FormValue
+
+	if item.ID.Valid && uuid.Nil.String() != item.ID.UUID.String() {
+		oldFormValue, err = s.repository.get(item.ID.UUID.String())
+		if err != nil {
+			return err
+		}
+	}
+
 	item.SetForeignKeys()
 	err = s.repository.upsert(item)
 	if err != nil {
@@ -31,6 +42,10 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	err = fieldsvalues.CreateService(s.helper).UpsertMany(item.FieldValues)
 	if err != nil {
 		return err
+	}
+
+	if oldFormValue == nil || oldFormValue.FormStatus == nil || item.FormStatus.ID == oldFormValue.FormStatus.ID {
+		return nil
 	}
 	if item.User.RejectEmail {
 		return nil
@@ -55,7 +70,7 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	return nil
 }
 
-func (s *Service) Get(id *string) (*models.FormValue, error) {
+func (s *Service) Get(id string) (*models.FormValue, error) {
 	item, err := s.repository.get(id)
 	if err != nil {
 		return nil, err

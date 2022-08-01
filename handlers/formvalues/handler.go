@@ -12,7 +12,7 @@ import (
 
 func (h *Handler) Get(c *gin.Context) {
 	id := c.Param("id")
-	item, err := h.service.Get(&id)
+	item, err := h.service.Get(id)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -51,7 +51,7 @@ func (h *Handler) UpdateMany(c *gin.Context) {
 
 func (h *Handler) DocumentsToPDF(c *gin.Context) {
 	id := c.Param("id")
-	item, err := h.service.Get(&id)
+	item, err := h.service.Get(id)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -73,7 +73,7 @@ func (h *Handler) DocumentsToPDF(c *gin.Context) {
 
 func (h *Handler) DocumentsToZip(c *gin.Context) {
 	id := c.Param("id")
-	item, err := h.service.Get(&id)
+	item, err := h.service.Get(id)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

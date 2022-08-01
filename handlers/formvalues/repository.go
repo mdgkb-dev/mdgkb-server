@@ -26,7 +26,7 @@ func (r *Repository) upsert(item *models.FormValue) (err error) {
 	return err
 }
 
-func (r *Repository) get(id *string) (*models.FormValue, error) {
+func (r *Repository) get(id string) (*models.FormValue, error) {
 	item := models.FormValue{}
 	err := r.db().NewSelect().Model(&item).
 		Relation("User.Human").
@@ -45,7 +45,7 @@ func (r *Repository) get(id *string) (*models.FormValue, error) {
 		Relation("ResidencyApplication.ResidencyApplicationPointsAchievements.PointsAchievement", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("points_achievement.points_achievements_order")
 		}).
-		Where("form_values.id = ?", *id).Scan(r.ctx)
+		Where("form_values.id = ?", id).Scan(r.ctx)
 	return &item, err
 }
 
