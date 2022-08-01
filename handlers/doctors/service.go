@@ -7,7 +7,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/educationalorganizationacademics"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
-	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/timetables"
@@ -18,15 +17,7 @@ import (
 )
 
 func (s *Service) Create(item *models.Doctor) error {
-	err := fileinfos.CreateService(s.helper).Create(item.FileInfo)
-	if err != nil {
-		return err
-	}
-	err = fileinfos.CreateService(s.helper).Create(item.PhotoMini)
-	if err != nil {
-		return err
-	}
-	err = human.CreateService(s.helper).Create(item.Human)
+	err := human.CreateService(s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
@@ -73,15 +64,7 @@ func (s *Service) Create(item *models.Doctor) error {
 }
 
 func (s *Service) Update(item *models.Doctor) error {
-	err := fileinfos.CreateService(s.helper).Upsert(item.FileInfo)
-	if err != nil {
-		return err
-	}
-	err = fileinfos.CreateService(s.helper).Upsert(item.PhotoMini)
-	if err != nil {
-		return err
-	}
-	err = human.CreateService(s.helper).Update(item.Human)
+	err := human.CreateService(s.helper).Update(item.Human)
 	if err != nil {
 		return err
 	}
