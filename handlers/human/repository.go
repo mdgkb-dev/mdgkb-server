@@ -1,7 +1,6 @@
 package human
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -57,21 +56,6 @@ func (r *Repository) upsertMany(items models.Humans) (err error) {
 }
 
 func (r *Repository) upsert(item *models.Human) (err error) {
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println(item.Name)
-	fmt.Println(item.Surname)
-	fmt.Println(item.Patronymic)
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("")
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
