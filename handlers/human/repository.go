@@ -41,6 +41,7 @@ func (r *Repository) upsertMany(items models.Humans) (err error) {
 		Set("patronymic = EXCLUDED.patronymic").
 		Set("snils = EXCLUDED.snils").
 		Set("photo_id = EXCLUDED.photo_id").
+		Set("photo_mini_id = EXCLUDED.photo_mini_id").
 		Set("is_male = EXCLUDED.is_male").
 		Set("date_birth = EXCLUDED.date_birth").
 		Set("slug = EXCLUDED.slug").
@@ -64,6 +65,7 @@ func (r *Repository) upsert(item *models.Human) (err error) {
 		Set("snils = EXCLUDED.snils").
 		Set("is_male = EXCLUDED.is_male").
 		Set("photo_id = EXCLUDED.photo_id").
+		Set("photo_mini_id = EXCLUDED.photo_mini_id").
 		Set("date_birth = EXCLUDED.date_birth").
 		Set("slug = EXCLUDED.slug").
 		Set("citizenship = EXCLUDED.citizenship").

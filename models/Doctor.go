@@ -26,11 +26,6 @@ type Doctor struct {
 	MedicalProfile   *MedicalProfile `bun:"rel:belongs-to" json:"medicalProfile"`
 	MedicalProfileID uuid.NullUUID   `bun:"type:uuid" json:"medicalProfileId"`
 	Order            int             `bun:"item_order" json:"order"`
-	FileInfo         *FileInfo       `bun:"rel:belongs-to" json:"fileInfo"`
-	FileInfoID       uuid.NullUUID   `bun:"type:uuid" json:"fileInfoId"`
-
-	PhotoMini   *FileInfo     `bun:"rel:belongs-to" json:"photoMini"`
-	PhotoMiniID uuid.NullUUID `bun:"type:uuid" json:"photoMiniId"`
 
 	DoctorComments    DoctorComments `bun:"rel:has-many" json:"doctorComments"`
 	NewsDoctors       NewsDoctors    `bun:"rel:has-many" json:"newsDoctors"`
@@ -71,26 +66,16 @@ func (item *Doctor) SetFilePath(fileID *string) *string {
 			return &item.Certificates[i].Scan.FileSystemPath
 		}
 	}
-	if item.FileInfo.ID.UUID.String() == *fileID {
-		item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
-		return &item.FileInfo.FileSystemPath
-	}
-	if item.PhotoMini.ID.UUID.String() == *fileID {
-		item.PhotoMini.FileSystemPath = uploadHelper.BuildPath(fileID)
-		return &item.PhotoMini.FileSystemPath
+	path := item.Human.SetFilePath(fileID)
+	if path != nil {
+		return path
 	}
 	return nil
 }
 
 func (item *Doctor) SetForeignKeys() {
-	if item.FileInfo != nil {
-		item.FileInfoID = item.FileInfo.ID
-	}
 	if item.Human != nil {
 		item.HumanID = item.Human.ID
-	}
-	if item.PhotoMini != nil {
-		item.PhotoMiniID = item.PhotoMini.ID
 	}
 	if item.Position != nil {
 		item.PositionID = item.Position.ID
