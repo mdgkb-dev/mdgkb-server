@@ -21,14 +21,14 @@ type IHandler interface {
 type IService interface {
 	Upsert(info *models.FormValue) error
 	UpsertMany(models.FormValues) error
-	Get(*string) (*models.FormValue, error)
+	Get(string) (*models.FormValue, error)
 }
 
 type IRepository interface {
 	db() *bun.DB
 	upsert(info *models.FormValue) error
 	upsertMany(models.FormValues) error
-	get(*string) (*models.FormValue, error)
+	get(string) (*models.FormValue, error)
 }
 
 type IFilesService interface {

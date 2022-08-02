@@ -42,6 +42,10 @@ func (s *Service) Update(item *models.Human) error {
 	if err != nil {
 		return err
 	}
+	err = fileinfos.CreateService(s.helper).Upsert(item.PhotoMini)
+	if err != nil {
+		return err
+	}
 	err = contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
@@ -59,7 +63,7 @@ func (s *Service) UpsertMany(items models.Humans) error {
 	if err != nil {
 		return err
 	}
-	err = fileinfos.CreateService(s.helper).UpsertMany(items.GetPhotos())
+	err = fileinfos.CreateService(s.helper).UpsertMany(items.GetFileInfos())
 	if err != nil {
 		return err
 	}
@@ -79,6 +83,10 @@ func (s *Service) Upsert(item *models.Human) error {
 		return err
 	}
 	err = fileinfos.CreateService(s.helper).Upsert(item.Photo)
+	if err != nil {
+		return err
+	}
+	err = fileinfos.CreateService(s.helper).Upsert(item.PhotoMini)
 	if err != nil {
 		return err
 	}

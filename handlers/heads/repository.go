@@ -28,8 +28,10 @@ func (r *Repository) create(item *models.Head) (err error) {
 func (r *Repository) getAll() (models.Heads, error) {
 	items := make(models.Heads, 0)
 	query := r.DB().NewSelect().Model(&items).
-		Relation("Human").
-		Relation("Photo").
+		Relation("Human.Photo").
+		Relation("Human.PhotoMini").
+		// Relation("Human").
+		// Relation("Photo").
 		Relation("Departments.Division").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("ContactInfo").
@@ -45,8 +47,10 @@ func (r *Repository) getAll() (models.Heads, error) {
 func (r *Repository) get(id string) (*models.Head, error) {
 	item := models.Head{}
 	err := r.DB().NewSelect().Model(&item).Where("heads.id = ?", id).
-		Relation("Human").
-		Relation("Photo").
+		Relation("Human.Photo").
+		Relation("Human.PhotoMini").
+		// Relation("Human").
+		// Relation("Photo").
 		Relation("Regalias").
 		Relation("Departments.Division").
 		Relation("Timetable.TimetableDays.Weekday").

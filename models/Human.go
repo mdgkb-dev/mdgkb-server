@@ -33,6 +33,9 @@ type Human struct {
 	Photo   *FileInfo     `bun:"rel:belongs-to" json:"photo"`
 	PhotoID uuid.NullUUID `bun:"type:uuid" json:"photoId"`
 
+	PhotoMini   *FileInfo     `bun:"rel:belongs-to" json:"photoMini"`
+	PhotoMiniID uuid.NullUUID `bun:"type:uuid" json:"photoMiniId"`
+
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
 }
@@ -42,6 +45,10 @@ type Humans []*Human
 func (item *Human) SetForeignKeys() {
 	item.ContactInfoID = item.ContactInfo.ID
 	item.PhotoID = item.Photo.ID
+
+	if item.PhotoMini != nil {
+		item.PhotoMiniID = item.PhotoMini.ID
+	}
 }
 
 func (items Humans) SetForeignKeys() {
@@ -74,10 +81,24 @@ func (items Humans) GetPhotos() FileInfos {
 	return itemsForGet
 }
 
+func (items Humans) GetFileInfos() FileInfos {
+	itemsForGet := make(FileInfos, 0)
+
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.Photo)
+		itemsForGet = append(itemsForGet, item.PhotoMini)
+	}
+	return itemsForGet
+}
+
 func (item *Human) SetFilePath(fileID *string) *string {
 	if item.Photo.ID.UUID.String() == *fileID {
 		item.Photo.FileSystemPath = uploadHelper.BuildPath(fileID)
 		return &item.Photo.FileSystemPath
+	}
+	if item.PhotoMini.ID.UUID.String() == *fileID {
+		item.PhotoMini.FileSystemPath = uploadHelper.BuildPath(fileID)
+		return &item.PhotoMini.FileSystemPath
 	}
 	return nil
 }

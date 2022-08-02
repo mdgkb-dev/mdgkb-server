@@ -19,7 +19,9 @@ func (r *Repository) getAll() (models.Teachers, error) {
 		Relation("Doctor.Human").
 		Relation("Doctor.Division").
 		Relation("Doctor.MedicalProfile").
-		Relation("Doctor.Regalias")
+		Relation("Doctor.Regalias").
+		Relation("Doctor.Human.Photo").
+		Relation("Doctor.Human.PhotoMini")
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
@@ -28,6 +30,8 @@ func (r *Repository) getAll() (models.Teachers, error) {
 func (r *Repository) get(id *string) (*models.Teacher, error) {
 	item := models.Teacher{}
 	err := r.db().NewSelect().Model(&item).
+		Relation("Doctor.Human.Photo").
+		Relation("Doctor.Human.PhotoMini").
 		Relation("Doctor.Human").
 		Where("teachers_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
