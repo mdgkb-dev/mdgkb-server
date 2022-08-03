@@ -37,7 +37,9 @@ func (r *Repository) get(id string) (*models.User, error) {
 	err := r.db().NewSelect().
 		Model(&item).
 		Relation("Human.Photo").
-		Relation("Questions").
+		Relation("Questions.User.Human").
+		Relation("Comments").
+		Relation("Comments.User.Human").
 		Relation("Questions", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("questions.question_date desc")
 		}).

@@ -99,3 +99,9 @@
 ```
 	sudo apt install ./wkhtmltox_0.12.6-1.focal_amd64.deb
 ```
+
+## Линтинг
+
+```
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.47.2
+```
