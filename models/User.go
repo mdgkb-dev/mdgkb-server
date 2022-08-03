@@ -21,6 +21,7 @@ type User struct {
 	Role              *Role         `bun:"rel:belongs-to" json:"role"`
 	RoleID            uuid.NullUUID `bun:"type:uuid" json:"roleId"`
 	Questions         Questions     `bun:"rel:has-many" json:"questions"`
+	Comments          Comments      `bun:"rel:has-many" json:"comments"`
 	RejectEmail       bool          `json:"rejectEmail"`
 	CreatedAt         time.Time     `bun:",nullzero,notnull,default:current_timestamp" json:"createdAt"`
 	Children          Children      `bun:"rel:has-many" json:"children"`
