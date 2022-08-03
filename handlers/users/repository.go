@@ -37,7 +37,10 @@ func (r *Repository) get(id string) (*models.User, error) {
 	err := r.db().NewSelect().
 		Model(&item).
 		Relation("Human.Photo").
-		//Relation("Questions").
+		Relation("Questions").
+		Relation("Questions", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("questions.question_date desc")
+		}).
 		Relation("DonorRulesUsers.DonorRule.Image").
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
 		Relation("DoctorsUsers.Doctor").
