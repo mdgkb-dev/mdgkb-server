@@ -1,6 +1,7 @@
 package formstatusgroups
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -21,10 +22,17 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) getAll() (item models.FormStatusGroupsWithCount, err error) {
-	query := r.db().NewSelect().Model(&item.FormStatusGroups).
+	query := r.db().NewSelect().
+		Model(&item.FormStatusGroups).
 		Relation("FormStatuses")
 	r.queryFilter.HandleQuery(query)
-	item.Count, err = query.ScanAndCount(r.ctx)
+	err = query.Scan(r.ctx)
+	//err = query.Scan(r.ctx)
+	fmt.Println(item.FormStatusGroups)
+	fmt.Println(item.FormStatusGroups)
+	fmt.Println(item.FormStatusGroups)
+	fmt.Println(item.FormStatusGroups)
+	fmt.Println(item.FormStatusGroups)
 	return item, err
 }
 

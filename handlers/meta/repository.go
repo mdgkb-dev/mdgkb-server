@@ -19,7 +19,7 @@ func (r *Repository) getCount(table *string) (res *int, err error) {
 func (r *Repository) getOptions(optionModel *models.OptionModel) (models.Options, error) {
 	options := make(models.Options, 0)
 	query := "SELECT ?::varchar as value, ? as label FROM ? ORDER BY ?"
-	queryContext, err := r.db().Query(query, optionModel.Value, optionModel.Label, optionModel.TableName, optionModel.SortColumn)
+	queryContext, err := r.db().Query(query, optionModel.Value, optionModel.Label, bun.Ident(optionModel.TableName), bun.Ident(optionModel.SortColumn))
 	if err != nil {
 		return nil, err
 	}

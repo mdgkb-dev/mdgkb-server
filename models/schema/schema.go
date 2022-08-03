@@ -228,6 +228,7 @@ func createResidencyApplicationsSchema() map[string]string {
 		"key":                "residencyApplication",
 		"id":                 "id",
 		"createdAt":          "created_at",
+		"approvingDate":      "approving_date",
 		"formStatusId":       "form_status_id",
 		"email":              "email",
 		"pointsAchievements": "points_achievements",

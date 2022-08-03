@@ -25,6 +25,7 @@ func (r *Repository) getAll() (models.FormStatuses, error) {
 	query := r.db().NewSelect().
 		Model(&items).
 		Relation("Icon").
+		Relation("FormStatusGroup").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon")
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
