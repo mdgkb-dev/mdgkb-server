@@ -21,7 +21,7 @@ type Question struct {
 	Answered         bool          `json:"answered"`
 	Date             time.Time     `bun:"question_date" json:"date"`
 	User             *User         `bun:"rel:belongs-to" json:"user"`
-	UserID           uuid.NullUUID `json:"type:uuid" json:"userId"`
+	UserID           uuid.NullUUID `bun:"type:uuid" json:"userId"`
 	IsNew            bool          `json:"isNew"`
 	AnswerIsRead     bool          `json:"answerIsRead"`
 

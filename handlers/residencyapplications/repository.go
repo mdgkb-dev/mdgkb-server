@@ -42,6 +42,9 @@ func (r *Repository) get(id *string) (*models.ResidencyApplication, error) {
 		Relation("ResidencyCourse.FormPattern.Fields.File").
 		Relation("ResidencyCourse.FormPattern.Fields.ValueType").
 		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
 		Relation("FormValue.Fields.File").
 		Relation("FormValue.Fields.ValueType").
 		Relation("FormValue.FieldValues.File").
