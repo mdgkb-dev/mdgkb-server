@@ -66,6 +66,13 @@ func (r *Repository) emailExists(email string, courseID string) (bool, error) {
 	return exists, err
 }
 
+func (r *Repository) typeExists(email string, main bool) (bool, error) {
+	exists, err := r.db().NewSelect().Model((*models.ResidencyApplication)(nil)).
+		Where("residency_applications_view.main = ? and lower(residency_applications_view.email) = lower(?)", main, email).
+		Exists(r.ctx)
+	return exists, err
+}
+
 func (r *Repository) create(item *models.ResidencyApplication) (err error) {
 	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err

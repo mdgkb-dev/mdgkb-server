@@ -3,6 +3,7 @@ package residencyapplications
 import (
 	"mdgkb/mdgkb-server/models"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -31,6 +32,18 @@ func (h *Handler) Get(c *gin.Context) {
 
 func (h *Handler) EmailExists(c *gin.Context) {
 	item, err := h.service.EmailExists(c.Param("email"), c.Param("courseId"))
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) TypeExists(c *gin.Context) {
+	main, err := strconv.ParseBool(c.Param("main"))
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	item, err := h.service.TypeExists(c.Param("email"), main)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

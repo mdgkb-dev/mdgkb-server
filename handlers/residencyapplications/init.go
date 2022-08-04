@@ -16,6 +16,7 @@ type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
 	EmailExists(c *gin.Context)
+	TypeExists(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	UpdateWithForm(c *gin.Context)
@@ -30,6 +31,7 @@ type IService interface {
 	GetAll() (models.ResidencyApplicationsWithCount, error)
 	Get(*string) (*models.ResidencyApplication, error)
 	EmailExists(string, string) (bool, error)
+	TypeExists(string, bool) (bool, error)
 	Create(*models.ResidencyApplication) error
 	Update(*models.ResidencyApplication) error
 	UpdateWithForm(*models.FormValue) error
@@ -43,6 +45,7 @@ type IRepository interface {
 	getAll() (models.ResidencyApplicationsWithCount, error)
 	get(*string) (*models.ResidencyApplication, error)
 	emailExists(string, string) (bool, error)
+	typeExists(string, bool) (bool, error)
 	create(*models.ResidencyApplication) error
 	update(*models.ResidencyApplication) error
 	upsertMany(models.ResidencyApplications) (err error)

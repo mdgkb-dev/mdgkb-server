@@ -29,6 +29,14 @@ func (s *Service) EmailExists(email string, courseID string) (bool, error) {
 	return item, nil
 }
 
+func (s *Service) TypeExists(email string, main bool) (bool, error) {
+	item, err := s.repository.typeExists(email, main)
+	if err != nil {
+		return item, err
+	}
+	return item, nil
+}
+
 func (s *Service) Create(item *models.ResidencyApplication) error {
 	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
