@@ -1,6 +1,7 @@
 package questions
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/users"
@@ -49,6 +50,24 @@ func (s *Service) Get(id string) (*models.Question, error) {
 }
 
 func (s *Service) Update(item *models.Question) error {
+	emailStruct := struct {
+		Question *models.Question
+		Host     string
+	}{
+		item,
+		s.helper.HTTP.Host,
+	}
+	mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/questionAnswer.gohtml")
+	if err != nil {
+		return err
+	}
+	err = s.helper.Email.SendEmail([]string{item.User.Email}, "Ответ на Ваш вопрос на сайте МДГКБ", mail)
+	if err != nil {
+		return err
+	}
+	fmt.Print("_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________")
+	fmt.Print(item.User.Email)
+
 	return s.repository.update(item)
 }
 
