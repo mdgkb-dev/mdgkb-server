@@ -51,6 +51,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 			return q.Order("form_values.created_at desc")
 		}).
 		Relation("FormValues.User").
+		Relation("FormValues.FormValueFiles.File").
 		Relation("FormValues.FieldValues.Field").
 		Relation("FormValues.FieldValues.File").
 		Relation("FormValues.Fields.File").

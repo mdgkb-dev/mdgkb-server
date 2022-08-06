@@ -46,6 +46,7 @@ func (r *Repository) get(id *string) (*models.ResidencyApplication, error) {
 			return q.Order("fields.field_order")
 		}).
 		Relation("FormValue.Fields.File").
+		Relation("FormValue.FormValueFiles.File").
 		Relation("FormValue.Fields.ValueType").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").

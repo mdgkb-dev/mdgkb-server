@@ -35,6 +35,7 @@ func (r *Repository) get(id string) (*models.FormValue, error) {
 		Relation("Fields.ValueType").
 		Relation("FieldValues.File").
 		Relation("FieldValues.Field.ValueType").
+		Relation("FormValueFiles.File").
 		Relation("FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("ResidencyApplication.FormValue.User.Human").
 		Relation("ResidencyApplication.FormValue.Fields.File").
