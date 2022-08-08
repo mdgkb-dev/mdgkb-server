@@ -49,6 +49,7 @@ func (r *Repository) upsert(item *models.FormStatusGroup) (err error) {
 		Model(item).
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
+		Set("code = EXCLUDED.code").
 		Exec(r.ctx)
 	return err
 }
@@ -58,6 +59,7 @@ func (r *Repository) upsertMany(items models.FormStatusGroups) (err error) {
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
+		Set("code = EXCLUDED.code").
 		Exec(r.ctx)
 	return err
 }

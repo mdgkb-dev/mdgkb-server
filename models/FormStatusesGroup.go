@@ -9,6 +9,7 @@ type FormStatusGroup struct {
 	bun.BaseModel `bun:"form_status_groups,alias:form_status_groups"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
+	Code          string        `json:"code"`
 	FormStatuses  FormStatuses  `bun:"rel:has-many" json:"formStatuses"`
 }
 

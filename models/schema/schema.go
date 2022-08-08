@@ -478,11 +478,12 @@ func createNewsToTagSchema() map[string]string {
 
 func createFormStatusSchema() map[string]string {
 	return map[string]string{
-		"tableName":         "form_statuses",
+		"tableName":         "form_statuses_view",
 		"key":               "formStatus",
 		"id":                "id",
 		"value":             "id",
 		"formStatusGroupId": "form_status_group_id",
+		"code":              "code",
 		"label":             "label",
 		"sortColumn":        "label",
 	}

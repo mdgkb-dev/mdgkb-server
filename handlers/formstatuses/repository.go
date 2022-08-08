@@ -38,7 +38,7 @@ func (r *Repository) GetAllByGroupID(id *string) (models.FormStatuses, error) {
 		Model(&items).
 		Relation("Icon").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
-		Where("form_statuses.form_status_group_id = ?", *id)
+		Where("form_statuses_view.form_status_group_id = ?", *id)
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
@@ -50,7 +50,7 @@ func (r *Repository) get(id *string) (*models.FormStatus, error) {
 		Relation("Icon").
 		Relation("FormStatusGroup").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
-		Where("form_statuses.id = ?", *id).Scan(r.ctx)
+		Where("form_statuses_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 
