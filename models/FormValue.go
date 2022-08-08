@@ -1,9 +1,11 @@
 package models
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
 )
 
@@ -33,6 +35,9 @@ type FormValue struct {
 	ResidencyApplication    *ResidencyApplication    `bun:"rel:has-one" json:"residencyApplication"`
 	VisitsApplication       *VisitsApplication       `bun:"rel:has-one" json:"visitsApplication"`
 	VacancyResponse         *VacancyResponse         `bun:"rel:has-one" json:"vacancyResponse"`
+
+	FormValueFiles          FormValueFiles `bun:"rel:has-many" json:"formValueFiles"`
+	FormValueFilesForDelete []uuid.UUID    `bun:"-" json:"formValueFilesForDelete"`
 }
 
 type FormValues []*FormValue
@@ -48,6 +53,9 @@ func (item *FormValue) SetForeignKeys() {
 func (item *FormValue) SetIDForChildren() {
 	for i := range item.Fields {
 		item.Fields[i].FormValueID = item.ID
+	}
+	for i := range item.FormValueFiles {
+		item.FormValueFiles[i].FormValueID = item.ID
 	}
 	for i := range item.FieldValues {
 		item.FieldValues[i].FormValueID = item.ID
@@ -74,6 +82,13 @@ func (item *FormValue) SetFilePath(fileID *string) *string {
 			return filePath
 		}
 	}
+	for i := range item.FormValueFiles {
+		if item.FormValueFiles[i].File.ID.UUID.String() == *fileID {
+			item.FormValueFiles[i].File.FileSystemPath = uploadHelper.BuildPath(fileID)
+			fmt.Println(item.FormValueFiles[i].File.FileSystemPath)
+			return &item.FormValueFiles[i].File.FileSystemPath
+		}
+	}
 	return nil
 }
 
@@ -85,6 +100,14 @@ func (item *FormValue) GetFiles() FileInfos {
 		}
 	}
 	return files
+}
+
+func (item *FormValue) GetFormValueFiles() FormValueFiles {
+	itemsForGet := make(FormValueFiles, 0)
+	for i := range item.FormValueFiles {
+		itemsForGet = append(itemsForGet, item.FormValueFiles[i])
+	}
+	return itemsForGet
 }
 
 func (item *FormValue) GetFieldValueByCode(code string) interface{} {

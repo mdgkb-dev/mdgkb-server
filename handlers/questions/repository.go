@@ -59,7 +59,7 @@ func (r *Repository) update(item *models.Question) (err error) {
 func (r *Repository) readAnswers(userID string) (err error) {
 	_, err = r.db().NewUpdate().Model(&models.Question{}).
 		Set("answer_is_read = true").
-		Where("user_id = ?", userID).
+		Where("user_id = ? and (original_answer= '') IS NOT TRUE", userID).
 		Exec(r.ctx)
 	return err
 }
@@ -75,7 +75,7 @@ func (r *Repository) changeNewStatus(id string, isNew bool) (err error) {
 func (r *Repository) publish(id string) (err error) {
 	_, err = r.db().NewUpdate().Model(&models.Question{}).
 		Set("published = NOT published").
-		Set("is_new = false ").
+		Set("is_new = false").
 		Where("id = ?", id).
 		Exec(r.ctx)
 	return err
