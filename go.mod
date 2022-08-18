@@ -10,7 +10,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/mmcloughlin/meow v0.0.0-20200201185800-3501c7c05d21
 	github.com/oiime/logrusbun v0.1.1
-	github.com/pro-assistance/pro-assister v0.0.101
+	github.com/pro-assistance/pro-assister v0.0.102-0.20220818075420-0e2383f91c53
 	github.com/sirupsen/logrus v1.8.1
 	github.com/uptrace/bun v1.1.6
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.6
