@@ -550,8 +550,10 @@ func createNewsCommentSchema() map[string]string {
 
 func createUserSchema() map[string]string {
 	return map[string]string{
-		"tableName": "users",
+		"tableName": "users_view",
+		"key":       "users",
+		"id":        "id",
 		"email":     "email",
-		// "fullName":  "full_name",
+		"fullName":  "full_name",
 	}
 }

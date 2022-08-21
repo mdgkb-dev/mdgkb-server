@@ -65,7 +65,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("FormValues.CandidateApplication.CandidateExam").
 		Relation("FormValues.VacancyResponse.Vacancy").
 		Relation("FormValues.VisitsApplication.Division").
-		Where("users.id = ?", id).
+		Where("users_view.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
 }
@@ -80,7 +80,7 @@ func (r *Repository) getByEmail(id string) (*models.User, error) {
 		Relation("Children.Human").
 		Relation("Role").
 		Relation("DoctorsUsers").
-		Where("users.email = ? AND users.is_active = true", id).
+		Where("users_view.email = ? AND users_view.is_active = true", id).
 		Scan(r.ctx)
 	return &item, err
 }
@@ -91,7 +91,7 @@ func (r *Repository) create(user *models.User) (err error) {
 }
 
 func (r *Repository) emailExists(email string) (bool, error) {
-	exists, err := r.db().NewSelect().Model((*models.User)(nil)).Where("users.email = ? and is_active = true", email).Exists(r.ctx)
+	exists, err := r.db().NewSelect().Model((*models.User)(nil)).Where("users_view.email = ? and is_active = true", email).Exists(r.ctx)
 	return exists, err
 }
 
