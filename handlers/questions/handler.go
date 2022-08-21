@@ -22,7 +22,6 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	h.helper.Broker.SendEvent("question-create", item)
 	c.JSON(http.StatusOK, item)
 }
 

@@ -29,6 +29,7 @@ func (s *Service) Create(item *models.Question) error {
 	if err != nil {
 		return err
 	}
+	s.helper.Broker.SendEvent("question-create", item)
 	err = meta.CreateService(s.helper).SendApplicationsCounts()
 	if err != nil {
 		return err
