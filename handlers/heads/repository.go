@@ -28,9 +28,9 @@ func (r *Repository) create(item *models.Head) (err error) {
 func (r *Repository) getAll() (models.Heads, error) {
 	items := make(models.Heads, 0)
 	query := r.DB().NewSelect().Model(&items).
-		Relation("Human.Photo").
-		Relation("Human.PhotoMini").
-		// Relation("Human").
+		//Relation("Human.Photo").
+		//Relation("Human.PhotoMini").
+		Relation("Human").
 		// Relation("Photo").
 		Relation("Departments.Division").
 		Relation("Timetable.TimetableDays.Weekday").
