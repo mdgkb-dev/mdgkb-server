@@ -38,7 +38,6 @@ func (r *Repository) getAllMain() (items models.Doctors, err error) {
 		Relation("DoctorComments.Comment").
 		// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true").
 		Order("doctors_view.regalias_count DESC", "doctors_view.comments_count DESC").
-		Where("doctors_view.file_info_id is not null").
 		Where("doctors_view.mos_doctor_link is not null and doctors_view.mos_doctor_link != '' ").
 		Limit(20).Scan(r.ctx)
 	return items, err
