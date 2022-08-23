@@ -70,8 +70,7 @@ func (r *Repository) get() (*models.Division, error) {
 	})
 	//}
 
-	err := q.Relation("Doctors.FileInfo").
-		Relation("Doctors.Human").
+	err := q.Relation("Doctors.Human").
 		Relation("Doctors.Position").
 		Relation("Doctors.Division").
 		Relation("Doctors.MedicalProfile").
