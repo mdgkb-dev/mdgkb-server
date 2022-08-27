@@ -66,8 +66,9 @@ func (r *Repository) getAllAdmin() (item models.DoctorsWithCount, err error) {
 		Relation("MedicalProfile").
 		Relation("Regalias").
 		Relation("DoctorComments.Comment").
-		Relation("Human.Photo").
-		Relation("Human.PhotoMini")
+		Relation("Human")
+	//Relation("Human.Photo").
+	//Relation("Human.PhotoMini")
 	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
 
 	r.queryFilter.HandleQuery(query)
@@ -107,6 +108,7 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		Relation("DoctorComments.Comment.User.Human").
 		Relation("NewsDoctors.News").
 		Relation("EducationalOrganizationAcademic").
+		Relation("TeachingActivities").
 		Scan(r.ctx)
 	return &item, err
 }

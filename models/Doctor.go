@@ -9,11 +9,11 @@ import (
 )
 
 type Doctor struct {
-	bun.BaseModel `bun:"doctors,select:doctors_view,alias:doctors_view"`
-	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Division      *Division     `bun:"rel:belongs-to" json:"division"`
-	DivisionID    uuid.NullUUID `bun:"type:uuid" json:"divisionId,omitempty"`
-
+	bun.BaseModel    `bun:"doctors,select:doctors_view,alias:doctors_view"`
+	ID               uuid.NullUUID   `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	Division         *Division       `bun:"rel:belongs-to" json:"division"`
+	DivisionID       uuid.NullUUID   `bun:"type:uuid" json:"divisionId,omitempty"`
+	Description      string          `json:"description"`
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId,omitempty"`
 
@@ -38,6 +38,9 @@ type Doctor struct {
 	Show              bool           `json:"show"`
 	Regalias          Regalias       `bun:"rel:has-many" json:"regalias"`
 	RegaliasForDelete []uuid.UUID    `bun:"-" json:"regaliasForDelete"`
+
+	TeachingActivities          TeachingActivities `bun:"rel:has-many" json:"teachingActivities"`
+	TeachingActivitiesForDelete []uuid.UUID        `bun:"-" json:"teachingActivitiesForDelete"`
 
 	Educations          Educations  `bun:"rel:has-many" json:"educations"`
 	EducationsForDelete []uuid.UUID `bun:"-" json:"educationsForDelete"`
@@ -100,6 +103,9 @@ func (item *Doctor) SetIDForChildren() {
 	}
 	for i := range item.Regalias {
 		item.Regalias[i].DoctorID = item.ID
+	}
+	for i := range item.TeachingActivities {
+		item.TeachingActivities[i].DoctorID = item.ID
 	}
 	for i := range item.DoctorPaidServices {
 		item.DoctorPaidServices[i].DoctorID = item.ID
