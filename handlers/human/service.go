@@ -29,7 +29,7 @@ func (s *Service) CreateMany(items models.Humans) error {
 	}
 	items.SetForeignKeys()
 	for i := range items {
-		items[i].Slug = s.helper.Util.MakeSlug(items[i].GetFullName(), true)
+		items[i].Slug = s.helper.Util.MakeSlug(items[i].GetFullName(), false)
 	}
 	return s.repository.createMany(items)
 }
