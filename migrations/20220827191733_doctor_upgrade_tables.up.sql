@@ -7,8 +7,6 @@ CREATE TABLE teaching_activities (
 alter table doctors
     add description varchar;
 
-drop view doctors_view;
-
 drop view educational_organization_academics_view;
 drop view doctors_view;
 
