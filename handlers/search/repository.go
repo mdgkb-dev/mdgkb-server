@@ -36,7 +36,8 @@ func (r *Repository) search(searchModel *models.SearchModel) error {
 		Model(&searchModel.SearchGroup.SearchElements).
 		ColumnExpr("id, ? as value, ? as label", bun.Ident(searchModel.SearchGroup.ValueColumn), bun.Ident(searchModel.SearchGroup.LabelColumn)).
 		ModelTableExpr(searchModel.SearchGroup.Table).
-		Where("lower(regexp_replace(?, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", searchModel.SearchGroup.SearchColumn, "%"+search+"%").
+		Where("lower(regexp_replace(?, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", bun.Ident(searchModel.SearchGroup.SearchColumn), "%"+search+"%").
+		Order(searchModel.SearchGroup.SearchColumn).
 		Scan(r.ctx)
 	return err
 }
