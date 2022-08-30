@@ -15,7 +15,7 @@ func (s *Service) Create(item *models.Human) error {
 		return err
 	}
 	item.SetForeignKeys()
-	item.Slug = s.helper.Util.MakeSlug(item.GetFullName(), true)
+	item.Slug = s.helper.Util.MakeSlug(item.GetFullName(), false)
 	return s.repository.create(item)
 }
 
@@ -51,7 +51,7 @@ func (s *Service) Update(item *models.Human) error {
 		return err
 	}
 	item.SetForeignKeys()
-	item.Slug = s.helper.Util.MakeSlug(item.GetFullName(), true)
+	item.Slug = s.helper.Util.MakeSlug(item.GetFullName(), false)
 	return s.repository.update(item)
 }
 
