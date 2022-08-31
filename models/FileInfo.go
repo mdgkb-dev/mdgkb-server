@@ -12,6 +12,15 @@ type FileInfo struct {
 	FileSystemPath string        `json:"fileSystemPath"`
 }
 
+// TODO: FileInfo2 временное решение в связи с багом bun
+
+type FileInfo2 struct {
+	bun.BaseModel  `bun:"file_infos,alias:file_infos"`
+	ID             uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	OriginalName   string        `json:"originalName"`
+	FileSystemPath string        `json:"fileSystemPath"`
+}
+
 type FileInfos []*FileInfo
 
 func (item FileInfo) GetOriginalName() string {

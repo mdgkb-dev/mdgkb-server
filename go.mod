@@ -6,16 +6,9 @@ require (
 	github.com/elastic/go-elasticsearch/v8 v8.2.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-pg/pg/v10 v10.10.6
-	github.com/go-redis/redis/v7 v7.4.1
 	github.com/google/uuid v1.3.0
-	github.com/mmcloughlin/meow v0.0.0-20200201185800-3501c7c05d21
-	github.com/oiime/logrusbun v0.1.1
 	github.com/pro-assistance/pro-assister v0.0.102-0.20220818075420-0e2383f91c53
-	github.com/sirupsen/logrus v1.8.1
-	github.com/uptrace/bun v1.1.6
-	github.com/uptrace/bun/dialect/sqlitedialect v1.1.6
-	github.com/uptrace/bun/driver/pgdriver v1.1.5
-	github.com/uptrace/bun/extra/bundebug v1.1.5
+	github.com/uptrace/bun v1.1.8
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e
 )
 
@@ -55,13 +48,16 @@ require (
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/unidoc/unidoc v2.2.0+incompatible // indirect
+	github.com/uptrace/bun/dialect/sqlitedialect v1.1.8 // indirect
+	github.com/uptrace/bun/driver/pgdriver v1.1.5 // indirect
+	github.com/uptrace/bun/extra/bundebug v1.1.5 // indirect
 	github.com/vmihailenco/bufpool v0.1.11 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/image v0.0.0-20220617043117-41969df76e82 // indirect
 	golang.org/x/net v0.0.0-20220617184016-355a448f1bc9 // indirect
-	golang.org/x/sys v0.0.0-20220708085239-5a0f0661e09d // indirect
+	golang.org/x/sys v0.0.0-20220825204002-c680a09ffe64 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/ini.v1 v1.66.6 // indirect

@@ -29,8 +29,7 @@ func (r *Repository) create(item *models.Doctor) (err error) {
 func (r *Repository) getAllMain() (items models.Doctors, err error) {
 	err = r.db().NewSelect().Model(&items).
 		Relation("Division.Floor").
-		//Relation("Human.Photo").
-		//Relation("Human.PhotoMini").
+		Relation("Human.PhotoMini").
 		Relation("Human").
 		Relation("Position").
 		Relation("MedicalProfile").
@@ -49,9 +48,8 @@ func (r *Repository) getAll() (items models.Doctors, err error) {
 		Relation("Position").
 		Relation("MedicalProfile").
 		Relation("Regalias").
-		Relation("Human")
-	//Relation("Human.Photo").
-	//Relation("Human.PhotoMini")
+		Relation("Human").
+		Relation("Human.PhotoMini")
 	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
 	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
@@ -88,9 +86,8 @@ func (r *Repository) getAllTimetables() (models.Doctors, error) {
 func (r *Repository) get(slug string) (*models.Doctor, error) {
 	item := models.Doctor{}
 	err := r.db().NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
-		Relation("Human").
-		//Relation("Human.Photo").
-		//Relation("Human.PhotoMini").
+		Relation("Human.Photo").
+		Relation("Human.PhotoMini").
 		Relation("Division.Timetable.TimetableDays.Weekday").
 		Relation("Regalias").
 		Relation("Experiences").

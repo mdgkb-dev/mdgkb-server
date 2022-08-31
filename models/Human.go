@@ -33,7 +33,7 @@ type Human struct {
 	Photo   *FileInfo     `bun:"rel:belongs-to" json:"photo"`
 	PhotoID uuid.NullUUID `bun:"type:uuid" json:"photoId"`
 
-	PhotoMini   *FileInfo     `bun:"rel:belongs-to" json:"photoMini"`
+	PhotoMini   *FileInfo2    `bun:"rel:belongs-to" json:"photoMini"`
 	PhotoMiniID uuid.NullUUID `bun:"type:uuid" json:"photoMiniId"`
 
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
@@ -86,7 +86,8 @@ func (items Humans) GetFileInfos() FileInfos {
 
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.Photo)
-		itemsForGet = append(itemsForGet, item.PhotoMini)
+		p := FileInfo(*item.PhotoMini)
+		itemsForGet = append(itemsForGet, &p)
 	}
 	return itemsForGet
 }
