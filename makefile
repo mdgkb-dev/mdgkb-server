@@ -14,7 +14,7 @@ run: migrate set_git_hooks_dir
 	reflex -r '\.go' -s -- sh -c "go run $(main)"
 
 set_git_hooks_dir:
-	git config core.hooksPath cmd/githooks/
+	git config core.hooksPath	 cmd/githooks/
 
 run_cold:
 	go run $(main)
@@ -70,3 +70,18 @@ git_deploy:
 	git checkout master
 	git merge --no-commit develop
 	git push
+
+#######
+#TESTS#
+#######
+
+test: test_dumb make_test drop_test_database
+
+make_test:
+	ENV_LOCATION=$(TEST_ENV_LOCATION) bash -c 'go clean -testcache && go test ./handlers/auth'
+
+test_dumb:
+	@./cmd/dump_test.sh $(DB_NAME) $(DB_USER) $(DB_PASSWORD) $(DB_REMOTE_USER) $(DB_REMOTE_PASSWORD)
+
+drop_test_database:
+	PGPASSWORD=$(DB_PASSWORD) dropdb -Umdgkb -hlocalhost $(DB_NAME)_test

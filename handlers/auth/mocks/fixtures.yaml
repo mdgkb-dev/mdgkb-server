@@ -1,0 +1,12 @@
+- model: PathPermission
+  rows:
+    - id: '{{ uuid }}'
+      resource: test
+      guest_allow: false
+    - _id: current
+      resource: test2
+      guest_allow: false
+- model: PathPermissionRole
+  rows:
+    - _id: current
+      path_permission_id: '{{ uuid }}'
