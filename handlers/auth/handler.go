@@ -22,9 +22,13 @@ func (h *Handler) Register(c *gin.Context) {
 }
 
 func (h *Handler) Login(c *gin.Context) {
-	var item models.User
+	var item models.Login
 	err := c.Bind(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.validator.Login(&item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusBadRequest) {
 		return
 	}
 	res, err := h.service.Login(&item, false)
@@ -35,7 +39,7 @@ func (h *Handler) Login(c *gin.Context) {
 }
 
 func (h *Handler) LoginAs(c *gin.Context) {
-	var item models.User
+	var item models.Login
 	err := c.Bind(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
