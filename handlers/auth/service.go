@@ -32,7 +32,7 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	return &models.TokensWithUser{Tokens: ts, User: *item}, nil
 }
 
-func (s *Service) Login(item *models.User, skipPassword bool) (*models.TokensWithUser, error) {
+func (s *Service) Login(item *models.Login, skipPassword bool) (*models.TokensWithUser, error) {
 	findedUser, err := users.CreateService(s.helper).GetByEmail(item.Email)
 	if err != nil {
 		return nil, err

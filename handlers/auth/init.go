@@ -30,7 +30,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	Register(user *models.User) (*models.TokensWithUser, error)
-	Login(user *models.User, skipPassword bool) (*models.TokensWithUser, error)
+	Login(user *models.Login, skipPassword bool) (*models.TokensWithUser, error)
 	FindUserByEmail(email string) (*models.User, error)
 	GetUserByID(id string) (*models.User, error)
 	DropUUID(*models.User) error
@@ -55,6 +55,10 @@ type IRepository interface {
 	checkPathPermissions(path string, roleID string) error
 }
 
+type IValidator interface {
+	Login(user *models.Login) error
+}
+
 type IFilesService interface {
 	//Upload(*gin.Context, *models.VacancyResponse, map[string][]*multipart.FileHeader) error
 }
@@ -63,6 +67,7 @@ type Handler struct {
 	service      IService
 	filesService IFilesService
 	helper       *helper.Helper
+	validator    IValidator
 }
 
 type Service struct {
@@ -80,16 +85,21 @@ type FilesService struct {
 	helper *helper.Helper
 }
 
+type ValidateService struct {
+	helper *helper.Helper
+}
+
 func CreateHandler(helper *helper.Helper) *Handler {
 	repo := NewRepository(helper)
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
-	return NewHandler(service, filesService, helper)
+	validateService := NewValidateService(helper)
+	return NewHandler(service, filesService, helper, validateService)
 }
 
 // NewHandler constructor
-func NewHandler(s IService, filesService IFilesService, helper *helper.Helper) *Handler {
-	return &Handler{service: s, filesService: filesService, helper: helper}
+func NewHandler(s IService, filesService IFilesService, helper *helper.Helper, validateService *ValidateService) *Handler {
+	return &Handler{service: s, filesService: filesService, helper: helper, validator: validateService}
 }
 
 func NewService(repository IRepository, helper *helper.Helper) *Service {
@@ -102,4 +112,8 @@ func NewRepository(helper *helper.Helper) *Repository {
 
 func NewFilesService(helper *helper.Helper) *FilesService {
 	return &FilesService{helper: helper}
+}
+
+func NewValidateService(helper *helper.Helper) *ValidateService {
+	return &ValidateService{helper: helper}
 }

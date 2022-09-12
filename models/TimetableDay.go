@@ -15,15 +15,17 @@ type TimetableDay struct {
 	BreaksExists   bool      `json:"breaksExists"`
 	AroundTheClock bool      `json:"aroundTheClock"`
 
-	Weekday               *Weekday          `bun:"rel:belongs-to" json:"weekday"`
-	WeekdayID             uuid.UUID         `bun:",nullzero,notnull,type:uuid" json:"weekdayId"`
-	TimetablePattern      *TimetablePattern `bun:"rel:belongs-to" json:"timetablePattern"`
-	TimetablePatternID    uuid.UUID         `bun:"type:uuid,nullzero,default:NULL" json:"timetablePatternId"`
-	Timetable             *Timetable        `bun:"rel:belongs-to" json:"timetable"`
-	TimetableID           uuid.UUID         `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
-	BreakPeriods          TimePeriods       `bun:"rel:has-many" json:"breakPeriods"`
-	BreakPeriodsForDelete []string          `bun:"-" json:"breakPeriodsForDelete"`
-	AppointmentsSlots     []string          `bun:"-"`
+	Weekday                *Weekday          `bun:"rel:belongs-to" json:"weekday"`
+	WeekdayID              uuid.UUID         `bun:",nullzero,notnull,type:uuid" json:"weekdayId"`
+	TimetablePattern       *TimetablePattern `bun:"rel:belongs-to" json:"timetablePattern"`
+	TimetablePatternID     uuid.UUID         `bun:"type:uuid,nullzero,default:NULL" json:"timetablePatternId"`
+	Timetable              *Timetable        `bun:"rel:belongs-to" json:"timetable"`
+	TimetableID            uuid.UUID         `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+	BreakPeriods           TimePeriods       `bun:"rel:has-many" json:"breakPeriods"`
+	BreakPeriodsForDelete  []string          `bun:"-" json:"breakPeriodsForDelete"`
+	AppointmentsSlots      []string          `bun:"-"`
+	ScheduleItems          ScheduleItems     `bun:"rel:has-many" json:"scheduleItems"`
+	ScheduleItemsForDelete []uuid.UUID       `bun:"-" json:"scheduleItemsForDelete"`
 }
 
 type TimetableDays []*TimetableDay
