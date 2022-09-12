@@ -115,6 +115,9 @@ func createDoctorsSchema() map[string]string {
 		"mosDoctorLink":      "mos_doctor_link",
 		"onlineDoctorId":     "online_doctor_id",
 		"commentsCount":      "comments_count",
+		"isMale":             "is_male",
+		"divisionName":       "division_name",
+		"dateBirth":          "date_birth",
 	}
 }
 
