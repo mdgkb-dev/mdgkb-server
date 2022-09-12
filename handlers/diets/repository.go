@@ -26,7 +26,9 @@ func (r *Repository) create(item *models.Diet) (err error) {
 }
 
 func (r *Repository) getAll() (items models.Diets, err error) {
-	query := r.db().NewSelect().Model(&items)
+	query := r.db().NewSelect().Model(&items).
+		Relation("AgePeriod").
+		Relation("Timetable.TimetableDays.ScheduleItems.Dishes")
 	// Join("JOIN positions on Diets_view.position_id = positions.id and positions.show = true")
 	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)

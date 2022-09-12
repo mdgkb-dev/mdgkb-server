@@ -11,7 +11,7 @@ type Dish struct {
 	Name           string        `json:"name"`
 	Weight         string        `json:"weight"`
 	ScheduleItem   *ScheduleItem `bun:"rel:belongs-to" json:"scheduleItem"`
-	ScheduleItemID uuid.NullUUID `bun:"type:uuid" json:"scheduleItemId"`
+	ScheduleItemID uuid.NullUUID `bun:"type:uuid,nullzero" json:"scheduleItemId"`
 }
 
 type Dishes []*Dish
