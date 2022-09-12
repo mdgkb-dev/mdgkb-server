@@ -18,9 +18,9 @@ type TimetableDay struct {
 	Weekday                *Weekday          `bun:"rel:belongs-to" json:"weekday"`
 	WeekdayID              uuid.UUID         `bun:",nullzero,notnull,type:uuid" json:"weekdayId"`
 	TimetablePattern       *TimetablePattern `bun:"rel:belongs-to" json:"timetablePattern"`
-	TimetablePatternID     uuid.UUID         `bun:"type:uuid,nullzero,default:NULL" json:"timetablePatternId"`
+	TimetablePatternID     uuid.NullUUID     `bun:"type:uuid,nullzero,default:NULL" json:"timetablePatternId"`
 	Timetable              *Timetable        `bun:"rel:belongs-to" json:"timetable"`
-	TimetableID            uuid.UUID         `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+	TimetableID            uuid.NullUUID     `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 	BreakPeriods           TimePeriods       `bun:"rel:has-many" json:"breakPeriods"`
 	BreakPeriodsForDelete  []string          `bun:"-" json:"breakPeriodsForDelete"`
 	AppointmentsSlots      []string          `bun:"-"`

@@ -1,4 +1,4 @@
-package news
+package diets
 
 import (
 	"context"
@@ -9,59 +9,38 @@ import (
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
 	GetAll(c *gin.Context)
-	GetBySLug(c *gin.Context)
+	Get(c *gin.Context)
 	Create(c *gin.Context)
-	Update(c *gin.Context)
-	CreateLike(c *gin.Context)
-	AddTag(c *gin.Context)
-	RemoveTag(c *gin.Context)
 	Delete(c *gin.Context)
-	DeleteLike(c *gin.Context)
-	CreateComment(c *gin.Context)
-	UpdateComment(c *gin.Context)
-	RemoveComment(c *gin.Context)
+	Update(c *gin.Context)
 }
 
 type IService interface {
-	SetQueryFilter(*gin.Context) error
-	Create(*models.News) error
-	Update(*models.News) error
-	CreateLike(*models.NewsLike) error
-	AddTag(*models.NewsToTag) error
-	RemoveTag(*models.NewsToTag) error
-	CreateComment(*models.NewsComment) error
-	UpdateComment(*models.NewsComment) error
-	RemoveComment(string) error
-	GetAll() (models.NewsWithCount, error)
+	setQueryFilter(*gin.Context) error
+	Create(*models.Diet) error
+	GetAll() (models.Diets, error)
+	Get(string) (*models.Diet, error)
 	Delete(string) error
-	DeleteLike(string) error
-	GetBySlug(string) (*models.News, error)
-	CreateViewOfNews(*models.NewsView) error
+	Update(*models.Diet) error
 }
 
 type IRepository interface {
-	create(*models.News) error
-	update(*models.News) error
-	createLike(*models.NewsLike) error
-	addTag(*models.NewsToTag) error
-	removeTag(*models.NewsToTag) error
-	createComment(*models.NewsComment) error
-	updateComment(*models.NewsComment) error
-	removeComment(string) error
-	getAll() (models.NewsWithCount, error)
+	setQueryFilter(*gin.Context) error
+	db() *bun.DB
+	create(*models.Diet) error
+	getAll() (models.Diets, error)
+	get(string) (*models.Diet, error)
 	delete(string) error
-	deleteLike(string) error
-	getBySlug(string) (*models.News, error)
-	createViewOfNews(*models.NewsView) error
-	SetQueryFilter(*gin.Context) error
+	update(*models.Diet) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.News, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.Diet, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -71,14 +50,11 @@ type Handler struct {
 }
 
 type Service struct {
-	//basehandler.Service
 	repository IRepository
 	helper     *helper.Helper
 }
 
 type Repository struct {
-	//baseHandler.Repository
-
 	ctx         context.Context
 	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
@@ -93,6 +69,11 @@ func CreateHandler(helper *helper.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
+}
+
+func CreateService(helper *helper.Helper) *Service {
+	repo := NewRepository(helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor

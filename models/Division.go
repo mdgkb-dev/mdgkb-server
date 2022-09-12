@@ -30,7 +30,7 @@ type Division struct {
 	FloorID                 uuid.NullUUID    `bun:"type:uuid" json:"floorId"`
 	Floor                   *Floor           `bun:"rel:belongs-to" json:"floor"`
 	Timetable               *Timetable       `bun:"rel:belongs-to" json:"timetable"`
-	TimetableID             uuid.UUID        `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+	TimetableID             uuid.NullUUID    `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 	Schedule                *Schedule        `bun:"rel:belongs-to" json:"schedule"`
 	ScheduleID              uuid.UUID        `bun:"type:uuid" json:"scheduleId"`
 	DivisionImages          DivisionImages   `bun:"rel:has-many" json:"divisionImages"`

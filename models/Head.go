@@ -21,8 +21,8 @@ type Head struct {
 	RegaliasForDelete []uuid.UUID `bun:"-" json:"regaliasForDelete"`
 	Timetable         *Timetable  `bun:"rel:belongs-to" json:"timetable"`
 
-	TimetableID uuid.UUID `bun:"type:uuid" json:"timetableId"`
-	IsMain      bool      `json:"isMain"`
+	TimetableID uuid.NullUUID `bun:"type:uuid" json:"timetableId"`
+	IsMain      bool          `json:"isMain"`
 
 	Departments          Departments `bun:"rel:has-many" json:"departments"`
 	DepartmentsForDelete []uuid.UUID `bun:"-" json:"departmentsForDelete"`

@@ -14,8 +14,19 @@ type Diet struct {
 	Diabetes      bool          `json:"diabetes"`
 	MotherDiet    *Diet         `bun:"rel:belongs-to" json:"motherDiet"`
 	MotherDietID  uuid.NullUUID `bun:"type:uuid"  json:"motherDietId"`
+	AgePeriod     *AgePeriod    `bun:"rel:belongs-to" json:"agePeriod"`
+	AgePeriodID   uuid.NullUUID `bun:"type:uuid"  json:"agePeriodId"`
 	Timetable     *Timetable    `bun:"rel:belongs-to" json:"timetable"`
 	TimetableID   uuid.NullUUID `bun:"type:uuid"  json:"timetableId"`
 }
 
 type Diets []*Diet
+
+func (item *Diet) SetForeignKeys() {
+	if item.Timetable != nil {
+		item.TimetableID = item.Timetable.ID
+	}
+	if item.AgePeriod != nil {
+		item.AgePeriodID = item.AgePeriod.ID
+	}
+}

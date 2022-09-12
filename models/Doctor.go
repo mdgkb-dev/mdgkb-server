@@ -54,8 +54,8 @@ type Doctor struct {
 	DoctorPaidServices          DoctorPaidServices `bun:"rel:has-many" json:"doctorPaidServices"`
 	DoctorPaidServicesForDelete []uuid.UUID        `bun:"-" json:"doctorPaidServicesForDelete"`
 
-	Timetable   *Timetable `bun:"rel:belongs-to" json:"timetable"`
-	TimetableID uuid.UUID  `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+	Timetable   *Timetable    `bun:"rel:belongs-to" json:"timetable"`
+	TimetableID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
 
 	EducationalOrganizationAcademic *EducationalOrganizationAcademic `bun:"rel:has-one" json:"educationalOrganizationAcademic"`
 }
