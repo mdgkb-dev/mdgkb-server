@@ -18,7 +18,8 @@ CREATE TABLE diets
 );
 
 alter table schedule_items
-add column timetable_day_id uuid  REFERENCES timetables (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL
+add column timetable_day_id uuid  REFERENCES timetables (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL;
+
 
 CREATE TABLE dishes
 (
