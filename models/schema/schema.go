@@ -38,6 +38,7 @@ type Schema struct {
 	DoctorComment                    map[string]string `json:"doctorComment"`
 	DivisionComment                  map[string]string `json:"divisionComment"`
 	NewsComment                      map[string]string `json:"newsComment"`
+	Building                         map[string]string `json:"building"`
 }
 
 func CreateSchema() Schema {
@@ -79,6 +80,7 @@ func CreateSchema() Schema {
 		DoctorComment:                    createDoctorCommentSchema(),
 		DivisionComment:                  createDivisionCommentSchema(),
 		NewsComment:                      createNewsCommentSchema(),
+		Building:                         createBuildingSchema(),
 	}
 }
 
@@ -134,6 +136,7 @@ func createDivisionSchema() map[string]string {
 		"commentsCount":                "comments_count",
 		"hospitalizationContactInfoId": "hospitalization_contact_info_id",
 		"treatDirectionId":             "treat_direction_id",
+		"buildingId":                   "building_id",
 	}
 }
 
@@ -558,5 +561,19 @@ func createUserSchema() map[string]string {
 		"id":        "id",
 		"email":     "email",
 		"fullName":  "full_name",
+	}
+}
+
+func createBuildingSchema() map[string]string {
+	return map[string]string{
+		"tableName":  "buildings",
+		"key":        "building",
+		"id":         "id",
+		"name":       "name",
+		"address":    "address",
+		"number":     "number",
+		"value":      "id",
+		"label":      "name",
+		"sortColumn": "name",
 	}
 }

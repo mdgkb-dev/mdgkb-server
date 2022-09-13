@@ -10,7 +10,7 @@ type VisitingRule struct {
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Order         uint      `bun:"rule_order" json:"order"`
 	Text          string    `json:"text"`
-	IsListItem    bool      `bun:"default:true" json:"isListItem"`
+	IsListItem    bool      `json:"isListItem"`
 
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`
 	DivisionID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"divisionId"`
