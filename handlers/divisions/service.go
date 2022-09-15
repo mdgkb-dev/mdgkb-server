@@ -4,6 +4,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/divisionimages"
+	"mdgkb/mdgkb-server/handlers/divisionvideos"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/schedules"
 	"mdgkb/mdgkb-server/handlers/timetables"
@@ -51,6 +52,11 @@ func (s *Service) Create(item *models.Division) error {
 	}
 	divisionImagesService := divisionimages.CreateService(s.helper)
 	err = divisionImagesService.CreateMany(item.DivisionImages)
+	if err != nil {
+		return err
+	}
+	divisionVideosService := divisionvideos.CreateService(s.helper)
+	err = divisionVideosService.CreateMany(item.DivisionVideos)
 	if err != nil {
 		return err
 	}
@@ -103,6 +109,15 @@ func (s *Service) Update(item *models.Division) error {
 		return err
 	}
 	err = visitingRulesService.DeleteMany(item.VisitingRulesForDelete)
+	if err != nil {
+		return err
+	}
+	divisionVideosService := divisionvideos.CreateService(s.helper)
+	err = divisionVideosService.UpsertMany(item.DivisionVideos)
+	if err != nil {
+		return err
+	}
+	err = divisionVideosService.DeleteMany(item.DivisionVideosForDelete)
 	if err != nil {
 		return err
 	}

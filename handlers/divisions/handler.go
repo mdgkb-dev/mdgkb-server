@@ -47,6 +47,7 @@ func (h *Handler) Get(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	item.SocialMedias = h.helper.Social.GetYouTubeVideosInfo(item.DivisionVideos.GetYouTubeVideoIDs())
 	c.JSON(http.StatusOK, item)
 }
 

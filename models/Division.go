@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/socialHelper"
 	"github.com/uptrace/bun"
 )
 
@@ -51,6 +52,9 @@ type Division struct {
 	TreatDirectionID         uuid.NullUUID            `bun:"type:uuid" json:"treatDirectionId"`
 	Chief                    *Doctor                  `bun:"rel:belongs-to" json:"chief"`
 	ChiefID                  uuid.NullUUID            `bun:"type:uuid" json:"chiefId"`
+	SocialMedias             socialHelper.Socials     `bun:"-" json:"socialMedias"`
+	DivisionVideos           DivisionVideos           `bun:"rel:has-many" json:"divisionVideos"`
+	DivisionVideosForDelete  []uuid.UUID              `bun:"-" json:"doctorsForDelete"`
 }
 
 type Divisions []*Division
@@ -95,5 +99,8 @@ func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {
 func (item *Division) SetIDForChildren() {
 	for i := range item.VisitingRules {
 		item.VisitingRules[i].DivisionID = item.ID
+	}
+	for i := range item.DivisionVideos {
+		item.DivisionVideos[i].DivisionID = item.ID
 	}
 }
