@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"github.com/pro-assistance/pro-assister/socialHelper"
 	"github.com/uptrace/bun"
 )
 
@@ -54,6 +55,9 @@ type Division struct {
 
 	NewsDivisions          NewsDivisions `bun:"rel:has-many" json:"newsDivisions"`
 	NewsDivisionsForDelete []uuid.UUID   `bun:"-" json:"newsDivisionsForDelete"`
+	SocialMedias             socialHelper.Socials     `bun:"-" json:"socialMedias"`
+	DivisionVideos           DivisionVideos           `bun:"rel:has-many" json:"divisionVideos"`
+	DivisionVideosForDelete  []uuid.UUID              `bun:"-" json:"doctorsForDelete"`
 }
 
 type Divisions []*Division
@@ -109,4 +113,7 @@ func (item *Division) SetIDForChildren() {
 		item.MedicalProfilesDivisions[i].DivisionID = item.ID
 	}
 
+	for i := range item.DivisionVideos {
+		item.DivisionVideos[i].DivisionID = item.ID
+	}
 }

@@ -77,6 +77,7 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("Doctors.MedicalProfile").
 		Relation("Vacancies").
 		Relation("VisitingRules").
+		Relation("DivisionVideos").
 		Where("divisions_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).
 		Scan(r.ctx)
 
