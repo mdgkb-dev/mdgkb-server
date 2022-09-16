@@ -51,6 +51,9 @@ type Division struct {
 	TreatDirectionID         uuid.NullUUID            `bun:"type:uuid" json:"treatDirectionId"`
 	Chief                    *Doctor                  `bun:"rel:belongs-to" json:"chief"`
 	ChiefID                  uuid.NullUUID            `bun:"type:uuid" json:"chiefId"`
+
+	NewsDivisions          NewsDivisions `bun:"rel:has-many" json:"newsDivisions"`
+	NewsDivisionsForDelete []uuid.UUID   `bun:"-" json:"newsDivisionsForDelete"`
 }
 
 type Divisions []*Division
@@ -82,6 +85,9 @@ func (item *Division) SetForeignKeys() {
 	if item.Chief != nil {
 		item.ChiefID = item.Chief.ID
 	}
+	if item.TreatDirection != nil {
+		item.TreatDirectionID = item.TreatDirection.ID
+	}
 }
 
 func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {
@@ -96,4 +102,11 @@ func (item *Division) SetIDForChildren() {
 	for i := range item.VisitingRules {
 		item.VisitingRules[i].DivisionID = item.ID
 	}
+	for i := range item.NewsDivisions {
+		item.NewsDivisions[i].DivisionID = item.ID
+	}
+	for i := range item.MedicalProfilesDivisions {
+		item.MedicalProfilesDivisions[i].DivisionID = item.ID
+	}
+
 }
