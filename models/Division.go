@@ -53,11 +53,11 @@ type Division struct {
 	Chief                    *Doctor                  `bun:"rel:belongs-to" json:"chief"`
 	ChiefID                  uuid.NullUUID            `bun:"type:uuid" json:"chiefId"`
 
-	NewsDivisions          NewsDivisions `bun:"rel:has-many" json:"newsDivisions"`
-	NewsDivisionsForDelete []uuid.UUID   `bun:"-" json:"newsDivisionsForDelete"`
-	SocialMedias             socialHelper.Socials     `bun:"-" json:"socialMedias"`
-	DivisionVideos           DivisionVideos           `bun:"rel:has-many" json:"divisionVideos"`
-	DivisionVideosForDelete  []uuid.UUID              `bun:"-" json:"doctorsForDelete"`
+	NewsDivisions           NewsDivisions        `bun:"rel:has-many" json:"newsDivisions"`
+	NewsDivisionsForDelete  []uuid.UUID          `bun:"-" json:"newsDivisionsForDelete"`
+	SocialMedias            socialHelper.Socials `bun:"-" json:"socialMedias"`
+	DivisionVideos          DivisionVideos       `bun:"rel:has-many" json:"divisionVideos"`
+	DivisionVideosForDelete []uuid.UUID          `bun:"-" json:"divisionVideosForDelete"`
 }
 
 type Divisions []*Division
