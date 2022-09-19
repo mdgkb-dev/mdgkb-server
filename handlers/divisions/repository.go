@@ -61,7 +61,7 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("HospitalizationDoctor.Human").
 		Relation("MedicalProfilesDivisions.MedicalProfile").
 		Relation("TreatDirection").
-		Relation("Chief.Human").
+		Relation("Chief.Human.Photo").
 		Relation("NewsDivisions.News")
 	//if onlyShowed {
 	q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
@@ -71,7 +71,7 @@ func (r *Repository) get() (*models.Division, error) {
 	})
 	//}
 
-	err := q.Relation("Doctors.Human").
+	err := q.Relation("Doctors.Human.PhotoMini").
 		Relation("Doctors.Position").
 		Relation("Doctors.Division").
 		Relation("Doctors.MedicalProfile").
