@@ -2,4 +2,5 @@ static
 data
 .idea
 .env
+.env.docker
 logs

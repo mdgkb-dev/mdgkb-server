@@ -42,6 +42,13 @@ deploy:
 kill:
 	kill -9 `lsof -t -i:$(SERVER_PORT)`
 
+########
+#DOCKER#
+########
+
+docker_build:
+	docker build -t mdgkb-server .
+
 #####
 #GIT#
 #####
