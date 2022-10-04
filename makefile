@@ -10,7 +10,7 @@ else
 	main := cmd/server/main.go
 endif
 
-run: migrate set_git_hooks_dir
+run: migrate
 	reflex -r '\.go' -s -- sh -c "go run $(main)"
 
 set_git_hooks_dir:
@@ -48,6 +48,12 @@ kill:
 
 docker_build:
 	docker build -t mdgkb-server .
+
+docker_up:
+	docker compose up
+
+docker_down:
+	docker compose down
 
 #####
 #GIT#

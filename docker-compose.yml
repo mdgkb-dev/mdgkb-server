@@ -5,9 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: 'dev'
     privileged: true
     ports:
-      - "8094:8094"
+      - ${SERVER_PORT}:${SERVER_PORT}
     restart: always
     volumes:
       - ./:/go/src/mdgkb-server
@@ -19,24 +20,9 @@ services:
       - DB_PORT=${DB_PORT}
       - DB_NAME=${DB_NAME}
       - SERVER_PORT=${SERVER_PORT}
-    depends_on:
-      - db
-    links:
-      - db
-  db:
-    container_name: db
-    hostname: p_sql
-    image: postgres:13
-    environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_HOST=${DB_HOST}
-      - POSTGRES_PORT=${DB_PORT}
-      - DB_EXTENSION=uuid-ossp
-    ports:
-      - ${DB_PORT}:${DB_PORT}
-    volumes:
-      - ./data:/var/lib/postgresql/data
-#    command: >
-#      sh -c 'psql -U -c "CREATE EXTENSION IF NOT EXISTS 'uuid-ossp'";'
+    network_mode: "host"
+
+networks:
+  default:
+    external:
+      name: mdgkb-network
