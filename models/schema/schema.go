@@ -40,6 +40,7 @@ type Schema struct {
 	NewsComment                      map[string]string `json:"newsComment"`
 	Building                         map[string]string `json:"building"`
 	Diet                             map[string]string `json:"diet"`
+	AgePeriod                        map[string]string `json:"agePeriod"`
 }
 
 func CreateSchema() Schema {
@@ -83,6 +84,7 @@ func CreateSchema() Schema {
 		NewsComment:                      createNewsCommentSchema(),
 		Building:                         createBuildingSchema(),
 		Diet:                             createDietSchema(),
+		AgePeriod:                        createAgePeriodSchema(),
 	}
 }
 
@@ -587,5 +589,17 @@ func createDietSchema() map[string]string {
 		"id":          "id",
 		"diabetes":    "diabetes",
 		"agePeriodId": "age_period_id",
+	}
+}
+
+func createAgePeriodSchema() map[string]string {
+	return map[string]string{
+		"tableName":  "age_periods",
+		"key":        "age_period",
+		"id":         "id",
+		"name":       "name",
+		"value":      "id",
+		"label":      "name",
+		"sortColumn": "name",
 	}
 }
