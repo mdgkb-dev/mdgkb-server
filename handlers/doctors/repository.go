@@ -149,6 +149,7 @@ func (r *Repository) upsertMany(items models.Doctors) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").
 		Set("show = EXCLUDED.show").
+		Set("has_appointment = EXCLUDED.has_appointment").
 		Set("division_id = EXCLUDED.division_id").
 		Model(&items).
 		Exec(r.ctx)
