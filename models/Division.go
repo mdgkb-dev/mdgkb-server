@@ -15,13 +15,13 @@ type Division struct {
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
 
-	Address                 string      `json:"address"`
-	Slug                    string      `json:"slug"`
-	ShowCommonVisitingRules bool        `bun:"default:true" json:"showCommonVisitingRules"`
-	Doctors                 Doctors     `bun:"rel:has-many" json:"doctors"`
-	DoctorsForDelete        []uuid.UUID `bun:"-" json:"doctorsForDelete"`
-	Vacancies               Vacancies   `bun:"rel:has-many" json:"vacancies"`
-	Show                    bool        `json:"show"`
+	Address                   string           `json:"address"`
+	Slug                      string           `json:"slug"`
+	ShowCommonVisitingRules   bool             `bun:"default:true" json:"showCommonVisitingRules"`
+	DoctorsDivisions          DoctorsDivisions `bun:"rel:has-many" json:"doctorsDivisions"`
+	DoctorsDivisionsForDelete []uuid.UUID      `bun:"-" json:"doctorsDivisionsForDelete"`
+	Vacancies                 Vacancies        `bun:"rel:has-many" json:"vacancies"`
+	Show                      bool             `json:"show"`
 
 	DivisionPaidServices          DivisionPaidServices `bun:"rel:has-many" json:"divisionPaidServices"`
 	DivisionPaidServicesForDelete []uuid.UUID          `bun:"-" json:"divisionPaidServicesForDelete"`
@@ -112,8 +112,10 @@ func (item *Division) SetIDForChildren() {
 	for i := range item.MedicalProfilesDivisions {
 		item.MedicalProfilesDivisions[i].DivisionID = item.ID
 	}
-
 	for i := range item.DivisionVideos {
 		item.DivisionVideos[i].DivisionID = item.ID
+	}
+	for i := range item.DoctorsDivisions {
+		item.DoctorsDivisions[i].DivisionID = item.ID
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/doctorpaidservices"
+	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
 	"mdgkb/mdgkb-server/handlers/educationalorganizationacademics"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
@@ -54,6 +55,10 @@ func (s *Service) Create(item *models.Doctor) error {
 		return err
 	}
 	err = doctorpaidservices.CreateService(s.helper).CreateMany(item.DoctorPaidServices)
+	if err != nil {
+		return err
+	}
+	err = doctorsdivisions.CreateService(s.helper).CreateMany(item.DoctorsDivisions)
 	if err != nil {
 		return err
 	}
@@ -136,6 +141,15 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 	err = doctorPaidServicesService.DeleteMany(item.DoctorPaidServicesForDelete)
+	if err != nil {
+		return err
+	}
+	doctorsDivisionsService := doctorsdivisions.CreateService(s.helper)
+	err = doctorsDivisionsService.UpsertMany(item.DoctorsDivisions)
+	if err != nil {
+		return err
+	}
+	err = doctorsDivisionsService.DeleteMany(item.DoctorsDivisionsForDelete)
 	if err != nil {
 		return err
 	}

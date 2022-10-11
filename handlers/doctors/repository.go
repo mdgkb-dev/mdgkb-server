@@ -28,7 +28,7 @@ func (r *Repository) create(item *models.Doctor) (err error) {
 
 func (r *Repository) getAllMain() (items models.Doctors, err error) {
 	err = r.db().NewSelect().Model(&items).
-		Relation("Division.Floor").
+		Relation("DoctorsDivisions.Division.Floor").
 		Relation("Human.PhotoMini").
 		Relation("Human").
 		Relation("Position").
@@ -44,7 +44,7 @@ func (r *Repository) getAllMain() (items models.Doctors, err error) {
 
 func (r *Repository) getAll() (items models.Doctors, err error) {
 	query := r.db().NewSelect().Model(&items).
-		Relation("Division.Floor").
+		Relation("DoctorsDivisions.Division.Floor").
 		Relation("Position").
 		Relation("MedicalProfile").
 		Relation("Regalias").
@@ -59,7 +59,7 @@ func (r *Repository) getAll() (items models.Doctors, err error) {
 func (r *Repository) getAllAdmin() (item models.DoctorsWithCount, err error) {
 	item.Doctors = make(models.Doctors, 0)
 	query := r.db().NewSelect().Model(&item.Doctors).
-		Relation("Division.Floor").
+		Relation("DoctorsDivisions.Division.Floor").
 		Relation("Position").
 		Relation("MedicalProfile").
 		Relation("Regalias").
@@ -88,7 +88,7 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 	err := r.db().NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
 		Relation("Human.Photo").
 		Relation("Human.PhotoMini").
-		Relation("Division.Timetable.TimetableDays.Weekday").
+		Relation("DoctorsDivisions.Division.Timetable.TimetableDays.Weekday").
 		Relation("Regalias").
 		Relation("Experiences").
 		Relation("Position").
@@ -150,7 +150,6 @@ func (r *Repository) upsertMany(items models.Doctors) (err error) {
 		Set("id = EXCLUDED.id").
 		Set("show = EXCLUDED.show").
 		Set("has_appointment = EXCLUDED.has_appointment").
-		Set("division_id = EXCLUDED.division_id").
 		Model(&items).
 		Exec(r.ctx)
 	return err

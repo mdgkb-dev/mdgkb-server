@@ -5,7 +5,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/divisionimages"
 	"mdgkb/mdgkb-server/handlers/divisionvideos"
-	"mdgkb/mdgkb-server/handlers/doctors"
+	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
 	"mdgkb/mdgkb-server/handlers/schedules"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/handlers/visitingrules"
@@ -34,8 +34,8 @@ func (s *Service) Create(item *models.Division) error {
 	}
 	item.SetForeignKeys()
 
-	doctorsService := doctors.CreateService(s.helper)
-	err = doctorsService.UpsertMany(item.Doctors)
+	doctorsDivisionsService := doctorsdivisions.CreateService(s.helper)
+	err = doctorsDivisionsService.UpsertMany(item.DoctorsDivisions)
 	if err != nil {
 		return err
 	}
@@ -83,12 +83,12 @@ func (s *Service) Update(item *models.Division) error {
 	}
 	item.SetForeignKeys()
 
-	doctorsService := doctors.CreateService(s.helper)
-	err = doctorsService.DeleteMany(item.DoctorsForDelete)
+	doctorsDivisionsService := doctorsdivisions.CreateService(s.helper)
+	err = doctorsDivisionsService.DeleteMany(item.DoctorsDivisionsForDelete)
 	if err != nil {
 		return err
 	}
-	err = doctorsService.UpsertMany(item.Doctors)
+	err = doctorsDivisionsService.UpsertMany(item.DoctorsDivisions)
 	if err != nil {
 		return err
 	}

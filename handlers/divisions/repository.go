@@ -40,7 +40,7 @@ func (r *Repository) getAll() (item models.DivisionsWithCount, err error) {
 
 func (r *Repository) get() (*models.Division, error) {
 	item := models.Division{}
-	q := r.db().NewSelect().
+	err := r.db().NewSelect().
 		Model(&item).
 		Relation("Entrance.Building").
 		Relation("Timetable.TimetableDays.Weekday").
@@ -62,19 +62,11 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("MedicalProfilesDivisions.MedicalProfile").
 		Relation("TreatDirection").
 		Relation("Chief.Human.Photo").
-		Relation("NewsDivisions.News")
-	//if onlyShowed {
-	q = q.Relation("Doctors", func(query *bun.SelectQuery) *bun.SelectQuery {
-		return query.
-			Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true").
-			Order("positions.item_order")
-	})
-	//}
-
-	err := q.Relation("Doctors.Human.PhotoMini").
-		Relation("Doctors.Position").
-		Relation("Doctors.Division").
-		Relation("Doctors.MedicalProfile").
+		Relation("NewsDivisions.News").
+		Relation("DoctorsDivisions.Doctor.Human.PhotoMini").
+		Relation("DoctorsDivisions.Doctor.Position").
+		Relation("DoctorsDivisions.Doctor").
+		Relation("DoctorsDivisions.Doctor.MedicalProfile").
 		Relation("Vacancies").
 		Relation("VisitingRules").
 		Relation("DivisionVideos").

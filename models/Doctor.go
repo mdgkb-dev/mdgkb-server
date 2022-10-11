@@ -11,8 +11,6 @@ import (
 type Doctor struct {
 	bun.BaseModel    `bun:"doctors,select:doctors_view,alias:doctors_view"`
 	ID               uuid.NullUUID   `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Division         *Division       `bun:"rel:belongs-to" json:"division"`
-	DivisionID       uuid.NullUUID   `bun:"type:uuid" json:"divisionId,omitempty"`
 	Description      string          `json:"description"`
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId,omitempty"`
@@ -27,17 +25,19 @@ type Doctor struct {
 	MedicalProfileID uuid.NullUUID   `bun:"type:uuid" json:"medicalProfileId"`
 	Order            int             `bun:"item_order" json:"order"`
 
-	DoctorComments    DoctorComments `bun:"rel:has-many" json:"doctorComments"`
-	NewsDoctors       NewsDoctors    `bun:"rel:has-many" json:"newsDoctors"`
-	MosDoctorLink     string         `json:"mosDoctorLink"`
-	OnlineDoctorID    string         `json:"onlineDoctorId"`
-	AcademicDegree    string         `json:"academicDegree"`
-	AcademicRank      string         `json:"academicRank"`
-	RegaliasCount     int            `bun:"-" json:"regaliasCount"`
-	CommentsCount     int            `bun:"-" json:"commentsCount"`
-	Show              bool           `json:"show"`
-	Regalias          Regalias       `bun:"rel:has-many" json:"regalias"`
-	RegaliasForDelete []uuid.UUID    `bun:"-" json:"regaliasForDelete"`
+	DoctorComments            DoctorComments   `bun:"rel:has-many" json:"doctorComments"`
+	NewsDoctors               NewsDoctors      `bun:"rel:has-many" json:"newsDoctors"`
+	DoctorsDivisions          DoctorsDivisions `bun:"rel:has-many" json:"doctorsDivisions"`
+	DoctorsDivisionsForDelete []uuid.UUID      `bun:"-" json:"doctorsDivisionsForDelete"`
+	MosDoctorLink             string           `json:"mosDoctorLink"`
+	OnlineDoctorID            string           `json:"onlineDoctorId"`
+	AcademicDegree            string           `json:"academicDegree"`
+	AcademicRank              string           `json:"academicRank"`
+	RegaliasCount             int              `bun:"-" json:"regaliasCount"`
+	CommentsCount             int              `bun:"-" json:"commentsCount"`
+	Show                      bool             `json:"show"`
+	Regalias                  Regalias         `bun:"rel:has-many" json:"regalias"`
+	RegaliasForDelete         []uuid.UUID      `bun:"-" json:"regaliasForDelete"`
 
 	TeachingActivities          TeachingActivities `bun:"rel:has-many" json:"teachingActivities"`
 	TeachingActivitiesForDelete []uuid.UUID        `bun:"-" json:"teachingActivitiesForDelete"`
@@ -109,6 +109,9 @@ func (item *Doctor) SetIDForChildren() {
 	}
 	for i := range item.DoctorPaidServices {
 		item.DoctorPaidServices[i].DoctorID = item.ID
+	}
+	for i := range item.DoctorsDivisions {
+		item.DoctorsDivisions[i].DoctorID = item.ID
 	}
 }
 
