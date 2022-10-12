@@ -19,6 +19,6 @@ FROM divisions
 GROUP BY dc.division_id, divisions.id, tn.number, em.address, b.name;
 
 insert into divisions (name, info, address, is_center)
-select name, info, address, true from centers
+select name, info, address, true from centers;
 
 drop table centers;
