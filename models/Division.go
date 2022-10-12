@@ -12,9 +12,9 @@ type Division struct {
 	Name          string        `json:"name"`
 	Info          string        `json:"info"`
 
-	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
-	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
-
+	ContactInfo               *ContactInfo     `bun:"rel:belongs-to" json:"contactInfo"`
+	ContactInfoID             uuid.UUID        `bun:"type:uuid" json:"contactInfoId"`
+	IsCenter                  bool             `json:"isCenter"`
 	Address                   string           `json:"address"`
 	Slug                      string           `json:"slug"`
 	ShowCommonVisitingRules   bool             `bun:"default:true" json:"showCommonVisitingRules"`

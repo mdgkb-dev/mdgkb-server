@@ -10,7 +10,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/candidateapplications"
 	"mdgkb/mdgkb-server/handlers/candidatedocumenttypes"
 	"mdgkb/mdgkb-server/handlers/candidateexams"
-	"mdgkb/mdgkb-server/handlers/centers"
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
@@ -83,7 +82,6 @@ import (
 	candidateApplicationsRouter "mdgkb/mdgkb-server/routing/candidateapplications"
 	candidateDocumentTypesRouter "mdgkb/mdgkb-server/routing/candidatedocumenttypes"
 	candidateExamsRouter "mdgkb/mdgkb-server/routing/candidateexams"
-	centersRouter "mdgkb/mdgkb-server/routing/centers"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
 	childrenRouter "mdgkb/mdgkb-server/routing/children"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
@@ -212,7 +210,6 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatdirections.CreateHandler(helper))
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackrequests.CreateHandler(helper))
 	visitsApplicationsRouter.Init(api.Group("/visits-applications"), visitsapplications.CreateHandler(helper))
-	centersRouter.Init(api.Group("/centers"), centers.CreateHandler(helper))
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpocourses.CreateHandler(helper))
 	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduatecourses.CreateHandler(helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoapplications.CreateHandler(helper))

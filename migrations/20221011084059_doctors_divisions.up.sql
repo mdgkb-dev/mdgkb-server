@@ -9,7 +9,7 @@ insert into doctors_divisions (division_id, doctor_id)
 select  division_id, doctors.id
 from doctors
 join divisions on division_id = divisions.id
-where division_id is not null
+where division_id is not null;
 
 drop view educational_organization_academics_view;
 drop view doctors_view;

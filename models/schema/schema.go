@@ -137,6 +137,7 @@ func createDivisionSchema() map[string]string {
 		"name":                         "name",
 		"value":                        "id",
 		"label":                        "name",
+		"isCenter":                     "is_center",
 		"commentsCount":                "comments_count",
 		"hospitalizationContactInfoId": "hospitalization_contact_info_id",
 		"treatDirectionId":             "treat_direction_id",
