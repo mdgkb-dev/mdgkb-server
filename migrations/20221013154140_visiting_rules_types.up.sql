@@ -8,4 +8,4 @@ CREATE TABLE visiting_rules_groups
 );
 
 alter table visiting_rules drop column division_id;
-alter table visiting_rules drop column visiting_rule_group_id uuid REFERENCES visiting_rules_groups (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL;
+alter table visiting_rules add column visiting_rule_group_id uuid REFERENCES visiting_rules_groups (id) ON UPDATE CASCADE ON DELETE CASCADE DEFAULT NULL;

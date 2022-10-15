@@ -14,7 +14,7 @@ func (r *Repository) getAll() (models.Appointments, error) {
 	items := make(models.Appointments, 0)
 	err := r.db().NewSelect().Model(&items).
 		Relation("Doctor.Human").
-		Relation("Doctor.Division").
+		Relation("Doctor.DoctorsDivisions").
 		Scan(r.ctx)
 	return items, err
 }

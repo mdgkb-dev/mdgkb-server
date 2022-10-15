@@ -11,6 +11,7 @@ type PublicDocumentType struct {
 	Name                        string                       `json:"name"`
 	RouteAnchor                 string                       `json:"routeAnchor"`
 	Description                 string                       `json:"description"`
+	Order                       int                          `bun:"public_document_type_order" json:"order"`
 	DocumentTypes               DocumentTypes                `bun:"rel:has-many" json:"documentTypes"`
 	DocumentTypesForDelete      []uuid.UUID                  `bun:"-" json:"documentTypesForDelete"`
 	EducationPublicDocumentType *EducationPublicDocumentType `bun:"rel:has-one" json:"educationPublicDocumentType"`

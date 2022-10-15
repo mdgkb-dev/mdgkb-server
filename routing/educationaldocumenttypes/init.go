@@ -1,7 +1,7 @@
-package publicdocumenttypes
+package educationaldocumenttypes
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/publicdocumenttypes"
+	handler "mdgkb/mdgkb-server/handlers/admissioncommitteedocumenttypes"
 
 	"github.com/gin-gonic/gin"
 )

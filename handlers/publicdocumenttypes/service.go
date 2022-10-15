@@ -86,3 +86,7 @@ func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 	err = s.repository.setQueryFilter(c)
 	return err
 }
+
+func (s *Service) UpdateOrder(items models.PublicDocumentTypes) error {
+	return s.repository.upsertMany(items)
+}

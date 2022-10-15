@@ -1,12 +1,12 @@
-package publicdocumenttypes
+package educationdocumenttypes
 
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -17,33 +17,36 @@ type IHandler interface {
 	Get(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
-	Delete(c *gin.Context)
 	UpdateOrder(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
 type IService interface {
-	setQueryFilter(*gin.Context) error
-	GetAll() (models.PublicDocumentTypes, error)
-	Get(string) (*models.PublicDocumentType, error)
-	Create(*models.PublicDocumentType) error
-	Update(item *models.PublicDocumentType) error
+	GetAll() (models.EducationDocumentTypes, error)
+	Get(string) (*models.EducationDocumentType, error)
+	Create(*models.EducationDocumentType) error
+	Update(*models.EducationDocumentType) error
 	Delete(string) error
-	UpdateOrder(models.PublicDocumentTypes) error
+
+	UpsertMany(item CommitteeDocumentTypesWithDelete) error
+	UpdateOrder(models.EducationDocumentTypes) error
+	DeleteMany(uuid []uuid.UUID) error
 }
 
 type IRepository interface {
-	setQueryFilter(*gin.Context) error
 	db() *bun.DB
-	create(*models.PublicDocumentType) error
-	getAll() (models.PublicDocumentTypes, error)
-	get(string) (*models.PublicDocumentType, error)
-	update(item *models.PublicDocumentType) error
+	getAll() (models.EducationDocumentTypes, error)
+	get(string) (*models.EducationDocumentType, error)
+	create(*models.EducationDocumentType) error
+	update(*models.EducationDocumentType) error
 	delete(string) error
-	upsertMany(item models.PublicDocumentTypes) error
+
+	upsertMany(item models.EducationDocumentTypes) error
+	deleteMany(uuid []uuid.UUID) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.PublicDocumentType, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.EducationDocumentType, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -58,9 +61,8 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
+	ctx    context.Context
+	helper *helper.Helper
 }
 
 type FilesService struct {

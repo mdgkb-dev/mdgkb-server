@@ -17,7 +17,7 @@ func (r *Repository) getAll() (models.Teachers, error) {
 	query := r.db().NewSelect().Model(&items).
 		Relation("DpoCourses").
 		Relation("Doctor.Human").
-		Relation("Doctor.Division").
+		Relation("Doctor.DoctorsDivisions").
 		Relation("Doctor.MedicalProfile").
 		Relation("Doctor.Regalias").
 		Relation("Doctor.Human.Photo").

@@ -3,6 +3,7 @@ package documenttypes
 import (
 	"mdgkb/mdgkb-server/handlers/documents"
 	"mdgkb/mdgkb-server/handlers/documenttypefields"
+	"mdgkb/mdgkb-server/handlers/documenttypesimages"
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/schema"
 
@@ -119,6 +120,16 @@ func (s *Service) UpsertMany(items models.DocumentTypes) error {
 	if err != nil {
 		return err
 	}
+	documentFieldsService := documenttypesimages.CreateService(s.helper)
+	err = documentFieldsService.UpsertMany(items.GetDocumentTypeImages())
+	if err != nil {
+		return err
+	}
+	err = documentFieldsService.DeleteMany(items.GetDocumentTypeImagesForDelete())
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
