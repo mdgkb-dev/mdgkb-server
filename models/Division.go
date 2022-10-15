@@ -26,20 +26,20 @@ type Division struct {
 	DivisionPaidServices          DivisionPaidServices `bun:"rel:has-many" json:"divisionPaidServices"`
 	DivisionPaidServicesForDelete []uuid.UUID          `bun:"-" json:"divisionPaidServicesForDelete"`
 
-	Entrance                *Entrance        `bun:"rel:belongs-to" json:"entrance"`
-	EntranceID              uuid.NullUUID    `bun:"type:uuid" json:"entranceId"`
-	FloorID                 uuid.NullUUID    `bun:"type:uuid" json:"floorId"`
-	Floor                   *Floor           `bun:"rel:belongs-to" json:"floor"`
-	Timetable               *Timetable       `bun:"rel:belongs-to" json:"timetable"`
-	TimetableID             uuid.NullUUID    `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
-	Schedule                *Schedule        `bun:"rel:belongs-to" json:"schedule"`
-	ScheduleID              uuid.UUID        `bun:"type:uuid" json:"scheduleId"`
-	DivisionImages          DivisionImages   `bun:"rel:has-many" json:"divisionImages"`
-	DivisionImagesForDelete []string         `bun:"-" json:"divisionImagesForDelete"`
-	DivisionImagesNames     []string         `bun:"-" json:"divisionImagesNames"`
-	DivisionComments        DivisionComments `bun:"rel:has-many" json:"divisionComments"`
-	VisitingRules           VisitingRules    `bun:"rel:has-many" json:"visitingRules"`
-	VisitingRulesForDelete  []uuid.UUID      `bun:"-" json:"visitingRulesForDelete"`
+	Entrance                     *Entrance           `bun:"rel:belongs-to" json:"entrance"`
+	EntranceID                   uuid.NullUUID       `bun:"type:uuid" json:"entranceId"`
+	FloorID                      uuid.NullUUID       `bun:"type:uuid" json:"floorId"`
+	Floor                        *Floor              `bun:"rel:belongs-to" json:"floor"`
+	Timetable                    *Timetable          `bun:"rel:belongs-to" json:"timetable"`
+	TimetableID                  uuid.NullUUID       `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+	Schedule                     *Schedule           `bun:"rel:belongs-to" json:"schedule"`
+	ScheduleID                   uuid.UUID           `bun:"type:uuid" json:"scheduleId"`
+	DivisionImages               DivisionImages      `bun:"rel:has-many" json:"divisionImages"`
+	DivisionImagesForDelete      []string            `bun:"-" json:"divisionImagesForDelete"`
+	DivisionImagesNames          []string            `bun:"-" json:"divisionImagesNames"`
+	DivisionComments             DivisionComments    `bun:"rel:has-many" json:"divisionComments"`
+	VisitingRulesGroups          VisitingRulesGroups `bun:"rel:has-many" json:"visitingRulesGroups"`
+	VisitingRulesGroupsForDelete []uuid.UUID         `bun:"-" json:"visitingRulesGroupsForDelete"`
 
 	HospitalizationContactInfoID uuid.UUID    `bun:"type:uuid" json:"hospitalizationContactInfoId"`
 	HospitalizationContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"hospitalizationContactInfo"`
@@ -103,8 +103,8 @@ func (items Divisions) GetSearchElements(searchGroup *SearchGroup) {
 }
 
 func (item *Division) SetIDForChildren() {
-	for i := range item.VisitingRules {
-		item.VisitingRules[i].DivisionID = item.ID
+	for i := range item.VisitingRulesGroups {
+		item.VisitingRulesGroups[i].DivisionID = item.ID
 	}
 	for i := range item.NewsDivisions {
 		item.NewsDivisions[i].DivisionID = item.ID

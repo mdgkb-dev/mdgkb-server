@@ -8,7 +8,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
 	"mdgkb/mdgkb-server/handlers/schedules"
 	"mdgkb/mdgkb-server/handlers/timetables"
-	"mdgkb/mdgkb-server/handlers/visitingrules"
+	"mdgkb/mdgkb-server/handlers/visitingrulesgroups"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -45,8 +45,8 @@ func (s *Service) Create(item *models.Division) error {
 		return err
 	}
 	item.SetIDForChildren()
-	visitingRulesService := visitingrules.CreateService(s.helper)
-	err = visitingRulesService.UpsertMany(item.VisitingRules)
+	visitingRulesGroupsService := visitingrulesgroups.CreateService(s.helper)
+	err = visitingRulesGroupsService.UpsertMany(item.VisitingRulesGroups)
 	if err != nil {
 		return err
 	}
@@ -103,12 +103,12 @@ func (s *Service) Update(item *models.Division) error {
 		return err
 	}
 	item.SetIDForChildren()
-	visitingRulesService := visitingrules.CreateService(s.helper)
-	err = visitingRulesService.UpsertMany(item.VisitingRules)
+	visitingRulesGroupsService := visitingrulesgroups.CreateService(s.helper)
+	err = visitingRulesGroupsService.UpsertMany(item.VisitingRulesGroups)
 	if err != nil {
 		return err
 	}
-	err = visitingRulesService.DeleteMany(item.VisitingRulesForDelete)
+	err = visitingRulesGroupsService.DeleteMany(item.VisitingRulesGroupsForDelete)
 	if err != nil {
 		return err
 	}

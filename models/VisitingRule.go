@@ -7,13 +7,13 @@ import (
 
 type VisitingRule struct {
 	bun.BaseModel `bun:"visiting_rules,alias:visiting_rules"`
-	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Order         uint      `bun:"rule_order" json:"order"`
-	Text          string    `json:"text"`
-	IsListItem    bool      `json:"isListItem"`
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	Order         uint          `bun:"rule_order" json:"order"`
+	Text          string        `json:"text"`
+	IsListItem    bool          `json:"isListItem"`
 
-	Division   *Division     `bun:"rel:belongs-to" json:"division"`
-	DivisionID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"divisionId"`
+	VisitingRuleGroup   *VisitingRuleGroup `bun:"rel:belongs-to" json:"VisitingRuleGroup"`
+	VisitingRuleGroupID uuid.NullUUID      `bun:"type:uuid,nullzero,default:NULL" json:"VisitingRuleGroupID"`
 }
 
 type VisitingRules []*VisitingRule
@@ -24,5 +24,5 @@ type VisitingRulesWithDeleted struct {
 }
 
 func (item *VisitingRule) SetForeignKeys() {
-	item.DivisionID = item.Division.ID
+	item.VisitingRuleGroupID = item.VisitingRuleGroup.ID
 }

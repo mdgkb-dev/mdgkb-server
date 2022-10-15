@@ -68,8 +68,12 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("DoctorsDivisions.Doctor").
 		Relation("DoctorsDivisions.Doctor.MedicalProfile").
 		Relation("Vacancies").
-		Relation("VisitingRules").
-		Relation("DivisionVideos").
+		Relation("VisitingRulesGroups", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("visiting_rules_groups.visiting_rule_group_order")
+		}).
+		Relation("VisitingRulesGroups.VisitingRules", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("visiting_rules.rule_order")
+		}).
 		Where("divisions_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).
 		Scan(r.ctx)
 

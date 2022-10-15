@@ -1,6 +1,6 @@
 drop view divisions_view;
 
-ALTER TABLE divisions ADD COLUMN is_center boolean;
+ALTER TABLE divisions ADD COLUMN is_center boolean default false;
 
 create view divisions_view
 as
