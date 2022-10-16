@@ -24,7 +24,9 @@ func (r *Repository) getAll() (models.EducationalManagers, error) {
 	items := make(models.EducationalManagers, 0)
 	query := r.db().NewSelect().
 		Model(&items).
-		Relation("Doctor.Human.PhotoMini.FileInfo")
+		Relation("Doctor.Human.PhotoMini").
+		Relation("Doctor.Human.ContactInfo.Emails").
+		Relation("Doctor.Human.ContactInfo.TelephoneNumbers")
 
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
