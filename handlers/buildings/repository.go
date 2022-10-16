@@ -21,7 +21,9 @@ func (r *Repository) create(ctx *gin.Context, building *models.Building) (err er
 func (r *Repository) getAll(ctx *gin.Context) (buildings []models.Building, err error) {
 	err = r.db().NewSelect().Model(&buildings).
 		Relation("Floors").
-		Relation("Floors.Divisions").
+		Relation("Floors.Divisions", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("divisions_view.name")
+		}).
 		Relation("Entrances").
 		Relation("Entrances.Divisions").
 		Order("name").
