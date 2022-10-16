@@ -14,8 +14,7 @@ func (r *Repository) getAll() (models.EducationalManagers, error) {
 	items := make(models.EducationalManagers, 0)
 	err := r.db().NewSelect().
 		Model(&items).
-		Relation("Doctor.Human").
-		//Relation("Doctor.FileInfo").
+		Relation("Doctor.Human.PhotoMini").
 		Order("educational_managers_view.educational_manager_order").
 		Scan(r.ctx)
 	return items, err

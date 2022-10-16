@@ -43,6 +43,9 @@ type ResidencyCourse struct {
 
 	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
 	FormPatternID uuid.NullUUID `bun:"type:uuid" json:"formPatternId"`
+
+	ResidencyCoursePracticePlaces          ResidencyCoursePracticePlaces `bun:"rel:has-many"  json:"residencyCoursePracticePlaces"`
+	ResidencyCoursePracticePlacesForDelete []uuid.UUID                   `bun:"-"  json:"residencyCoursePracticePlacesForDelete"`
 }
 
 type ResidencyCourses []*ResidencyCourse
@@ -61,6 +64,9 @@ func (item *ResidencyCourse) SetIDForChildren() {
 	}
 	for i := range item.ResidencyCoursesSpecializations {
 		item.ResidencyCoursesSpecializations[i].ResidencyCourseID = item.ID
+	}
+	for i := range item.ResidencyCoursePracticePlaces {
+		item.ResidencyCoursePracticePlaces[i].ResidencyCourseID = item.ID
 	}
 }
 
