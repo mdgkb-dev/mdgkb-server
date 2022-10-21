@@ -27,7 +27,16 @@ func (r *Repository) create(item *models.DietGroup) (err error) {
 
 func (r *Repository) getAll() (models.DietsGroups, error) {
 	items := make(models.DietsGroups, 0)
-	query := r.db().NewSelect().Model(&items).
+	query := r.db().NewSelect().Model(&items).Order("diets_groups.diet_group_order").
+		Relation("Diets", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("diets.diet_order")
+		}).
+		Relation("Diets.DietAges", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("diet_ages.diet_age_order")
+		}).
+		Relation("Diets.DietAges.Timetable.TimetableDays.ScheduleItems", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("schedule_item.schedule_item_order")
+		}).
 		Relation("Diets.DietAges.Timetable.TimetableDays.ScheduleItems.Dishes")
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
