@@ -12,6 +12,7 @@ type ScheduleItem struct {
 	StartTime      string        `json:"startTime"`
 	EndTime        string        `json:"endTime"`
 	Dishes         Dishes        `bun:"rel:has-many" json:"dishes"`
+	Order          uint          `bun:"schedule_item_order" json:"order"`
 }
 
 type ScheduleItems []*ScheduleItem

@@ -14,6 +14,7 @@ type TimetableDay struct {
 	EndTime        string    `json:"endTime"`
 	BreaksExists   bool      `json:"breaksExists"`
 	AroundTheClock bool      `json:"aroundTheClock"`
+	Comment        string    `json:"comment"`
 
 	Weekday                *Weekday          `bun:"rel:belongs-to" json:"weekday"`
 	WeekdayID              uuid.UUID         `bun:",nullzero,notnull,type:uuid" json:"weekdayId"`

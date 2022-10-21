@@ -10,6 +10,7 @@ type DietGroup struct {
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
 	Diets         Diets         `bun:"rel:has-many" json:"diets"`
+	Order         uint          `bun:"diet_group_order" json:"order"`
 }
 
 type DietsGroups []*DietGroup

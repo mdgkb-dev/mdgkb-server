@@ -13,6 +13,7 @@ type DietAge struct {
 	TimetableID   uuid.NullUUID `bun:"type:uuid"  json:"timetableId"`
 	Diet          *Diet         `bun:"rel:belongs-to" json:"diet"`
 	DietID        uuid.NullUUID `bun:"type:uuid"  json:"dietId"`
+	Order         uint          `bun:"diet_age_order" json:"order"`
 }
 
 type DietAges []*DietAge
