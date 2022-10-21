@@ -1,4 +1,4 @@
-package diets
+package dietsgroups
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -20,23 +20,22 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) create(item *models.Diet) (err error) {
+func (r *Repository) create(item *models.DietGroup) (err error) {
 	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) getAll() (items models.Diets, err error) {
+func (r *Repository) getAll() (models.DietsGroups, error) {
+	items := make(models.DietsGroups, 0)
 	query := r.db().NewSelect().Model(&items).
-		Relation("DietAge").
-		Relation("Timetable.TimetableDays.ScheduleItems.Dishes")
-	// Join("JOIN positions on Diets_view.position_id = positions.id and positions.show = true")
+		Relation("Diets.DietAges.Timetable.TimetableDays.ScheduleItems.Dishes")
 	r.queryFilter.HandleQuery(query)
-	err = query.Scan(r.ctx)
+	err := query.Scan(r.ctx)
 	return items, err
 }
 
-func (r *Repository) get(id string) (*models.Diet, error) {
-	item := models.Diet{}
+func (r *Repository) get(id string) (*models.DietGroup, error) {
+	item := models.DietGroup{}
 	err := r.db().NewSelect().Model(&item).
 		Where("diets.id = ?", id).
 		Scan(r.ctx)
@@ -44,11 +43,11 @@ func (r *Repository) get(id string) (*models.Diet, error) {
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.Diet{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.DietGroup{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) update(item *models.Diet) (err error) {
+func (r *Repository) update(item *models.DietGroup) (err error) {
 	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }

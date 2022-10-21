@@ -1,4 +1,4 @@
-package diets
+package dietsgroups
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.Diet) error {
+func (s *Service) Create(item *models.DietGroup) error {
 	err := s.repository.create(item)
 	if err != nil {
 		return err
@@ -14,7 +14,7 @@ func (s *Service) Create(item *models.Diet) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.Diet) error {
+func (s *Service) Update(item *models.DietGroup) error {
 	//err := timetables.CreateService(s.helper).Upsert(item.Timetable)
 	//if err != nil {
 	//	return err
@@ -27,11 +27,11 @@ func (s *Service) Update(item *models.Diet) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Diets, error) {
+func (s *Service) GetAll() (models.DietsGroups, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(slug string) (*models.Diet, error) {
+func (s *Service) Get(slug string) (*models.DietGroup, error) {
 	item, err := s.repository.get(slug)
 	if err != nil {
 		return nil, err

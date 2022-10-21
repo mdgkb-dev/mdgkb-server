@@ -14,6 +14,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/diets"
+	"mdgkb/mdgkb-server/handlers/dietsgroups"
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documenttypes"
@@ -86,6 +87,7 @@ import (
 	childrenRouter "mdgkb/mdgkb-server/routing/children"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	dietsRouter "mdgkb/mdgkb-server/routing/diets"
+	dietsGroupsRouter "mdgkb/mdgkb-server/routing/dietsgroups"
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/documenttypes"
@@ -238,4 +240,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	admissionCommitteeDocumentTypesRouter.Init(api.Group("/admission-committee-document-types"), admissioncommitteedocumenttypes.CreateHandler(helper))
 	pointsAchievementsRouter.Init(api.Group("/points-achievements"), pointsachievements.CreateHandler(helper))
 	dietsRouter.Init(api.Group("/diets"), diets.CreateHandler(helper))
+	dietsGroupsRouter.Init(api.Group("/diets-groups"), dietsgroups.CreateHandler(helper))
 }
