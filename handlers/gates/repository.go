@@ -24,8 +24,8 @@ func (r *Repository) getAll() (models.Gates, error) {
 	items := make(models.Gates, 0)
 	query := r.db().NewSelect().
 		Model(&items).
-		Relation("FormPattern").
-		Relation("VisitsApplication.Division")
+		Relation("FormPattern")
+	//Relation("VisitsApplication.Division")
 	err := query.Scan(r.ctx)
 	return items, err
 }

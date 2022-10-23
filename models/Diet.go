@@ -14,7 +14,7 @@ type Diet struct {
 	Diabetes      bool          `json:"diabetes"`
 	Order         uint          `bun:"diet_order" json:"order"`
 	//MotherDiet        *Diet         `bun:"rel:belongs-to" json:"motherDiet"`
-	//MotherDietID      uuid.NullUUID `bun:"type:uuid"  json:"motherDietId"`
+	//MotherDietID      uuid.NullUUID `bun:"mother_diet_id,type:uuid"  json:"motherDietId"`
 	DietGroup         *DietGroup    `bun:"rel:belongs-to" json:"dietGroup"`
 	DietGroupID       uuid.NullUUID `bun:"type:uuid"  json:"dietGroupId"`
 	DietAges          DietAges      `bun:"rel:has-many" json:"dietAges"`

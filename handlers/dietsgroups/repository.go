@@ -38,6 +38,7 @@ func (r *Repository) getAll() (models.DietsGroups, error) {
 			return q.Order("schedule_item.schedule_item_order")
 		}).
 		Relation("Diets.DietAges.Timetable.TimetableDays.ScheduleItems.Dishes")
+	//Relation("Diets.MotherDiet.DietAges.Timetable.TimetableDays.ScheduleItems.Dishes")
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
