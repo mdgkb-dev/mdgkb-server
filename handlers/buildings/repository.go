@@ -22,13 +22,14 @@ func (r *Repository) getAll(ctx *gin.Context) (buildings []models.Building, err 
 	err = r.db().NewSelect().Model(&buildings).
 		Relation("Floors").
 		Relation("Floors.Divisions", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("divisions_view.name")
+			return q.Order("divisions_view.name").
+				Where("divisions_view.is_center = false")
 		}).
 		Relation("Floors.Divisions.Entrance.Building").
 		Relation("Entrances").
 		Relation("Entrances.Divisions").
+		OrderExpr("NULLIF(regexp_replace(number, '\\D','','g'), '')::numeric").
 		Order("name").
-		Order("number").
 		Scan(ctx)
 	return buildings, err
 }
