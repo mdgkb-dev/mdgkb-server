@@ -28,6 +28,12 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 func (r *Repository) getAll() (models.PublicDocumentTypes, error) {
 	items := make(models.PublicDocumentTypes, 0)
 	query := r.db().NewSelect().Model(&items).
+		Relation("DocumentTypes", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("document_types.document_type_order")
+		}).
+		Relation("DocumentTypes.Documents", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("documents.document_order")
+		}).
 		Relation("DocumentTypes.Documents.DocumentsScans.Scan").
 		Relation("DocumentTypes.DocumentTypeImages", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("document_types_images.document_type_image_order")
@@ -43,6 +49,12 @@ func (r *Repository) getAll() (models.PublicDocumentTypes, error) {
 func (r *Repository) get(id string) (*models.PublicDocumentType, error) {
 	item := models.PublicDocumentType{}
 	err := r.db().NewSelect().Model(&item).Where("public_document_types.id = ?", id).
+		Relation("DocumentTypes", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("document_types.document_type_order")
+		}).
+		Relation("DocumentTypes.Documents", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("documents.document_order")
+		}).
 		Relation("DocumentTypes.Documents.DocumentsScans.Scan").
 		Relation("EducationPublicDocumentType").
 		Relation("DocumentTypes.DocumentTypeImages", func(q *bun.SelectQuery) *bun.SelectQuery {
