@@ -11,7 +11,7 @@ type DietAge struct {
 	Name          string        `json:"name"`
 	Timetable     *Timetable    `bun:"rel:belongs-to" json:"timetable"`
 	TimetableID   uuid.NullUUID `bun:"type:uuid"  json:"timetableId"`
-	Diet          *Diet         `bun:"rel:belongs-to" json:"diet"`
+	Diet          *Diet         `bun:"rel:has-one,join:diet_id=id" json:"diet"`
 	DietID        uuid.NullUUID `bun:"type:uuid"  json:"dietId"`
 	Order         uint          `bun:"diet_age_order" json:"order"`
 }
