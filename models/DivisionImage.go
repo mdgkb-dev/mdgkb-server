@@ -9,7 +9,7 @@ import (
 type DivisionImage struct {
 	ID          uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Description string        `json:"description"`
-	DivisionID  uuid.UUID     `bun:"type:uuid" json:"divisionId" `
+	DivisionID  uuid.NullUUID `bun:"type:uuid" json:"divisionId" `
 	FileInfo    *FileInfo     `bun:"rel:belongs-to" json:"fileInfo"`
 	FileInfoID  uuid.NullUUID `bun:"type:uuid" json:"fileInfoId"`
 }

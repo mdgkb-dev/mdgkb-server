@@ -46,6 +46,7 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Schedule.ScheduleItems").
 		Relation("DivisionImages.FileInfo").
+		Relation("DivisionVideos").
 		Relation("DivisionPaidServices.PaidService").
 		Relation("DivisionComments.Comment.User.Human", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("comment.published_on DESC")

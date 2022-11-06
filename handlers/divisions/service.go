@@ -83,6 +83,7 @@ func (s *Service) Update(item *models.Division) error {
 	}
 	item.SetForeignKeys()
 
+	item.SetIDForChildren()
 	doctorsDivisionsService := doctorsdivisions.CreateService(s.helper)
 	err = doctorsDivisionsService.DeleteMany(item.DoctorsDivisionsForDelete)
 	if err != nil {
@@ -102,7 +103,6 @@ func (s *Service) Update(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	item.SetIDForChildren()
 	visitingRulesGroupsService := visitingrulesgroups.CreateService(s.helper)
 	err = visitingRulesGroupsService.UpsertMany(item.VisitingRulesGroups)
 	if err != nil {

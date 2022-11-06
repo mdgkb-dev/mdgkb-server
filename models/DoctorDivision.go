@@ -12,6 +12,7 @@ type DoctorDivision struct {
 	DoctorID      uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Division      *Division     `bun:"rel:belongs-to" json:"division"`
 	DivisionID    uuid.NullUUID `bun:"type:uuid" json:"divisionId"`
+	Show          bool          ` json:"show"`
 }
 
 type DoctorsDivisions []*DoctorDivision

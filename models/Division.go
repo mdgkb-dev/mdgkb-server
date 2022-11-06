@@ -118,4 +118,7 @@ func (item *Division) SetIDForChildren() {
 	for i := range item.DoctorsDivisions {
 		item.DoctorsDivisions[i].DivisionID = item.ID
 	}
+	for i := range item.DivisionImages {
+		item.DivisionImages[i].DivisionID = item.ID
+	}
 }

@@ -1,0 +1,1 @@
+ALTER TABLE doctors_divisions ADD COLUMN show boolean DEFAULT true;

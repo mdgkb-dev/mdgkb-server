@@ -30,6 +30,7 @@ func (r *Repository) upsertMany(items models.DoctorsDivisions) (err error) {
 		Model(&items).
 		Set("doctor_id = EXCLUDED.doctor_id").
 		Set("division_id = EXCLUDED.division_id").
+		Set("show = EXCLUDED.show").
 		Exec(r.ctx)
 	return err
 }
