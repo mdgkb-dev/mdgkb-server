@@ -31,7 +31,7 @@ func (r *Repository) getAll() (item models.DivisionsWithCount, err error) {
 		Relation("ContactInfo.Websites").
 		Relation("MedicalProfilesDivisions.MedicalProfile").
 		Relation("TreatDirection").
-		Relation("Chief.Human")
+		Relation("Chief.Employee.Human")
 
 	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
@@ -59,12 +59,12 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("ContactInfo.PostAddresses").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Websites").
-		Relation("HospitalizationDoctor.Human").
+		Relation("HospitalizationDoctor.Employee.Human").
 		Relation("MedicalProfilesDivisions.MedicalProfile").
 		Relation("TreatDirection").
-		Relation("Chief.Human.Photo").
+		Relation("Chief.Employee.Human.Photo").
 		Relation("NewsDivisions.News").
-		Relation("DoctorsDivisions.Doctor.Human.PhotoMini").
+		Relation("DoctorsDivisions.Doctor.Employee.Human.PhotoMini").
 		Relation("DoctorsDivisions.Doctor.Position").
 		Relation("DoctorsDivisions.Doctor").
 		Relation("DoctorsDivisions.Doctor.MedicalProfile").

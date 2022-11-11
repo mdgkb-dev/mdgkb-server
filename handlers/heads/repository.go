@@ -30,7 +30,7 @@ func (r *Repository) getAll() (models.Heads, error) {
 	query := r.DB().NewSelect().Model(&items).
 		//Relation("Human.Photo").
 		//Relation("Human.PhotoMini").
-		Relation("Human").
+		Relation("Employee.Human").
 		// Relation("Photo").
 		Relation("Departments.Division").
 		Relation("Timetable.TimetableDays.Weekday").
@@ -47,11 +47,11 @@ func (r *Repository) getAll() (models.Heads, error) {
 func (r *Repository) get(id string) (*models.Head, error) {
 	item := models.Head{}
 	err := r.DB().NewSelect().Model(&item).Where("heads.id = ?", id).
-		Relation("Human.Photo").
-		Relation("Human.PhotoMini").
+		Relation("Employee.Human.Photo").
+		Relation("Employee.Human.PhotoMini").
 		// Relation("Human").
 		// Relation("Photo").
-		Relation("Regalias").
+		Relation("Employee.Regalias").
 		Relation("Departments.Division").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("ContactInfo").

@@ -24,7 +24,7 @@ func (r *Repository) getAll() (item models.DpoCoursesWithCount, err error) {
 	item.DpoCourses = make(models.DpoCourses, 0)
 	query := r.db().NewSelect().
 		Model(&item.DpoCourses).
-		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
+		Relation("DpoCoursesTeachers.Teacher.Doctor.Employee.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
 		Relation("FormPattern.Fields.File").
@@ -38,7 +38,7 @@ func (r *Repository) getAll() (item models.DpoCoursesWithCount, err error) {
 func (r *Repository) get() (*models.DpoCourse, error) {
 	item := models.DpoCourse{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("DpoCoursesTeachers.Teacher.Doctor.Human").
+		Relation("DpoCoursesTeachers.Teacher.Doctor.Employee.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {

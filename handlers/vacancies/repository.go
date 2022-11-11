@@ -35,7 +35,7 @@ func (r *Repository) getAll() (item models.VacanciesWithCount, err error) {
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactDoctor.Human").
+		Relation("ContactDoctor.Employee.Human").
 		Relation("VacancyResponses.FormValue")
 	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
@@ -56,7 +56,7 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactDoctor.Human").
+		Relation("ContactDoctor.Employee.Human").
 		Relation("VacancyResponses.FormValue.User.Human").
 		Relation("VacancyResponses.FormValue.Fields.File").
 		Relation("VacancyResponses.FormValue.Fields.ValueType").
@@ -86,7 +86,7 @@ func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
 		Relation("ContactInfo").
 		Relation("ContactInfo.Emails").
 		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactDoctor.Human").
+		Relation("ContactDoctor.Employee.Human").
 		// Relation("VacancyResponses.User.Human.ContactInfo.Emails").
 		// Relation("VacancyResponses.User.Human.ContactInfo.TelephoneNumbers").
 		Relation("VacancyResponses.FormValue.FieldValues.File").

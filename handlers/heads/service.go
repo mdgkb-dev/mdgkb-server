@@ -3,9 +3,8 @@ package heads
 import (
 	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/departments"
+	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
-	"mdgkb/mdgkb-server/handlers/human"
-	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
 
@@ -21,7 +20,7 @@ func (s *Service) Create(item *models.Head) error {
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.helper).Create(item.Human)
+	err = employees.CreateService(s.helper).Create(item.Employee)
 	if err != nil {
 		return err
 	}
@@ -36,10 +35,6 @@ func (s *Service) Create(item *models.Head) error {
 	}
 	item.SetIDForChildren()
 
-	err = regalias.CreateService(s.helper).CreateMany(item.Regalias)
-	if err != nil {
-		return err
-	}
 	err = departments.CreateService(s.helper).CreateMany(item.Departments)
 	if err != nil {
 		return err
@@ -56,7 +51,7 @@ func (s *Service) Update(item *models.Head) error {
 	if err != nil {
 		return err
 	}
-	err = human.CreateService(s.helper).Update(item.Human)
+	err = employees.CreateService(s.helper).Update(item.Employee)
 	if err != nil {
 		return err
 	}
@@ -70,15 +65,6 @@ func (s *Service) Update(item *models.Head) error {
 		return err
 	}
 	item.SetIDForChildren()
-	regaliasService := regalias.CreateService(s.helper)
-	err = regaliasService.UpsertMany(item.Regalias)
-	if err != nil {
-		return err
-	}
-	err = regaliasService.DeleteMany(item.RegaliasForDelete)
-	if err != nil {
-		return err
-	}
 
 	departmentsService := departments.CreateService(s.helper)
 	err = departmentsService.UpsertMany(item.Departments)

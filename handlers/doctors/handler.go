@@ -53,14 +53,6 @@ func (h *Handler) GetAllAdmin(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
-func (h *Handler) GetAllMain(c *gin.Context) {
-	items, err := h.service.GetAllMain()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, items)
-}
-
 func (h *Handler) Get(c *gin.Context) {
 	item, err := h.service.Get(c.Param("slug"))
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {

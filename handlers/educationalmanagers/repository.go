@@ -24,9 +24,9 @@ func (r *Repository) getAll() (models.EducationalManagers, error) {
 	items := make(models.EducationalManagers, 0)
 	query := r.db().NewSelect().
 		Model(&items).
-		Relation("Doctor.Human.PhotoMini").
-		Relation("Doctor.Human.ContactInfo.Emails").
-		Relation("Doctor.Human.ContactInfo.TelephoneNumbers")
+		Relation("Doctor.Employee.Human.PhotoMini").
+		Relation("Doctor.Employee.Human.ContactInfo.Emails").
+		Relation("Doctor.Employee.Human.ContactInfo.TelephoneNumbers")
 
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
@@ -36,7 +36,7 @@ func (r *Repository) getAll() (models.EducationalManagers, error) {
 func (r *Repository) get(id *string) (*models.EducationalManager, error) {
 	item := models.EducationalManager{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("Doctor.Human").
+		Relation("Doctor.Employee.Human").
 		Where("educational_managers.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }

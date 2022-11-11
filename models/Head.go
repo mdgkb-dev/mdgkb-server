@@ -8,21 +8,19 @@ import (
 type Head struct {
 	bun.BaseModel `bun:"heads,select:heads,alias:heads"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Human         *Human        `bun:"rel:belongs-to" json:"human"`
-	HumanID       uuid.NullUUID `bun:"type:uuid" json:"humanId"`
-	Position      string        `json:"position"`
-	Tags          string        `json:"tags"`
-	Photo         *FileInfo     `bun:"rel:belongs-to" json:"photo"`
-	PhotoID       uuid.UUID     `bun:"type:uuid" json:"photoId"`
 
-	AcademicDegree    string      `json:"academicDegree"`
-	AcademicRank      string      `json:"academicRank"`
-	Regalias          Regalias    `bun:"rel:has-many" json:"regalias"`
-	RegaliasForDelete []uuid.UUID `bun:"-" json:"regaliasForDelete"`
-	Timetable         *Timetable  `bun:"rel:belongs-to" json:"timetable"`
+	Employee   *Employee     `bun:"rel:belongs-to" json:"employee"`
+	EmployeeID uuid.NullUUID `bun:"type:uuid" json:"employeeId,omitempty"`
 
+	Position string    `json:"position"`
+	Tags     string    `json:"tags"`
+	Photo    *FileInfo `bun:"rel:belongs-to" json:"photo"`
+	PhotoID  uuid.UUID `bun:"type:uuid" json:"photoId"`
+
+	Timetable   *Timetable    `bun:"rel:belongs-to" json:"timetable"`
 	TimetableID uuid.NullUUID `bun:"type:uuid" json:"timetableId"`
-	IsMain      bool          `json:"isMain"`
+
+	IsMain bool `json:"isMain"`
 
 	Departments          Departments `bun:"rel:has-many" json:"departments"`
 	DepartmentsForDelete []uuid.UUID `bun:"-" json:"departmentsForDelete"`
@@ -37,8 +35,8 @@ func (item *Head) SetForeignKeys() {
 	if item.Photo != nil {
 		item.PhotoID = item.Photo.ID.UUID
 	}
-	if item.Human != nil {
-		item.HumanID = item.Human.ID
+	if item.Employee != nil {
+		item.EmployeeID = item.Employee.ID
 	}
 	if item.Timetable != nil {
 		item.TimetableID = item.Timetable.ID
@@ -49,9 +47,6 @@ func (item *Head) SetForeignKeys() {
 }
 
 func (item *Head) SetIDForChildren() {
-	for i := range item.Regalias {
-		item.Regalias[i].HeadID = item.ID
-	}
 	for i := range item.Departments {
 		item.Departments[i].HeadID = item.ID
 	}

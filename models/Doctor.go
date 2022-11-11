@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
 )
 
@@ -15,8 +14,9 @@ type Doctor struct {
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId,omitempty"`
 
-	Human            *Human          `bun:"rel:belongs-to" json:"human"`
-	HumanID          uuid.NullUUID   `bun:"type:uuid" json:"humanId"`
+	Employee   *Employee     `bun:"rel:belongs-to" json:"employee"`
+	EmployeeID uuid.NullUUID `bun:"type:uuid" json:"employeeId,omitempty"`
+
 	Position         *Position       `bun:"rel:belongs-to" json:"position"`
 	PositionID       uuid.NullUUID   `bun:"type:uuid" json:"positionId"`
 	Schedule         string          `json:"schedule"`
@@ -31,45 +31,18 @@ type Doctor struct {
 	DoctorsDivisionsForDelete []uuid.UUID      `bun:"-" json:"doctorsDivisionsForDelete"`
 	MosDoctorLink             string           `json:"mosDoctorLink"`
 	OnlineDoctorID            string           `json:"onlineDoctorId"`
-	AcademicDegree            string           `json:"academicDegree"`
-	AcademicRank              string           `json:"academicRank"`
-	RegaliasCount             int              `bun:"-" json:"regaliasCount"`
-	CommentsCount             int              `bun:"-" json:"commentsCount"`
-	Show                      bool             `json:"show"`
-	Regalias                  Regalias         `bun:"rel:has-many" json:"regalias"`
-	RegaliasForDelete         []uuid.UUID      `bun:"-" json:"regaliasForDelete"`
-
-	TeachingActivities          TeachingActivities `bun:"rel:has-many" json:"teachingActivities"`
-	TeachingActivitiesForDelete []uuid.UUID        `bun:"-" json:"teachingActivitiesForDelete"`
-
-	Educations          Educations  `bun:"rel:has-many" json:"educations"`
-	EducationsForDelete []uuid.UUID `bun:"-" json:"educationsForDelete"`
-
-	Experiences          Experiences `bun:"rel:has-many" json:"experiences"`
-	ExperiencesForDelete []uuid.UUID `bun:"-" json:"experiencesForDelete"`
-
-	Certificates          Certificates `bun:"rel:has-many" json:"certificates"`
-	CertificatesForDelete []uuid.UUID  `bun:"-" json:"certificatesForDelete"`
 
 	DoctorPaidServices          DoctorPaidServices `bun:"rel:has-many" json:"doctorPaidServices"`
 	DoctorPaidServicesForDelete []uuid.UUID        `bun:"-" json:"doctorPaidServicesForDelete"`
 	HasAppointment              bool               `json:"hasAppointment"`
 	Timetable                   *Timetable         `bun:"rel:belongs-to" json:"timetable"`
 	TimetableID                 uuid.NullUUID      `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
-
-	EducationalOrganizationAcademic *EducationalOrganizationAcademic `bun:"rel:has-one" json:"educationalOrganizationAcademic"`
 }
 
 type Doctors []*Doctor
 
 func (item *Doctor) SetFilePath(fileID *string) *string {
-	for i := range item.Certificates {
-		if item.Certificates[i].Scan.ID.UUID.String() == *fileID {
-			item.Certificates[i].Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
-			return &item.Certificates[i].Scan.FileSystemPath
-		}
-	}
-	path := item.Human.SetFilePath(fileID)
+	path := item.Employee.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}
@@ -77,9 +50,6 @@ func (item *Doctor) SetFilePath(fileID *string) *string {
 }
 
 func (item *Doctor) SetForeignKeys() {
-	if item.Human != nil {
-		item.HumanID = item.Human.ID
-	}
 	if item.Position != nil {
 		item.PositionID = item.Position.ID
 	}
@@ -89,24 +59,12 @@ func (item *Doctor) SetForeignKeys() {
 	if item.MedicalProfile != nil {
 		item.MedicalProfileID = item.MedicalProfile.ID
 	}
+	if item.Employee != nil {
+		item.EmployeeID = item.Employee.ID
+	}
 }
 
 func (item *Doctor) SetIDForChildren() {
-	for i := range item.Educations {
-		item.Educations[i].DoctorID = item.ID
-	}
-	for i := range item.Experiences {
-		item.Experiences[i].DoctorID = item.ID
-	}
-	for i := range item.Certificates {
-		item.Certificates[i].DoctorID = item.ID
-	}
-	for i := range item.Regalias {
-		item.Regalias[i].DoctorID = item.ID
-	}
-	for i := range item.TeachingActivities {
-		item.TeachingActivities[i].DoctorID = item.ID
-	}
 	for i := range item.DoctorPaidServices {
 		item.DoctorPaidServices[i].DoctorID = item.ID
 	}

@@ -1,16 +1,11 @@
 package doctors
 
 import (
-	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/doctorpaidservices"
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
-	"mdgkb/mdgkb-server/handlers/educationalorganizationacademics"
-	"mdgkb/mdgkb-server/handlers/educations"
-	"mdgkb/mdgkb-server/handlers/experiences"
+	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/human"
-	"mdgkb/mdgkb-server/handlers/regalias"
-	"mdgkb/mdgkb-server/handlers/teachingactivities"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
 
@@ -19,11 +14,11 @@ import (
 )
 
 func (s *Service) Create(item *models.Doctor) error {
-	err := human.CreateService(s.helper).Create(item.Human)
+	err := timetables.CreateService(s.helper).Create(item.Timetable)
 	if err != nil {
 		return err
 	}
-	err = timetables.CreateService(s.helper).Create(item.Timetable)
+	err = employees.CreateService(s.helper).Create(item.Employee)
 	if err != nil {
 		return err
 	}
@@ -33,24 +28,6 @@ func (s *Service) Create(item *models.Doctor) error {
 		return err
 	}
 	item.SetIDForChildren()
-
-	err = regalias.CreateService(s.helper).CreateMany(item.Regalias)
-	if err != nil {
-		return err
-	}
-	err = teachingactivities.CreateService(s.helper).CreateMany(item.TeachingActivities)
-	if err != nil {
-		return err
-	}
-	err = educations.CreateService(s.helper).CreateMany(item.Educations)
-	if err != nil {
-		return err
-	}
-	err = experiences.CreateService(s.helper).CreateMany(item.Experiences)
-	if err != nil {
-		return err
-	}
-	err = certificates.CreateService(s.helper).CreateMany(item.Certificates)
 	if err != nil {
 		return err
 	}
@@ -62,23 +39,11 @@ func (s *Service) Create(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	educationalOrganizationAcademicsService := educationalorganizationacademics.CreateService(s.helper)
-	if item.EducationalOrganizationAcademic != nil {
-		item.EducationalOrganizationAcademic.DoctorID = item.ID
-		err = educationalOrganizationAcademicsService.Upsert(item.EducationalOrganizationAcademic)
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
 func (s *Service) Update(item *models.Doctor) error {
-	err := human.CreateService(s.helper).Update(item.Human)
-	if err != nil {
-		return err
-	}
-	err = timetables.CreateService(s.helper).Upsert(item.Timetable)
+	err := timetables.CreateService(s.helper).Upsert(item.Timetable)
 	if err != nil {
 		return err
 	}
@@ -87,54 +52,11 @@ func (s *Service) Update(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
+	err = employees.CreateService(s.helper).Update(item.Employee)
+	if err != nil {
+		return err
+	}
 	item.SetIDForChildren()
-	doctorRegaliaService := regalias.CreateService(s.helper)
-	err = doctorRegaliaService.UpsertMany(item.Regalias)
-	if err != nil {
-		return err
-	}
-	err = doctorRegaliaService.DeleteMany(item.RegaliasForDelete)
-	if err != nil {
-		return err
-	}
-	teachingActivitiesService := teachingactivities.CreateService(s.helper)
-	err = teachingActivitiesService.UpsertMany(item.TeachingActivities)
-	if err != nil {
-		return err
-	}
-	err = teachingActivitiesService.DeleteMany(item.RegaliasForDelete)
-	if err != nil {
-		return err
-	}
-
-	educationsService := educations.CreateService(s.helper)
-	err = educationsService.UpsertMany(item.Educations)
-	if err != nil {
-		return err
-	}
-	err = educationsService.DeleteMany(item.EducationsForDelete)
-	if err != nil {
-		return err
-	}
-	experiencesService := experiences.CreateService(s.helper)
-	err = experiencesService.UpsertMany(item.Experiences)
-	if err != nil {
-		return err
-	}
-	err = experiencesService.DeleteMany(item.ExperiencesForDelete)
-	if err != nil {
-		return err
-	}
-	certificatesService := certificates.CreateService(s.helper)
-	err = certificatesService.UpsertMany(item.Certificates)
-	if err != nil {
-		return err
-	}
-	err = certificatesService.DeleteMany(item.CertificatesForDelete)
-	if err != nil {
-		return err
-	}
-
 	doctorPaidServicesService := doctorpaidservices.CreateService(s.helper)
 	err = doctorPaidServicesService.UpsertMany(item.DoctorPaidServices)
 	if err != nil {
@@ -153,17 +75,6 @@ func (s *Service) Update(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	educationalOrganizationAcademicsService := educationalorganizationacademics.CreateService(s.helper)
-	err = educationalOrganizationAcademicsService.Upsert(item.EducationalOrganizationAcademic)
-	if err != nil {
-		return err
-	}
-	if item.EducationalOrganizationAcademic == nil {
-		err = educationalOrganizationAcademicsService.DeleteByDoctorID(item.ID)
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -177,10 +88,6 @@ func (s *Service) GetAllTimetables() (models.Doctors, error) {
 
 func (s *Service) GetAllAdmin() (models.DoctorsWithCount, error) {
 	return s.repository.getAllAdmin()
-}
-
-func (s *Service) GetAllMain() (models.Doctors, error) {
-	return s.repository.getAllMain()
 }
 
 func (s *Service) Get(slug string) (*models.Doctor, error) {

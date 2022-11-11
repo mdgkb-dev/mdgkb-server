@@ -26,31 +26,14 @@ func (r *Repository) create(item *models.Doctor) (err error) {
 	return err
 }
 
-func (r *Repository) getAllMain() (items models.Doctors, err error) {
-	err = r.db().NewSelect().Model(&items).
-		Relation("DoctorsDivisions.Division.Floor").
-		Relation("Human.PhotoMini").
-		Relation("Human").
-		Relation("Position").
-		Relation("MedicalProfile").
-		Relation("Regalias").
-		Relation("DoctorComments.Comment").
-		// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true").
-		Order("doctors_view.regalias_count DESC", "doctors_view.comments_count DESC").
-		Where("doctors_view.mos_doctor_link is not null and doctors_view.mos_doctor_link != '' ").
-		Limit(20).Scan(r.ctx)
-	return items, err
-}
-
 func (r *Repository) getAll() (items models.Doctors, err error) {
 	query := r.db().NewSelect().Model(&items).
 		Relation("DoctorsDivisions.Division.Floor").
 		Relation("Position").
 		Relation("MedicalProfile").
-		Relation("Regalias").
-		Relation("Human").
-		Relation("Human.PhotoMini")
-	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
+		Relation("Employee.Regalias").
+		Relation("Employee.Human").
+		Relation("Employee.Human.PhotoMini")
 	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
 	return items, err
@@ -62,9 +45,9 @@ func (r *Repository) getAllAdmin() (item models.DoctorsWithCount, err error) {
 		Relation("DoctorsDivisions.Division.Floor").
 		Relation("Position").
 		Relation("MedicalProfile").
-		Relation("Regalias").
+		Relation("Employee.Regalias").
 		Relation("DoctorComments.Comment").
-		Relation("Human")
+		Relation("Employee.Human")
 	//Relation("Human.Photo").
 	//Relation("Human.PhotoMini")
 	// Join("JOIN positions on doctors_view.position_id = positions.id and positions.show = true")
@@ -86,26 +69,26 @@ func (r *Repository) getAllTimetables() (models.Doctors, error) {
 func (r *Repository) get(slug string) (*models.Doctor, error) {
 	item := models.Doctor{}
 	err := r.db().NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
-		Relation("Human.Photo").
-		Relation("Human.PhotoMini").
+		Relation("Employee.Human.Photo").
+		Relation("Employee.Human.PhotoMini").
 		Relation("DoctorsDivisions.Division.Timetable.TimetableDays.Weekday").
-		Relation("Regalias").
-		Relation("Experiences").
+		Relation("Employee.Regalias").
+		Relation("Employee.Experiences").
 		Relation("Position").
 		Relation("DoctorPaidServices.PaidService").
 		Relation("MedicalProfile").
-		Relation("Certificates.Scan").
+		Relation("Employee.Certificates.Scan").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Timetable.TimetableDays.BreakPeriods").
-		Relation("Educations.EducationCertification").
-		Relation("Educations.EducationAccreditation").
+		Relation("Employee.Educations.EducationCertification").
+		Relation("Employee.Educations.EducationAccreditation").
 		Relation("DoctorComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("comment.published_on DESC")
 		}).
 		Relation("DoctorComments.Comment.User.Human").
 		Relation("NewsDoctors.News").
-		Relation("EducationalOrganizationAcademic").
-		Relation("TeachingActivities").
+		//Relation("EducationalOrganizationAcademic").
+		//Relation("TeachingActivities").
 		Scan(r.ctx)
 	return &item, err
 }

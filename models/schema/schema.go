@@ -42,6 +42,7 @@ type Schema struct {
 	Diet                             map[string]string `json:"diet"`
 	AgePeriod                        map[string]string `json:"agePeriod"`
 	DoctorDivision                   map[string]string `json:"doctorDivision"`
+	Employee                         map[string]string `json:"employee"`
 }
 
 func CreateSchema() Schema {
@@ -87,6 +88,7 @@ func CreateSchema() Schema {
 		Diet:                             createDietSchema(),
 		AgePeriod:                        createAgePeriodSchema(),
 		DoctorDivision:                   createDoctorDivisionSchema(),
+		Employee:                         createEmployeesSchema(),
 	}
 }
 
@@ -615,5 +617,16 @@ func createDoctorDivisionSchema() map[string]string {
 		"value":      "id",
 		"divisionId": "division_id",
 		"doctorId":   "doctor_id",
+	}
+}
+
+func createEmployeesSchema() map[string]string {
+	return map[string]string{
+		"tableName": "employees_view",
+		"key":       "employee",
+		"id":        "id",
+		"fullName":  "full_name",
+		"isMale":    "is_male",
+		"dateBirth": "date_birth",
 	}
 }

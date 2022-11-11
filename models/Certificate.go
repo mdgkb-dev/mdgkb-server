@@ -9,8 +9,8 @@ import (
 type Certificate struct {
 	bun.BaseModel `bun:"certificates,alias:certificates"`
 	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	DoctorID      uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
-	Doctor        *Doctor       `bun:"rel:belongs-to" json:"doctor"`
+	EmployeeID    uuid.NullUUID `bun:"type:uuid" json:"employeeId"`
+	Employee      *Employee     `bun:"rel:belongs-to" json:"employee"`
 	Scan          *FileInfo     `bun:"rel:belongs-to" json:"scan"`
 	ScanID        uuid.NullUUID `bun:"type:uuid" json:"scanId"`
 	Description   string        `json:"description"`

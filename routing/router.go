@@ -27,6 +27,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/educationalorganizationacademics"
 	"mdgkb/mdgkb-server/handlers/educationpublicdocumenttypes"
 	"mdgkb/mdgkb-server/handlers/educationyears"
+	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/entrances"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
@@ -100,6 +101,7 @@ import (
 	educationalOrganizationAcademicsRouter "mdgkb/mdgkb-server/routing/educationalorganizationacademics"
 	educationPublicDocumentTypesRouter "mdgkb/mdgkb-server/routing/educationpublicdocumenttypes"
 	educationYearsRouter "mdgkb/mdgkb-server/routing/educationyears"
+	employeesRouter "mdgkb/mdgkb-server/routing/employees"
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
@@ -241,4 +243,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	pointsAchievementsRouter.Init(api.Group("/points-achievements"), pointsachievements.CreateHandler(helper))
 	dietsRouter.Init(api.Group("/diets"), diets.CreateHandler(helper))
 	dietsGroupsRouter.Init(api.Group("/diets-groups"), dietsgroups.CreateHandler(helper))
+	employeesRouter.Init(api.Group("/employees"), employees.CreateHandler(helper))
 }

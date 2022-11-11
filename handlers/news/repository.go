@@ -120,9 +120,9 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		}).
 		Relation("NewsImages.FileInfo").
 		Relation("NewsDoctors.Doctor").
-		Relation("NewsDoctors.Doctor.Human").
-		Relation("NewsDoctors.Doctor.Human.PhotoMini").
-		Relation("NewsDoctors.Doctor.Regalias").
+		Relation("NewsDoctors.Doctor.Employee.Human").
+		Relation("NewsDoctors.Doctor.Employee.Human.PhotoMini").
+		Relation("NewsDoctors.Doctor.Employee.Regalias").
 		Where("news_view.slug = ?", slug).Scan(r.ctx)
 	return &item, err
 }

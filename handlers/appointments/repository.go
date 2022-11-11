@@ -13,7 +13,7 @@ func (r *Repository) db() *bun.DB {
 func (r *Repository) getAll() (models.Appointments, error) {
 	items := make(models.Appointments, 0)
 	err := r.db().NewSelect().Model(&items).
-		Relation("Doctor.Human").
+		Relation("Doctor.Employee.Human").
 		Relation("Doctor.DoctorsDivisions").
 		Scan(r.ctx)
 	return items, err
@@ -22,7 +22,7 @@ func (r *Repository) getAll() (models.Appointments, error) {
 func (r *Repository) get(id *string) (*models.Appointment, error) {
 	item := models.Appointment{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("Doctor.Human").
+		Relation("Doctor.Employee.Human").
 		Where("Appointments_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
