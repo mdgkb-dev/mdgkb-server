@@ -36,7 +36,7 @@ func (r *Repository) getAll() (items models.Employees, err error) {
 
 func (r *Repository) get(slug string) (*models.Employee, error) {
 	item := models.Employee{}
-	err := r.db().NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
+	err := r.db().NewSelect().Model(&item).Where("employees_view.slug = ?", slug).
 		Relation("Human.Photo").
 		Relation("Human.PhotoMini").
 		Relation("Regalias").
@@ -44,9 +44,6 @@ func (r *Repository) get(slug string) (*models.Employee, error) {
 		Relation("Certificates.Scan").
 		Relation("Educations.EducationCertification").
 		Relation("Educations.EducationAccreditation").
-		Relation("DoctorComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("comment.published_on DESC")
-		}).
 		Scan(r.ctx)
 	return &item, err
 }
