@@ -1,0 +1,17 @@
+{{ template "_header"}}
+<tr>
+    <td colspan=4>
+        <p style="margin:50px 30px 0 30px; text-align:center; font-size:14px; line-height:30px; color:#343E5C;letter-spacing:1px">
+            <b>Поступил новый вопрос!</b>
+        </p>
+        <p style="margin:0 30px 50px 30px; text-align:left; font-size:12px; line-height:14px; color:#343E5C;letter-spacing:1px">
+            <b>{{.Question.Theme }}</b>
+            <br>
+            <p>{{.Question.OriginalQuestion }}</p>
+            <br>
+            <br>
+            <a href="{{.Host}}/admin/questions/{{.Question.ID}}">Перейти к вопросу</a>
+        </p>
+    </td>
+</tr>
+{{ template "_footer"}}

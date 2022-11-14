@@ -1,6 +1,7 @@
 package questions
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 	"strconv"
@@ -22,6 +23,22 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	emailStruct := struct {
+		Question *models.Question
+		Host     string
+	}{
+		&item,
+		h.helper.HTTP.Host,
+	}
+	mail, err := h.helper.Templater.ParseTemplate(emailStruct, "email/newQuestion.gohtml")
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	err = h.helper.Email.SendEmail([]string{"lakkinzimusic@gmail.com"}, fmt.Sprintf("Новый вопрос: %s", item.Theme), mail)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	h.helper.Broker.SendEvent("question-create", item)
 	c.JSON(http.StatusOK, item)
 }
 
