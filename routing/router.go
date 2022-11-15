@@ -13,8 +13,12 @@ import (
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
+	"mdgkb/mdgkb-server/handlers/dailymenuitems"
+	"mdgkb/mdgkb-server/handlers/dailymenus"
 	"mdgkb/mdgkb-server/handlers/diets"
 	"mdgkb/mdgkb-server/handlers/dietsgroups"
+	"mdgkb/mdgkb-server/handlers/dishesgroups"
+	"mdgkb/mdgkb-server/handlers/dishessamples"
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/documenttypes"
@@ -87,8 +91,12 @@ import (
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
 	childrenRouter "mdgkb/mdgkb-server/routing/children"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
+	dailyMenuItemsRouter "mdgkb/mdgkb-server/routing/dailymenuitems"
+	dailyMenusRouter "mdgkb/mdgkb-server/routing/dailymenus"
 	dietsRouter "mdgkb/mdgkb-server/routing/diets"
 	dietsGroupsRouter "mdgkb/mdgkb-server/routing/dietsgroups"
+	dishesGroupsRouter "mdgkb/mdgkb-server/routing/dishesgroups"
+	dishesSamplesRouter "mdgkb/mdgkb-server/routing/dishessamples"
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	documentTypesRouter "mdgkb/mdgkb-server/routing/documenttypes"
@@ -244,4 +252,8 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dietsRouter.Init(api.Group("/diets"), diets.CreateHandler(helper))
 	dietsGroupsRouter.Init(api.Group("/diets-groups"), dietsgroups.CreateHandler(helper))
 	employeesRouter.Init(api.Group("/employees"), employees.CreateHandler(helper))
+	dishesGroupsRouter.Init(api.Group("/dishes-groups"), dishesgroups.CreateHandler(helper))
+	dishesSamplesRouter.Init(api.Group("/dishes-samples"), dishessamples.CreateHandler(helper))
+	dailyMenusRouter.Init(api.Group("/daily-menus"), dailymenus.CreateHandler(helper))
+	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 }
