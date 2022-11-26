@@ -9,6 +9,7 @@ type HospitalizationType struct {
 	bun.BaseModel `bun:"hospitalizations_types,alias:hospitalizations_types"`
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Paid          bool      `json:"paid"`
+	Order         uint8     `bun:"hospitalization_type_order" json:"order"`
 
 	PolicyType    *PolicyType    `json:"policyType"`
 	TreatmentType *TreatmentType `json:"treatmentType"`

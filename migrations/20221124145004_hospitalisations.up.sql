@@ -15,6 +15,6 @@ CREATE TABLE hospitalizations (
   hospitalization_date date,
   form_value_id uuid REFERENCES form_values(id) ON UPDATE CASCADE ON DELETE CASCADE,
   division_id uuid REFERENCES divisions(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  hospitalization_type_id uuid REFERENCES hospitalization_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  hospitalization_type_id uuid REFERENCES hospitalizations_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
   medical_scan_id uuid REFERENCES file_infos(id) ON UPDATE CASCADE ON DELETE CASCADE
 );

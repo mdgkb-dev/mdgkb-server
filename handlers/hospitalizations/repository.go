@@ -27,7 +27,12 @@ func (r *Repository) create(item *models.Hospitalization) (err error) {
 
 func (r *Repository) getAll() (items models.Hospitalizations, err error) {
 	query := r.db().NewSelect().Model(&items).
+		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("Division").
 		Relation("HospitalizationType")
 	r.queryFilter.HandleQuery(query)
@@ -38,10 +43,15 @@ func (r *Repository) getAll() (items models.Hospitalizations, err error) {
 func (r *Repository) get(id string) (*models.Hospitalization, error) {
 	item := models.Hospitalization{}
 	err := r.db().NewSelect().Model(&item).
+		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("Division").
 		Relation("HospitalizationType").
-		Where("hospitalizations.id = ?", id).
+		Where("hospitalizations_view.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
 }

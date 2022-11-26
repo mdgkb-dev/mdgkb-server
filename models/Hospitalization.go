@@ -8,7 +8,7 @@ import (
 )
 
 type Hospitalization struct {
-	bun.BaseModel `bun:"hospitalizations,alias:hospitalizations"`
+	bun.BaseModel `bun:"hospitalizations,select:hospitalizations_view,alias:hospitalizations_view"`
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Date          time.Time `bun:"hospitalization_date" json:"date"`
 
