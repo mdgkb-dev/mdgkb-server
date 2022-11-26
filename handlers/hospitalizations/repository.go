@@ -25,7 +25,8 @@ func (r *Repository) create(item *models.Hospitalization) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (items models.Hospitalizations, err error) {
+func (r *Repository) getAll() (models.Hospitalizations, error) {
+	items := make(models.Hospitalizations, 0)
 	query := r.db().NewSelect().Model(&items).
 		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
@@ -36,7 +37,7 @@ func (r *Repository) getAll() (items models.Hospitalizations, err error) {
 		Relation("Division").
 		Relation("HospitalizationType")
 	r.queryFilter.HandleQuery(query)
-	err = query.Scan(r.ctx)
+	err := query.Scan(r.ctx)
 	return items, err
 }
 
