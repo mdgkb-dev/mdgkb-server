@@ -27,7 +27,7 @@ func (s *Service) Upsert(item *models.FormValue) error {
 		return err
 	}
 	var oldFormValue *models.FormValue
-
+	fmt.Println(item.ID)
 	if item.ID.Valid && uuid.Nil.String() != item.ID.UUID.String() {
 		oldFormValue, err = s.repository.get(item.ID.UUID.String())
 		if err != nil {

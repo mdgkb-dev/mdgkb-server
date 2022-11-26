@@ -43,6 +43,7 @@ type Schema struct {
 	AgePeriod                        map[string]string `json:"agePeriod"`
 	DoctorDivision                   map[string]string `json:"doctorDivision"`
 	Employee                         map[string]string `json:"employee"`
+	Hospitalization                  map[string]string `json:"hospitalization"`
 }
 
 func CreateSchema() Schema {
@@ -89,6 +90,7 @@ func CreateSchema() Schema {
 		AgePeriod:                        createAgePeriodSchema(),
 		DoctorDivision:                   createDoctorDivisionSchema(),
 		Employee:                         createEmployeesSchema(),
+		Hospitalization:                  createHospitalizationSchema(),
 	}
 }
 
@@ -628,5 +630,24 @@ func createEmployeesSchema() map[string]string {
 		"fullName":  "full_name",
 		"isMale":    "is_male",
 		"dateBirth": "date_birth",
+	}
+}
+
+func createHospitalizationSchema() map[string]string {
+	return map[string]string{
+		"tableName":     "hospitalizations_view",
+		"key":           "hospitalization",
+		"id":            "id",
+		"date":          "date",
+		"is_new":        "is_new",
+		"createdAt":     "created_at",
+		"approvingDate": "approving_date",
+		"formStatusId":  "form_status_id",
+		"email":         "email",
+		"fullName":      "full_name",
+		"policyType":    "policy_type",
+		"treatmentType": "treatment_type",
+		"stayType":      "stay_type",
+		"referralType":  "referral_type",
 	}
 }

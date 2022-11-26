@@ -41,6 +41,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/formvalues"
 	"mdgkb/mdgkb-server/handlers/gates"
 	"mdgkb/mdgkb-server/handlers/heads"
+	"mdgkb/mdgkb-server/handlers/hospitalizations"
+	"mdgkb/mdgkb-server/handlers/hospitalizationstypes"
 	"mdgkb/mdgkb-server/handlers/medicalprofiles"
 	"mdgkb/mdgkb-server/handlers/menus"
 	"mdgkb/mdgkb-server/handlers/meta"
@@ -119,7 +121,8 @@ import (
 	formValuesRouter "mdgkb/mdgkb-server/routing/formvalues"
 	gatesRouter "mdgkb/mdgkb-server/routing/gates"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
-	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalization"
+	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalizations"
+	hospitalizationsTypesRouter "mdgkb/mdgkb-server/routing/hospitalizationsTypes"
 	medicalProfilesRouter "mdgkb/mdgkb-server/routing/medicalprofiles"
 	menusRouter "mdgkb/mdgkb-server/routing/menus"
 	metaRouter "mdgkb/mdgkb-server/routing/meta"
@@ -182,7 +185,8 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(helper))
 	buildingsRouter.Init(api.Group("/buildings"), buildings.CreateHandler(helper))
 	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(helper))
-	hospitalizationRouter.Init(api.Group("/hospitalizations"), helper)
+	hospitalizationRouter.Init(api.Group("/hospitalizations"), hospitalizations.CreateHandler(helper))
+	hospitalizationsTypesRouter.Init(api.Group("/hospitalizations-types"), hospitalizationstypes.CreateHandler(helper))
 	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(helper))
 	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(helper))
 	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(helper))
