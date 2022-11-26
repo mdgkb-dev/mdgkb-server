@@ -1,3 +1,5 @@
+drop view if exists hospitalizations_view;
+drop table hospitalizations_to_document_types;
 drop table hospitalizations;
 
 CREATE TABLE hospitalizations_types (
