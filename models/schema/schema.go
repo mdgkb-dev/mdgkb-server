@@ -44,6 +44,7 @@ type Schema struct {
 	DoctorDivision                   map[string]string `json:"doctorDivision"`
 	Employee                         map[string]string `json:"employee"`
 	Hospitalization                  map[string]string `json:"hospitalization"`
+	SupportMessage                   map[string]string `json:"supportMessage"`
 }
 
 func CreateSchema() Schema {
@@ -91,6 +92,7 @@ func CreateSchema() Schema {
 		DoctorDivision:                   createDoctorDivisionSchema(),
 		Employee:                         createEmployeesSchema(),
 		Hospitalization:                  createHospitalizationSchema(),
+		SupportMessage:                   createSupportMessageSchema(),
 	}
 }
 
@@ -650,5 +652,19 @@ func createHospitalizationSchema() map[string]string {
 		"treatmentType": "treatment_type",
 		"stayType":      "stay_type",
 		"referralType":  "referral_type",
+	}
+}
+
+func createSupportMessageSchema() map[string]string {
+	return map[string]string{
+		"tableName": "support_messages",
+		"key":       "supportMessage",
+		"id":        "id",
+		"value":     "id",
+		"date":      "support_message_date",
+		"isNew":     "is_new",
+		"theme":     "theme",
+		"question":  "question",
+		"answer":    "answer",
 	}
 }

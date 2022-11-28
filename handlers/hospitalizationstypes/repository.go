@@ -35,6 +35,9 @@ func (r *Repository) getAll() (items models.HospitalizationsTypes, err error) {
 		Relation("FormPattern.FormStatusGroup").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("FormPattern.PersonalDataAgreement").
+		Relation("HospitalizationTypeAnalyzes").
+		Relation("HospitalizationTypeDocuments").
+		Relation("HospitalizationTypeStages").
 		Order("hospitalizations_types.hospitalization_type_order")
 	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)

@@ -1,4 +1,4 @@
-package vacancies
+package questions
 
 import (
 	handler "mdgkb/mdgkb-server/handlers/questions"

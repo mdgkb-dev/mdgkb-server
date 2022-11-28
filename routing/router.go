@@ -69,6 +69,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/sideorganizations"
 	"mdgkb/mdgkb-server/handlers/specializations"
+	"mdgkb/mdgkb-server/handlers/supportmessages"
 	"mdgkb/mdgkb-server/handlers/tags"
 	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/handlers/timetablepatterns"
@@ -149,6 +150,7 @@ import (
 	searchRouter "mdgkb/mdgkb-server/routing/search"
 	sideOrganizationsRouter "mdgkb/mdgkb-server/routing/sideorganizations"
 	specializationsRouter "mdgkb/mdgkb-server/routing/specializations"
+	supportMessagesRouter "mdgkb/mdgkb-server/routing/supportmessages"
 	tagsRouter "mdgkb/mdgkb-server/routing/tags"
 	teachersRouter "mdgkb/mdgkb-server/routing/teachers"
 	timetablePatternsRouter "mdgkb/mdgkb-server/routing/timetablepatterns"
@@ -260,4 +262,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dishesSamplesRouter.Init(api.Group("/dishes-samples"), dishessamples.CreateHandler(helper))
 	dailyMenusRouter.Init(api.Group("/daily-menus"), dailymenus.CreateHandler(helper))
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
+	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))
 }

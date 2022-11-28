@@ -7,10 +7,9 @@ import (
 
 type HospitalizationType struct {
 	bun.BaseModel `bun:"hospitalizations_types,alias:hospitalizations_types"`
-	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
-	Paid          bool      `json:"paid"`
-	Order         uint8     `bun:"hospitalization_type_order" json:"order"`
-
+	ID            uuid.NullUUID  `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
+	Order         uint8          `bun:"hospitalization_type_order" json:"order"`
+	Description   string         `json:"description"`
 	PolicyType    *PolicyType    `json:"policyType"`
 	TreatmentType *TreatmentType `json:"treatmentType"`
 	StayType      *StayType      `json:"stayType"`
@@ -18,6 +17,10 @@ type HospitalizationType struct {
 
 	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
 	FormPatternID uuid.NullUUID `bun:"type:uuid" json:"formPatternId"`
+
+	HospitalizationTypeAnalyzes  HospitalizationTypeAnalyzes  `bun:"rel:has-many" json:"hospitalizationTypeAnalyzes"`
+	HospitalizationTypeDocuments HospitalizationTypeDocuments `bun:"rel:has-many" json:"hospitalizationTypeDocuments"`
+	HospitalizationTypeStages    HospitalizationTypeStages    `bun:"rel:has-many" json:"hospitalizationTypeStages"`
 }
 
 type HospitalizationsTypes []*HospitalizationType

@@ -44,14 +44,24 @@ func (r *Repository) getAll() (models.Hospitalizations, error) {
 func (r *Repository) get(id string) (*models.Hospitalization, error) {
 	item := models.Hospitalization{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("FormValue.Fields.File").
+		Relation("FormValue.FormValueFiles.File").
 		Relation("FormValue.Fields.ValueType").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("Division").
-		Relation("HospitalizationType").
+		Relation("HospitalizationType.FormPattern", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.ExcludeColumn("with_personal_data_agreement")
+		}).
+		Relation("HospitalizationType.FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("HospitalizationType.FormPattern.Fields.ValueType").
 		Where("hospitalizations_view.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
