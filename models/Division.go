@@ -58,6 +58,9 @@ type Division struct {
 	SocialMedias            socialHelper.Socials `bun:"-" json:"socialMedias"`
 	DivisionVideos          DivisionVideos       `bun:"rel:has-many" json:"divisionVideos"`
 	DivisionVideosForDelete []uuid.UUID          `bun:"-" json:"divisionVideosForDelete"`
+
+	HasDiagnostic bool `json:"hasDiagnostic"`
+	HasAmbulatory bool `json:"hasAmbulatory"`
 }
 
 type Divisions []*Division

@@ -150,6 +150,8 @@ func createDivisionSchema() map[string]string {
 		"hospitalizationContactInfoId": "hospitalization_contact_info_id",
 		"treatDirectionId":             "treat_direction_id",
 		"buildingId":                   "building_id",
+		"hasAmbulatory":                "has_ambulatory",
+		"hasDiagnostic":                "has_diagnostic",
 	}
 }
 

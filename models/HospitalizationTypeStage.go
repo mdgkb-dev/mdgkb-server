@@ -14,4 +14,4 @@ type HospitalizationTypeStage struct {
 	HospitalizationTypeID uuid.NullUUID        `bun:"type:uuid" json:"hospitalizationTypeId"`
 }
 
-type HospitalizationTypeStages []*HospitalizationType
+type HospitalizationTypeStages []*HospitalizationTypeStage
