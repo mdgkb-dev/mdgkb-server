@@ -1,7 +1,7 @@
 package candidatedocumenttypes
 
 import (
-	"mdgkb/mdgkb-server/handlers/documenttypes"
+	"mdgkb/mdgkb-server/handlers/pagesections"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
@@ -29,7 +29,7 @@ func (s *Service) Create(item *models.CandidateDocumentType) error {
 		return err
 	}
 	//item.SetIDForChildren()
-	//err = documentTypes.CreateService(s.helper).UpsertMany(item.DocumentTypes)
+	//err = documentTypes.CreateService(s.helper).UpsertMany(item.PageSections)
 	//if err != nil {
 	//	return err
 	//}
@@ -43,11 +43,11 @@ func (s *Service) Update(item *models.CandidateDocumentType) error {
 	}
 	//item.SetIDForChildren()
 	//documentTypeService := documentTypes.CreateService(s.helper)
-	//err = documentTypeService.DeleteMany(item.DocumentTypesForDelete)
+	//err = documentTypeService.DeleteMany(item.PageSectionsForDelete)
 	//if err != nil {
 	//	return err
 	//}
-	//err = documentTypeService.UpsertMany(item.DocumentTypes)
+	//err = documentTypeService.UpsertMany(item.PageSections)
 	//if err != nil {
 	//	return err
 	//}
@@ -59,7 +59,7 @@ func (s *Service) Delete(id string) error {
 }
 
 func (s *Service) UpsertMany(items DocumentTypesWithDelete) error {
-	documentService := documenttypes.CreateService(s.helper)
+	documentService := pagesections.CreateService(s.helper)
 	if len(items.CandidateDocumentTypes) > 0 {
 		err := documentService.UpsertMany(items.CandidateDocumentTypes.GetDocumentTypes())
 		if err != nil {

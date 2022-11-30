@@ -9,7 +9,7 @@ type ResidencyDocumentType struct {
 	bun.BaseModel  `bun:"residency_document_types,alias:residency_document_types"`
 	ID             uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 	DocumentTypeID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"documentTypeId"`
-	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
+	DocumentType   *PageSection  `bun:"rel:belongs-to" json:"documentType"`
 }
 
 type ResidencyDocumentTypes []*ResidencyDocumentType
@@ -42,8 +42,8 @@ func (items ResidencyDocumentTypes) SetFilePath(fileID *string) *string {
 	return nil
 }
 
-func (items ResidencyDocumentTypes) GetDocumentTypes() DocumentTypes {
-	itemsForGet := make(DocumentTypes, 0)
+func (items ResidencyDocumentTypes) GetDocumentTypes() PageSections {
+	itemsForGet := make(PageSections, 0)
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.DocumentType)
 	}

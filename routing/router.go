@@ -21,7 +21,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/dishessamples"
 	"mdgkb/mdgkb-server/handlers/divisions"
 	"mdgkb/mdgkb-server/handlers/doctors"
-	"mdgkb/mdgkb-server/handlers/documenttypes"
 	"mdgkb/mdgkb-server/handlers/donorrules"
 	"mdgkb/mdgkb-server/handlers/dpoapplications"
 	"mdgkb/mdgkb-server/handlers/dpocourses"
@@ -49,6 +48,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/newsslides"
 	"mdgkb/mdgkb-server/handlers/pages"
+	"mdgkb/mdgkb-server/handlers/pagesections"
+	"mdgkb/mdgkb-server/handlers/pagesidemenus"
 	"mdgkb/mdgkb-server/handlers/paidprograms"
 	"mdgkb/mdgkb-server/handlers/paidprogramsgroups"
 	"mdgkb/mdgkb-server/handlers/paidservices"
@@ -60,7 +61,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/postgraduatedocumentypes"
 	"mdgkb/mdgkb-server/handlers/preparations"
 	"mdgkb/mdgkb-server/handlers/projects"
-	"mdgkb/mdgkb-server/handlers/publicdocumenttypes"
 	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/residencyapplications"
 	"mdgkb/mdgkb-server/handlers/residencycourses"
@@ -102,7 +102,6 @@ import (
 	dishesSamplesRouter "mdgkb/mdgkb-server/routing/dishessamples"
 	divisionsRouter "mdgkb/mdgkb-server/routing/divisions"
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
-	documentTypesRouter "mdgkb/mdgkb-server/routing/documenttypes"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorrules"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoapplications"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpocourses"
@@ -130,6 +129,8 @@ import (
 	newsRouter "mdgkb/mdgkb-server/routing/news"
 	newsSlidesRouter "mdgkb/mdgkb-server/routing/newsslides"
 	pagesRouter "mdgkb/mdgkb-server/routing/pages"
+	pageSectionsRouter "mdgkb/mdgkb-server/routing/pagesections"
+	pageSideMenusRouter "mdgkb/mdgkb-server/routing/pagesidemenus"
 	paidProgramsRouter "mdgkb/mdgkb-server/routing/paidprograms"
 	paidProgramsGroupsRouter "mdgkb/mdgkb-server/routing/paidprogramsgroups"
 	paidServicesRouter "mdgkb/mdgkb-server/routing/paidservices"
@@ -141,7 +142,6 @@ import (
 	postgraduateDocumentTypesRouter "mdgkb/mdgkb-server/routing/postgraduatedocumenttypes"
 	preparationsRouter "mdgkb/mdgkb-server/routing/preparations"
 	projectsRouter "mdgkb/mdgkb-server/routing/projects"
-	publicDocumentTypesRouter "mdgkb/mdgkb-server/routing/publicdocumenttypes"
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 	residencyApplicationsRouter "mdgkb/mdgkb-server/routing/residencyapplications"
 	residencyCoursesRouter "mdgkb/mdgkb-server/routing/residencycourses"
@@ -204,7 +204,7 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(helper))
 	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(helper))
 	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyresponse.CreateHandler(helper))
-	documentTypesRouter.Init(api.Group("/document-types"), documenttypes.CreateHandler(helper))
+	pageSectionsRouter.Init(api.Group("/page-sections"), pagesections.CreateHandler(helper))
 	valueTypesRouter.Init(api.Group("/value-types"), valuetypes.CreateHandler(helper))
 	searchRouter.Init(api.Group("/search"), search.CreateHandler(helper))
 	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(helper))
@@ -217,7 +217,7 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	paidProgramsRouter.Init(api.Group("/paid-programs"), paidprograms.CreateHandler(helper))
 	paidProgramsGroupsRouter.Init(api.Group("/paid-programs-groups"), paidprogramsgroups.CreateHandler(helper))
 	partnerTypesRouter.Init(api.Group("/partner-types"), partnertypes.CreateHandler(helper))
-	publicDocumentTypesRouter.Init(api.Group("/public-document-types"), publicdocumenttypes.CreateHandler(helper))
+	pageSideMenusRouter.Init(api.Group("/page-side-menus"), pagesidemenus.CreateHandler(helper))
 	partnersRouter.Init(api.Group("/partners"), partners.CreateHandler(helper))
 	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(helper))
 	donorRulesRouter.Init(api.Group("/donor-rules"), donorrules.CreateHandler(helper))

@@ -7,9 +7,9 @@ import (
 
 type EducationPublicDocumentType struct {
 	bun.BaseModel        `bun:"education_public_document_types,alias:education_public_document_types"`
-	ID                   uuid.NullUUID       `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
-	PublicDocumentTypeID uuid.NullUUID       `bun:"type:uuid,nullzero,default:NULL" json:"publicDocumentTypeId"`
-	PublicDocumentType   *PublicDocumentType `bun:"rel:belongs-to" json:"publicDocumentType"`
+	ID                   uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
+	PublicDocumentTypeID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"publicDocumentTypeId"`
+	PublicDocumentType   *PageSideMenu `bun:"rel:belongs-to" json:"publicDocumentType"`
 }
 
 type EducationPublicDocumentTypes []*EducationPublicDocumentType

@@ -9,7 +9,7 @@ type CandidateDocumentType struct {
 	bun.BaseModel  `bun:"candidate_document_types,alias:candidate_document_types"`
 	ID             uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 	DocumentTypeID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"documentTypeId"`
-	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
+	DocumentType   *PageSection  `bun:"rel:belongs-to" json:"documentType"`
 }
 
 type CandidateDocumentTypes []*CandidateDocumentType
@@ -42,8 +42,8 @@ func (items CandidateDocumentTypes) SetFilePath(fileID *string) *string {
 	return nil
 }
 
-func (items CandidateDocumentTypes) GetDocumentTypes() DocumentTypes {
-	itemsForGet := make(DocumentTypes, 0)
+func (items CandidateDocumentTypes) GetDocumentTypes() PageSections {
+	itemsForGet := make(PageSections, 0)
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.DocumentType)
 	}

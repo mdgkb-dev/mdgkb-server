@@ -1,7 +1,7 @@
 package admissioncommitteedocumenttypes
 
 import (
-	"mdgkb/mdgkb-server/handlers/documenttypes"
+	"mdgkb/mdgkb-server/handlers/pagesections"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
@@ -24,7 +24,7 @@ func (s *Service) Get(id string) (*models.AdmissionCommitteeDocumentType, error)
 }
 
 func (s *Service) Create(item *models.AdmissionCommitteeDocumentType) error {
-	err := documenttypes.CreateService(s.helper).Create(item.DocumentType)
+	err := pagesections.CreateService(s.helper).Create(item.DocumentType)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func (s *Service) Create(item *models.AdmissionCommitteeDocumentType) error {
 }
 
 func (s *Service) Update(item *models.AdmissionCommitteeDocumentType) error {
-	err := documenttypes.CreateService(s.helper).Update(item.DocumentType)
+	err := pagesections.CreateService(s.helper).Update(item.DocumentType)
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func (s *Service) UpdateOrder(items models.AdmissionCommitteeDocumentTypes) erro
 }
 
 func (s *Service) UpsertMany(items CommitteeDocumentTypesWithDelete) error {
-	documentService := documenttypes.CreateService(s.helper)
+	documentService := pagesections.CreateService(s.helper)
 	if len(items.AdmissionCommitteeDocumentTypes) > 0 {
 		err := documentService.UpsertMany(items.AdmissionCommitteeDocumentTypes.GetDocumentTypes())
 		if err != nil {

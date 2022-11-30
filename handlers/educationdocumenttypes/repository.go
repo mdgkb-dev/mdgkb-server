@@ -20,10 +20,10 @@ func (r *Repository) create(item *models.EducationDocumentType) (err error) {
 func (r *Repository) getAll() (models.EducationDocumentTypes, error) {
 	items := make(models.EducationDocumentTypes, 0)
 	err := r.db().NewSelect().Model(&items).
-		Relation("DocumentType.Documents", func(q *bun.SelectQuery) *bun.SelectQuery {
+		Relation("PageSection.PageSectionDocuments", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("documents.document_order ASC")
 		}).
-		Relation("DocumentType.Documents.DocumentsScans.Scan").
+		Relation("PageSection.PageSectionDocuments.DocumentsScans.Scan").
 		Order("education_document_type_order").
 		Scan(r.ctx)
 	return items, err
@@ -32,10 +32,10 @@ func (r *Repository) getAll() (models.EducationDocumentTypes, error) {
 func (r *Repository) get(id string) (*models.EducationDocumentType, error) {
 	item := models.EducationDocumentType{}
 	err := r.db().NewSelect().Model(&item).Where("education_document_types.id = ?", id).
-		Relation("DocumentType.Documents", func(q *bun.SelectQuery) *bun.SelectQuery {
+		Relation("PageSection.PageSectionDocuments", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("documents.document_order")
 		}).
-		Relation("DocumentType.Documents.DocumentsScans.Scan").
+		Relation("PageSection.PageSectionDocuments.DocumentsScans.Scan").
 		Scan(r.ctx)
 	return &item, err
 }

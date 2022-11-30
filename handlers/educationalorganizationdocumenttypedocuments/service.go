@@ -1,7 +1,7 @@
 package educationalorganizationdocumenttypedocuments
 
 import (
-	document "mdgkb/mdgkb-server/handlers/documents"
+	document "mdgkb/mdgkb-server/handlers/pagesectiondocuments"
 	"mdgkb/mdgkb-server/models"
 )
 

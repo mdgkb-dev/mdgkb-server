@@ -40,7 +40,7 @@ func (r *Repository) upsert(item *models.FileInfo) (err error) {
 
 //func (r *Repository) deleteMany(idPool []string) (err error) {
 //	_, err = r.db().NewDelete().
-//		Model((*models.DocumentType)(nil)).
+//		Model((*models.PageSection)(nil)).
 //		Where("id IN (?)", bun.In(idPool)).
 //		Exec(r.ctx)
 //	return err

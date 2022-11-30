@@ -17,7 +17,7 @@ type CandidateExam struct {
 	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
 	FormPatternID uuid.NullUUID `bun:"type:uuid" json:"formPatternId"`
 
-	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
+	DocumentType   *PageSection  `bun:"rel:belongs-to" json:"documentType"`
 	DocumentTypeID uuid.NullUUID `bun:"type:uuid" json:"documentTypeId"`
 }
 

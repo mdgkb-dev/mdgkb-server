@@ -12,14 +12,14 @@ type EducationalOrganizationDocumentTypeDocument struct {
 	EducationalOrganizationDocumentType   *EducationalOrganizationDocumentType `bun:"rel:belongs-to" json:"educationalOrganizationDocumentType"`
 	EducationalOrganizationDocumentTypeID uuid.UUID                            `bun:"type:uuid" json:"educationalOrganizationDocumentTypeId"`
 
-	Document   *Document `bun:"rel:belongs-to" json:"document"`
-	DocumentID uuid.UUID `bun:"type:uuid" json:"documentId"`
+	Document   *PageSectionDocument `bun:"rel:belongs-to" json:"document"`
+	DocumentID uuid.UUID            `bun:"type:uuid" json:"documentId"`
 }
 
 type EducationalOrganizationDocumentTypeDocuments []*EducationalOrganizationDocumentTypeDocument
 
-func (items EducationalOrganizationDocumentTypeDocuments) GetDocuments() Documents {
-	itemsForGet := make(Documents, 0)
+func (items EducationalOrganizationDocumentTypeDocuments) GetDocuments() PageSectionDocuments {
+	itemsForGet := make(PageSectionDocuments, 0)
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.Document)
 	}
@@ -34,9 +34,9 @@ func (items EducationalOrganizationDocumentTypeDocuments) SetForeignKeys() {
 
 func (items EducationalOrganizationDocumentTypeDocuments) SetFilePath(fileID *string) *string {
 	for range items {
-		//if item.Document.Scan.ID.UUID.String() == *fileID {
-		//	item.Document.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
-		//	return &item.Document.Scan.FileSystemPath
+		//if item.PageSectionDocument.Scan.ID.UUID.String() == *fileID {
+		//	item.PageSectionDocument.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
+		//	return &item.PageSectionDocument.Scan.FileSystemPath
 		//}
 	}
 	return nil

@@ -10,7 +10,7 @@ type AdmissionCommitteeDocumentType struct {
 	ID             uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 	Order          int           `bun:"admission_committee_document_type_order" json:"order"`
 	DocumentTypeID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"documentTypeId"`
-	DocumentType   *DocumentType `bun:"rel:belongs-to" json:"documentType"`
+	DocumentType   *PageSection  `bun:"rel:belongs-to" json:"documentType"`
 }
 
 type AdmissionCommitteeDocumentTypes []*AdmissionCommitteeDocumentType
@@ -43,8 +43,8 @@ func (items AdmissionCommitteeDocumentTypes) SetFilePath(fileID *string) *string
 	return nil
 }
 
-func (items AdmissionCommitteeDocumentTypes) GetDocumentTypes() DocumentTypes {
-	itemsForGet := make(DocumentTypes, 0)
+func (items AdmissionCommitteeDocumentTypes) GetDocumentTypes() PageSections {
+	itemsForGet := make(PageSections, 0)
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.DocumentType)
 	}

@@ -40,7 +40,7 @@ func (r *Repository) get(id string) (*models.CandidateExam, error) {
 		Relation("FormPattern.Fields.ValueType").
 		Relation("FormPattern.DefaultFormStatus").
 		Relation("FormPattern.FormStatusGroup").
-		Relation("DocumentType.Documents.DocumentsScans").
+		Relation("PageSection.PageSectionDocuments.DocumentsScans").
 		Where("candidate_exams.id = '8800afcc-4139-4285-b552-b78e85d7f0dd'", id).Scan(r.ctx)
 	return &item, err
 }

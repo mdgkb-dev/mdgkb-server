@@ -12,14 +12,14 @@ type PageDocument struct {
 	Page   *Page     `bun:"rel:belongs-to" json:"page"`
 	PageID uuid.UUID `bun:"type:uuid" json:"pageId"`
 
-	Document   *Document `bun:"rel:belongs-to" json:"document"`
-	DocumentID uuid.UUID `bun:"type:uuid" json:"documentId"`
+	Document   *PageSectionDocument `bun:"rel:belongs-to" json:"document"`
+	DocumentID uuid.UUID            `bun:"type:uuid" json:"documentId"`
 }
 
 type PageDocuments []*PageDocument
 
-func (items PageDocuments) GetDocuments() Documents {
-	itemsForGet := make(Documents, 0)
+func (items PageDocuments) GetDocuments() PageSectionDocuments {
+	itemsForGet := make(PageSectionDocuments, 0)
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.Document)
 	}
@@ -34,9 +34,9 @@ func (items PageDocuments) SetForeignKeys() {
 
 func (items PageDocuments) SetFilePath(fileID *string) *string {
 	for range items {
-		//if item.Document.Scan.ID.UUID.String() == *fileID {
-		//	item.Document.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
-		//	return &item.Document.Scan.FileSystemPath
+		//if item.PageSectionDocument.Scan.ID.UUID.String() == *fileID {
+		//	item.PageSectionDocument.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
+		//	return &item.PageSectionDocument.Scan.FileSystemPath
 		//}
 	}
 	return nil

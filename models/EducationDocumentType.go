@@ -10,8 +10,8 @@ type EducationDocumentType struct {
 	ID                     uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 	Order                  int           `bun:"education_document_type_order" json:"order"`
 	DocumentTypeID         uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"documentTypeId"`
-	DocumentType           *DocumentType `bun:"rel:belongs-to" json:"documentType"`
-	DocumentTypes          DocumentTypes `bun:"rel:has-many" json:"documentTypes"`
+	DocumentType           *PageSection  `bun:"rel:belongs-to" json:"documentType"`
+	DocumentTypes          PageSections  `bun:"rel:has-many" json:"documentTypes"`
 	DocumentTypesForDelete []uuid.UUID   `bun:"-" json:"documentTypesForDelete"`
 }
 
@@ -45,8 +45,8 @@ func (items EducationDocumentTypes) SetFilePath(fileID *string) *string {
 	return nil
 }
 
-func (items EducationDocumentTypes) GetDocumentTypes() DocumentTypes {
-	itemsForGet := make(DocumentTypes, 0)
+func (items EducationDocumentTypes) GetDocumentTypes() PageSections {
+	itemsForGet := make(PageSections, 0)
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.DocumentType)
 	}

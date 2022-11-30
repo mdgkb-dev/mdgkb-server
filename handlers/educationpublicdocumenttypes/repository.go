@@ -20,7 +20,7 @@ func (r *Repository) create(item *models.EducationPublicDocumentType) (err error
 func (r *Repository) getAll() (models.EducationPublicDocumentTypes, error) {
 	items := make(models.EducationPublicDocumentTypes, 0)
 	err := r.db().NewSelect().Model(&items).
-		Relation("PublicDocumentType.DocumentTypes.Documents.DocumentsScans.Scan").
+		Relation("PageSideMenu.PageSections.PageSectionDocuments.DocumentsScans.Scan").
 		Scan(r.ctx)
 	return items, err
 }
@@ -28,7 +28,7 @@ func (r *Repository) getAll() (models.EducationPublicDocumentTypes, error) {
 func (r *Repository) get(id string) (*models.EducationPublicDocumentType, error) {
 	item := models.EducationPublicDocumentType{}
 	err := r.db().NewSelect().Model(&item).Where("id = ?", id).
-		Relation("PublicDocumentType.DocumentTypes.Documents.DocumentsScans.Scan").
+		Relation("PageSideMenu.PageSections.PageSectionDocuments.DocumentsScans.Scan").
 		Scan(r.ctx)
 	return &item, err
 }
