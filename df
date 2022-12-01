@@ -1,0 +1,17 @@
+ pg_terminate_backend 
+----------------------
+ t
+ t
+ t
+ t
+ t
+ t
+ t
+ t
+ t
+ t
+ t
+ t
+ t
+(13 rows)
+
