@@ -11,6 +11,7 @@ type DishSample struct {
 	Name          string        `json:"name"`
 	Price         uint          `json:"price"`
 	Caloric       uint          `json:"caloric"`
+	Weight        uint          `json:"weight"`
 	DishesGroup   *DishesGroup  `bun:"rel:belongs-to" json:"dishesGroup"`
 	DishesGroupID uuid.NullUUID `bun:"type:uuid"  json:"dishesGroupId"`
 }
