@@ -10,11 +10,14 @@ type PageSection struct {
 	bun.BaseModel `bun:"page_sections,alias:page_sections"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 	Name          string        `json:"name,omitempty"`
-	Order         uint          `bun:"document_type_order" json:"order"`
+	Order         uint          `bun:"item_order" json:"order"`
 	Description   string        `json:"description,omitempty"`
 
 	PageSideMenuID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"pageSideMenuId"`
 	PageSideMenu   *PageSideMenu `bun:"rel:belongs-to" json:"pageSideMenu"`
+
+	PageID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"pageId"`
+	Page   *Page         `bun:"rel:belongs-to" json:"page"`
 
 	PageSectionDocuments          PageSectionDocuments `bun:"rel:has-many" json:"pageSectionDocuments"`
 	PageSectionDocumentsForDelete []uuid.UUID          `bun:"-" json:"pageSectionDocumentsForDelete"`

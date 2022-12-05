@@ -1,14 +1,12 @@
 package routing
 
 import (
-	"mdgkb/mdgkb-server/handlers/admissioncommitteedocumenttypes"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/buildings"
 	"mdgkb/mdgkb-server/handlers/callbackrequests"
 	"mdgkb/mdgkb-server/handlers/candidateapplications"
-	"mdgkb/mdgkb-server/handlers/candidatedocumenttypes"
 	"mdgkb/mdgkb-server/handlers/candidateexams"
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/children"
@@ -24,11 +22,9 @@ import (
 	"mdgkb/mdgkb-server/handlers/donorrules"
 	"mdgkb/mdgkb-server/handlers/dpoapplications"
 	"mdgkb/mdgkb-server/handlers/dpocourses"
-	"mdgkb/mdgkb-server/handlers/dpodocumentypes"
 	"mdgkb/mdgkb-server/handlers/educationalmanagers"
 	"mdgkb/mdgkb-server/handlers/educationalorganization"
 	"mdgkb/mdgkb-server/handlers/educationalorganizationacademics"
-	"mdgkb/mdgkb-server/handlers/educationpublicdocumenttypes"
 	"mdgkb/mdgkb-server/handlers/educationyears"
 	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/entrances"
@@ -58,13 +54,11 @@ import (
 	"mdgkb/mdgkb-server/handlers/pointsachievements"
 	"mdgkb/mdgkb-server/handlers/postgraduateapplications"
 	"mdgkb/mdgkb-server/handlers/postgraduatecourses"
-	"mdgkb/mdgkb-server/handlers/postgraduatedocumentypes"
 	"mdgkb/mdgkb-server/handlers/preparations"
 	"mdgkb/mdgkb-server/handlers/projects"
 	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/residencyapplications"
 	"mdgkb/mdgkb-server/handlers/residencycourses"
-	"mdgkb/mdgkb-server/handlers/residencydocumenttypes"
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/sideorganizations"
@@ -82,14 +76,12 @@ import (
 	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
 	"mdgkb/mdgkb-server/middleware"
-	admissionCommitteeDocumentTypesRouter "mdgkb/mdgkb-server/routing/admissioncommitteedocumenttypes"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
 	buildingsRouter "mdgkb/mdgkb-server/routing/buildings"
 	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackrequests"
 	candidateApplicationsRouter "mdgkb/mdgkb-server/routing/candidateapplications"
-	candidateDocumentTypesRouter "mdgkb/mdgkb-server/routing/candidatedocumenttypes"
 	candidateExamsRouter "mdgkb/mdgkb-server/routing/candidateexams"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
 	childrenRouter "mdgkb/mdgkb-server/routing/children"
@@ -105,11 +97,9 @@ import (
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorrules"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoapplications"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpocourses"
-	dpoDocumentTypesRouter "mdgkb/mdgkb-server/routing/dpodocumenttypes"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalmanagers"
 	educationalOraganizationRouter "mdgkb/mdgkb-server/routing/educationaloraganization"
 	educationalOrganizationAcademicsRouter "mdgkb/mdgkb-server/routing/educationalorganizationacademics"
-	educationPublicDocumentTypesRouter "mdgkb/mdgkb-server/routing/educationpublicdocumenttypes"
 	educationYearsRouter "mdgkb/mdgkb-server/routing/educationyears"
 	employeesRouter "mdgkb/mdgkb-server/routing/employees"
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
@@ -139,13 +129,11 @@ import (
 	pointsAchievementsRouter "mdgkb/mdgkb-server/routing/pointsachievements"
 	postgraduateApplicationsRouter "mdgkb/mdgkb-server/routing/postgraduateapplications"
 	postgraduateCoursesRouter "mdgkb/mdgkb-server/routing/postgraduatecourses"
-	postgraduateDocumentTypesRouter "mdgkb/mdgkb-server/routing/postgraduatedocumenttypes"
 	preparationsRouter "mdgkb/mdgkb-server/routing/preparations"
 	projectsRouter "mdgkb/mdgkb-server/routing/projects"
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 	residencyApplicationsRouter "mdgkb/mdgkb-server/routing/residencyapplications"
 	residencyCoursesRouter "mdgkb/mdgkb-server/routing/residencycourses"
-	residencyDocumentTypesRouter "mdgkb/mdgkb-server/routing/residencydocumenttypes"
 	rolesRouter "mdgkb/mdgkb-server/routing/roles"
 	searchRouter "mdgkb/mdgkb-server/routing/search"
 	sideOrganizationsRouter "mdgkb/mdgkb-server/routing/sideorganizations"
@@ -245,15 +233,9 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	specializationsRouter.Init(api.Group("/specializations"), specializations.CreateHandler(helper))
 	candidateApplicationsRouter.Init(api.Group("/candidate-applications"), candidateapplications.CreateHandler(helper))
 	candidateExamsRouter.Init(api.Group("/candidate-exams"), candidateexams.CreateHandler(helper))
-	postgraduateDocumentTypesRouter.Init(api.Group("/postgraduate-document-types"), postgraduatedocumentypes.CreateHandler(helper))
-	dpoDocumentTypesRouter.Init(api.Group("/dpo-document-types"), dpodocumentypes.CreateHandler(helper))
-	candidateDocumentTypesRouter.Init(api.Group("/candidate-document-types"), candidatedocumenttypes.CreateHandler(helper))
 	rolesRouter.Init(api.Group("/roles"), roles.CreateHandler(helper))
 	residencyCoursesRouter.Init(api.Group("/residency-courses"), residencycourses.CreateHandler(helper))
-	residencyDocumentTypesRouter.Init(api.Group("/residency-document-types"), residencydocumenttypes.CreateHandler(helper))
 	educationYearsRouter.Init(api.Group("/education-years"), educationyears.CreateHandler(helper))
-	educationPublicDocumentTypesRouter.Init(api.Group("/education-public-document-types"), educationpublicdocumenttypes.CreateHandler(helper))
-	admissionCommitteeDocumentTypesRouter.Init(api.Group("/admission-committee-document-types"), admissioncommitteedocumenttypes.CreateHandler(helper))
 	pointsAchievementsRouter.Init(api.Group("/points-achievements"), pointsachievements.CreateHandler(helper))
 	dietsRouter.Init(api.Group("/diets"), diets.CreateHandler(helper))
 	dietsGroupsRouter.Init(api.Group("/diets-groups"), dietsgroups.CreateHandler(helper))

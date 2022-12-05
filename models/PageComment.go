@@ -9,10 +9,10 @@ type PageComment struct {
 	bun.BaseModel `bun:"pages_comments,alias:pages_comments"`
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 
-	Page      *Page     `bun:"rel:belongs-to" json:"page"`
-	PageID    uuid.UUID `bun:"type:uuid" json:"pageId"`
-	Comment   *Comment  `bun:"rel:belongs-to" json:"comment"`
-	CommentID uuid.UUID `bun:"type:uuid" json:"commentId"`
+	Page      *Page         `bun:"rel:belongs-to" json:"page"`
+	PageID    uuid.NullUUID `bun:"type:uuid" json:"pageId"`
+	Comment   *Comment      `bun:"rel:belongs-to" json:"comment"`
+	CommentID uuid.UUID     `bun:"type:uuid" json:"commentId"`
 }
 
 type PageComments []*PageComment

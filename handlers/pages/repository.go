@@ -45,6 +45,10 @@ func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
 	item := models.Page{}
 	err := r.db().NewSelect().
 		Model(&item).
+		Relation("PageSections.PageSectionDocuments.Scan").
+		Relation("PageSections.PageSectionImages").
+		Relation("PageSideMenus.PageSections.PageSectionDocuments.Scan").
+		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
 		Relation("PageComments.Comment").
 		Where("slug = ?", *slug).

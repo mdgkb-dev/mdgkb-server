@@ -12,18 +12,8 @@ type EducationalOrganization struct {
 
 	EducationalOrganizationAcademics          EducationalOrganizationAcademics `json:"educationalOrganizationAcademics"`
 	EducationalOrganizationAcademicsForDelete []string                         `json:"educationalOrganizationAcademicsForDelete"`
-
-	EducationalOrganizationDocumentTypes          EducationalOrganizationDocumentTypes `json:"educationalOrganizationDocumentTypes"`
-	EducationalOrganizationDocumentTypesForDelete []string                             `json:"educationalOrganizationDocumentTypesForDelete"`
-
-	//EducationalOrganizationPages EducationalOrganizationPages `json:"educationalOrganizationPages"`
-	//EducationalOrganizationPagesForDelete []string `json:"educationalOrganizationPagesForDelete"`
 }
 
 func (item *EducationalOrganization) SetFilePath(fileID *string) *string {
-	path := item.EducationalOrganizationDocumentTypes.SetFilePath(fileID)
-	if path != nil {
-		return path
-	}
 	return nil
 }

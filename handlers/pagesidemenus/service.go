@@ -1,7 +1,6 @@
 package pagesidemenus
 
 import (
-	"mdgkb/mdgkb-server/handlers/educationpublicdocumenttypes"
 	"mdgkb/mdgkb-server/handlers/pagesections"
 	"mdgkb/mdgkb-server/models"
 
@@ -30,17 +29,6 @@ func (s *Service) Create(item *models.PageSideMenu) error {
 		return err
 	}
 	item.SetIDForChildren()
-	educationPublicDocumentTypesService := educationpublicdocumenttypes.CreateService(s.helper)
-	err = educationPublicDocumentTypesService.Upsert(item.EducationPublicDocumentType)
-	if err != nil {
-		return err
-	}
-	if item.EducationPublicDocumentType == nil {
-		err = educationPublicDocumentTypesService.DeleteByPublicDocumentTypeID(item.ID)
-		if err != nil {
-			return err
-		}
-	}
 	err = pagesections.CreateService(s.helper).UpsertMany(item.PageSections)
 	if err != nil {
 		return err
@@ -55,17 +43,6 @@ func (s *Service) Update(item *models.PageSideMenu) error {
 		return err
 	}
 	item.SetIDForChildren()
-	educationPublicDocumentTypesService := educationpublicdocumenttypes.CreateService(s.helper)
-	err = educationPublicDocumentTypesService.Upsert(item.EducationPublicDocumentType)
-	if err != nil {
-		return err
-	}
-	if item.EducationPublicDocumentType == nil {
-		err = educationPublicDocumentTypesService.DeleteByPublicDocumentTypeID(item.ID)
-		if err != nil {
-			return err
-		}
-	}
 	documentTypeService := pagesections.CreateService(s.helper)
 	err = documentTypeService.DeleteMany(item.PageSectionsForDelete)
 	if err != nil {

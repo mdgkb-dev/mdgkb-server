@@ -9,8 +9,8 @@ type PageDocument struct {
 	bun.BaseModel `bun:"pages_documents,alias:pages_documents"`
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 
-	Page   *Page     `bun:"rel:belongs-to" json:"page"`
-	PageID uuid.UUID `bun:"type:uuid" json:"pageId"`
+	Page   *Page         `bun:"rel:belongs-to" json:"page"`
+	PageID uuid.NullUUID `bun:"type:uuid" json:"pageId"`
 
 	Document   *PageSectionDocument `bun:"rel:belongs-to" json:"document"`
 	DocumentID uuid.UUID            `bun:"type:uuid" json:"documentId"`
