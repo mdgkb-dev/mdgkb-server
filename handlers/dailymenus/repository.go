@@ -25,10 +25,11 @@ func (r *Repository) create(item *models.DailyMenu) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (items models.DailyMenus, err error) {
+func (r *Repository) getAll() (models.DailyMenus, error) {
+	items := make(models.DailyMenus, 0)
 	query := r.db().NewSelect().Model(&items)
 	r.queryFilter.HandleQuery(query)
-	err = query.Scan(r.ctx)
+	err := query.Scan(r.ctx)
 	return items, err
 }
 

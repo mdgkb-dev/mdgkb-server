@@ -10,7 +10,9 @@ import (
 type DailyMenu struct {
 	bun.BaseModel  `bun:"daily_menus,alias:daily_menus"`
 	ID             uuid.NullUUID  `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Date           time.Time      `bun:"daily_menu_date" json:"date"`
+	Date           time.Time      `bun:"item_date" json:"date"`
+	Name           string         `json:"name"`
+	Order          uint8          `bun:"item_order" json:"order"`
 	DailyMenuItems DailyMenuItems `bun:"rel:has-many" json:"dailyMenuItems"`
 }
 
