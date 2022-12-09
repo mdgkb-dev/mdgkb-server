@@ -10,6 +10,7 @@ type DishesGroup struct {
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
 	Order         uint          `bun:"dishes_group_order" json:"order"`
+	DishSamples   DishSamples   `bun:"rel:has-many" json:"dishSamples"`
 }
 
 type DishesGroups []*DishesGroup

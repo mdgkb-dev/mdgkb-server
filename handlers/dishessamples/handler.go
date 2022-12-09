@@ -1,6 +1,7 @@
 package dishessamples
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -13,6 +14,7 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
+	fmt.Println(item)
 	err = h.filesService.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -21,7 +23,7 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
