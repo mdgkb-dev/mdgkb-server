@@ -27,7 +27,7 @@ func (r *Repository) create(item *models.DishesGroup) (err error) {
 
 func (r *Repository) getAll() (items models.DishesGroups, err error) {
 	query := r.db().NewSelect().Model(&items).
-		Relation("DishSamples")
+		Relation("DishSamples.DishesGroup")
 	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
 	return items, err
