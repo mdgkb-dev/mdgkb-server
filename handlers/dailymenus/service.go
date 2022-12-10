@@ -1,6 +1,7 @@
 package dailymenus
 
 import (
+	"mdgkb/mdgkb-server/handlers/dailymenuitems"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -15,15 +16,16 @@ func (s *Service) Create(item *models.DailyMenu) error {
 }
 
 func (s *Service) Update(item *models.DailyMenu) error {
-	//err := timetables.CreateService(s.helper).Upsert(item.Timetable)
-	//if err != nil {
-	//	return err
-	//}
-	//item.SetForeignKeys()
-	//err = s.repository.update(item)
-	//if err != nil {
-	//	return err
-	//}
+	err := s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	item.SetIDForChildren()
+	err = dailymenuitems.CreateService(s.helper).UpsertMany(item.DailyMenuItems)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

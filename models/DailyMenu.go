@@ -17,3 +17,9 @@ type DailyMenu struct {
 }
 
 type DailyMenus []*DailyMenu
+
+func (item *DailyMenu) SetIDForChildren() {
+	for i := range item.DailyMenuItems {
+		item.DailyMenuItems[i].DailyMenuID = item.ID
+	}
+}

@@ -47,3 +47,14 @@ func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 	err = s.repository.setQueryFilter(c)
 	return err
 }
+
+func (s *Service) UpsertMany(items models.DailyMenuItems) error {
+	if len(items) == 0 {
+		return nil
+	}
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
+	return nil
+}

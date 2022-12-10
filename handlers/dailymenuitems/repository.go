@@ -49,3 +49,17 @@ func (r *Repository) update(item *models.DailyMenuItem) (err error) {
 	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) upsertMany(items models.DailyMenuItems) (err error) {
+	_, err = r.db().NewInsert().On("conflict (id) do update").
+		Set("name = EXCLUDED.name").
+		Set("price = EXCLUDED.price").
+		Set("caloric = EXCLUDED.caloric").
+		Set("item_order = EXCLUDED.item_order").
+		Set("daily_menu_id = EXCLUDED.daily_menu_id").
+		Set("dish_sample_id = EXCLUDED.dish_sample_id").
+		Set("available = EXCLUDED.available").
+		Model(&items).
+		Exec(r.ctx)
+	return err
+}

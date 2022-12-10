@@ -27,6 +27,7 @@ type IService interface {
 	Get(string) (*models.DailyMenuItem, error)
 	Delete(string) error
 	Update(*models.DailyMenuItem) error
+	UpsertMany(models.DailyMenuItems) error
 }
 
 type IRepository interface {
@@ -37,6 +38,7 @@ type IRepository interface {
 	get(string) (*models.DailyMenuItem, error)
 	delete(string) error
 	update(*models.DailyMenuItem) error
+	upsertMany(models.DailyMenuItems) error
 }
 
 type IFilesService interface {

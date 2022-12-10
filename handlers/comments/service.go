@@ -23,22 +23,6 @@ func (s *Service) CreateMany(items models.Comments) error {
 	return nil
 }
 
-func (s *Service) UpsertMany(items models.Comments) error {
-	if len(items) == 0 {
-		return nil
-	}
-	err := s.repository.upsertMany(items)
-	if err != nil {
-		return err
-	}
-	err = meta.CreateService(s.helper).SendApplicationsCounts()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (s *Service) DeleteMany(idPool []string) error {
 	if len(idPool) == 0 {
 		return nil
