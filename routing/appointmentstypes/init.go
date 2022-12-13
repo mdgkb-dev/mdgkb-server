@@ -1,7 +1,7 @@
-package hospitalization
+package appointmentstypes
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/hospitalizations"
+	handler "mdgkb/mdgkb-server/handlers/appointmenstypes"
 
 	"github.com/gin-gonic/gin"
 )

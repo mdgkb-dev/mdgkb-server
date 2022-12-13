@@ -14,31 +14,31 @@ type Appointment struct {
 	Date time.Time `bun:"appointment_date" json:"date"`
 	Time string    `bun:"appointment_time" json:"time"`
 
-	ClinicName           string `json:"clinicName"`
-	ClinicReferralNumber string `json:"clinicReferralNumber"`
-
-	FormScan   *FileInfo     `bun:"rel:belongs-to" json:"formScan"`
-	FormScanID uuid.NullUUID `bun:"type:uuid" json:"formScanId"`
-
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId"`
 
 	DoctorID uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Doctor   *Doctor       `bun:"rel:belongs-to" json:"doctor"`
 
-	OMS           bool   `json:"oms"`
-	Mrt           bool   `json:"mrt"`
-	MrtZone       string `json:"mrtZone"`
-	MrtAnesthesia bool   `json:"mrtAnesthesia"`
+	AppointmentTypeID uuid.NullUUID    `bun:"type:uuid" json:"appointmentTypeId"`
+	AppointmentType   *AppointmentType `bun:"rel:belongs-to" json:"appointmentType"`
 
-	Child   *Child        `bun:"rel:belongs-to" json:"child"`
-	ChildID uuid.NullUUID `bun:"type:uuid" json:"childId"`
+	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
+	FormValueID uuid.NullUUID `bun:"type:uuid" json:"formValueId"`
 }
 
 type Appointments []*Appointment
 
 func (item *Appointment) SetForeignKeys() {
-	if item.Child != nil {
-		item.ChildID = item.Child.ID
+	if item.FormValue != nil {
+		item.FormValueID = item.FormValue.ID
 	}
+}
+
+func (item *Appointment) SetFilePath(fileID *string) *string {
+	path := item.FormValue.SetFilePath(fileID)
+	if path != nil {
+		return path
+	}
+	return nil
 }
