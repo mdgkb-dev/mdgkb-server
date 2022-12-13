@@ -23,6 +23,7 @@ alter table page_sections
 alter table document_types_images
     rename to page_section_images;
 
+drop table document_field_values;
 drop table document_type_fields;
 drop table documents_types_for_vacancies;
 
