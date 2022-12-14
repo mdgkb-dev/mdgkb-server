@@ -23,7 +23,13 @@ func (r *Repository) getAll() (models.Appointments, error) {
 	items := make(models.Appointments, 0)
 	query := r.db().NewSelect().Model(&items).
 		Relation("Doctor.Employee.Human").
-		Relation("Doctor.DoctorsDivisions")
+		Relation("Doctor.DoctorsDivisions").
+		Relation("FormValue.Child.Human").
+		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus")
 
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
@@ -34,7 +40,24 @@ func (r *Repository) get(id *string) (*models.Appointment, error) {
 	item := models.Appointment{}
 	err := r.db().NewSelect().Model(&item).
 		Relation("Doctor.Employee.Human").
-		Where("Appointments_view.id = ?", *id).Scan(r.ctx)
+		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("FormValue.Fields.File").
+		Relation("FormValue.FormValueFiles.File").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Relation("AppointmentType.FormPattern", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.ExcludeColumn("with_personal_data_agreement")
+		}).
+		Relation("AppointmentType.FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("AppointmentType.FormPattern.Fields.ValueType").
+		Where("appointments_view.id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
 

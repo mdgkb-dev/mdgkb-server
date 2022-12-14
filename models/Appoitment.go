@@ -8,11 +8,11 @@ import (
 )
 
 type Appointment struct {
-	bun.BaseModel `bun:"appointments,alias:appointments"`
+	bun.BaseModel `bun:"appointments,select:appointments_view,alias:appointments_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
-	Date time.Time `bun:"appointment_date" json:"date"`
-	Time string    `bun:"appointment_time" json:"time"`
+	Date time.Time `bun:"item_date" json:"date"`
+	Time string    `bun:"item_time" json:"time"`
 
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID uuid.NullUUID   `bun:"type:uuid" json:"specializationId"`
