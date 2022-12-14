@@ -1,14 +1,14 @@
-package appointments
+package appointmenstypes
 
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
-	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 
+	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
@@ -16,38 +16,31 @@ type IHandler interface {
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
 	Create(c *gin.Context)
-	Update(c *gin.Context)
 	Delete(c *gin.Context)
-	Init(c *gin.Context)
+	Update(c *gin.Context)
 }
 
 type IService interface {
-	GetAll() (models.Appointments, error)
-	Get(*string) (*models.Appointment, error)
-	Create(*models.Appointment) error
-	Update(*models.Appointment) error
-	Delete(*string) error
-	UpsertMany(models.Appointments) error
-	DeleteMany([]string) error
-	Init() error
 	setQueryFilter(*gin.Context) error
+	Create(*models.AppointmentType) error
+	GetAll() (models.AppointmentsTypes, error)
+	Get(string) (*models.AppointmentType, error)
+	Delete(string) error
+	Update(*models.AppointmentType) error
 }
 
 type IRepository interface {
-	db() *bun.DB
 	setQueryFilter(*gin.Context) error
-	getAll() (models.Appointments, error)
-	get(*string) (*models.Appointment, error)
-	create(*models.Appointment) error
-	update(*models.Appointment) error
-	delete(*string) error
-
-	upsertMany(models.Appointments) error
-	deleteMany([]string) error
+	db() *bun.DB
+	create(*models.AppointmentType) error
+	getAll() (models.AppointmentsTypes, error)
+	get(string) (*models.AppointmentType, error)
+	delete(string) error
+	update(*models.AppointmentType) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.Appointment, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.AppointmentType, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

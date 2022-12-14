@@ -1,6 +1,7 @@
 package routing
 
 import (
+	"mdgkb/mdgkb-server/handlers/appointmenstypes"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
@@ -77,6 +78,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
 	"mdgkb/mdgkb-server/middleware"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
+	appointmentsTypesRouter "mdgkb/mdgkb-server/routing/appointmentstypes"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
 	buildingsRouter "mdgkb/mdgkb-server/routing/buildings"
@@ -112,7 +114,7 @@ import (
 	gatesRouter "mdgkb/mdgkb-server/routing/gates"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalizations"
-	hospitalizationsTypesRouter "mdgkb/mdgkb-server/routing/hospitalizationsTypes"
+	hospitalizationsTypesRouter "mdgkb/mdgkb-server/routing/hospitalizationstypes"
 	medicalProfilesRouter "mdgkb/mdgkb-server/routing/medicalprofiles"
 	menusRouter "mdgkb/mdgkb-server/routing/menus"
 	metaRouter "mdgkb/mdgkb-server/routing/meta"
@@ -245,4 +247,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dailyMenusRouter.Init(api.Group("/daily-menus"), dailymenus.CreateHandler(helper))
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))
+	appointmentsTypesRouter.Init(api.Group("/appointments-types"), appointmenstypes.CreateHandler(helper))
 }

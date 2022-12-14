@@ -1,9 +1,11 @@
 package appointments
 
 import (
-	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/doctors"
+	"mdgkb/mdgkb-server/handlers/formvalues"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) GetAll() (models.Appointments, error) {
@@ -23,7 +25,7 @@ func (s *Service) Get(id *string) (*models.Appointment, error) {
 }
 
 func (s *Service) Create(item *models.Appointment) error {
-	err := children.CreateService(s.helper).Upsert(item.Child)
+	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -36,7 +38,7 @@ func (s *Service) Create(item *models.Appointment) error {
 }
 
 func (s *Service) Update(item *models.Appointment) error {
-	err := children.CreateService(s.helper).Upsert(item.Child)
+	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
@@ -79,4 +81,9 @@ func (s *Service) Init() error {
 		return err
 	}
 	return nil
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }
