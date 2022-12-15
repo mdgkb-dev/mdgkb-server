@@ -20,10 +20,10 @@ func (s *Service) Update(item *models.DishesGroup) error {
 	//	return err
 	//}
 	//item.SetForeignKeys()
-	//err = s.repository.update(item)
-	//if err != nil {
-	//	return err
-	//}
+	err := s.repository.update(item)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
