@@ -51,3 +51,11 @@ func (r *Repository) update(item *models.DailyMenu) (err error) {
 	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) updateAll(items models.DailyMenus) (err error) {
+	_, err = r.db().NewInsert().On("conflict (id) do update").
+		Model(&items).
+		Set("item_order = EXCLUDED.item_order").
+		Exec(r.ctx)
+	return err
+}

@@ -29,6 +29,14 @@ func (s *Service) Update(item *models.DailyMenu) error {
 	return nil
 }
 
+func (s *Service) UpdateAll(items models.DailyMenus) error {
+	err := s.repository.updateAll(items)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Service) GetAll() (models.DailyMenus, error) {
 	return s.repository.getAll()
 }
