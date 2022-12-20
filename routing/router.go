@@ -13,6 +13,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/dailymenuitems"
+	"mdgkb/mdgkb-server/handlers/dailymenuorders"
 	"mdgkb/mdgkb-server/handlers/dailymenus"
 	"mdgkb/mdgkb-server/handlers/diets"
 	"mdgkb/mdgkb-server/handlers/dietsgroups"
@@ -89,6 +90,7 @@ import (
 	childrenRouter "mdgkb/mdgkb-server/routing/children"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	dailyMenuItemsRouter "mdgkb/mdgkb-server/routing/dailymenuitems"
+	dailyMenuOrdersRouter "mdgkb/mdgkb-server/routing/dailymenuorders"
 	dailyMenusRouter "mdgkb/mdgkb-server/routing/dailymenus"
 	dietsRouter "mdgkb/mdgkb-server/routing/diets"
 	dietsGroupsRouter "mdgkb/mdgkb-server/routing/dietsgroups"
@@ -248,4 +250,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))
 	appointmentsTypesRouter.Init(api.Group("/appointments-types"), appointmenstypes.CreateHandler(helper))
+	dailyMenuOrdersRouter.Init(api.Group("/daily-menu-orders"), dailymenuorders.CreateHandler(helper))
 }
