@@ -1,13 +1,19 @@
 package dishessamples
 
 import (
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.DishSample) error {
-	err := s.repository.create(item)
+	err := fileinfos.CreateService(s.helper).Upsert(item.Image)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -15,7 +21,12 @@ func (s *Service) Create(item *models.DishSample) error {
 }
 
 func (s *Service) Update(item *models.DishSample) error {
-	err := s.repository.update(item)
+	err := fileinfos.CreateService(s.helper).Upsert(item.Image)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}

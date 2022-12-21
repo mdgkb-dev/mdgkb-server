@@ -28,7 +28,8 @@ func (r *Repository) create(item *models.DailyMenu) (err error) {
 func (r *Repository) getAll() (models.DailyMenus, error) {
 	items := make(models.DailyMenus, 0)
 	query := r.db().NewSelect().Model(&items).
-		Relation("DailyMenuItems.DishSample.DishesGroup")
+		Relation("DailyMenuItems.DishSample.DishesGroup").
+		Relation("DailyMenuItems.DishSample.Image")
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
