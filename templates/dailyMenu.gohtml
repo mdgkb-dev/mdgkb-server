@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+<div class="center">
+{{ define "inc" }}{{ len (printf "%*s " . "") }}{{ end -}}
+{{ define "op" }}{{.}} + 1 = {{ template "inc" . }}{{ end -}}
+
+<div>
+<h2>МорозовскаяЕда</h2>
+<hr>
+</div>
+<p>{{.Name}}</p>
+<p>{{.Date.Format "02.01.2006"}} </p>
+</div>
+<div class="center">
+<div>
+
+
+{{range $group := .DishesGroups}}
+    <div><b>{{$group.Name}}</b></div>
+    {{range $dailyMenuItem := $group.DailyMenuItems}}
+        <div>
+            <span>
+                {{$dailyMenuItem.Name}}
+            </span>
+            <span>
+                {{$dailyMenuItem.DishSample.Price}}
+            </span>
+            <span>
+                {{$dailyMenuItem.DishSample.Weight}}
+            </span>
+            <span>
+                {{$dailyMenuItem.DishSample.Caloric}}
+            </span>
+        </div>
+{{end}}
+{{end}}
+</div>
+</div>
+</body>
+<style lang="css">
+.center {
+text-align: center;
+empty-cells: hide;
+
+}
+
+table {
+width: 90%;
+border-collapse: collapse;
+border: 3px solid grey;
+text-align: right;
+
+}
+
+th, td {
+text-align: right;
+border: 1px solid grey;
+}
+</style>
+</html>

@@ -12,7 +12,7 @@ type DailyMenuOrder struct {
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Date          time.Time     `bun:"item_date" json:"date"`
 	BoxNumber     uint8         `json:"boxNumber"`
-	Number        uint          `json:"number"`
+	Number        uint          `bun:",notnull,autoincrement" json:"number"`
 	Price         uint          `json:"price"`
 
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
@@ -22,3 +22,9 @@ type DailyMenuOrder struct {
 }
 
 type DailyMenuOrders []*DailyMenuOrder
+
+func (item *DailyMenuOrder) SetIDForChildren() {
+	for i := range item.DailyMenuOrderItems {
+		item.DailyMenuOrderItems[i].DailyMenuOrderID = item.ID
+	}
+}

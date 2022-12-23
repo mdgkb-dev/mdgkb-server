@@ -1,6 +1,7 @@
 package dailymenus
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/dailymenuitems"
 	"mdgkb/mdgkb-server/models"
 
@@ -25,7 +26,8 @@ func (s *Service) Update(item *models.DailyMenu) error {
 	if err != nil {
 		return err
 	}
-
+	fmt.Println("UPDate")
+	s.helper.Broker.SendEvent("daily-menu-update", item)
 	return nil
 }
 

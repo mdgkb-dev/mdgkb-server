@@ -6,11 +6,12 @@ import (
 )
 
 type DishesGroup struct {
-	bun.BaseModel `bun:"dishes_groups,alias:dishes_groups"`
-	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name          string        `json:"name"`
-	Order         uint          `bun:"dishes_group_order" json:"order"`
-	DishSamples   DishSamples   `bun:"rel:has-many" json:"dishSamples"`
+	bun.BaseModel  `bun:"dishes_groups,alias:dishes_groups"`
+	ID             uuid.NullUUID  `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	Name           string         `json:"name"`
+	Order          uint           `bun:"dishes_group_order" json:"order"`
+	DishSamples    DishSamples    `bun:"rel:has-many" json:"dishSamples"`
+	DailyMenuItems DailyMenuItems `bun:"-" json:"dailyMenuItems"`
 }
 
 type DishesGroups []*DishesGroup

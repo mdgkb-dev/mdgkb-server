@@ -1,6 +1,7 @@
 package dailymenuorders
 
 import (
+	"mdgkb/mdgkb-server/handlers/dailymenuorderitems"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -11,19 +12,26 @@ func (s *Service) Create(item *models.DailyMenuOrder) error {
 	if err != nil {
 		return err
 	}
+	item.SetIDForChildren()
+	dailyMenuOrderItemsService := dailymenuorderitems.CreateService(s.helper)
+	err = dailyMenuOrderItemsService.UpsertMany(item.DailyMenuOrderItems)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (s *Service) Update(item *models.DailyMenuOrder) error {
-	//err := timetables.CreateService(s.helper).Upsert(item.Timetable)
-	//if err != nil {
-	//	return err
-	//}
-	//item.SetForeignKeys()
-	//err = s.repository.update(item)
-	//if err != nil {
-	//	return err
-	//}
+	err := s.repository.update(item)
+	if err != nil {
+		return err
+	}
+	item.SetIDForChildren()
+	dailyMenuOrderItemsService := dailymenuorderitems.CreateService(s.helper)
+	err = dailyMenuOrderItemsService.UpsertMany(item.DailyMenuOrderItems)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

@@ -6,7 +6,7 @@ import (
 )
 
 type DailyMenuOrderItem struct {
-	bun.BaseModel `bun:"daily_menu_orders,alias:daily_menu_orders"`
+	bun.BaseModel `bun:"daily_menu_order_items,alias:daily_menu_order_items"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	Quantity uint8 `json:"quantity"`

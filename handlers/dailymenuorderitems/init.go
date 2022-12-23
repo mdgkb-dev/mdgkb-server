@@ -1,4 +1,4 @@
-package dailymenus
+package dailymenuorderitems
 
 import (
 	"context"
@@ -18,33 +18,31 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Delete(c *gin.Context)
 	Update(c *gin.Context)
-	UpdateAll(c *gin.Context)
-	PDF(c *gin.Context)
 }
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
-	Create(*models.DailyMenu) error
-	GetAll() (models.DailyMenus, error)
-	Get(string) (*models.DailyMenu, error)
+	Create(*models.DailyMenuOrderItem) error
+	GetAll() (models.DailyMenuOrderItems, error)
+	Get(string) (*models.DailyMenuOrderItem, error)
 	Delete(string) error
-	Update(*models.DailyMenu) error
-	UpdateAll(models.DailyMenus) error
+	Update(*models.DailyMenuOrderItem) error
+	UpsertMany(models.DailyMenuOrderItems) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
-	create(*models.DailyMenu) error
-	getAll() (models.DailyMenus, error)
-	get(string) (*models.DailyMenu, error)
+	create(*models.DailyMenuOrderItem) error
+	getAll() (models.DailyMenuOrderItems, error)
+	get(string) (*models.DailyMenuOrderItem, error)
 	delete(string) error
-	update(*models.DailyMenu) error
-	updateAll(models.DailyMenus) error
+	update(*models.DailyMenuOrderItem) error
+	upsertMany(models.DailyMenuOrderItems) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.DailyMenu, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.DailyMenuOrderItem, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

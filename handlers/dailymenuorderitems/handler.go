@@ -1,7 +1,6 @@
-package dailymenus
+package dailymenuorderitems
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -9,7 +8,7 @@ import (
 )
 
 func (h *Handler) Create(c *gin.Context) {
-	var item models.DailyMenu
+	var item models.DailyMenuOrderItem
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -22,7 +21,7 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	c.JSON(http.StatusOK, item)
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
@@ -54,7 +53,7 @@ func (h *Handler) Delete(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
-	var item models.DailyMenu
+	var item models.DailyMenuOrderItem
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -70,32 +69,4 @@ func (h *Handler) Update(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{})
-}
-
-func (h *Handler) UpdateAll(c *gin.Context) {
-	var items models.DailyMenus
-	_, err := h.helper.HTTP.GetForm(c, &items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.service.UpdateAll(items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{})
-}
-
-func (h *Handler) PDF(c *gin.Context) {
-	var item models.DailyMenu
-	_, err := h.helper.HTTP.GetForm(c, &item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	fmt.Println(item.DishesGroups)
-	pdf, err := h.helper.PDF.GeneratePDF("dailyMenu", item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	//h.helper.HTTP.SetFileHeaders(c, "Заявки на мероприятие")
-	c.Data(http.StatusOK, "application/pdf", pdf)
 }
