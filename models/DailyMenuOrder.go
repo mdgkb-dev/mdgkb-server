@@ -13,7 +13,6 @@ type DailyMenuOrder struct {
 	Date          time.Time     `bun:"item_date" json:"date"`
 	BoxNumber     uint8         `json:"boxNumber"`
 	Number        uint          `bun:",notnull,autoincrement" json:"number"`
-	Price         uint          `json:"price"`
 
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
 	FormValueID uuid.NullUUID `bun:"type:uuid" json:"formValueId"`

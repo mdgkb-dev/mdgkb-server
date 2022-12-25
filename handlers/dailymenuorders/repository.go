@@ -27,6 +27,7 @@ func (r *Repository) create(item *models.DailyMenuOrder) (err error) {
 
 func (r *Repository) getAll() (items models.DailyMenuOrders, err error) {
 	query := r.db().NewSelect().Model(&items).
+		Relation("DailyMenuOrderItems.DailyMenuItem.DishSample").
 		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
 		Relation("FormValue.Fields.ValueType").
@@ -41,6 +42,7 @@ func (r *Repository) getAll() (items models.DailyMenuOrders, err error) {
 func (r *Repository) get(id string) (*models.DailyMenuOrder, error) {
 	item := models.DailyMenuOrder{}
 	err := r.db().NewSelect().Model(&item).
+		Relation("DailyMenuOrderItems.DailyMenuItem.DishSample").
 		Relation("FormValue.User.Human").
 		Relation("FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
