@@ -12,8 +12,8 @@ func (s *Service) GetAll() (models.FormPatterns, error) {
 	return s.repository.getAll()
 }
 
-func (s *Service) Get(id string) (*models.FormPattern, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get() (*models.FormPattern, error) {
+	item, err := s.repository.get()
 	if err != nil {
 		return nil, err
 	}

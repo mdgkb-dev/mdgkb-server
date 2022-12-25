@@ -32,7 +32,7 @@ func (r *Repository) getAll() (models.FormPatterns, error) {
 	return items, err
 }
 
-func (r *Repository) get(id string) (*models.FormPattern, error) {
+func (r *Repository) get() (*models.FormPattern, error) {
 	item := models.FormPattern{}
 	err := r.db().NewSelect().Model(&item).
 		Relation("Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
@@ -44,7 +44,8 @@ func (r *Repository) get(id string) (*models.FormPattern, error) {
 		Relation("DefaultFormStatus").
 		Relation("PersonalDataAgreement").
 		Relation("Fields.MaskTokens").
-		Where("form_patterns.id = ?", id).Scan(r.ctx)
+		Where("form_patterns.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
+
 	return &item, err
 }
 

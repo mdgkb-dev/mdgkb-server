@@ -26,7 +26,13 @@ func (r *Repository) create(item *models.DailyMenuOrder) (err error) {
 }
 
 func (r *Repository) getAll() (items models.DailyMenuOrders, err error) {
-	query := r.db().NewSelect().Model(&items)
+	query := r.db().NewSelect().Model(&items).
+		Relation("FormValue.Child.Human").
+		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses")
 	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
 	return items, err
@@ -35,7 +41,17 @@ func (r *Repository) getAll() (items models.DailyMenuOrders, err error) {
 func (r *Repository) get(id string) (*models.DailyMenuOrder, error) {
 	item := models.DailyMenuOrder{}
 	err := r.db().NewSelect().Model(&item).
-		Where("DailyMenuOrders.id = ?", id).
+		Relation("FormValue.User.Human").
+		Relation("FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("FormValue.Fields.File").
+		Relation("FormValue.FormValueFiles.File").
+		Relation("FormValue.Fields.ValueType").
+		Relation("FormValue.FieldValues.File").
+		Relation("FormValue.FieldValues.Field.ValueType").
+		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Where("daily_menu_orders.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
 }

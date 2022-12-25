@@ -28,3 +28,7 @@ func (item *DailyMenuOrder) SetIDForChildren() {
 		item.DailyMenuOrderItems[i].DailyMenuOrderID = item.ID
 	}
 }
+
+func (item *DailyMenuOrder) SetForeignKeys() {
+	item.FormValueID = item.FormValue.ID
+}

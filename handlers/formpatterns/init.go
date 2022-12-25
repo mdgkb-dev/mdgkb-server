@@ -23,7 +23,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	GetAll() (models.FormPatterns, error)
-	Get(string) (*models.FormPattern, error)
+	Get() (*models.FormPattern, error)
 	Create(*models.FormPattern) error
 	Update(*models.FormPattern) error
 	Delete(string) error
@@ -33,7 +33,7 @@ type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
 	getAll() (models.FormPatterns, error)
-	get(string) (*models.FormPattern, error)
+	get() (*models.FormPattern, error)
 	create(*models.FormPattern) error
 	update(*models.FormPattern) error
 	delete(string) error

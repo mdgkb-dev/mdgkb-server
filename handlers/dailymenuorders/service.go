@@ -2,13 +2,19 @@ package dailymenuorders
 
 import (
 	"mdgkb/mdgkb-server/handlers/dailymenuorderitems"
+	"mdgkb/mdgkb-server/handlers/formvalues"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.DailyMenuOrder) error {
-	err := s.repository.create(item)
+	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -22,7 +28,12 @@ func (s *Service) Create(item *models.DailyMenuOrder) error {
 }
 
 func (s *Service) Update(item *models.DailyMenuOrder) error {
-	err := s.repository.update(item)
+	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}
