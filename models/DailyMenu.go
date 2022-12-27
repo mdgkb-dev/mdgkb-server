@@ -15,6 +15,8 @@ type DailyMenu struct {
 	Order          uint8          `bun:"item_order" json:"order"`
 	DailyMenuItems DailyMenuItems `bun:"rel:has-many" json:"dailyMenuItems"`
 	DishesGroups   DishesGroups   `bun:"-" json:"dishesGroups"`
+	StartTime      *string        `json:"startTime"`
+	Active         bool           `json:"active"`
 }
 
 type DailyMenus []*DailyMenu

@@ -18,6 +18,7 @@ type DailyMenuItem struct {
 	DishSample    *DishSample   `bun:"rel:belongs-to" json:"dishSample"`
 	DishSampleID  uuid.NullUUID `bun:"type:uuid"  json:"dishSampleId"`
 	Available     bool          `json:"available"`
+	FromOtherMenu bool          `json:"fromOtherMenu"`
 }
 
 type DailyMenuItems []*DailyMenuItem
