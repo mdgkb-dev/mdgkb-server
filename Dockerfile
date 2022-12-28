@@ -3,7 +3,7 @@ FROM surnet/alpine-wkhtmltopdf:3.8-0.12.5-full as builder
 FROM golang:1.18-alpine as dev
 
 RUN apk update && apk add make && rm -rf /var/cache/apk/*
-
+RUN apk add --no-cache libxrender1
 COPY --from=builder /bin/wkhtmltopdf /bin/wkhtmltopdf
 COPY --from=builder /bin/wkhtmltoimage /bin/wkhtmltoimage
 
