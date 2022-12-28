@@ -33,7 +33,7 @@ func (item PageSideMenu) SetFilePath(fileID *string) *string {
 
 func (items PageSideMenus) SetFilePath(fileID *string) *string {
 	for i := range items {
-		filePath := items[i].PageSections[i].SetFilePath(fileID)
+		filePath := items[i].PageSections.SetFilePath(fileID)
 		if filePath != nil {
 			return filePath
 		}

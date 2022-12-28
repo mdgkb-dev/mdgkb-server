@@ -43,6 +43,16 @@ func (items PageSections) SetIDForChildren() {
 	}
 }
 
+func (items PageSections) SetFilePath(fileID *string) *string {
+	for i := range items {
+		filePath := items[i].SetFilePath(fileID)
+		if filePath != nil {
+			return filePath
+		}
+	}
+	return nil
+}
+
 func (item PageSection) SetFilePath(fileID *string) *string {
 	for i := range item.PageSectionDocuments {
 		filePath := item.PageSectionDocuments[i].SetFilePath(fileID)
