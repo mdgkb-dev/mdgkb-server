@@ -41,6 +41,9 @@ func (item *Page) SetIDForChildren() {
 	for i := range item.PageDocuments {
 		item.PageDocuments[i].PageID = item.ID
 	}
+	for i := range item.PageSideMenus {
+		item.PageSideMenus[i].PageID = item.ID
+	}
 	for i := range item.PageImages {
 		item.PageImages[i].PageID = item.ID
 	}

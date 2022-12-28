@@ -80,6 +80,9 @@ func (r *Repository) upsertMany(items models.PageSideMenus) (err error) {
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("item_order = EXCLUDED.item_order").
+		Set("description = EXCLUDED.description").
+		Set("name = EXCLUDED.name").
+		Set("page_id = EXCLUDED.page_id").
 		Exec(r.ctx)
 	return err
 }

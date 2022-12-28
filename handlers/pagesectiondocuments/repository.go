@@ -29,7 +29,7 @@ func (r *Repository) upsertMany(items models.PageSectionDocuments) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("name = EXCLUDED.name").
-		Set("document_order = EXCLUDED.document_order").
+		Set("item_order = EXCLUDED.item_order").
 		Set("download_to_file = EXCLUDED.download_to_file").
 		Exec(r.ctx)
 	return err

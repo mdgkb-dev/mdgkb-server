@@ -3,6 +3,7 @@ package pages
 import (
 	"mdgkb/mdgkb-server/handlers/pageimages"
 	"mdgkb/mdgkb-server/handlers/pagesdocuments"
+	"mdgkb/mdgkb-server/handlers/pagesidemenus"
 	"mdgkb/mdgkb-server/models"
 )
 
@@ -47,6 +48,13 @@ func (s *Service) Update(item *models.Page) error {
 		return err
 	}
 	item.SetIDForChildren()
+
+	pageSideMenusService := pagesidemenus.CreateService(s.helper)
+	err = pageSideMenusService.UpsertMany(item.PageSideMenus)
+	if err != nil {
+		return err
+	}
+
 	pagesDocumentsService := pagesdocuments.CreateService(s.helper)
 	err = pagesDocumentsService.UpsertMany(item.PageDocuments)
 	if err != nil {

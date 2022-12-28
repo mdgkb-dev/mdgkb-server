@@ -36,3 +36,25 @@ func (item *PageSideMenu) SetIDForChildren() {
 		item.PageSections[i].PageSideMenuID = item.ID
 	}
 }
+
+func (items PageSideMenus) SetIDForChildren() {
+	for i := range items {
+		items[i].SetIDForChildren()
+	}
+}
+
+func (items PageSideMenus) GetPageSections() PageSections {
+	itemsForGet := make(PageSections, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.PageSections...)
+	}
+	return itemsForGet
+}
+
+func (items PageSideMenus) GetPageSectionsForDelete() []uuid.UUID {
+	itemsForGet := make([]uuid.UUID, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.PageSectionsForDelete...)
+	}
+	return itemsForGet
+}

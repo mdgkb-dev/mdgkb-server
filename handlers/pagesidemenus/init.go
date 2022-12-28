@@ -29,6 +29,7 @@ type IService interface {
 	Update(item *models.PageSideMenu) error
 	Delete(string) error
 	UpdateOrder(models.PageSideMenus) error
+	UpsertMany(item models.PageSideMenus) error
 }
 
 type IRepository interface {

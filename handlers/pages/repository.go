@@ -25,8 +25,18 @@ func (r *Repository) get(id *string) (*models.Page, error) {
 	item := models.Page{}
 	err := r.db().NewSelect().
 		Model(&item).
-		Relation("PageComments.Comment").
+		Relation("PageSections.PageSectionDocuments.Scan").
+		Relation("PageSections.PageSectionImages").
+		Relation("PageSideMenus", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("page_side_menus.item_order")
+		}).
+		Relation("PageSideMenus.PageSections", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("page_sections.item_order")
+		}).
+		Relation("PageSideMenus.PageSections.PageSectionDocuments.Scan").
+		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
+		Relation("PageComments.Comment").
 		Where("id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
@@ -47,6 +57,12 @@ func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
 		Model(&item).
 		Relation("PageSections.PageSectionDocuments.Scan").
 		Relation("PageSections.PageSectionImages").
+		Relation("PageSideMenus", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("page_side_menus.item_order")
+		}).
+		Relation("PageSideMenus.PageSections", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("page_sections.item_order")
+		}).
 		Relation("PageSideMenus.PageSections.PageSectionDocuments.Scan").
 		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
