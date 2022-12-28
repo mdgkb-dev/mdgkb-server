@@ -31,6 +31,16 @@ func (item PageSideMenu) SetFilePath(fileID *string) *string {
 	return nil
 }
 
+func (items PageSideMenus) SetFilePath(fileID *string) *string {
+	for i := range items {
+		filePath := items[i].PageSections[i].SetFilePath(fileID)
+		if filePath != nil {
+			return filePath
+		}
+	}
+	return nil
+}
+
 func (item *PageSideMenu) SetIDForChildren() {
 	for i := range item.PageSections {
 		item.PageSections[i].PageSideMenuID = item.ID

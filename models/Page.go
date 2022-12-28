@@ -50,7 +50,11 @@ func (item *Page) SetIDForChildren() {
 }
 
 func (item *Page) SetFilePath(fileID *string) *string {
-	path := item.PageDocuments.SetFilePath(fileID)
+	path := item.PageSideMenus.SetFilePath(fileID)
+	if path != nil {
+		return path
+	}
+	path = item.PageDocuments.SetFilePath(fileID)
 	if path != nil {
 		return path
 	}
