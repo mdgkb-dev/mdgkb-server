@@ -13,29 +13,32 @@
 <h2>МорозовскаяЕда</h2>
 <hr>
 </div>
-<p>{{.Name}}</p>
-<p>{{.Date.Format "02.01.2006"}} </p>
+<p>Меню на {{.Date.Format "02.01.2006"}} </p>
+<p class="center">{{.Name}}</p>
+
 </div>
 <div class="center">
 <div>
 
 
 {{range $group := .DishesGroups}}
-    <div><b>{{$group.Name}}</b></div>
+    <div class="group-name"><b>{{$group.Name}}</b></div>
     {{range $dailyMenuItem := $group.DailyMenuItems}}
-        <div>
-            <span>
+        <div class="item-line">
+            <div class="group-item-name">
                 {{$dailyMenuItem.Name}}
-            </span>
-            <span>
-                {{$dailyMenuItem.DishSample.Price}}
-            </span>
-            <span>
-                {{$dailyMenuItem.DishSample.Weight}}
-            </span>
-            <span>
-                {{$dailyMenuItem.DishSample.Caloric}}
-            </span>
+            </div>
+            <div class="item-param">
+                <div class="item-weight">
+                    {{$dailyMenuItem.DishSample.Weight}}
+                </div>
+                <div class="item-price">
+                    {{$dailyMenuItem.DishSample.Price}}
+                </div>
+                <div class="item-caloric">
+                    {{$dailyMenuItem.DishSample.Caloric}}
+                </div>
+            </div>
         </div>
 {{end}}
 {{end}}
@@ -44,22 +47,79 @@
 </body>
 <style lang="css">
 .center {
-text-align: center;
-empty-cells: hide;
-
+    text-align: center;
+    empty-cells: hide;
 }
 
-table {
-width: 90%;
-border-collapse: collapse;
-border: 3px solid grey;
-text-align: right;
-
+.group-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+    background: #F1F2F7;
+    border: 1px solid #DCDFE6;
+    width: calc(100% - 30px);
+    height: 40px;
+    margin-top: -1px;
 }
 
-th, td {
-text-align: right;
-border: 1px solid grey;
+.item-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #DCDFE6;
+    border-top: none;
+    width: 100%;
+    height: 40px;
+    background: #ffffff;
+}
+
+.item-line:last-child {
+    
+}
+
+.group-item-name {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 50px;
+    width: 100%;
+    height: 40px;
+}
+
+.item-param {
+    display: flex;
+    align-items: center;
+    width: 270px;
+    height: 40px;
+}
+
+.item-weight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 40px; 
+    color: #343E5C;
+}
+
+.item-price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 40px;
+    font-weight: bold;
+    color: #343E5C;
+}
+
+.item-caloric {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 40px;
+    color: #2754EB;
 }
 </style>
 </html>
