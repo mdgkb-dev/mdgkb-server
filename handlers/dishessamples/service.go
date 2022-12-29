@@ -53,3 +53,11 @@ func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 	err = s.repository.setQueryFilter(c)
 	return err
 }
+
+func (s *Service) UpdateAll(items models.DishSamples) error {
+	err := s.repository.updateAll(items)
+	if err != nil {
+		return err
+	}
+	return nil
+}

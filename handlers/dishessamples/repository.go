@@ -1,7 +1,6 @@
 package dishessamples
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -47,7 +46,14 @@ func (r *Repository) delete(id string) (err error) {
 }
 
 func (r *Repository) update(item *models.DishSample) (err error) {
-	fmt.Println("123")
 	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) updateAll(items models.DishSamples) (err error) {
+	_, err = r.db().NewInsert().On("conflict (id) do update").
+		Model(&items).
+		Set("item_order = EXCLUDED.item_order").
+		Exec(r.ctx)
 	return err
 }

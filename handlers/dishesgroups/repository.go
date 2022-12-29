@@ -27,6 +27,9 @@ func (r *Repository) create(item *models.DishesGroup) (err error) {
 
 func (r *Repository) getAll() (items models.DishesGroups, err error) {
 	query := r.db().NewSelect().Model(&items).
+		Relation("DishSamples", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("dishes_samples.item_order")
+		}).
 		Relation("DishSamples.DishesGroup").
 		Relation("DishSamples.Image")
 	r.queryFilter.HandleQuery(query)

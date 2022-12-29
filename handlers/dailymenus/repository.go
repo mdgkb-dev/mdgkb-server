@@ -28,6 +28,9 @@ func (r *Repository) create(item *models.DailyMenu) (err error) {
 func (r *Repository) getAll() (models.DailyMenus, error) {
 	items := make(models.DailyMenus, 0)
 	query := r.db().NewSelect().Model(&items).
+		Relation("DailyMenuItems", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("daily_menu_items.item_order")
+		}).
 		Relation("DailyMenuItems.DishSample.DishesGroup").
 		Relation("DailyMenuItems.DishSample.Image")
 	r.queryFilter.HandleQuery(query)
