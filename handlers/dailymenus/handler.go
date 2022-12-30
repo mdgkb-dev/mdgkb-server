@@ -1,7 +1,6 @@
 package dailymenus
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -91,7 +90,6 @@ func (h *Handler) PDF(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	fmt.Println(item.DishesGroups)
 	pdf, err := h.helper.PDF.GeneratePDF("dailyMenu", item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
