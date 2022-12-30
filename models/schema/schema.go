@@ -47,6 +47,7 @@ type Schema struct {
 	Hospitalization                  map[string]string `json:"hospitalization"`
 	SupportMessage                   map[string]string `json:"supportMessage"`
 	DailyMenu                        map[string]string `json:"dailyMenu"`
+	DishesGroup                      map[string]string `json:"dishesGroup"`
 }
 
 func CreateSchema() Schema {
@@ -97,6 +98,7 @@ func CreateSchema() Schema {
 		SupportMessage:                   createSupportMessageSchema(),
 		DailyMenu:                        createDailyMenuSchema(),
 		FormPattern:                      createFormPatternSchema(),
+		DishesGroup:                      createDishesGroupSchema(),
 	}
 }
 
@@ -694,5 +696,14 @@ func createFormPatternSchema() map[string]string {
 		"id":        "id",
 		"code":      "code",
 		"name":      "name",
+	}
+}
+
+func createDishesGroupSchema() map[string]string {
+	return map[string]string{
+		"tableName": "dishes_groups",
+		"id":        "id",
+		"name":      "name",
+		"order":     "dishes_group_order",
 	}
 }

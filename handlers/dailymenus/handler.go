@@ -96,6 +96,5 @@ func (h *Handler) PDF(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
-	//h.helper.HTTP.SetFileHeaders(c, "Заявки на мероприятие")
 	c.Data(http.StatusOK, "application/pdf", pdf)
 }
