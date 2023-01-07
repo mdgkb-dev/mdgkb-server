@@ -1,11 +1,9 @@
 package search
 
 import (
-	"bytes"
-	"encoding/json"
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/elastic/go-elasticsearch/v8/esutil"
 	"github.com/uptrace/bun"
 )
 
@@ -42,59 +40,27 @@ func (r *Repository) search(searchModel *models.SearchModel) error {
 	return err
 }
 
-func (r *Repository) elasticSearch(model *models.SearchModel) error {
-	var data map[string]interface{}
-	query, indexes := model.BuildQuery()
-	res, err := r.elasticsearch.Search(
-		r.elasticsearch.Search.WithIndex(indexes...),
-		r.elasticsearch.Search.WithBody(esutil.NewJSONReader(&query)),
-		r.elasticsearch.Search.WithPretty(),
-	)
-	defer res.Body.Close()
-	if err != nil {
-		return err
+func (r *Repository) fullTextSearch(model *models.SearchModel) error {
+	query := "phraseto_tsquery('russian', '\"?\"')"
+	rank := fmt.Sprintf("ts_rank_cd(search_column, %s) as rank", query)
+	q := r.db().NewSelect().Column("label", "description", "value", "key").
+		ColumnExpr(rank, bun.Safe(model.Query)).
+		Table("search_elements").
+		Where("search_column @@ "+query, bun.Safe(model.Query))
+	if model.SearchGroup.ID.Valid {
+		q.Where("key = '?'", bun.Safe(model.SearchGroup.Key))
 	}
-	err = json.NewDecoder(res.Body).Decode(&data)
-	if err != nil {
-		return err
-	}
-	model.ParseMap(data)
-	return nil
+	q.Order("rank desc")
+	err := q.Scan(r.ctx, &model.SearchElements)
+	return err
 }
 
-func (r *Repository) elasticSuggester(model *models.SearchModel) error {
-	var re map[string]interface{}
-	//indexes := []string{}
+func (r *Repository) elasticSuggester(model *models.SearchModel) (err error) {
+	q := r.db().NewSelect().Column("label").Table("search_items").
+		Where(`search_column @@ to_tsquery('russian', '"?"')`, bun.Safe(model.Query))
 	//if model.SearchGroup != nil {
-	//	indexes = append(indexes, model.SearchGroup.Table)
+	//	q.Where("search_group", bun.Safe(model.SearchGroup.Key))
 	//}
-	should := make([]interface{}, 0)
-	should = append(should, map[string]interface{}{
-		"prefix": map[string]interface{}{
-			"name": map[string]interface{}{
-				"value": model.Query,
-			},
-		},
-	})
-	var buf bytes.Buffer
-	query := map[string]interface{}{
-		"query": should[0],
-	}
-	_ = json.NewEncoder(&buf).Encode(query)
-	res, err := r.elasticsearch.Search(
-		//r.elasticsearch.Search.WithIndex(indexes...),
-		r.elasticsearch.Search.WithBody(&buf),
-		//r.elasticsearch.Get.
-		r.elasticsearch.Search.WithPretty(),
-	)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-	err = json.NewDecoder(res.Body).Decode(&re)
-	if err != nil {
-		return err
-	}
-	model.ParseMap(re)
-	return nil
+	err = q.Scan(r.ctx, &model.SearchElements)
+	return err
 }

@@ -10,6 +10,7 @@ type PaidService struct {
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string    `json:"name"`
 	Price         int       `json:"price"`
+	Code          string    `json:"code"`
 }
 
 type PaidServices []*PaidService

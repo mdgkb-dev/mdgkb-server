@@ -9,7 +9,8 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
-	github.com/pro-assistance/pro-assister v0.0.106-0.20221230105815-96cff35ca6cb
+	github.com/pro-assistance/pro-assister v0.0.106-0.20230107092650-ec7ce62b42c4
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/uptrace/bun v1.1.8
 	github.com/uptrace/bun/dbfixture v1.1.8
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e

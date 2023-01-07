@@ -2,6 +2,8 @@ package paidservices
 
 import (
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.PaidService) error {
@@ -42,4 +44,9 @@ func (s *Service) GetBySlug(slug *string) (*models.PaidService, error) {
 		return nil, err
 	}
 	return item, nil
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

@@ -7,7 +7,7 @@ ifeq ($(OS),Windows_NT)
 else
 	migrations := database/*.go
 	cli := cmd/cli/*.go
-	main := cmd/server/main.go
+	main := cmd/server/*.go
 endif
 
 run: migrate
