@@ -25,9 +25,7 @@ func (s *Service) Update(item *models.DailyMenu) error {
 	if err != nil {
 		return err
 	}
-	if item.Active {
-		s.helper.Broker.SendEvent("daily-menu-update", item)
-	}
+	s.helper.Broker.SendEvent("daily-menu-update", item)
 	return nil
 }
 
