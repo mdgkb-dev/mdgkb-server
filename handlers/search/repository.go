@@ -56,7 +56,7 @@ func (r *Repository) fullTextSearch(model *models.SearchModel) error {
 }
 
 func (r *Repository) elasticSuggester(model *models.SearchModel) (err error) {
-	q := r.db().NewSelect().Column("label").Table("search_items").
+	q := r.db().NewSelect().Column("label").Table("search_elements").
 		Where(`search_column @@ to_tsquery('russian', '"?"')`, bun.Safe(model.Query))
 	//if model.SearchGroup != nil {
 	//	q.Where("search_group", bun.Safe(model.SearchGroup.Key))
