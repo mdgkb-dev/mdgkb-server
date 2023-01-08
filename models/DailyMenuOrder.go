@@ -8,7 +8,7 @@ import (
 )
 
 type DailyMenuOrder struct {
-	bun.BaseModel `bun:"daily_menu_orders,alias:daily_menu_orders"`
+	bun.BaseModel `bun:"daily_menu_orders,select:daily_menu_orders_view,alias:daily_menu_orders_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Date          time.Time     `bun:"item_date" json:"date"`
 	BoxNumber     uint8         `json:"boxNumber"`
@@ -21,6 +21,11 @@ type DailyMenuOrder struct {
 }
 
 type DailyMenuOrders []*DailyMenuOrder
+
+type DailyMenuOrdersWithCount struct {
+	DailyMenuOrders DailyMenuOrders `json:"dailyMenuOrders"`
+	Count           int             `json:"count"`
+}
 
 func (item *DailyMenuOrder) SetIDForChildren() {
 	for i := range item.DailyMenuOrderItems {

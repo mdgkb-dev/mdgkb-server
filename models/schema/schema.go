@@ -48,6 +48,7 @@ type Schema struct {
 	SupportMessage                   map[string]string `json:"supportMessage"`
 	DailyMenu                        map[string]string `json:"dailyMenu"`
 	DishesGroup                      map[string]string `json:"dishesGroup"`
+	DailyMenuOrder                   map[string]string `json:"dailyMenuOrder"`
 }
 
 func CreateSchema() Schema {
@@ -99,6 +100,7 @@ func CreateSchema() Schema {
 		DailyMenu:                        createDailyMenuSchema(),
 		FormPattern:                      createFormPatternSchema(),
 		DishesGroup:                      createDishesGroupSchema(),
+		DailyMenuOrder:                   createDailyMenuOrderSchema(),
 	}
 }
 
@@ -705,5 +707,20 @@ func createDishesGroupSchema() map[string]string {
 		"id":        "id",
 		"name":      "name",
 		"order":     "dishes_group_order",
+	}
+}
+
+func createDailyMenuOrderSchema() map[string]string {
+	return map[string]string{
+		"tableName":    "daily_menu_orders_view",
+		"key":          "dailyMenuOrder",
+		"id":           "id",
+		"createdAt":    "created_at",
+		"formStatusId": "form_status_id",
+		"email":        "email",
+		"date":         "item_date",
+		"boxNumber":    "box_number",
+		"number":       "number",
+		"formValueId":  "formValueId",
 	}
 }

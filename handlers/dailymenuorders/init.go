@@ -23,7 +23,7 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	Create(*models.DailyMenuOrder) error
-	GetAll() (models.DailyMenuOrders, error)
+	GetAll() (models.DailyMenuOrdersWithCount, error)
 	Get(string) (*models.DailyMenuOrder, error)
 	Delete(string) error
 	Update(*models.DailyMenuOrder) error
@@ -34,7 +34,7 @@ type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
 	create(*models.DailyMenuOrder) error
-	getAll() (models.DailyMenuOrders, error)
+	getAll() (models.DailyMenuOrdersWithCount, error)
 	get(string) (*models.DailyMenuOrder, error)
 	delete(string) error
 	update(*models.DailyMenuOrder) error
