@@ -25,13 +25,14 @@ func (r *Repository) create(item *models.Employee) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (items models.Employees, err error) {
-	query := r.db().NewSelect().Model(&items).
+func (r *Repository) getAll() (item models.EmployeesWithCount, err error) {
+	item.Employees = make(models.Employees, 0)
+	query := r.db().NewSelect().Model(&item.Employees).
 		Relation("Human").
 		Relation("Human.PhotoMini")
 	r.queryFilter.HandleQuery(query)
-	err = query.Scan(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(slug string) (*models.Employee, error) {

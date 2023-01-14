@@ -40,27 +40,62 @@ func (r *Repository) search(searchModel *models.SearchModel) error {
 	return err
 }
 
-func (r *Repository) fullTextSearch(model *models.SearchModel) error {
-	query := "phraseto_tsquery('russian', '\"?\"')"
-	rank := fmt.Sprintf("ts_rank_cd(search_column, %s) as rank", query)
-	q := r.db().NewSelect().Column("label", "description", "value", "key").
-		ColumnExpr(rank, bun.Safe(model.Query)).
+type Patname struct {
+	bun.BaseModel `bun:"lexemes,alias:lexemes"`
+	Pos           int
+	Lexeme        string
+}
+
+func (r *Repository) fullTextSearch(model *models.SearchModel) (err error) {
+	src1 := r.db().NewSelect().
+		ColumnExpr("lexeme").
+		ColumnExpr("positions[1] as pos").
+		TableExpr(fmt.Sprintf("unnest(to_tsvector('simple','%s'))", model.Query))
+
+	subq := r.db().NewSelect().
+		ColumnExpr("f.pos").
+		ColumnExpr("'('||string_agg(l.lexeme,'|')||')' as tq").
+		TableExpr("fio as f").Join("join lexemes as l on l.lexeme % f.lexeme").Group("f.pos")
+
+	src2 := r.db().NewSelect().
+		ColumnExpr("to_tsquery('simple', string_agg(q.tq,'&')) as q").
+		TableExpr("(?) AS q", subq)
+
+	q := r.db().NewSelect().With("fio", src1).With("query", src2).
+		ColumnExpr(" search_column  <=> (select q from query) as rank").
+		Column("label", "description", "value", "key").
 		Table("search_elements").
-		Where("search_column @@ "+query, bun.Safe(model.Query))
+		Where("search_column @@ (select q from query)")
 	if model.SearchGroup.ID.Valid {
 		q.Where("key = '?'", bun.Safe(model.SearchGroup.Key))
 	}
-	q.Order("rank desc")
-	err := q.Scan(r.ctx, &model.SearchElements)
+	q.OrderExpr("search_column  <=> (select q from query)")
+	err = q.Scan(r.ctx, &model.SearchElements)
 	return err
 }
 
 func (r *Repository) elasticSuggester(model *models.SearchModel) (err error) {
-	q := r.db().NewSelect().Column("label").Table("search_elements").
-		Where(`search_column @@ to_tsquery('russian', '"?"')`, bun.Safe(model.Query))
-	//if model.SearchGroup != nil {
-	//	q.Where("search_group", bun.Safe(model.SearchGroup.Key))
-	//}
+	src1 := r.db().NewSelect().
+		ColumnExpr("lexeme").
+		ColumnExpr("positions[1] as pos").
+		TableExpr(fmt.Sprintf("unnest(to_tsvector('simple','%s'))", model.Query))
+
+	subq := r.db().NewSelect().
+		ColumnExpr("f.pos").
+		ColumnExpr("'('||string_agg(l.lexeme,'|')||')' as tq").
+		TableExpr("fio as f").Join("join lexemes as l on l.lexeme % f.lexeme").Group("f.pos")
+
+	src2 := r.db().NewSelect().
+		ColumnExpr("to_tsquery('simple', string_agg(q.tq,'&')) as q").
+		TableExpr("(?) AS q", subq)
+
+	q := r.db().NewSelect().With("fio", src1).With("query", src2).
+		ColumnExpr(" search_column  <=> (select q from query) as rank").
+		Column("label", "description", "value", "key").
+		Table("search_elements").
+		Where("search_column @@ (select q from query)")
+
+	q.OrderExpr("search_column  <=> (select q from query)").Limit(10)
 	err = q.Scan(r.ctx, &model.SearchElements)
 	return err
 }

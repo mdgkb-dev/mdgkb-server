@@ -1,26 +1,19 @@
 #!/bin/bash
 
-./get_params.sh
+./cmd/server/get_params.sh
 
-if [ -z $DEPLOY_BRANCH ]
- then
-    DEPLOY_BRANCH="develop"
+DEPLOY_PATH=$1
+
+PROCESS_NAME=mdgkb-server
+PID_FILE=$DEPLOY_PATH/$PROCESS_NAME.pid
+PROCESS_FILE=$DEPLOY_PATH/$PROCESS_NAME
+
+echo "$PID_FILE"
+GOOS=linux GOARCH=amd64 go build -o "$PROCESS_FILE" ./cmd/server/*.go
+
+if [ -f "$PID_FILE" ]; then
+    kill -9 "$(cat "$PID_FILE")" && rm -f "$PID_FILE"
 fi
-echo $DEPLOY_BRANCH
 
-#PROCESS_NAME=mdgkb-server
-#PIDFILE=${BIN_PATH}/${PROCESS_NAME}.pid
-#PROCESS_FILE=${BIN_PATH}/${PROCESS_NAME}
-#git reset --hard && \
-#git pull --all && \
-#git checkout $branch && \
-#
-#go build -o $PROCESS_FILE ./cmd/server/main.go && \
-##if [ -f "$PIDFILE" ]; then
-##    echo "$FILE exists."
-##    kill -9 `cat ${PIDFILE}` && rm -f "${PIDFILE}"
-##fi
-##echo $PROCESS_FILE
-##
-#nohup $PROCESS_FILE &
-#exit
+nohup "$PROCESS_FILE" > /dev/null 2>&1 & echo $! > "$PID_FILE"
+exit

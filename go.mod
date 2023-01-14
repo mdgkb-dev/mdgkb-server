@@ -4,13 +4,13 @@ go 1.18
 
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.2.0
+	github.com/fatih/structtag v1.2.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-pg/pg/v10 v10.10.6
 	github.com/google/uuid v1.3.0
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
 	github.com/pro-assistance/pro-assister v0.0.106-0.20230107092650-ec7ce62b42c4
-	github.com/robfig/cron/v3 v3.0.1
 	github.com/uptrace/bun v1.1.8
 	github.com/uptrace/bun/dbfixture v1.1.8
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e
@@ -45,6 +45,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

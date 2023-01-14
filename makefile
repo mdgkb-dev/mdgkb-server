@@ -36,12 +36,6 @@ dump_from_remote:
 
 dump: dump_from_remote
 
-deploy:
-	./cmd/server/deploy.sh DEPLOY_PATH=$(DEPLOY_PATH) DEPLOY_BRANCH=$(DEPLOY_BRANCH)
-
-kill:
-	kill -9 `lsof -t -i:$(SERVER_PORT)`
-
 ########
 #DOCKER#
 ########
@@ -98,3 +92,13 @@ test_dumb:
 
 drop_test_database:
 	PGPASSWORD=$(DB_PASSWORD) dropdb -Umdgkb -hlocalhost $(DB_NAME)_test
+
+########
+#DEPLOY#
+########
+
+start:
+	./cmd/server/deploy.sh $(DEPLOY_PATH)
+
+kill:
+	kill -9 `cat mdgkb-server.pid`

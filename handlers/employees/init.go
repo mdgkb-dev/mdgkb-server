@@ -24,7 +24,7 @@ type IService interface {
 	setQueryFilter(*gin.Context) error
 
 	Create(*models.Employee) error
-	GetAll() (models.Employees, error)
+	GetAll() (models.EmployeesWithCount, error)
 	Get(string) (*models.Employee, error)
 	Delete(string) error
 	Update(*models.Employee) error
@@ -34,7 +34,7 @@ type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
 	create(*models.Employee) error
-	getAll() (models.Employees, error)
+	getAll() (models.EmployeesWithCount, error)
 	get(string) (*models.Employee, error)
 	delete(string) error
 	update(*models.Employee) error

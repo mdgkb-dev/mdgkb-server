@@ -94,7 +94,6 @@ func CreateSchema() Schema {
 		Diet:                             createDietSchema(),
 		AgePeriod:                        createAgePeriodSchema(),
 		DoctorDivision:                   createDoctorDivisionSchema(),
-		Employee:                         createEmployeesSchema(),
 		Hospitalization:                  createHospitalizationSchema(),
 		SupportMessage:                   createSupportMessageSchema(),
 		DailyMenu:                        createDailyMenuSchema(),
@@ -634,16 +633,17 @@ func createDoctorDivisionSchema() map[string]string {
 	}
 }
 
-func createEmployeesSchema() map[string]string {
-	return map[string]string{
-		"tableName": "employees_view",
-		"key":       "employee",
-		"id":        "id",
-		"fullName":  "full_name",
-		"isMale":    "is_male",
-		"dateBirth": "date_birth",
-	}
-}
+// Переведено на анализ моделей
+//func createEmployeesSchema() map[string]string {
+//	return map[string]string{
+//		"tableName": "employees_view",
+//		"key":       "employee",
+//		"id":        "id",
+//		"fullName":  "full_name",
+//		"isMale":    "is_male",
+//		"dateBirth": "date_birth",
+//	}
+//}
 
 func createHospitalizationSchema() map[string]string {
 	return map[string]string{
