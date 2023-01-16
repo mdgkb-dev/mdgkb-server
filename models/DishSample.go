@@ -13,6 +13,7 @@ type DishSample struct {
 	Price         uint          `json:"price"`
 	Caloric       uint          `json:"caloric"`
 	Weight        uint          `json:"weight"`
+	Quantity      int           `json:"quantity"`
 	DishesGroup   *DishesGroup  `bun:"rel:belongs-to" json:"dishesGroup"`
 	DishesGroupID uuid.NullUUID `bun:"type:uuid"  json:"dishesGroupId"`
 	Order         uint8         `bun:"item_order" json:"order"`

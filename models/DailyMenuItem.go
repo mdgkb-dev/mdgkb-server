@@ -13,6 +13,7 @@ type DailyMenuItem struct {
 	Caloric       uint          `json:"caloric"`
 	Weight        uint          `json:"weight"`
 	Order         uint          `bun:"item_order" json:"order"`
+	Quantity      int           `json:"quantity"`
 	DailyMenu     *DailyMenu    `bun:"rel:belongs-to" json:"dailyMenu"`
 	DailyMenuID   uuid.NullUUID `bun:"type:uuid"  json:"dailyMenuId"`
 	DishSample    *DishSample   `bun:"rel:belongs-to" json:"dishSample"`
