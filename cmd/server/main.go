@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"mdgkb/mdgkb-server/migrations"
 	"mdgkb/mdgkb-server/routing"
@@ -21,6 +22,7 @@ func main() {
 	helper := helperPack.NewHelper(*conf)
 
 	routing.Init(router, helper)
+	fmt.Println("test_change")
 	updateJob := &cronHelper.Job{Schedule: "*/1 * * * *", Function: updateSearchElementsTable(helper.DB.DB)}
 	err = helper.Cron.AddJobs(cronHelper.Jobs{updateJob})
 	if err != nil {
