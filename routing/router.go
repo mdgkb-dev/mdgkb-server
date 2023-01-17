@@ -77,7 +77,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/valuetypes"
 	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
-	"mdgkb/mdgkb-server/middleware"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	appointmentsTypesRouter "mdgkb/mdgkb-server/routing/appointmentstypes"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
@@ -161,9 +160,9 @@ import (
 )
 
 func Init(r *gin.Engine, helper *helperPack.Helper) {
-	m := middleware.CreateMiddleware(helper)
+	//m := middleware.CreateMiddleware(helper)
 
-	r.Use(m.CORSMiddleware())
+	//r.Use(m.CORSMiddleware())
 	//r.Use(m.CheckPermission())
 	r.Use(gin.Logger())
 
@@ -172,8 +171,11 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	authRouter.Init(authGroup.Group(""), auth.CreateHandler(helper))
 
 	api := r.Group("/api/v1")
+	ws := r.Group("/ws")
+
 	//api.Use(m.Authentication())
-	api.Use(m.CORSMiddleware())
+	//api.Use(m.CORSMiddleware())
+	//ws.Use(m.CORSMiddleware())
 	api.GET("/subscribe/:channel", helper.Broker.ServeHTTP)
 
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(helper))
@@ -246,7 +248,11 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	employeesRouter.Init(api.Group("/employees"), employees.CreateHandler(helper))
 	dishesGroupsRouter.Init(api.Group("/dishes-groups"), dishesgroups.CreateHandler(helper))
 	dishesSamplesRouter.Init(api.Group("/dishes-samples"), dishessamples.CreateHandler(helper))
-	dailyMenusRouter.Init(api.Group("/daily-menus"), dailymenus.CreateHandler(helper))
+
+	dailyMenusHandler := dailymenus.CreateHandler(helper)
+	dailyMenusRouter.Init(api.Group("/daily-menus"), dailyMenusHandler)
+	ws.Group("/daily-menus").GET("/regular-update", dailyMenusHandler.GetWeb)
+
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))
 	appointmentsTypesRouter.Init(api.Group("/appointments-types"), appointmenstypes.CreateHandler(helper))

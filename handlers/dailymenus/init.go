@@ -20,6 +20,7 @@ type IHandler interface {
 	Update(c *gin.Context)
 	UpdateAll(c *gin.Context)
 	PDF(c *gin.Context)
+	GetWeb(c *gin.Context)
 }
 
 type IService interface {
