@@ -14,20 +14,36 @@ func (s *Service) Create(item *models.Page) error {
 		return err
 	}
 	item.SetIDForChildren()
-	err = pagesdocuments.CreateService(s.helper).CreateMany(item.PageDocuments)
+	pageSideMenusService := pagesidemenus.CreateService(s.helper)
+	err = pageSideMenusService.UpsertMany(item.PageSideMenus)
 	if err != nil {
 		return err
 	}
-	err = pageimages.CreateService(s.helper).CreateMany(item.PageImages)
+
+	pagesDocumentsService := pagesdocuments.CreateService(s.helper)
+	err = pagesDocumentsService.UpsertMany(item.PageDocuments)
 	if err != nil {
 		return err
 	}
+	err = pagesDocumentsService.DeleteMany(item.PageDocumentsForDelete)
+	if err != nil {
+		return err
+	}
+	pageImagesService := pageimages.CreateService(s.helper)
+	err = pageImagesService.UpsertMany(item.PageImages)
+	if err != nil {
+		return err
+	}
+	err = pageImagesService.DeleteMany(item.PageImagesForDelete)
+	if err != nil {
+		return err
+	}
+	return nil
 	//pagesCommentsService := .CreateService(s.helper)
 	//err = pagesCommentsService.CreateMany(item.PageComments)
 	//if err != nil {
 	//	return err
 	//}
-	return err
 }
 
 func (s *Service) GetAll() (models.Pages, error) {

@@ -59,9 +59,13 @@ func (s *Service) UpsertMany(items models.PageSideMenus) error {
 	if len(items) == 0 {
 		return nil
 	}
+	err := s.repository.upsertMany(items)
+	if err != nil {
+		return err
+	}
 	items.SetIDForChildren()
 	pageSectionsService := pagesections.CreateService(s.helper)
-	err := pageSectionsService.DeleteMany(items.GetPageSectionsForDelete())
+	err = pageSectionsService.DeleteMany(items.GetPageSectionsForDelete())
 	if err != nil {
 		return err
 	}
@@ -69,7 +73,7 @@ func (s *Service) UpsertMany(items models.PageSideMenus) error {
 	if err != nil {
 		return err
 	}
-	return s.repository.upsertMany(items)
+	return nil
 }
 
 func (s *Service) Delete(id string) error {
