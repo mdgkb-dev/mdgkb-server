@@ -1,4 +1,4 @@
-create extension rum;
+create extension if not exists rum;
 
 create table if not exists lexemes
 (

@@ -1,10 +1,12 @@
 package dailymenus
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 )
 
 func (h *Handler) Create(c *gin.Context) {
@@ -34,6 +36,38 @@ func (h *Handler) GetAll(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
+}
+
+var u = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
+
+type Message struct {
+	Greeting string `json:"greeting"`
+}
+
+func (h *Handler) GetWeb(c *gin.Context) {
+	u.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
+	ws, err := u.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		return
+	}
+	defer ws.Close()
+	for {
+		var msg Message
+		err := ws.ReadJSON(&msg)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, err)
+			break
+		}
+		err = ws.WriteJSON(todayMenu)
+		if err != nil {
+			fmt.Printf("error sending message: %s\n", err.Error())
+		}
+	}
 }
 
 func (h *Handler) Get(c *gin.Context) {
