@@ -7,7 +7,7 @@ ifeq ($(OS),Windows_NT)
 else
 	migrations := database/*.go
 	cli := cmd/cli/*.go
-	main := cmd/server/main.go
+	main := cmd/server/*.go
 endif
 
 run: migrate
@@ -35,12 +35,6 @@ dump_from_remote:
 	@./cmd/dump_pg.sh $(DB_NAME) $(DB_USER) $(DB_PASSWORD) $(DB_REMOTE_USER) $(DB_REMOTE_PASSWORD)
 
 dump: dump_from_remote
-
-deploy:
-	./cmd/server/deploy.sh DEPLOY_PATH=$(DEPLOY_PATH) DEPLOY_BRANCH=$(DEPLOY_BRANCH)
-
-kill:
-	kill -9 `lsof -t -i:$(SERVER_PORT)`
 
 ########
 #DOCKER#
@@ -73,6 +67,12 @@ git_merge: git_push
 	git merge @{-1}
 	git push
 
+git_deploy: git_push
+	git checkout master
+	git pull
+	git merge @{-1}
+	git push
+
 # example: make git_feature n=1
 git_feature:
 	git flow feature start PORTAL-$n
@@ -98,3 +98,13 @@ test_dumb:
 
 drop_test_database:
 	PGPASSWORD=$(DB_PASSWORD) dropdb -Umdgkb -hlocalhost $(DB_NAME)_test
+
+########
+#DEPLOY#
+########
+
+start:
+	./cmd/server/deploy.sh $(DEPLOY_PATH)
+
+kill:
+	kill -9 `cat mdgkb-server.pid`

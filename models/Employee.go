@@ -27,6 +27,10 @@ type Employee struct {
 
 	Certificates          Certificates `bun:"rel:has-many" json:"certificates"`
 	CertificatesForDelete []uuid.UUID  `bun:"-" json:"certificatesForDelete"`
+
+	FullName  string `bun:"-" json:"fullName"`
+	IsMale    string `bun:"-" json:"isMale"`
+	DateBirth string `bun:"-" json:"dateBirth"`
 }
 
 func (item *Employee) SetFilePath(fileID *string) *string {
@@ -44,6 +48,11 @@ func (item *Employee) SetFilePath(fileID *string) *string {
 }
 
 type Employees []*Employee
+
+type EmployeesWithCount struct {
+	Employees Employees `json:"items"`
+	Count     int       `json:"count"`
+}
 
 func (item *Employee) SetForeignKeys() {
 	if item.Human != nil {

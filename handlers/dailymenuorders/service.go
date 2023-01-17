@@ -46,7 +46,7 @@ func (s *Service) Update(item *models.DailyMenuOrder) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.DailyMenuOrders, error) {
+func (s *Service) GetAll() (models.DailyMenuOrdersWithCount, error) {
 	return s.repository.getAll()
 }
 

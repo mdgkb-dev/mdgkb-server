@@ -1,11 +1,9 @@
 package search
 
 import (
-	"bytes"
-	"encoding/json"
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/elastic/go-elasticsearch/v8/esutil"
 	"github.com/uptrace/bun"
 )
 
@@ -42,59 +40,62 @@ func (r *Repository) search(searchModel *models.SearchModel) error {
 	return err
 }
 
-func (r *Repository) elasticSearch(model *models.SearchModel) error {
-	var data map[string]interface{}
-	query, indexes := model.BuildQuery()
-	res, err := r.elasticsearch.Search(
-		r.elasticsearch.Search.WithIndex(indexes...),
-		r.elasticsearch.Search.WithBody(esutil.NewJSONReader(&query)),
-		r.elasticsearch.Search.WithPretty(),
-	)
-	defer res.Body.Close()
-	if err != nil {
-		return err
-	}
-	err = json.NewDecoder(res.Body).Decode(&data)
-	if err != nil {
-		return err
-	}
-	model.ParseMap(data)
-	return nil
+type Patname struct {
+	bun.BaseModel `bun:"lexemes,alias:lexemes"`
+	Pos           int
+	Lexeme        string
 }
 
-func (r *Repository) elasticSuggester(model *models.SearchModel) error {
-	var re map[string]interface{}
-	//indexes := []string{}
-	//if model.SearchGroup != nil {
-	//	indexes = append(indexes, model.SearchGroup.Table)
-	//}
-	should := make([]interface{}, 0)
-	should = append(should, map[string]interface{}{
-		"prefix": map[string]interface{}{
-			"name": map[string]interface{}{
-				"value": model.Query,
-			},
-		},
-	})
-	var buf bytes.Buffer
-	query := map[string]interface{}{
-		"query": should[0],
+func (r *Repository) fullTextSearch(model *models.SearchModel) (err error) {
+	src1 := r.db().NewSelect().
+		ColumnExpr("lexeme").
+		ColumnExpr("positions[1] as pos").
+		TableExpr(fmt.Sprintf("unnest(to_tsvector('simple','%s'))", model.Query))
+
+	subq := r.db().NewSelect().
+		ColumnExpr("f.pos").
+		ColumnExpr("'('||string_agg(l.lexeme,'|')||')' as tq").
+		TableExpr("fio as f").Join("join lexemes as l on l.lexeme % f.lexeme").Group("f.pos")
+
+	src2 := r.db().NewSelect().
+		ColumnExpr("to_tsquery('simple', string_agg(q.tq,'&')) as q").
+		TableExpr("(?) AS q", subq)
+
+	q := r.db().NewSelect().With("fio", src1).With("query", src2).
+		ColumnExpr(" search_column  <=> (select q from query) as rank").
+		Column("label", "description", "value", "key").
+		Table("search_elements").
+		Where("search_column @@ (select q from query)")
+	if model.SearchGroup.ID.Valid {
+		q.Where("key = '?'", bun.Safe(model.SearchGroup.Key))
 	}
-	_ = json.NewEncoder(&buf).Encode(query)
-	res, err := r.elasticsearch.Search(
-		//r.elasticsearch.Search.WithIndex(indexes...),
-		r.elasticsearch.Search.WithBody(&buf),
-		//r.elasticsearch.Get.
-		r.elasticsearch.Search.WithPretty(),
-	)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-	err = json.NewDecoder(res.Body).Decode(&re)
-	if err != nil {
-		return err
-	}
-	model.ParseMap(re)
-	return nil
+	q.OrderExpr("search_column  <=> (select q from query)")
+	err = q.Scan(r.ctx, &model.SearchElements)
+	return err
+}
+
+func (r *Repository) elasticSuggester(model *models.SearchModel) (err error) {
+	src1 := r.db().NewSelect().
+		ColumnExpr("lexeme").
+		ColumnExpr("positions[1] as pos").
+		TableExpr(fmt.Sprintf("unnest(to_tsvector('simple','%s'))", model.Query))
+
+	subq := r.db().NewSelect().
+		ColumnExpr("f.pos").
+		ColumnExpr("'('||string_agg(l.lexeme,'|')||')' as tq").
+		TableExpr("fio as f").Join("join lexemes as l on l.lexeme % f.lexeme").Group("f.pos")
+
+	src2 := r.db().NewSelect().
+		ColumnExpr("to_tsquery('simple', string_agg(q.tq,'&')) as q").
+		TableExpr("(?) AS q", subq)
+
+	q := r.db().NewSelect().With("fio", src1).With("query", src2).
+		ColumnExpr(" search_column  <=> (select q from query) as rank").
+		Column("label", "description", "value", "key").
+		Table("search_elements").
+		Where("search_column @@ (select q from query)")
+
+	q.OrderExpr("search_column  <=> (select q from query)").Limit(10)
+	err = q.Scan(r.ctx, &model.SearchElements)
+	return err
 }

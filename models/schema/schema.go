@@ -47,6 +47,8 @@ type Schema struct {
 	Hospitalization                  map[string]string `json:"hospitalization"`
 	SupportMessage                   map[string]string `json:"supportMessage"`
 	DailyMenu                        map[string]string `json:"dailyMenu"`
+	DishesGroup                      map[string]string `json:"dishesGroup"`
+	DailyMenuOrder                   map[string]string `json:"dailyMenuOrder"`
 }
 
 func CreateSchema() Schema {
@@ -92,11 +94,12 @@ func CreateSchema() Schema {
 		Diet:                             createDietSchema(),
 		AgePeriod:                        createAgePeriodSchema(),
 		DoctorDivision:                   createDoctorDivisionSchema(),
-		Employee:                         createEmployeesSchema(),
 		Hospitalization:                  createHospitalizationSchema(),
 		SupportMessage:                   createSupportMessageSchema(),
 		DailyMenu:                        createDailyMenuSchema(),
 		FormPattern:                      createFormPatternSchema(),
+		DishesGroup:                      createDishesGroupSchema(),
+		DailyMenuOrder:                   createDailyMenuOrderSchema(),
 	}
 }
 
@@ -630,16 +633,17 @@ func createDoctorDivisionSchema() map[string]string {
 	}
 }
 
-func createEmployeesSchema() map[string]string {
-	return map[string]string{
-		"tableName": "employees_view",
-		"key":       "employee",
-		"id":        "id",
-		"fullName":  "full_name",
-		"isMale":    "is_male",
-		"dateBirth": "date_birth",
-	}
-}
+// Переведено на анализ моделей
+//func createEmployeesSchema() map[string]string {
+//	return map[string]string{
+//		"tableName": "employees_view",
+//		"key":       "employee",
+//		"id":        "id",
+//		"fullName":  "full_name",
+//		"isMale":    "is_male",
+//		"dateBirth": "date_birth",
+//	}
+//}
 
 func createHospitalizationSchema() map[string]string {
 	return map[string]string{
@@ -694,5 +698,29 @@ func createFormPatternSchema() map[string]string {
 		"id":        "id",
 		"code":      "code",
 		"name":      "name",
+	}
+}
+
+func createDishesGroupSchema() map[string]string {
+	return map[string]string{
+		"tableName": "dishes_groups",
+		"id":        "id",
+		"name":      "name",
+		"order":     "dishes_group_order",
+	}
+}
+
+func createDailyMenuOrderSchema() map[string]string {
+	return map[string]string{
+		"tableName":    "daily_menu_orders_view",
+		"key":          "dailyMenuOrder",
+		"id":           "id",
+		"createdAt":    "created_at",
+		"formStatusId": "form_status_id",
+		"email":        "email",
+		"date":         "item_date",
+		"boxNumber":    "box_number",
+		"number":       "number",
+		"formValueId":  "formValueId",
 	}
 }

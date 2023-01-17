@@ -14,7 +14,7 @@ import (
 
 type IHandler interface {
 	Search(c *gin.Context)
-	ElasticSearch(c *gin.Context)
+	FullTextSearch(c *gin.Context)
 	SearchMain(c *gin.Context)
 	SearchGroups(c *gin.Context)
 }
@@ -30,7 +30,7 @@ type IRepository interface {
 	db() *bun.DB
 	getGroups(string) (models.SearchGroups, error)
 	search(*models.SearchModel) error
-	elasticSearch(*models.SearchModel) error
+	fullTextSearch(*models.SearchModel) error
 	elasticSuggester(*models.SearchModel) error
 }
 

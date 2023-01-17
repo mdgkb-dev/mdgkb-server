@@ -54,6 +54,7 @@ func (r *Repository) updateAll(items models.DishSamples) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("item_order = EXCLUDED.item_order").
+		Set("quantity = EXCLUDED.quantity").
 		Exec(r.ctx)
 	return err
 }

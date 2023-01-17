@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -27,6 +28,8 @@ type IService interface {
 	Update(*models.PaidService) error
 	Delete(*string) error
 	GetBySlug(*string) (*models.PaidService, error)
+
+	setQueryFilter(*gin.Context) error
 }
 
 type IRepository interface {
@@ -37,6 +40,8 @@ type IRepository interface {
 	update(*models.PaidService) error
 	delete(*string) error
 	getBySlug(*string) (*models.PaidService, error)
+
+	setQueryFilter(*gin.Context) error
 }
 
 type Handler struct {
@@ -50,8 +55,9 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx    context.Context
-	helper *helper.Helper
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 func CreateHandler(helper *helper.Helper) *Handler {

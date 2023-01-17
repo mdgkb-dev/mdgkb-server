@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -75,7 +73,6 @@ func (item *ResidencyApplication) GetCourseName() string {
 	name := ""
 	for _, course := range item.ResidencyCourse.ResidencyCoursesSpecializations {
 		if course.Main {
-			fmt.Println(course.Specialization.Name)
 			name = course.Specialization.Name
 		}
 	}

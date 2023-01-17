@@ -2,6 +2,7 @@ package search
 
 import (
 	"encoding/json"
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -21,13 +22,14 @@ func (h *Handler) Search(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-func (h *Handler) ElasticSearch(c *gin.Context) {
+func (h *Handler) FullTextSearch(c *gin.Context) {
 	var item models.SearchModel
 	err := json.Unmarshal([]byte(c.Query("searchModel")), &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
 	err = h.service.Search(&item)
+	fmt.Println(item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

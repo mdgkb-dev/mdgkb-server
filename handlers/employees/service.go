@@ -93,7 +93,7 @@ func (s *Service) Update(item *models.Employee) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Employees, error) {
+func (s *Service) GetAll() (models.EmployeesWithCount, error) {
 	return s.repository.getAll()
 }
 

@@ -25,8 +25,9 @@ func (r *Repository) create(item *models.DailyMenuOrder) (err error) {
 	return err
 }
 
-func (r *Repository) getAll() (items models.DailyMenuOrders, err error) {
-	query := r.db().NewSelect().Model(&items).
+func (r *Repository) getAll() (item models.DailyMenuOrdersWithCount, err error) {
+	item.DailyMenuOrders = make(models.DailyMenuOrders, 0)
+	query := r.db().NewSelect().Model(&item.DailyMenuOrders).
 		Relation("DailyMenuOrderItems.DailyMenuItem.DishSample").
 		Relation("FormValue.Child.Human").
 		Relation("FormValue.User.Human").
@@ -35,8 +36,8 @@ func (r *Repository) getAll() (items models.DailyMenuOrders, err error) {
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses")
 	r.queryFilter.HandleQuery(query)
-	err = query.Scan(r.ctx)
-	return items, err
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(id string) (*models.DailyMenuOrder, error) {
@@ -53,7 +54,7 @@ func (r *Repository) get(id string) (*models.DailyMenuOrder, error) {
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
-		Where("daily_menu_orders.id = ?", id).
+		Where("?TableAlias.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
 }
