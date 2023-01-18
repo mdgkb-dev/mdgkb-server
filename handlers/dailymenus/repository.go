@@ -2,6 +2,7 @@ package dailymenus
 
 import (
 	"mdgkb/mdgkb-server/models"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -42,6 +43,21 @@ func (r *Repository) get(id string) (*models.DailyMenu, error) {
 	item := models.DailyMenu{}
 	err := r.db().NewSelect().Model(&item).
 		Where("DailyMenus.id = ?", id).
+		Scan(r.ctx)
+	return &item, err
+}
+
+func (r *Repository) getTodayActive() (*models.DailyMenu, error) {
+	item := models.DailyMenu{}
+	today := time.Now().Format("2006-01-02")
+	err := r.db().NewSelect().Model(&item).
+		Relation("DailyMenuItems", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("daily_menu_items.item_order")
+		}).
+		Relation("DailyMenuItems.DishSample.DishesGroup").
+		Relation("DailyMenuItems.DishSample.Image").
+		Where("?TableAlias.item_date = ?", today).
+		Where("?TableAlias.active = true").
 		Scan(r.ctx)
 	return &item, err
 }

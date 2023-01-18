@@ -3,7 +3,6 @@ package dailymenus
 import (
 	"mdgkb/mdgkb-server/handlers/dailymenuitems"
 	"mdgkb/mdgkb-server/models"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,8 +15,6 @@ func (s *Service) Create(item *models.DailyMenu) error {
 	return nil
 }
 
-var todayMenu models.DailyMenu
-
 func (s *Service) Update(item *models.DailyMenu) error {
 	err := s.repository.update(item)
 	if err != nil {
@@ -27,11 +24,6 @@ func (s *Service) Update(item *models.DailyMenu) error {
 	err = dailymenuitems.CreateService(s.helper).UpsertMany(item.DailyMenuItems)
 	if err != nil {
 		return err
-	}
-	year, month, day := time.Now().Date()
-	year1, month1, day1 := item.Date.Date()
-	if year == year1 && month == month1 && day == day1 && item.Active {
-		todayMenu = *item
 	}
 	return nil
 }
@@ -49,11 +41,7 @@ func (s *Service) GetAll() (models.DailyMenus, error) {
 }
 
 func (s *Service) Get(slug string) (*models.DailyMenu, error) {
-	item, err := s.repository.get(slug)
-	if err != nil {
-		return nil, err
-	}
-	return item, nil
+	return s.repository.get(slug)
 }
 
 func (s *Service) Delete(id string) error {
@@ -63,4 +51,8 @@ func (s *Service) Delete(id string) error {
 func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 	err = s.repository.setQueryFilter(c)
 	return err
+}
+
+func (s *Service) GetTodayActive() (*models.DailyMenu, error) {
+	return s.repository.getTodayActive()
 }

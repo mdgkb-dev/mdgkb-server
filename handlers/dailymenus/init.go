@@ -31,6 +31,7 @@ type IService interface {
 	Delete(string) error
 	Update(*models.DailyMenu) error
 	UpdateAll(models.DailyMenus) error
+	GetTodayActive() (*models.DailyMenu, error)
 }
 
 type IRepository interface {
@@ -42,6 +43,7 @@ type IRepository interface {
 	delete(string) error
 	update(*models.DailyMenu) error
 	updateAll(models.DailyMenus) error
+	getTodayActive() (*models.DailyMenu, error)
 }
 
 type IFilesService interface {

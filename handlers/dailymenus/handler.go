@@ -43,8 +43,8 @@ var u = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-type Message struct {
-	Greeting string `json:"greeting"`
+type Ping struct {
+	Ping string `json:"ping"`
 }
 
 func (h *Handler) GetWeb(c *gin.Context) {
@@ -57,15 +57,16 @@ func (h *Handler) GetWeb(c *gin.Context) {
 	}
 	defer ws.Close()
 	for {
-		var msg Message
-		err := ws.ReadJSON(&msg)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, err)
-			break
-		}
-		err = ws.WriteJSON(todayMenu)
-		if err != nil {
-			fmt.Printf("error sending message: %s\n", err.Error())
+		_, m, err := ws.ReadMessage()
+		if err == nil && string(m) == "ping" {
+			todayMenu, err := h.service.GetTodayActive()
+			if err != nil {
+				fmt.Printf("error sending message: %s\n", err.Error())
+			}
+			err = ws.WriteJSON(todayMenu)
+			if err != nil {
+				fmt.Printf("error sending message: %s\n", err.Error())
+			}
 		}
 	}
 }
