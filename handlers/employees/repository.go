@@ -45,6 +45,7 @@ func (r *Repository) get(slug string) (*models.Employee, error) {
 		Relation("Certificates.Scan").
 		Relation("Educations.EducationCertification").
 		Relation("Educations.EducationAccreditation").
+		Relation("TeachingActivities").
 		Scan(r.ctx)
 	return &item, err
 }

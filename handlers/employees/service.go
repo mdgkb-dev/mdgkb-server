@@ -6,6 +6,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/experiences"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/regalias"
+	"mdgkb/mdgkb-server/handlers/teachingactivities"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -36,6 +37,10 @@ func (s *Service) Create(item *models.Employee) error {
 		return err
 	}
 	err = certificates.CreateService(s.helper).CreateMany(item.Certificates)
+	if err != nil {
+		return err
+	}
+	err = teachingactivities.CreateService(s.helper).CreateMany(item.TeachingActivities)
 	if err != nil {
 		return err
 	}
@@ -87,6 +92,16 @@ func (s *Service) Update(item *models.Employee) error {
 		return err
 	}
 	err = certificatesService.DeleteMany(item.CertificatesForDelete)
+	if err != nil {
+		return err
+	}
+
+	teachingactivitiesService := teachingactivities.CreateService(s.helper)
+	err = teachingactivitiesService.UpsertMany(item.TeachingActivities)
+	if err != nil {
+		return err
+	}
+	err = teachingactivitiesService.DeleteMany(item.TeachingActivitiesForDelete)
 	if err != nil {
 		return err
 	}

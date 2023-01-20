@@ -10,8 +10,8 @@ type TeachingActivity struct {
 	ID            uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string    `json:"name"`
 
-	DoctorID uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
-	Doctor   *Doctor       `bun:"rel:belongs-to" json:"doctor"`
+	EmployeeID uuid.NullUUID `bun:"type:uuid" json:"employeeId"`
+	Employee   *Employee     `bun:"rel:belongs-to" json:"employee"`
 }
 
 type TeachingActivities []*TeachingActivity
