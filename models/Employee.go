@@ -28,6 +28,9 @@ type Employee struct {
 	Certificates          Certificates `bun:"rel:has-many" json:"certificates"`
 	CertificatesForDelete []uuid.UUID  `bun:"-" json:"certificatesForDelete"`
 
+	TeachingActivities          TeachingActivities `bun:"rel:has-many" json:"teachingActivities"`
+	TeachingActivitiesForDelete []uuid.UUID        `bun:"-" json:"teachingActivitiesForDelete"`
+
 	FullName  string `bun:"-" json:"fullName"`
 	IsMale    string `bun:"-" json:"isMale"`
 	DateBirth string `bun:"-" json:"dateBirth"`
@@ -72,5 +75,9 @@ func (item *Employee) SetIDForChildren() {
 	}
 	for i := range item.Regalias {
 		item.Regalias[i].EmployeeID = item.ID
+	}
+
+	for i := range item.TeachingActivities {
+		item.TeachingActivities[i].EmployeeID = item.ID
 	}
 }
