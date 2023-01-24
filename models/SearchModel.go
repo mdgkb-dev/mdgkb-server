@@ -12,6 +12,7 @@ type SearchModel struct {
 	SearchGroups    SearchGroups   `json:"searchGroups"`
 	SearchGroup     *SearchGroup   `json:"searchGroup"`
 	SearchColumn    string         `json:"searchColumn"`
+	Count           int            `json:"count"`
 }
 
 func (item *SearchModel) BuildRoutes() {

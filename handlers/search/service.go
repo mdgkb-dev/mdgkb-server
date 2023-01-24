@@ -2,6 +2,8 @@ package search
 
 import (
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) SearchMain(searchModel *models.SearchModel) (err error) {
@@ -45,5 +47,10 @@ func (s *Service) Search(model *models.SearchModel) error {
 		return err
 	}
 	model.BuildRoutes()
+	return err
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
 	return err
 }

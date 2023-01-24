@@ -4,11 +4,20 @@ import (
 	"fmt"
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
 func (r *Repository) db() *bun.DB {
 	return r.helper.DB.DB
+}
+
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *Repository) getGroups(groupID string) (models.SearchGroups, error) {
@@ -70,7 +79,10 @@ func (r *Repository) fullTextSearch(model *models.SearchModel) (err error) {
 		q.Where("key = '?'", bun.Safe(model.SearchGroup.Key))
 	}
 	q.OrderExpr("search_column  <=> (select q from query)")
-	err = q.Scan(r.ctx, &model.SearchElements)
+
+	r.queryFilter.HandleQuery(q)
+	model.Count, err = q.ScanAndCount(r.ctx, &model.SearchElements)
+
 	return err
 }
 
@@ -94,6 +106,8 @@ func (r *Repository) elasticSuggester(model *models.SearchModel) (err error) {
 		Column("label", "description", "value", "key").
 		Table("search_elements").
 		Where("search_column @@ (select q from query)")
+
+	r.queryFilter.HandleQuery(q)
 
 	q.OrderExpr("search_column  <=> (select q from query)").Limit(10)
 	err = q.Scan(r.ctx, &model.SearchElements)

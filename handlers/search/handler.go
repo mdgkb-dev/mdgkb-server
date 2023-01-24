@@ -25,6 +25,12 @@ func (h *Handler) Search(c *gin.Context) {
 func (h *Handler) FullTextSearch(c *gin.Context) {
 	var item models.SearchModel
 	err := json.Unmarshal([]byte(c.Query("searchModel")), &item)
+
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+
+	err = h.service.setQueryFilter(c)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

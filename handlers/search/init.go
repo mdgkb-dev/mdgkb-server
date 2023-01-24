@@ -7,6 +7,7 @@ import (
 
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -20,6 +21,7 @@ type IHandler interface {
 }
 
 type IService interface {
+	setQueryFilter(*gin.Context) error
 	SearchMain(*models.SearchModel) error
 	SearchObjects(*models.SearchModel) error
 	SearchGroups() (models.SearchGroups, error)
@@ -28,6 +30,7 @@ type IService interface {
 
 type IRepository interface {
 	db() *bun.DB
+	setQueryFilter(*gin.Context) error
 	getGroups(string) (models.SearchGroups, error)
 	search(*models.SearchModel) error
 	fullTextSearch(*models.SearchModel) error
@@ -53,6 +56,7 @@ type Repository struct {
 	ctx           context.Context
 	helper        *helper.Helper
 	elasticsearch *elasticsearch.Client
+	queryFilter   *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
