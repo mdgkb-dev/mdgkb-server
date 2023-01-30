@@ -4,7 +4,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/doctorpaidservices"
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
-	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
@@ -18,10 +17,10 @@ func (s *Service) Create(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	err = employees.CreateService(s.helper).Create(item.Employee)
-	if err != nil {
-		return err
-	}
+	// err = employees.CreateService(s.helper).Create(item.Employee)
+	// if err != nil {
+	// 	return err
+	// }
 	item.SetForeignKeys()
 	err = s.repository.create(item)
 	if err != nil {
@@ -52,10 +51,10 @@ func (s *Service) Update(item *models.Doctor) error {
 	if err != nil {
 		return err
 	}
-	err = employees.CreateService(s.helper).Update(item.Employee)
-	if err != nil {
-		return err
-	}
+	// err = employees.CreateService(s.helper).Update(item.Employee)
+	// if err != nil {
+	// 	return err
+	// }
 	item.SetIDForChildren()
 	doctorPaidServicesService := doctorpaidservices.CreateService(s.helper)
 	err = doctorPaidServicesService.UpsertMany(item.DoctorPaidServices)
