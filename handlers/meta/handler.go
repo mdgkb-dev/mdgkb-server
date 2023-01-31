@@ -17,10 +17,10 @@ func (h *Handler) GetCount(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
+var schemas = structsreader.GetSchemas()
+
 func (h *Handler) GetSchema(c *gin.Context) {
-	schema := h.service.GetSchema()
-	schema.Employee = structsreader.GetEmployeeSchema()
-	c.JSON(http.StatusOK, schema)
+	c.JSON(http.StatusOK, schemas)
 }
 
 func (h *Handler) GetSocial(c *gin.Context) {

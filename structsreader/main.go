@@ -11,7 +11,7 @@ import (
 	"github.com/fatih/structtag"
 )
 
-func GetEmployeeSchema() map[string]string {
+func GetSchemas() map[string]map[string]string {
 	f, err := parser.ParseDir(token.NewFileSet(), "models", nil, parser.AllErrors)
 	if err != nil {
 		fmt.Println(err)
@@ -37,20 +37,22 @@ func GetEmployeeSchema() map[string]string {
 			}
 		}
 	}
-	var structType *ast.TypeSpec
-	var structFields []*ast.Field
+	schemas := make(map[string]map[string]string, 0)
 	for s := range structs {
-		if s.Name.Name == "Employee" {
-			structType = s
-			structFields = structs[s]
-		}
+		schemas[ToLowerCamel(s.Name.String())] = getSchema(s, structs[s])
 	}
-	return getSchema(structType, structFields)
+	return schemas
 }
 
 func getSchema(structure *ast.TypeSpec, fields []*ast.Field) map[string]string {
 	m := map[string]string{}
+	m["sortColumn"] = "name"
+	m["label"] = "name"
+	m["value"] = "id"
 	for index, field := range fields {
+		if field.Tag == nil {
+			continue
+		}
 		tags := parseTags(field.Tag.Value)
 		if index == 0 {
 			m["tableName"] = getBunSelectTableName(tags)
@@ -72,7 +74,7 @@ func getJSONName(tags *structtag.Tags) string {
 
 func getColName(tags *structtag.Tags) string {
 	bunTag, err := tags.Get("bun")
-	if err == nil && bunTag.Name != "-" && !strings.Contains(bunTag.Name, ":") {
+	if err == nil && bunTag.Name != "-" && bunTag.Name != "" && !strings.Contains(bunTag.Name, ":") {
 		return bunTag.Name
 	}
 	return toSnake(getJSONName(tags))

@@ -3,7 +3,6 @@ package meta
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
-	"mdgkb/mdgkb-server/models/schema"
 
 	"github.com/pro-assistance/pro-assister/helper"
 
@@ -20,7 +19,6 @@ type IHandler interface {
 
 type IService interface {
 	GetCount(*string) (*int, error)
-	GetSchema() schema.Schema
 	GetOptions(*models.OptionModel) (models.Options, error)
 	GetApplicationsCounts() (models.ApplicationsCounts, error)
 	SendApplicationsCounts() error

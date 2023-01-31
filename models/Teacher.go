@@ -12,6 +12,10 @@ type Teacher struct {
 	Employee      *Employee     `bun:"rel:belongs-to" json:"employee"`
 	Position      string        `json:"position"`
 	DpoCourses    DpoCourses    `bun:"rel:has-many" json:"dpoCourses"`
+
+	FullName  string `bun:"-" json:"fullName"`
+	DateBirth string `bun:"-" json:"dateBirth"`
+	IsMale    string `bun:"-" json:"isMale"`
 }
 
 type Teachers []*Teacher

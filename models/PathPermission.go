@@ -12,6 +12,8 @@ type PathPermission struct {
 	GuestAllow                    bool                 `json:"guestAllow"`
 	PathPermissionsRoles          PathPermissionsRoles `bun:"rel:has-many" json:"pathPermissionsRoles"`
 	PathPermissionsRolesForDelete []uuid.UUID          `bun:"-" json:"pathPermissionsRolesForDelete"`
+
+	//SortColumn string `bun:"-" json:"resource"`
 }
 
 type PathPermissions []*PathPermission

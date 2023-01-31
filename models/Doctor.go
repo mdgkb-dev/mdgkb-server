@@ -37,6 +37,11 @@ type Doctor struct {
 	HasAppointment              bool               `json:"hasAppointment"`
 	Timetable                   *Timetable         `bun:"rel:belongs-to" json:"timetable"`
 	TimetableID                 uuid.NullUUID      `bun:"type:uuid,nullzero,default:NULL" json:"timetableId"`
+
+	FullName      string `bun:"-" json:"fullName"`
+	DateBirth     string `bun:"-" json:"dateBirth"`
+	IsMale        string `bun:"-" json:"isMale"`
+	CommentsCount string `bun:"-" json:"commentsCount"`
 }
 
 type Doctors []*Doctor

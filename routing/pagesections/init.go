@@ -8,7 +8,6 @@ import (
 
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
-	r.GET("/for/tables-names", h.GetDocumentsTypesForTablesNames)
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
 	r.POST("/", h.Create)

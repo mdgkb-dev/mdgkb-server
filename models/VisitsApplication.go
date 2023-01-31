@@ -21,6 +21,12 @@ type VisitsApplication struct {
 
 	Visits          Visits      `bun:"rel:has-many" json:"visits"`
 	VisitsForDelete []uuid.UUID `bun:"-" json:"visitsForDelete"`
+
+	CreatedAt     string `bun:"-" json:"createdAt"`
+	FormStatusID  string `bun:"-" json:"formStatusId"`
+	ChildFullName string `bun:"-" json:"childFullName"`
+	DivisionName  string `bun:"-" json:"divisionName"`
+	Email         string `bun:"-" json:"email"`
 }
 
 type VisitsApplications []*VisitsApplication

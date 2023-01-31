@@ -25,6 +25,8 @@ type FormStatus struct {
 
 	FormStatusGroup   *FormStatusGroup `bun:"rel:belongs-to" json:"formStatusGroup"`
 	FormStatusGroupID uuid.NullUUID    `bun:"type:uuid"  json:"formStatusGroupId"`
+
+	Code string `bun:"-" json:"code"`
 }
 
 type FormStatuses []*FormStatus

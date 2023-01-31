@@ -27,6 +27,10 @@ type Head struct {
 
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
+
+	FullName  string `bun:"-" json:"fullName"`
+	DateBirth string `bun:"-" json:"dateBirth"`
+	IsMale    string `bun:"-" json:"isMale"`
 }
 
 type Heads []*Head
