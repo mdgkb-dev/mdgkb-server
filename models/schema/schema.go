@@ -198,6 +198,7 @@ func createTeacherSchema() map[string]string {
 		"key":       "teacher",
 		"id":        "id",
 		"fullName":  "full_name",
+		"dateBirth": "date_birth",
 	}
 }
 
