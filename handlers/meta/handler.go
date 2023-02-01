@@ -2,10 +2,10 @@ package meta
 
 import (
 	"mdgkb/mdgkb-server/models"
-	"mdgkb/mdgkb-server/structsreader"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pro-assistance/pro-assister/projecthelper"
 )
 
 func (h *Handler) GetCount(c *gin.Context) {
@@ -17,10 +17,8 @@ func (h *Handler) GetCount(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
-var schemas = structsreader.GetSchemas()
-
 func (h *Handler) GetSchema(c *gin.Context) {
-	c.JSON(http.StatusOK, schemas)
+	c.JSON(http.StatusOK, projecthelper.SchemasLib)
 }
 
 func (h *Handler) GetSocial(c *gin.Context) {

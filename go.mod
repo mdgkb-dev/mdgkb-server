@@ -11,7 +11,7 @@ require (
 	github.com/gorilla/websocket v1.5.0
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
-	github.com/pro-assistance/pro-assister v0.0.106-0.20230117194725-b40fa2b89cb2
+	github.com/pro-assistance/pro-assister v0.0.106-0.20230201213220-463530313922
 	github.com/uptrace/bun v1.1.8
 	github.com/uptrace/bun/dbfixture v1.1.8
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e
