@@ -17,8 +17,6 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
-
-	GetDocumentsTypesForTablesNames(c *gin.Context)
 }
 
 type IService interface {
@@ -30,8 +28,6 @@ type IService interface {
 	Upsert(*models.PageSection) error
 	UpsertMany(models.PageSections) error
 	DeleteMany([]uuid.UUID) error
-
-	GetDocumentsTypesForTablesNames() map[string]string
 }
 
 type IRepository interface {

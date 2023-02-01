@@ -18,27 +18,29 @@ type IHandler interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+	CreateSlugs(c *gin.Context)
 }
 
 type IService interface {
 	GetAll() (models.Teachers, error)
-	Get(*string) (*models.Teacher, error)
+	Get(string) (*models.Teacher, error)
 	Create(*models.Teacher) error
 	Update(*models.Teacher) error
-	Delete(*string) error
+	Delete(string) error
 	UpsertMany(models.Teachers) error
 	DeleteMany([]string) error
 	setQueryFilter(*gin.Context) error
+	CreateSlugs() error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
 	getAll() (models.Teachers, error)
-	get(*string) (*models.Teacher, error)
+	get(string) (*models.Teacher, error)
 	create(*models.Teacher) error
 	update(*models.Teacher) error
-	delete(*string) error
+	delete(string) error
 
 	upsertMany(models.Teachers) error
 	deleteMany([]string) error

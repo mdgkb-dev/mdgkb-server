@@ -4,7 +4,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/pagesectiondocuments"
 	"mdgkb/mdgkb-server/handlers/pagesectionimages"
 	"mdgkb/mdgkb-server/models"
-	"mdgkb/mdgkb-server/models/schema"
 
 	"github.com/google/uuid"
 )
@@ -62,10 +61,6 @@ func (s *Service) Update(item *models.PageSection) error {
 
 func (s *Service) Delete(id *string) error {
 	return s.repository.delete(id)
-}
-
-func (s *Service) GetDocumentsTypesForTablesNames() map[string]string {
-	return schema.GetDocumentTypesForTablesNames()
 }
 
 func (s *Service) Upsert(item *models.PageSection) error {

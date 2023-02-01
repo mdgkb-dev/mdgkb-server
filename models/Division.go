@@ -61,6 +61,8 @@ type Division struct {
 
 	HasDiagnostic bool `json:"hasDiagnostic"`
 	HasAmbulatory bool `json:"hasAmbulatory"`
+
+	CommentsCount string `bun:"-" json:"commentsCount"`
 }
 
 type Divisions []*Division

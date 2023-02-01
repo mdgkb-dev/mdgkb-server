@@ -65,8 +65,3 @@ func (h *Handler) Update(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, item)
 }
-
-func (h *Handler) GetDocumentsTypesForTablesNames(c *gin.Context) {
-	items := h.service.GetDocumentsTypesForTablesNames()
-	c.JSON(http.StatusOK, items)
-}

@@ -16,24 +16,22 @@ func (r *Repository) getAll() (models.Teachers, error) {
 	items := make(models.Teachers, 0)
 	query := r.db().NewSelect().Model(&items).
 		Relation("DpoCourses").
-		Relation("Doctor.Employee.Human").
-		Relation("Doctor.DoctorsDivisions").
-		Relation("Doctor.MedicalProfile").
-		Relation("Doctor.Employee.Regalias").
-		Relation("Doctor.Employee.Human.Photo").
-		Relation("Doctor.Employee.Human.PhotoMini")
+		Relation("Employee.Human").
+		Relation("Employee.Regalias").
+		Relation("Employee.Human.Photo").
+		Relation("Employee.Human.PhotoMini")
 	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.Teacher, error) {
+func (r *Repository) get(slug string) (*models.Teacher, error) {
 	item := models.Teacher{}
-	err := r.db().NewSelect().Model(&item).
-		Relation("Doctor.Employee.Human.Photo").
-		Relation("Doctor.Employee.Human.PhotoMini").
-		Relation("Doctor.Employee.Human").
-		Where("teachers_view.id = ?", *id).Scan(r.ctx)
+	err := r.db().NewSelect().Model(&item).Where("teachers_view.slug = ?", slug).
+		Relation("Employee.Human.Photo").
+		Relation("Employee.Human.PhotoMini").
+		Relation("Employee.Human").
+		Scan(r.ctx)
 	return &item, err
 }
 
@@ -42,8 +40,8 @@ func (r *Repository) create(item *models.Teacher) (err error) {
 	return err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.Teacher{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) delete(id string) (err error) {
+	_, err = r.db().NewDelete().Model(&models.Teacher{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
@@ -62,7 +60,7 @@ func (r *Repository) deleteMany(idPool []string) (err error) {
 
 func (r *Repository) upsertMany(items models.Teachers) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
-		Set("doctor_id = EXCLUDED.doctor_id").
+		Set("employee_id = EXCLUDED.employee_id").
 		Set("position = EXCLUDED.position").
 		Model(&items).
 		Exec(r.ctx)

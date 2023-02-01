@@ -14,6 +14,12 @@ type VacancyResponse struct {
 
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
 	FormValueID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
+
+	Date         string `bun:"created_at" json:"date"`
+	FormStatusID string `bun:"-" json:"formStatusId"`
+	FullName     string `bun:"-" json:"fullName"`
+	Title        string `bun:"-" json:"title"`
+	Email        string `bun:"-" json:"email"`
 }
 
 type VacancyResponses []*VacancyResponse
