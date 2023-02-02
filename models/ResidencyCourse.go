@@ -46,6 +46,8 @@ type ResidencyCourse struct {
 
 	ResidencyCoursePracticePlaces          ResidencyCoursePracticePlaces `bun:"rel:has-many"  json:"residencyCoursePracticePlaces"`
 	ResidencyCoursePracticePlacesForDelete []uuid.UUID                   `bun:"-"  json:"residencyCoursePracticePlacesForDelete"`
+
+	Name string `bun:"-" json:"name"`
 }
 
 type ResidencyCourses []*ResidencyCourse

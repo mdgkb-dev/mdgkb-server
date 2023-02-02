@@ -24,7 +24,7 @@ func (r *Repository) getAll() (item models.PostgraduateCoursesWithCount, err err
 	item.PostgraduateCourses = make(models.PostgraduateCourses, 0)
 	query := r.db().NewSelect().
 		Model(&item.PostgraduateCourses).
-		Relation("PostgraduateCoursesTeachers.Teacher.Doctor.Employee.Human").
+		Relation("PostgraduateCoursesTeachers.Teacher.Employee.Human").
 		Relation("PostgraduateCoursesSpecializations.Specialization").
 		Relation("PostgraduateCoursesDates").
 		Relation("FormPattern.Fields.File").
@@ -38,7 +38,7 @@ func (r *Repository) getAll() (item models.PostgraduateCoursesWithCount, err err
 func (r *Repository) get() (*models.PostgraduateCourse, error) {
 	item := models.PostgraduateCourse{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("PostgraduateCoursesTeachers.Teacher.Doctor.Employee.Human").
+		Relation("PostgraduateCoursesTeachers.Teacher.Employee.Human").
 		Relation("PostgraduateCoursesSpecializations.Specialization").
 		Relation("PostgraduateCoursesDates").
 		Relation("QuestionsFile").

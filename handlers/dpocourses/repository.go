@@ -38,7 +38,7 @@ func (r *Repository) getAll() (item models.DpoCoursesWithCount, err error) {
 func (r *Repository) get() (*models.DpoCourse, error) {
 	item := models.DpoCourse{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("DpoCoursesTeachers.Teacher.Doctor.Employee.Human").
+		Relation("DpoCoursesTeachers.Teacher.Employee.Human").
 		Relation("DpoCoursesSpecializations.Specialization").
 		Relation("DpoCoursesDates").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
