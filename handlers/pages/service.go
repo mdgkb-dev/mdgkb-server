@@ -5,6 +5,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/pagesdocuments"
 	"mdgkb/mdgkb-server/handlers/pagesidemenus"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Page) error {
@@ -46,7 +48,7 @@ func (s *Service) Create(item *models.Page) error {
 	//}
 }
 
-func (s *Service) GetAll() (models.Pages, error) {
+func (s *Service) GetAll() (models.PagesWithCount, error) {
 	return s.repository.getAll()
 }
 
@@ -102,4 +104,9 @@ func (s *Service) GetBySlug(slug *string) (*models.Page, error) {
 		return nil, err
 	}
 	return item, nil
+}
+
+func (s *Service) setQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.setQueryFilter(c)
+	return err
 }

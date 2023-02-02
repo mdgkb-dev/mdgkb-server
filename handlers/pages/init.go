@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -22,7 +23,8 @@ type IHandler interface {
 }
 
 type IService interface {
-	GetAll() (models.Pages, error)
+	setQueryFilter(*gin.Context) error
+	GetAll() (models.PagesWithCount, error)
 	Get(*string) (*models.Page, error)
 	Create(*models.Page) error
 	Update(*models.Page) error
@@ -33,8 +35,9 @@ type IService interface {
 
 type IRepository interface {
 	db() *bun.DB
+	setQueryFilter(*gin.Context) error
 	create(*models.Page) error
-	getAll() (models.Pages, error)
+	getAll() (models.PagesWithCount, error)
 	get(*string) (*models.Page, error)
 	update(*models.Page) error
 	delete(*string) error
@@ -58,8 +61,9 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx    context.Context
-	helper *helper.Helper
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

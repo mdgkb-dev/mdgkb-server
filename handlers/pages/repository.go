@@ -3,6 +3,7 @@ package pages
 import (
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
@@ -10,15 +11,25 @@ func (r *Repository) db() *bun.DB {
 	return r.helper.DB.DB
 }
 
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
+	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *Repository) create(item *models.Page) (err error) {
 	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) getAll() (models.Pages, error) {
-	items := make(models.Pages, 0)
-	err := r.db().NewSelect().Model(&items).Scan(r.ctx)
-	return items, err
+func (r *Repository) getAll() (item models.PagesWithCount, err error) {
+	item.Pages = make(models.Pages, 0)
+	query := r.db().NewSelect().Model(&item.Pages)
+	r.queryFilter.HandleQuery(query)
+	item.Count, err = query.ScanAndCount(r.ctx)
+	return item, err
 }
 
 func (r *Repository) get(id *string) (*models.Page, error) {

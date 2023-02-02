@@ -14,6 +14,8 @@ type Page struct {
 	Link          string        `json:"link"`
 	WithComments  bool          `json:"withComments"`
 
+	PagesGroup string `json:"pagesGroup"`
+
 	PageSideMenus          PageSideMenus `bun:"rel:has-many" json:"pageSideMenus"`
 	PageSideMenusForDelete []string      `bun:"-" json:"pageSideMenusForDelete"`
 
@@ -31,6 +33,11 @@ type Page struct {
 }
 
 type Pages []*Page
+
+type PagesWithCount struct {
+	Pages Pages `json:"items"`
+	Count int   `json:"count"`
+}
 
 func (item *Page) SetIDForChildren() {
 	if len(item.PageComments) > 0 {
