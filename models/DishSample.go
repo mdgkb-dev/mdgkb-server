@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
@@ -19,6 +21,7 @@ type DishSample struct {
 	Order         uint8         `bun:"item_order" json:"order"`
 	Image         *FileInfo     `bun:"rel:belongs-to" json:"image"`
 	ImageID       uuid.NullUUID `bun:"type:uuid" json:"imageId"`
+	UpdatedAt     time.Time     `bun:",nullzero,notnull,default:current_timestamp" json:"updatedAt"`
 }
 
 type DishSamples []*DishSample
