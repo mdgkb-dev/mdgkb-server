@@ -44,6 +44,9 @@ func (r *Repository) get(id *string) (*models.Page, error) {
 		Relation("PageSideMenus.PageSections", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("page_sections.item_order")
 		}).
+		Relation("PageSideMenus.PageSections.PageSectionDocuments", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("page_section_documents.item_order")
+		}).
 		Relation("PageSideMenus.PageSections.PageSectionDocuments.Scan").
 		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
@@ -73,6 +76,9 @@ func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
 		}).
 		Relation("PageSideMenus.PageSections", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("page_sections.item_order")
+		}).
+		Relation("PageSideMenus.PageSections.PageSectionDocuments", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("page_section_documents.item_order")
 		}).
 		Relation("PageSideMenus.PageSections.PageSectionDocuments.Scan").
 		Relation("PageSideMenus.PageSections.PageSectionImages").
