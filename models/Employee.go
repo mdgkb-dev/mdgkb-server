@@ -16,6 +16,8 @@ type Employee struct {
 	AcademicDegree string `json:"academicDegree"`
 	AcademicRank   string `json:"academicRank"`
 
+	PartTime bool `json:"partTime"`
+
 	Regalias          Regalias    `bun:"rel:has-many" json:"regalias"`
 	RegaliasForDelete []uuid.UUID `bun:"-" json:"regaliasForDelete"`
 
