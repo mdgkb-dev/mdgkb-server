@@ -22,6 +22,8 @@ type Hospitalization struct {
 	HospitalizationTypeID uuid.NullUUID        `bun:"type:uuid" json:"hospitalizationTypeId"`
 
 	HospitalizationsToDocumentTypes HospitalizationsToDocumentTypes `bun:"rel:has-many" json:"hospitalizationsToDocumentTypes"`
+
+	CreatedAt string `bun:"-" json:"createdAt"`
 }
 
 type Hospitalizations []*Hospitalization

@@ -18,7 +18,7 @@ func (r *Repository) create(item *models.VisitingRule) (err error) {
 
 func (r *Repository) getAll() (models.VisitingRules, error) {
 	items := make(models.VisitingRules, 0)
-	err := r.db().NewSelect().Model(&items).Order("rule_order").Where("division_id is null").Scan(r.ctx)
+	err := r.db().NewSelect().Model(&items).Order("rule_order").Scan(r.ctx)
 	return items, err
 }
 

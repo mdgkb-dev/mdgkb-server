@@ -69,32 +69,6 @@ func (r *Repository) getAll() (items models.NewsWithCount, err error) {
 		Relation("NewsLikes").
 		Relation("NewsViews")
 	r.queryFilter.HandleQuery(query)
-	//if newsParams.Limit != 0 {
-	//	query = query.Order("published_on DESC").Limit(newsParams.Limit)
-	//}
-	//if newsParams.PublishedOn != nil {
-	//	query = query.Where("published_on < ?", newsParams.PublishedOn)
-	//}
-	//if newsParams.CreatedAt != nil {
-	//	query = query.Where("created_at < ?", newsParams.CreatedAt)
-	//}
-	//if newsParams.FilterTags != "" && newsParams.OrderByView == "" {
-	//	for _, tagId := range strings.Split(newsParams.FilterTags, ",") {
-	//		query = query.Where("exists (select * from news_to_tags as ntt where ntt.news_id = news.id and ntt.tag_id = ?)", tagId)
-	//	}
-	//}
-	//if newsParams.FilterTags != "" && newsParams.OrderByView != "" && newsParams.Limit != 0 {
-	//	query = query.
-	//		Join("JOIN news_to_tags ON news_to_tags.news_id = news.id and news_to_tags.tag_id in (?)", bun.In(strings.Split(newsParams.FilterTags, ","))).
-	//		Join("LEFT JOIN news_views ON news_views.news_id = news.id").
-	//		Group("news.id", "file_info.id").
-	//		OrderExpr("count (news_to_tags.id)").
-	//		OrderExpr("count (news_views.id)").
-	//		Limit(newsParams.Limit)
-	//}
-	//if newsParams.Events {
-	//	query = query.Join("JOIN events ON events.id = news.event_id")
-	//}
 	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
