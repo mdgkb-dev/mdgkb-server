@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (s *Service) GetAll() (models.PageSideMenus, error) {
@@ -74,6 +75,13 @@ func (s *Service) UpsertMany(items models.PageSideMenus) error {
 		return err
 	}
 	return nil
+}
+
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+	if len(idPool) == 0 {
+		return nil
+	}
+	return s.repository.deleteMany(idPool)
 }
 
 func (s *Service) Delete(id string) error {

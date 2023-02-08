@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 
@@ -30,6 +31,7 @@ type IService interface {
 	Delete(string) error
 	UpdateOrder(models.PageSideMenus) error
 	UpsertMany(item models.PageSideMenus) error
+	DeleteMany(uuid []uuid.UUID) error
 }
 
 type IRepository interface {
@@ -41,6 +43,7 @@ type IRepository interface {
 	update(item *models.PageSideMenu) error
 	delete(string) error
 	upsertMany(item models.PageSideMenus) error
+	deleteMany(uuid []uuid.UUID) error
 }
 
 type IFilesService interface {

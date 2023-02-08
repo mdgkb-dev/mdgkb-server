@@ -17,7 +17,7 @@ type Page struct {
 	PagesGroup string `json:"pagesGroup"`
 
 	PageSideMenus          PageSideMenus `bun:"rel:has-many" json:"pageSideMenus"`
-	PageSideMenusForDelete []string      `bun:"-" json:"pageSideMenusForDelete"`
+	PageSideMenusForDelete []uuid.UUID   `bun:"-" json:"pageSideMenusForDelete"`
 
 	PageSections          PageSections `bun:"rel:has-many" json:"pageSections"`
 	PageSectionsForDelete []string     `bun:"-" json:"pageSectionsForDelete"`

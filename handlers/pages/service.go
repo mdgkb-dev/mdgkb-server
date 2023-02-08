@@ -72,6 +72,10 @@ func (s *Service) Update(item *models.Page) error {
 	if err != nil {
 		return err
 	}
+	err = pageSideMenusService.DeleteMany(item.PageSideMenusForDelete)
+	if err != nil {
+		return err
+	}
 
 	pagesDocumentsService := pagesdocuments.CreateService(s.helper)
 	err = pagesDocumentsService.UpsertMany(item.PageDocuments)
