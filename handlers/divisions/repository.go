@@ -49,7 +49,7 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("DivisionVideos").
 		Relation("DivisionPaidServices.PaidService").
 		Relation("DivisionComments.Comment.User.Human", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("comment.published_on DESC")
+			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
 		}).
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("Timetable.TimetableDays.Weekday").

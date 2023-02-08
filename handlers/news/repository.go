@@ -112,7 +112,7 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		Relation("Event.EventApplications.FieldValues").
 		Relation("Event.EventApplications.User").
 		Relation("NewsComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("comment.published_on DESC")
+			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
 		}).
 		Relation("NewsComments.Comment.User.Human").
 		Relation("NewsImages", func(q *bun.SelectQuery) *bun.SelectQuery {

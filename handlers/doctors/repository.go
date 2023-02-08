@@ -83,7 +83,7 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		Relation("Employee.Educations.EducationCertification").
 		Relation("Employee.Educations.EducationAccreditation").
 		Relation("DoctorComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("comment.published_on DESC")
+			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
 		}).
 		Relation("DoctorComments.Comment.User.Human").
 		Relation("NewsDoctors.News").
