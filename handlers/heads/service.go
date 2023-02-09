@@ -3,7 +3,6 @@ package heads
 import (
 	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/departments"
-	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
@@ -17,10 +16,6 @@ func (s *Service) Create(item *models.Head) error {
 		return err
 	}
 	err = contactinfo.CreateService(s.helper).Create(item.ContactInfo)
-	if err != nil {
-		return err
-	}
-	err = employees.CreateService(s.helper).Create(item.Employee)
 	if err != nil {
 		return err
 	}
@@ -48,10 +43,6 @@ func (s *Service) Update(item *models.Head) error {
 		return err
 	}
 	err = contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
-	if err != nil {
-		return err
-	}
-	err = employees.CreateService(s.helper).Update(item.Employee)
 	if err != nil {
 		return err
 	}

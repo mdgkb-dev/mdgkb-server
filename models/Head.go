@@ -6,7 +6,7 @@ import (
 )
 
 type Head struct {
-	bun.BaseModel `bun:"heads,select:heads,alias:heads"`
+	bun.BaseModel `bun:"heads,select:heads_view,alias:heads_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 
 	Employee   *Employee     `bun:"rel:belongs-to" json:"employee"`
