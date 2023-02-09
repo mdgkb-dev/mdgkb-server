@@ -1,7 +1,9 @@
 package employees
 
 import (
+	"mdgkb/mdgkb-server/handlers/accreditations"
 	"mdgkb/mdgkb-server/handlers/certificates"
+	"mdgkb/mdgkb-server/handlers/certifications"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
 	"mdgkb/mdgkb-server/handlers/human"
@@ -41,6 +43,14 @@ func (s *Service) Create(item *models.Employee) error {
 		return err
 	}
 	err = teachingactivities.CreateService(s.helper).CreateMany(item.TeachingActivities)
+	if err != nil {
+		return err
+	}
+	err = certifications.CreateService(s.helper).CreateMany(item.Certifications)
+	if err != nil {
+		return err
+	}
+	err = accreditations.CreateService(s.helper).CreateMany(item.Accreditations)
 	if err != nil {
 		return err
 	}
@@ -102,6 +112,26 @@ func (s *Service) Update(item *models.Employee) error {
 		return err
 	}
 	err = teachingactivitiesService.DeleteMany(item.TeachingActivitiesForDelete)
+	if err != nil {
+		return err
+	}
+
+	certificationsService := certifications.CreateService(s.helper)
+	err = certificationsService.UpsertMany(item.Certifications)
+	if err != nil {
+		return err
+	}
+	err = certificationsService.DeleteMany(item.CertificationsForDelete)
+	if err != nil {
+		return err
+	}
+
+	accreditationsService := accreditations.CreateService(s.helper)
+	err = accreditationsService.UpsertMany(item.Accreditations)
+	if err != nil {
+		return err
+	}
+	err = accreditationsService.DeleteMany(item.AccreditationsForDelete)
 	if err != nil {
 		return err
 	}

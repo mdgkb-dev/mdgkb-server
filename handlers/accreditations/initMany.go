@@ -1,22 +1,23 @@
-package educationaccreditation
+package accreditations
 
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 )
 
 type IService interface {
-	CreateMany(certifications models.EducationAccreditations) error
-	UpsertMany(models.EducationAccreditations) error
-	DeleteMany([]string) error
+	CreateMany(certifications models.Accreditations) error
+	UpsertMany(models.Accreditations) error
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
-	createMany(models.EducationAccreditations) error
-	upsertMany(models.EducationAccreditations) error
-	deleteMany([]string) error
+	createMany(models.Accreditations) error
+	upsertMany(models.Accreditations) error
+	deleteMany([]uuid.UUID) error
 }
 
 type Service struct {

@@ -33,6 +33,12 @@ type Employee struct {
 	TeachingActivities          TeachingActivities `bun:"rel:has-many" json:"teachingActivities"`
 	TeachingActivitiesForDelete []uuid.UUID        `bun:"-" json:"teachingActivitiesForDelete"`
 
+	Certifications          Certifications `bun:"rel:has-many" json:"certifications"`
+	CertificationsForDelete []uuid.UUID    `bun:"-" json:"certificationsForDelete"`
+
+	Accreditations          Accreditations `bun:"rel:has-many" json:"accreditations"`
+	AccreditationsForDelete []uuid.UUID    `bun:"-" json:"accreditationsForDelete"`
+
 	FullName  string `bun:"-" json:"fullName"`
 	IsMale    string `bun:"-" json:"isMale"`
 	DateBirth string `bun:"-" json:"dateBirth"`
@@ -81,5 +87,17 @@ func (item *Employee) SetIDForChildren() {
 
 	for i := range item.TeachingActivities {
 		item.TeachingActivities[i].EmployeeID = item.ID
+	}
+
+	for i := range item.TeachingActivities {
+		item.TeachingActivities[i].EmployeeID = item.ID
+	}
+
+	for i := range item.Certifications {
+		item.Certifications[i].EmployeeID = item.ID
+	}
+
+	for i := range item.Accreditations {
+		item.Accreditations[i].EmployeeID = item.ID
 	}
 }
