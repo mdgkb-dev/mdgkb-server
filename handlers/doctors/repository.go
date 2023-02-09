@@ -80,8 +80,9 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		Relation("Employee.Certificates.Scan").
 		Relation("Timetable.TimetableDays.Weekday").
 		Relation("Timetable.TimetableDays.BreakPeriods").
-		Relation("Employee.Educations.EducationCertification").
-		Relation("Employee.Educations.EducationAccreditation").
+		Relation("Employee.Educations").
+		Relation("Employee.Certifications").
+		Relation("Employee.Accreditations").
 		Relation("DoctorComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
 		}).
