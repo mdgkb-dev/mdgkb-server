@@ -10,8 +10,6 @@ func (s *Service) CreateMany(items models.Educations) error {
 	if len(items) == 0 {
 		return nil
 	}
-
-	items.SetForeignKeys()
 	err := s.repository.createMany(items)
 	if err != nil {
 		return err
@@ -23,7 +21,6 @@ func (s *Service) UpsertMany(items models.Educations) error {
 	if len(items) == 0 {
 		return nil
 	}
-	items.SetForeignKeys()
 	return s.repository.upsertMany(items)
 }
 
