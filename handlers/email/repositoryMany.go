@@ -35,5 +35,6 @@ func (r *Repository) upsertMany(items models.Emails) (err error) {
 		Set("description = EXCLUDED.description").
 		Model(&items).
 		Exec(r.ctx)
+
 	return err
 }
