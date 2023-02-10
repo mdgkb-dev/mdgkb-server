@@ -31,8 +31,6 @@ func (r *Repository) upsertMany(items models.Educations) (err error) {
 		Set("institution = EXCLUDED.institution").
 		Set("document = EXCLUDED.document").
 		Set("qualification = EXCLUDED.qualification").
-		Set("education_certification_id = EXCLUDED.education_certification_id").
-		Set("education_accreditation_id = EXCLUDED.education_accreditation_id").
 		Model(&items).
 		Exec(r.ctx)
 	return err
