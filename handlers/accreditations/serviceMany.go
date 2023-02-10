@@ -1,4 +1,4 @@
-package educations
+package accreditations
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -6,18 +6,14 @@ import (
 	"github.com/google/uuid"
 )
 
-func (s *Service) CreateMany(items models.Educations) error {
+func (s *Service) CreateMany(items models.Accreditations) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.createMany(items)
-	if err != nil {
-		return err
-	}
-	return nil
+	return s.repository.createMany(items)
 }
 
-func (s *Service) UpsertMany(items models.Educations) error {
+func (s *Service) UpsertMany(items models.Accreditations) error {
 	if len(items) == 0 {
 		return nil
 	}
