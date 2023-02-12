@@ -52,7 +52,7 @@ func (r *Repository) get(slug string) (*models.Employee, error) {
 }
 
 func (r *Repository) delete(id string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.Doctor{}).Where("id = ?", id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.Employee{}).Where("id = ?", id).Exec(r.ctx)
 	return err
 }
 
