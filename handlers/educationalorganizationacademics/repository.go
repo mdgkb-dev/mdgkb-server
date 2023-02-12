@@ -22,12 +22,10 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 
 func (r *Repository) getAll() (models.EducationalOrganizationAcademics, error) {
 	items := make(models.EducationalOrganizationAcademics, 0)
-	// TODO: panic from relation FileInfo&PhotoMini
 	query := r.db().NewSelect().Model(&items).
-		// Relation("Doctor.Employee.Human.Photo").
-		// Relation("Doctor.Employee.Human.PhotoMini").
 		Relation("Doctor.Position").
 		Relation("Doctor.MedicalProfile").
+		Relation("Doctor.Employee.Human").
 		Relation("Doctor.Employee.Regalias").
 		Relation("Doctor.DoctorComments.Comment")
 	r.queryFilter.HandleQuery(query)
