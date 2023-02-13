@@ -43,7 +43,6 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 	item := models.ResidencyCourse{}
 	err := r.db().NewSelect().Model(&item).
 		Relation("ResidencyCoursesTeachers.Teacher.Employee.Human").
-		Relation("ResidencyCoursesTeachers.Teacher.DoctorsDivisions.Division").
 		Relation("ResidencyCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
@@ -60,7 +59,7 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 		Relation("ResidencyCoursePracticePlaces").
 		Relation("StartYear").
 		Relation("EndYear").
-		Where("residency_courses_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
+		Where("?TableAlias.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
 	return &item, err
 }
 

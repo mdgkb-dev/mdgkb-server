@@ -18,6 +18,8 @@ type Employee struct {
 
 	PartTime bool `json:"partTime"`
 
+	Head *Head `bun:"rel:has-one" json:"head"`
+
 	Regalias          Regalias    `bun:"rel:has-many" json:"regalias"`
 	RegaliasForDelete []uuid.UUID `bun:"-" json:"regaliasForDelete"`
 

@@ -1,6 +1,6 @@
 package models
 
 type DpoCoursesWithCount struct {
-	DpoCourses DpoCourses `json:"dpoCourses"`
+	DpoCourses DpoCourses `json:"items"`
 	Count      int        `json:"count"`
 }

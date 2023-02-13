@@ -1,6 +1,6 @@
 package models
 
 type PostgraduateCoursesWithCount struct {
-	PostgraduateCourses PostgraduateCourses `json:"postgraduateCourses"`
+	PostgraduateCourses PostgraduateCourses `json:"items"`
 	Count               int                 `json:"count"`
 }
