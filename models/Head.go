@@ -31,6 +31,7 @@ type Head struct {
 	FullName  string `bun:"-" json:"fullName"`
 	DateBirth string `bun:"-" json:"dateBirth"`
 	IsMale    string `bun:"-" json:"isMale"`
+	Order     uint   `bun:"item_order" json:"order"`
 }
 
 type Heads []*Head

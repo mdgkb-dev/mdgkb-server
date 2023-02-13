@@ -89,3 +89,7 @@ func (s *Service) Delete(id string) error {
 func (s *Service) SetQueryFilter(c *gin.Context) error {
 	return s.repository.SetQueryFilter(c)
 }
+
+func (s *Service) UpdateAll(items models.Heads) error {
+	return s.repository.updateAll(items)
+}
