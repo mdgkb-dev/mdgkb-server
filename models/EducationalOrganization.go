@@ -1,9 +1,6 @@
 package models
 
 type EducationalOrganization struct {
-	EducationalOrganizationProperties          EducationalOrganizationProperties `json:"educationalOrganizationProperties"`
-	EducationalOrganizationPropertiesForDelete []string                          `json:"educationalOrganizationPropertiesForDelete"`
-
 	EducationalOrganizationManagers          EducationalManagers `json:"educationalOrganizationManagers"`
 	EducationalOrganizationManagersForDelete []string            `json:"educationalOrganizationManagersForDelete"`
 
