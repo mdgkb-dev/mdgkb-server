@@ -3,7 +3,6 @@ package educationalorganization
 import (
 	"mdgkb/mdgkb-server/handlers/educationalorganizationacademics"
 	"mdgkb/mdgkb-server/handlers/educationalorganizationmanagers"
-	"mdgkb/mdgkb-server/handlers/educationalorganizationproperties"
 	"mdgkb/mdgkb-server/handlers/teachers"
 	"mdgkb/mdgkb-server/models"
 )
@@ -11,11 +10,6 @@ import (
 func (s *Service) Get() (*models.EducationalOrganization, error) {
 	item := models.EducationalOrganization{}
 	var err error
-	propertiesService := educationalorganizationproperties.CreateService(s.helper)
-	item.EducationalOrganizationProperties, err = propertiesService.GetAll()
-	if err != nil {
-		return nil, err
-	}
 	managersService := educationalorganizationmanagers.CreateService(s.helper)
 	item.EducationalOrganizationManagers, err = managersService.GetAll()
 	if err != nil {
@@ -44,18 +38,8 @@ func (s *Service) Get() (*models.EducationalOrganization, error) {
 }
 
 func (s *Service) Update(item *models.EducationalOrganization) error {
-	propertiesService := educationalorganizationproperties.CreateService(s.helper)
-	err := propertiesService.DeleteMany(item.EducationalOrganizationPropertiesForDelete)
-	if err != nil {
-		return err
-	}
-	err = propertiesService.UpsertMany(item.EducationalOrganizationProperties)
-	if err != nil {
-		return err
-	}
-
 	managersService := educationalorganizationmanagers.CreateService(s.helper)
-	err = managersService.DeleteMany(item.EducationalOrganizationManagersForDelete)
+	err := managersService.DeleteMany(item.EducationalOrganizationManagersForDelete)
 	if err != nil {
 		return err
 	}
