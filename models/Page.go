@@ -13,6 +13,7 @@ type Page struct {
 	Slug          string        `json:"slug"`
 	Link          string        `json:"link"`
 	WithComments  bool          `json:"withComments"`
+	Collaps       bool          `json:"collaps"`
 
 	PagesGroup string `json:"pagesGroup"`
 
