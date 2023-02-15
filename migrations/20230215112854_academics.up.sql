@@ -18,7 +18,7 @@ alter table educational_organization_academics
 alter table educational_organization_academics_view
     rename to educational_academics_view;
 
-drop view educational_organization_academics_view;
+drop view educational_academics_view;
 
 alter table educational_academics
     drop column doctor_id;
