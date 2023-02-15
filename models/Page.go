@@ -14,6 +14,7 @@ type Page struct {
 	Link          string        `json:"link"`
 	WithComments  bool          `json:"withComments"`
 	Collaps       bool          `json:"collaps"`
+	ShowContent   bool          `json:"showContent"`
 
 	PagesGroup string `json:"pagesGroup"`
 
