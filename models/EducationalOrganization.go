@@ -7,8 +7,8 @@ type EducationalOrganization struct {
 	EducationalOrganizationTeachers Teachers `json:"teachers"`
 	TeachersForDelete               []string `json:"teachersForDelete"`
 
-	EducationalOrganizationAcademics          EducationalOrganizationAcademics `json:"educationalOrganizationAcademics"`
-	EducationalOrganizationAcademicsForDelete []string                         `json:"educationalOrganizationAcademicsForDelete"`
+	EducationalOrganizationAcademics          EducationalAcademics `json:"educationalOrganizationAcademics"`
+	EducationalOrganizationAcademicsForDelete []string             `json:"educationalOrganizationAcademicsForDelete"`
 }
 
 func (item *EducationalOrganization) SetFilePath(fileID *string) *string {
