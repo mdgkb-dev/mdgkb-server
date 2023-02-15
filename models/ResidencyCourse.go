@@ -18,8 +18,6 @@ type ResidencyCourse struct {
 	PaidPlaces                               int                             `json:"paidPlaces"`
 	ResidencyCoursesSpecializations          ResidencyCoursesSpecializations `bun:"rel:has-many" json:"residencyCoursesSpecializations"`
 	ResidencyCoursesSpecializationsForDelete []uuid.UUID                     `bun:"-" json:"residencyCoursesSpecializationsForDelete"`
-	ResidencyCoursesTeachers                 ResidencyCoursesTeachers        `bun:"rel:has-many" json:"residencyCoursesTeachers"`
-	ResidencyCoursesTeachersForDelete        []uuid.UUID                     `bun:"-" json:"residencyCoursesForDelete"`
 
 	ResidencyApplications ResidencyApplications `bun:"rel:has-many" json:"residencyApplications"`
 
@@ -47,7 +45,9 @@ type ResidencyCourse struct {
 	ResidencyCoursePracticePlaces          ResidencyCoursePracticePlaces `bun:"rel:has-many"  json:"residencyCoursePracticePlaces"`
 	ResidencyCoursePracticePlacesForDelete []uuid.UUID                   `bun:"-"  json:"residencyCoursePracticePlacesForDelete"`
 
-	Name string `bun:"-" json:"name"`
+	Name          string        `bun:"-" json:"name"`
+	MainTeacher   *Employee     `bun:"rel:belongs-to" json:"mainTeacher"`
+	MainTeacherID uuid.NullUUID `bun:"type:uuid" json:"mainTeacherId,omitempty"`
 }
 
 type ResidencyCourses []*ResidencyCourse
@@ -61,9 +61,6 @@ func (item *ResidencyCourse) SetForeignKeys() {
 }
 
 func (item *ResidencyCourse) SetIDForChildren() {
-	for i := range item.ResidencyCoursesTeachers {
-		item.ResidencyCoursesTeachers[i].ResidencyCourseID = item.ID
-	}
 	for i := range item.ResidencyCoursesSpecializations {
 		item.ResidencyCoursesSpecializations[i].ResidencyCourseID = item.ID
 	}

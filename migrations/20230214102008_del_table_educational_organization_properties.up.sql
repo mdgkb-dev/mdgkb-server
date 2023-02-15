@@ -1,0 +1,1 @@
+drop table educational_organization_properties;
