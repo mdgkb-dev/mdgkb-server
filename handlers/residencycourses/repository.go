@@ -24,7 +24,7 @@ func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error)
 	item.ResidencyCourses = make(models.ResidencyCourses, 0)
 	query := r.db().NewSelect().
 		Model(&item.ResidencyCourses).
-		Relation("ResidencyCoursesTeachers.Teacher.Employee.Human").
+		Relation("MainTeacher.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
 		Relation("ResidencyApplications.FormValue.User.Human").
 		Relation("ResidencyApplications.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
@@ -42,7 +42,7 @@ func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error)
 func (r *Repository) get() (*models.ResidencyCourse, error) {
 	item := models.ResidencyCourse{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("ResidencyCoursesTeachers.Teacher.Employee.Human").
+		Relation("MainTeacher.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
@@ -85,6 +85,7 @@ func (r *Repository) upsertMany(items models.ResidencyCourses) (err error) {
 		Set("cost = EXCLUDED.cost").
 		Set("free_places = EXCLUDED.free_places").
 		Set("paid_places = EXCLUDED.paid_places").
+		Set("main_teacher_id = EXCLUDED.main_teacher_id").
 		Exec(r.ctx)
 	return err
 }

@@ -3,7 +3,6 @@ package residencycourses
 import (
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/residencycoursespecializations"
-	"mdgkb/mdgkb-server/handlers/residencycourseteachers"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -45,10 +44,6 @@ func (s *Service) Create(item *models.ResidencyCourse) error {
 		return err
 	}
 	item.SetIDForChildren()
-	err = residencycourseteachers.CreateService(s.helper).UpsertMany(item.ResidencyCoursesTeachers)
-	if err != nil {
-		return err
-	}
 	err = residencycoursespecializations.CreateService(s.helper).UpsertMany(item.ResidencyCoursesSpecializations)
 	if err != nil {
 		return err
@@ -80,15 +75,6 @@ func (s *Service) Update(item *models.ResidencyCourse) error {
 		return err
 	}
 	item.SetIDForChildren()
-	residencyCourseTeachersService := residencycourseteachers.CreateService(s.helper)
-	err = residencyCourseTeachersService.UpsertMany(item.ResidencyCoursesTeachers)
-	if err != nil {
-		return err
-	}
-	err = residencyCourseTeachersService.DeleteMany(item.ResidencyCoursesTeachersForDelete)
-	if err != nil {
-		return err
-	}
 	residencyCourseSpecializationsService := residencycoursespecializations.CreateService(s.helper)
 	err = residencyCourseSpecializationsService.UpsertMany(item.ResidencyCoursesSpecializations)
 	if err != nil {
