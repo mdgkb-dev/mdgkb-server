@@ -24,9 +24,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/donorrules"
 	"mdgkb/mdgkb-server/handlers/dpoapplications"
 	"mdgkb/mdgkb-server/handlers/dpocourses"
+	"mdgkb/mdgkb-server/handlers/educationalacademics"
 	"mdgkb/mdgkb-server/handlers/educationalmanagers"
-	"mdgkb/mdgkb-server/handlers/educationalorganization"
-	"mdgkb/mdgkb-server/handlers/educationalorganizationacademics"
 	"mdgkb/mdgkb-server/handlers/educationyears"
 	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/entrances"
@@ -100,9 +99,8 @@ import (
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorrules"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoapplications"
 	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpocourses"
+	educationalAcademicsRouter "mdgkb/mdgkb-server/routing/educationalacademics"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalmanagers"
-	educationalOraganizationRouter "mdgkb/mdgkb-server/routing/educationaloraganization"
-	educationalOrganizationAcademicsRouter "mdgkb/mdgkb-server/routing/educationalorganizationacademics"
 	educationYearsRouter "mdgkb/mdgkb-server/routing/educationyears"
 	employeesRouter "mdgkb/mdgkb-server/routing/employees"
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
@@ -191,7 +189,6 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	tagsRouter.Init(api.Group("/tags"), tags.CreateHandler(helper))
 	usersRouter.Init(api.Group("/users"), users.CreateHandler(helper))
 	timetablesRouter.Init(api.Group("/timetables"), timetables.CreateHandler(helper))
-	educationalOraganizationRouter.Init(api.Group("/educational-organization"), educationalorganization.CreateHandler(helper))
 	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(helper))
 	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(helper))
 	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(helper))
@@ -225,7 +222,7 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpocourses.CreateHandler(helper))
 	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduatecourses.CreateHandler(helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoapplications.CreateHandler(helper))
-	educationalOrganizationAcademicsRouter.Init(api.Group("/educational-organization-academics"), educationalorganizationacademics.CreateHandler(helper))
+	educationalAcademicsRouter.Init(api.Group("/educational-academics"), educationalacademics.CreateHandler(helper))
 	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyapplications.CreateHandler(helper))
 	formValuesRouter.Init(api.Group("/form-values"), formvalues.CreateHandler(helper))
 	formStatusesRouter.Init(api.Group("/form-statuses"), formstatuses.CreateHandler(helper))

@@ -88,7 +88,7 @@ func (r *Repository) get(slug string) (*models.Doctor, error) {
 		}).
 		Relation("DoctorComments.Comment.User.Human").
 		Relation("NewsDoctors.News").
-		//Relation("EducationalOrganizationAcademic").
+		//Relation("EducationalAcademic").
 		Relation("Employee.TeachingActivities").
 		Scan(r.ctx)
 	return &item, err

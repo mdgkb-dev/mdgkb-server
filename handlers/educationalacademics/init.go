@@ -1,4 +1,4 @@
-package educationalorganization
+package educationalacademics
 
 import (
 	"context"
@@ -6,27 +6,44 @@ import (
 	"mime/multipart"
 
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
+	GetAll(c *gin.Context)
 	Get(c *gin.Context)
+	Create(c *gin.Context)
 	Update(c *gin.Context)
-}
-
-type IFilesService interface {
-	Upload(*gin.Context, *models.EducationalOrganization, map[string][]*multipart.FileHeader) error
+	Delete(c *gin.Context)
+	UpdateAll(c *gin.Context)
 }
 
 type IService interface {
-	Get() (*models.EducationalOrganization, error)
-	Update(*models.EducationalOrganization) error
+	setQueryFilter(*gin.Context) error
+	GetAll() (models.EducationalAcademics, error)
+	Get(string) (*models.EducationalAcademic, error)
+	Create(*models.EducationalAcademic) error
+	Update(*models.EducationalAcademic) error
+	Delete(string) error
+	UpdateAll(academic models.EducationalAcademics) error
 }
 
 type IRepository interface {
+	setQueryFilter(*gin.Context) error
 	db() *bun.DB
+	getAll() (models.EducationalAcademics, error)
+	get(string) (*models.EducationalAcademic, error)
+	create(*models.EducationalAcademic) error
+	update(*models.EducationalAcademic) error
+	delete(string) error
+	updateAll(models.EducationalAcademics) error
+}
+
+type IFilesService interface {
+	Upload(*gin.Context, *models.EducationalAcademic, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {
@@ -41,8 +58,9 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx    context.Context
-	helper *helper.Helper
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
