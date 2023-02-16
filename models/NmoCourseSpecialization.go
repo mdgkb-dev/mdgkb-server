@@ -5,13 +5,13 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type DpoCourseSpecialization struct {
-	bun.BaseModel    `bun:"dpo_courses_specializations,alias:dpo_courses_specializations"`
+type NmoCourseSpecialization struct {
+	bun.BaseModel    `bun:"nmo_courses_specializations,alias:nmo_courses_specializations"`
 	ID               uuid.UUID       `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	DpoCourse        *DpoCourse      `bun:"rel:belongs-to" json:"dpoCourse"`
-	DpoCourseID      uuid.NullUUID   `bun:"type:uuid" json:"dpoCourseId"`
+	NmoCourse        *NmoCourse      `bun:"rel:belongs-to" json:"nmoCourse"`
+	NmoCourseID      uuid.NullUUID   `bun:"type:uuid" json:"nmoCourseId"`
 	Specialization   *Specialization `bun:"rel:belongs-to" json:"specialization"`
 	SpecializationID uuid.UUID       `bun:"type:uuid" json:"specializationId"`
 }
 
-type DpoCoursesSpecializations []*DpoCourseSpecialization
+type NmoCoursesSpecializations []*NmoCourseSpecialization

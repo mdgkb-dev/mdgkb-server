@@ -11,7 +11,7 @@ type Teacher struct {
 	EmployeeID    uuid.NullUUID `bun:"type:uuid" json:"employeeId,omitempty"`
 	Employee      *Employee     `bun:"rel:belongs-to" json:"employee"`
 	Position      string        `json:"position"`
-	DpoCourses    DpoCourses    `bun:"rel:has-many" json:"dpoCourses"`
+	NmoCourses    NmoCourses    `bun:"rel:has-many" json:"nmoCourses"`
 
 	FullName  string `bun:"-" json:"fullName"`
 	DateBirth string `bun:"-" json:"dateBirth"`

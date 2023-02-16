@@ -23,7 +23,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/donorrules"
 	"mdgkb/mdgkb-server/handlers/dpoapplications"
-	"mdgkb/mdgkb-server/handlers/dpocourses"
 	"mdgkb/mdgkb-server/handlers/educationalacademics"
 	"mdgkb/mdgkb-server/handlers/educationalmanagers"
 	"mdgkb/mdgkb-server/handlers/educationyears"
@@ -44,6 +43,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/newsslides"
+	"mdgkb/mdgkb-server/handlers/nmocourses"
 	"mdgkb/mdgkb-server/handlers/pages"
 	"mdgkb/mdgkb-server/handlers/pagesections"
 	"mdgkb/mdgkb-server/handlers/pagesidemenus"
@@ -98,7 +98,6 @@ import (
 	doctorsRouter "mdgkb/mdgkb-server/routing/doctors"
 	donorRulesRouter "mdgkb/mdgkb-server/routing/donorrules"
 	dpoApplicationsRouter "mdgkb/mdgkb-server/routing/dpoapplications"
-	dpoCoursesRouter "mdgkb/mdgkb-server/routing/dpocourses"
 	educationalAcademicsRouter "mdgkb/mdgkb-server/routing/educationalacademics"
 	educationalManagersRouter "mdgkb/mdgkb-server/routing/educationalmanagers"
 	educationYearsRouter "mdgkb/mdgkb-server/routing/educationyears"
@@ -119,6 +118,7 @@ import (
 	metaRouter "mdgkb/mdgkb-server/routing/meta"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
 	newsSlidesRouter "mdgkb/mdgkb-server/routing/newsslides"
+	nmoCoursesRouter "mdgkb/mdgkb-server/routing/nmocourses"
 	pagesRouter "mdgkb/mdgkb-server/routing/pages"
 	pageSectionsRouter "mdgkb/mdgkb-server/routing/pagesections"
 	pageSideMenusRouter "mdgkb/mdgkb-server/routing/pagesidemenus"
@@ -219,7 +219,7 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatdirections.CreateHandler(helper))
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackrequests.CreateHandler(helper))
 	visitsApplicationsRouter.Init(api.Group("/visits-applications"), visitsapplications.CreateHandler(helper))
-	dpoCoursesRouter.Init(api.Group("/dpo-courses"), dpocourses.CreateHandler(helper))
+	nmoCoursesRouter.Init(api.Group("/nmo-courses"), nmocourses.CreateHandler(helper))
 	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduatecourses.CreateHandler(helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoapplications.CreateHandler(helper))
 	educationalAcademicsRouter.Init(api.Group("/educational-academics"), educationalacademics.CreateHandler(helper))

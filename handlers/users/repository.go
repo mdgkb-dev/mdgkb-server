@@ -56,7 +56,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("FormValues.FieldValues.File").
 		Relation("FormValues.Fields.File").
 		Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
-		Relation("FormValues.DpoApplication.DpoCourse").
+		Relation("FormValues.DpoApplication.NmoCourse").
 		Relation("FormValues.PostgraduateApplication.PostgraduateCourse", func(query *bun.SelectQuery) *bun.SelectQuery {
 			return query.ExcludeColumn("questions_file_id")
 		}).

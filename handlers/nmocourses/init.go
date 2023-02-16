@@ -1,4 +1,4 @@
-package dpocourses
+package nmocourses
 
 import (
 	"context"
@@ -23,27 +23,27 @@ type IHandler interface {
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
-	GetAll() (models.DpoCoursesWithCount, error)
-	Get() (*models.DpoCourse, error)
-	Create(*models.DpoCourse) error
-	Update(*models.DpoCourse) error
-	UpsertMany(models.DpoCourses) error
+	GetAll() (models.NmoCoursesWithCount, error)
+	Get() (*models.NmoCourse, error)
+	Create(*models.NmoCourse) error
+	Update(*models.NmoCourse) error
+	UpsertMany(models.NmoCourses) error
 	Delete(*string) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
-	getAll() (models.DpoCoursesWithCount, error)
-	get() (*models.DpoCourse, error)
-	create(*models.DpoCourse) error
-	update(*models.DpoCourse) error
-	upsertMany(models.DpoCourses) (err error)
+	getAll() (models.NmoCoursesWithCount, error)
+	get() (*models.NmoCourse, error)
+	create(*models.NmoCourse) error
+	update(*models.NmoCourse) error
+	upsertMany(models.NmoCourses) (err error)
 	delete(*string) error
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.DpoCourse, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.NmoCourse, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

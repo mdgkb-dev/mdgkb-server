@@ -21,7 +21,7 @@ type IRepository interface {
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.DpoCourse, map[string][]*multipart.FileHeader) error
+	Upload(*gin.Context, *models.NmoCourse, map[string][]*multipart.FileHeader) error
 }
 
 type Handler struct {

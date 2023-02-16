@@ -11,13 +11,13 @@ package schema
 //	User                             map[string]string `json:"user"`
 //	Center                           map[string]string `json:"center"`
 //	Teacher                          map[string]string `json:"teacher"`
-//	DpoCourse                        map[string]string `json:"dpoCourse"`
+//	NmoCourse                        map[string]string `json:"nmoCourse"`
 //	DpoBaseCourse                    map[string]string `json:"dpoBaseCourse"`
 //	EducationalManager               map[string]string `json:"educationalManager"`
 //	Specialization                   map[string]string `json:"specialization"`
 //	Vacancy                          map[string]string `json:"vacancy"`
 //	VacancyResponse                  map[string]string `json:"vacancyResponse"`
-//	DpoCourseSpecialization          map[string]string `json:"dpoCourseSpecialization"`
+//	NmoCourseSpecialization          map[string]string `json:"nmoCourseSpecialization"`
 //	VisitsApplication                map[string]string `json:"visitsApplication"`
 //	DpoApplication                   map[string]string `json:"dpoApplication"`
 //	ResidencyApplication             map[string]string `json:"residencyApplication"`
@@ -63,13 +63,13 @@ package schema
 //		User:                             createUserSchema(),
 //		Center:                           createCenterSchema(),
 //		Teacher:                          createTeacherSchema(),
-//		DpoCourse:                        createDpoCourseSchema(),
+//		NmoCourse:                        createNmoCourseSchema(),
 //		DpoBaseCourse:                    createDpoBaseCourseSchema(),
 //		EducationalManager:               createEducationalManagerSchema(),
 //		Specialization:                   createSpecializationSchema(),
 //		Vacancy:                          createVacancySchema(),
 //		VacancyResponse:                  createVacancyResponseSchema(),
-//		DpoCourseSpecialization:          createDpoCourseSpecializationSchema(),
+//		NmoCourseSpecialization:          createNmoCourseSpecializationSchema(),
 //		VisitsApplication:                createVisitsApplicationsSchema(),
 //		DpoApplication:                   createDpoApplicationsSchema(),
 //		PostgraduateApplication:          createPostgraduateApplicationsSchema(),
@@ -203,10 +203,10 @@ package schema
 //	}
 //}
 //
-//func createDpoCourseSchema() map[string]string {
+//func createNmoCourseSchema() map[string]string {
 //	return map[string]string{
-//		"tableName":        "dpo_courses_view",
-//		"key":              "dpoCourse",
+//		"tableName":        "nmo_courses_view",
+//		"key":              "nmoCourse",
 //		"id":               "id",
 //		"name":             "name",
 //		"slug":             "slug",
@@ -292,7 +292,7 @@ package schema
 //func createDpoBaseCourseSchema() map[string]string {
 //	return map[string]string{
 //		"tableName": "dpo_base_courses",
-//		"key":       "dpoCourse",
+//		"key":       "nmoCourse",
 //		"id":        "id",
 //		"name":      "name",
 //		"hours":     "hours",
@@ -312,12 +312,12 @@ package schema
 //	}
 //}
 //
-//func createDpoCourseSpecializationSchema() map[string]string {
+//func createNmoCourseSpecializationSchema() map[string]string {
 //	return map[string]string{
-//		"tableName":        "dpo_courses_specializations",
-//		"key":              "dpoCourseSpecialization",
+//		"tableName":        "nmo_courses_specializations",
+//		"key":              "nmoCourseSpecialization",
 //		"id":               "id",
-//		"dpoCourseId":      "dpo_course_id",
+//		"nmoCourseId":      "dpo_course_id",
 //		"specializationId": "specialization_id",
 //	}
 //}

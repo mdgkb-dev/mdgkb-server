@@ -1,4 +1,4 @@
-package dpocourseteachers
+package nmocourseteachers
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -12,20 +12,20 @@ func (r *Repository) db() *bun.DB {
 	return r.helper.DB.DB
 }
 
-func (r *Repository) createMany(items models.DpoCoursesTeachers) (err error) {
+func (r *Repository) createMany(items models.NmoCoursesTeachers) (err error) {
 	_, err = r.db().NewInsert().Model(&items).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 	_, err = r.db().NewDelete().
-		Model((*models.DpoCourseTeacher)(nil)).
+		Model((*models.NmoCourseTeacher)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.DpoCoursesTeachers) (err error) {
+func (r *Repository) upsertMany(items models.NmoCoursesTeachers) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("teacher_id = EXCLUDED.teacher_id").

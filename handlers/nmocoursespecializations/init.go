@@ -1,4 +1,4 @@
-package dpocourseteachers
+package nmocoursespecializations
 
 import (
 	"context"
@@ -11,13 +11,13 @@ import (
 )
 
 type IService interface {
-	CreateMany(teachers models.DpoCoursesTeachers) error
+	CreateMany(teachers models.NmoCoursesSpecializations) error
 }
 
 type IRepository interface {
 	db() *bun.DB
-	createMany(models.DpoCoursesTeachers) error
-	upsertMany(models.DpoCoursesTeachers) error
+	createMany(models.NmoCoursesSpecializations) error
+	upsertMany(models.NmoCoursesSpecializations) error
 	deleteMany([]uuid.UUID) error
 }
 

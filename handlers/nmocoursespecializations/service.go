@@ -1,4 +1,4 @@
-package dpocoursespecializations
+package nmocoursespecializations
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (s *Service) CreateMany(items models.DpoCoursesSpecializations) error {
+func (s *Service) CreateMany(items models.NmoCoursesSpecializations) error {
 	if len(items) == 0 {
 		return nil
 	}
@@ -18,7 +18,7 @@ func (s *Service) CreateMany(items models.DpoCoursesSpecializations) error {
 	return nil
 }
 
-func (s *Service) UpsertMany(items models.DpoCoursesSpecializations) error {
+func (s *Service) UpsertMany(items models.NmoCoursesSpecializations) error {
 	if len(items) == 0 {
 		return nil
 	}

@@ -1,7 +1,7 @@
-package dpocourses
+package nmocourses
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/dpocourses"
+	handler "mdgkb/mdgkb-server/handlers/nmocourses"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,4 +1,4 @@
-package dpocourses
+package nmocourses
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -20,13 +20,12 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) getAll() (item models.DpoCoursesWithCount, err error) {
-	item.DpoCourses = make(models.DpoCourses, 0)
+func (r *Repository) getAll() (item models.NmoCoursesWithCount, err error) {
+	item.NmoCourses = make(models.NmoCourses, 0)
 	query := r.db().NewSelect().
-		Model(&item.DpoCourses).
-		Relation("DpoCoursesTeachers.Teacher.Employee.Human").
-		Relation("DpoCoursesSpecializations.Specialization").
-		Relation("DpoCoursesDates").
+		Model(&item.NmoCourses).
+		Relation("NmoCoursesTeachers.Teacher.Employee.Human").
+		Relation("NmoCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("Specialization")
@@ -35,12 +34,11 @@ func (r *Repository) getAll() (item models.DpoCoursesWithCount, err error) {
 	return item, err
 }
 
-func (r *Repository) get() (*models.DpoCourse, error) {
-	item := models.DpoCourse{}
+func (r *Repository) get() (*models.NmoCourse, error) {
+	item := models.NmoCourse{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("DpoCoursesTeachers.Teacher.Employee.Human").
-		Relation("DpoCoursesSpecializations.Specialization").
-		Relation("DpoCoursesDates").
+		Relation("NmoCoursesTeachers.Teacher.Employee.Human").
+		Relation("NmoCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
@@ -50,26 +48,26 @@ func (r *Repository) get() (*models.DpoCourse, error) {
 		Relation("FormPattern.FormStatusGroup").
 		// Relation("FormPattern.PersonalDataAgreement").
 		Relation("Specialization").
-		Where("dpo_courses_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
+		Where("?TableAlias.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
 	return &item, err
 }
 
-func (r *Repository) create(item *models.DpoCourse) (err error) {
+func (r *Repository) create(item *models.NmoCourse) (err error) {
 	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.DpoCourse{}).Where("id = ?", *id).Exec(r.ctx)
+	_, err = r.db().NewDelete().Model(&models.NmoCourse{}).Where("id = ?", *id).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) update(item *models.DpoCourse) (err error) {
+func (r *Repository) update(item *models.NmoCourse) (err error) {
 	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.DpoCourses) (err error) {
+func (r *Repository) upsertMany(items models.NmoCourses) (err error) {
 	_, err = r.db().NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").

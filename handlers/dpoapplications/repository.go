@@ -24,7 +24,7 @@ func (r *Repository) getAll() (item models.DpoApplicationsWithCount, err error) 
 	item.DpoApplications = make(models.DpoApplications, 0)
 	query := r.db().NewSelect().
 		Model(&item.DpoApplications).
-		Relation("DpoCourse").
+		Relation("NmoCourse").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
@@ -38,8 +38,8 @@ func (r *Repository) getAll() (item models.DpoApplicationsWithCount, err error) 
 func (r *Repository) get(id *string) (*models.DpoApplication, error) {
 	item := models.DpoApplication{}
 	err := r.db().NewSelect().Model(&item).
-		Relation("DpoCourse.FormPattern.Fields.File").
-		Relation("DpoCourse.FormPattern.Fields.ValueType").
+		Relation("NmoCourse.FormPattern.Fields.File").
+		Relation("NmoCourse.FormPattern.Fields.ValueType").
 		Relation("FormValue.User.Human").
 		Relation("FormValue.Fields.File").
 		Relation("FormValue.Fields.ValueType").

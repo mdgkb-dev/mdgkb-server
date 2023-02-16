@@ -15,7 +15,7 @@ func (r *Repository) db() *bun.DB {
 func (r *Repository) getAll() (models.Teachers, error) {
 	items := make(models.Teachers, 0)
 	query := r.db().NewSelect().Model(&items).
-		Relation("DpoCourses").
+		Relation("NmoCourses").
 		Relation("Employee.Human").
 		Relation("Employee.Regalias").
 		Relation("Employee.Human.Photo").

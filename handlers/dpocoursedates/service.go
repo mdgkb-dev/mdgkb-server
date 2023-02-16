@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (s *Service) CreateMany(items models.DpoCoursesDates) error {
+func (s *Service) CreateMany(items models.NmoCoursesDates) error {
 	if len(items) == 0 {
 		return nil
 	}
@@ -18,7 +18,7 @@ func (s *Service) CreateMany(items models.DpoCoursesDates) error {
 	return nil
 }
 
-func (s *Service) UpsertMany(items models.DpoCoursesDates) error {
+func (s *Service) UpsertMany(items models.NmoCoursesDates) error {
 	if len(items) == 0 {
 		return nil
 	}
