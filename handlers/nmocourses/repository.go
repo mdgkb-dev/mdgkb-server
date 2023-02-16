@@ -24,6 +24,7 @@ func (r *Repository) getAll() (item models.NmoCoursesWithCount, err error) {
 	item.NmoCourses = make(models.NmoCourses, 0)
 	query := r.db().NewSelect().
 		Model(&item.NmoCourses).
+		Relation("MainTeacher.Human").
 		Relation("NmoCoursesTeachers.Teacher.Employee.Human").
 		Relation("NmoCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields.File").
@@ -37,6 +38,7 @@ func (r *Repository) getAll() (item models.NmoCoursesWithCount, err error) {
 func (r *Repository) get() (*models.NmoCourse, error) {
 	item := models.NmoCourse{}
 	err := r.db().NewSelect().Model(&item).
+		Relation("MainTeacher.Human").
 		Relation("NmoCoursesTeachers.Teacher.Employee.Human").
 		Relation("NmoCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {

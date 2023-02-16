@@ -30,6 +30,9 @@ type NmoCourse struct {
 	//NmoCoursesDatesForDelete           []uuid.UUID               `bun:"-" json:"nmoCoursesDatesForDelete"`
 	FormPattern   *FormPattern  `bun:"rel:belongs-to" json:"formPattern"`
 	FormPatternID uuid.NullUUID `bun:"type:uuid" json:"formPatternId"`
+
+	MainTeacher   *Employee     `bun:"rel:belongs-to" json:"mainTeacher"`
+	MainTeacherID uuid.NullUUID `bun:"type:uuid" json:"mainTeacherId,omitempty"`
 }
 
 type NmoCourses []*NmoCourse

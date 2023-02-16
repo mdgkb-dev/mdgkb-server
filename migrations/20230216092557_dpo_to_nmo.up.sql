@@ -15,6 +15,6 @@ alter table nmo_courses
         foreign key (main_teacher_id) references employees
             on update cascade on delete cascade;
 
-alter table nmo_courses_teachers rename column dpo_course_id to npm_course_id;
-alter table nmo_courses_specializations rename column dpo_course_id to npm_course_id;
+alter table nmo_courses_teachers rename column dpo_course_id to nmo_course_id;
+alter table nmo_courses_specializations rename column dpo_course_id to nmo_course_id;
 drop table dpo_document_types;
