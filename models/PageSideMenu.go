@@ -12,6 +12,7 @@ type PageSideMenu struct {
 	RouteAnchor           string        `json:"routeAnchor"`
 	Description           string        `json:"description"`
 	Order                 int           `bun:"item_order" json:"order"`
+	ShowContent           bool          `json:"showContent"`
 	PageSections          PageSections  `bun:"rel:has-many" json:"pageSections"`
 	PageSectionsForDelete []uuid.UUID   `bun:"-" json:"pageSectionsForDelete"`
 
