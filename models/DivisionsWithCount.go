@@ -1,6 +1,6 @@
 package models
 
 type DivisionsWithCount struct {
-	Divisions Divisions `json:"divisions"`
+	Divisions Divisions `json:"items"`
 	Count     int       `json:"count"`
 }

@@ -17,7 +17,7 @@ func (r *Repository) createMany(items models.DivisionImages) (err error) {
 
 func (r *Repository) deleteMany(idPool []string) (err error) {
 	_, err = r.db().NewDelete().
-		Model((*models.PageSection)(nil)).
+		Model((*models.DivisionImage)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err

@@ -16,25 +16,25 @@ type DivisionImage struct {
 
 type DivisionImages []*DivisionImage
 
-func (i DivisionImages) GetFileInfos() FileInfos {
-	items := make(FileInfos, 0)
-	for _, item := range i {
-		items = append(items, item.FileInfo)
+func (items DivisionImages) GetFileInfos() FileInfos {
+	itemsForGet := make(FileInfos, 0)
+	for _, item := range items {
+		itemsForGet = append(itemsForGet, item.FileInfo)
 	}
-	return items
+	return itemsForGet
 }
 
-func (i DivisionImages) SetFileInfoID() {
-	for _, item := range i {
+func (items DivisionImages) SetFileInfoID() {
+	for _, item := range items {
 		item.FileInfoID = item.FileInfo.ID
 	}
 }
 
-func (i DivisionImages) SetFilePath(fileID *string) *string {
-	for _, item := range i {
-		if item.FileInfo.ID.UUID.String() == *fileID {
-			item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
-			return &item.FileInfo.FileSystemPath
+func (items DivisionImages) SetFilePath(fileID *string) *string {
+	for i := range items {
+		if items[i].FileInfo.ID.UUID.String() == *fileID {
+			items[i].FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
+			return &items[i].FileInfo.FileSystemPath
 		}
 	}
 	return nil
