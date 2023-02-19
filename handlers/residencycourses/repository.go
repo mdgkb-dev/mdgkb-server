@@ -43,6 +43,7 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 	item := models.ResidencyCourse{}
 	err := r.db().NewSelect().Model(&item).
 		Relation("MainTeacher.Human.PhotoMini").
+		Relation("MainTeacher.Human.Photo").
 		Relation("ResidencyCoursesSpecializations.Specialization").
 		Relation("FormPattern.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
