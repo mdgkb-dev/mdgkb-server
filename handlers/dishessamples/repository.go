@@ -55,6 +55,8 @@ func (r *Repository) updateAll(items models.DishSamples) (err error) {
 		Model(&items).
 		Set("item_order = EXCLUDED.item_order").
 		Set("quantity = EXCLUDED.quantity").
+		Set("weight = EXCLUDED.weight").
+		Set("additional_weight = EXCLUDED.additional_weight").
 		Exec(r.ctx)
 	return err
 }
