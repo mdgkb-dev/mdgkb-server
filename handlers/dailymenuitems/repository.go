@@ -54,6 +54,8 @@ func (r *Repository) upsertMany(items models.DailyMenuItems) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Set("name = EXCLUDED.name").
 		Set("price = EXCLUDED.price").
+		Set("weight = EXCLUDED.weight").
+		Set("additional_weight = EXCLUDED.additional_weight").
 		Set("caloric = EXCLUDED.caloric").
 		Set("item_order = EXCLUDED.item_order").
 		Set("quantity = EXCLUDED.quantity").
