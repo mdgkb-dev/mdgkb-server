@@ -3,19 +3,18 @@ package heads
 import (
 	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/departments"
-	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (s *Service) Create(item *models.Head) error {
-	err := fileinfos.CreateService(s.helper).Create(item.Photo)
-	if err != nil {
-		return err
+	if item == nil {
+		return nil
 	}
-	err = contactinfo.CreateService(s.helper).Create(item.ContactInfo)
+	err := contactinfo.CreateService(s.helper).Create(item.ContactInfo)
 	if err != nil {
 		return err
 	}
@@ -24,7 +23,7 @@ func (s *Service) Create(item *models.Head) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = s.repository.upsert(item)
 	if err != nil {
 		return err
 	}
@@ -38,11 +37,10 @@ func (s *Service) Create(item *models.Head) error {
 }
 
 func (s *Service) Update(item *models.Head) error {
-	err := fileinfos.CreateService(s.helper).Upsert(item.Photo)
-	if err != nil {
-		return err
+	if item == nil {
+		return nil
 	}
-	err = contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
+	err := contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
 	if err != nil {
 		return err
 	}
@@ -51,7 +49,7 @@ func (s *Service) Update(item *models.Head) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = s.repository.upsert(item)
 	if err != nil {
 		return err
 	}
@@ -92,4 +90,11 @@ func (s *Service) SetQueryFilter(c *gin.Context) error {
 
 func (s *Service) UpdateAll(items models.Heads) error {
 	return s.repository.updateAll(items)
+}
+
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+	if len(idPool) == 0 {
+		return nil
+	}
+	return s.repository.deleteMany(idPool)
 }

@@ -64,9 +64,6 @@ func (item *Doctor) SetForeignKeys() {
 	if item.MedicalProfile != nil {
 		item.MedicalProfileID = item.MedicalProfile.ID
 	}
-	if item.Employee != nil {
-		item.EmployeeID = item.Employee.ID
-	}
 }
 
 func (item *Doctor) SetIDForChildren() {

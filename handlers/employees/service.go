@@ -4,8 +4,10 @@ import (
 	"mdgkb/mdgkb-server/handlers/accreditations"
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/certifications"
+	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
+	"mdgkb/mdgkb-server/handlers/heads"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/teachingactivities"
@@ -25,6 +27,15 @@ func (s *Service) Create(item *models.Employee) error {
 		return err
 	}
 	item.SetIDForChildren()
+
+	err = heads.CreateService(s.helper).Create(item.Head)
+	if err != nil {
+		return err
+	}
+	err = doctors.CreateService(s.helper).Create(item.Doctor)
+	if err != nil {
+		return err
+	}
 
 	err = regalias.CreateService(s.helper).CreateMany(item.Regalias)
 	if err != nil {
@@ -68,6 +79,27 @@ func (s *Service) Update(item *models.Employee) error {
 		return err
 	}
 	item.SetIDForChildren()
+
+	headsService := heads.CreateService(s.helper)
+	err = headsService.Update(item.Head)
+	if err != nil {
+		return err
+	}
+	err = headsService.DeleteMany(item.HeadsForDelete)
+	if err != nil {
+		return err
+	}
+
+	doctorsService := doctors.CreateService(s.helper)
+	err = doctorsService.Update(item.Doctor)
+	if err != nil {
+		return err
+	}
+	err = doctorsService.DeleteMany(item.DoctorsForDelete)
+	if err != nil {
+		return err
+	}
+
 	regaliasService := regalias.CreateService(s.helper)
 	err = regaliasService.UpsertMany(item.Regalias)
 	if err != nil {

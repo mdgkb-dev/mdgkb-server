@@ -158,3 +158,19 @@ func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
 		Exec(r.ctx)
 	return err
 }
+
+func (r *Repository) upsert(item *models.Doctor) (err error) {
+	_, err = r.db().NewInsert().On("conflict (id) do update").
+		Set("id = EXCLUDED.id").
+		Set("employee_id = EXCLUDED.employee_id").
+		Set("position_id = EXCLUDED.position_id").
+		Set("medical_profile_id = EXCLUDED.medical_profile_id").
+		Set("timetable_id = EXCLUDED.timetable_id").
+		Set("online_doctor_id = EXCLUDED.online_doctor_id").
+		Set("mos_doctor_link = EXCLUDED.mos_doctor_link").
+		Set("show = EXCLUDED.show").
+		Set("has_appointment = EXCLUDED.has_appointment").
+		Model(item).
+		Exec(r.ctx)
+	return err
+}

@@ -13,6 +13,9 @@ import (
 )
 
 func (s *Service) Create(item *models.Doctor) error {
+	if item == nil {
+		return nil
+	}
 	err := timetables.CreateService(s.helper).Create(item.Timetable)
 	if err != nil {
 		return err
@@ -42,12 +45,15 @@ func (s *Service) Create(item *models.Doctor) error {
 }
 
 func (s *Service) Update(item *models.Doctor) error {
+	if item == nil {
+		return nil
+	}
 	err := timetables.CreateService(s.helper).Upsert(item.Timetable)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = s.repository.upsert(item)
 	if err != nil {
 		return err
 	}

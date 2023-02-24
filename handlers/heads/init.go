@@ -6,6 +6,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
@@ -30,6 +31,7 @@ type IService interface {
 	Delete(string) error
 	Update(*models.Head) error
 	UpdateAll(models.Heads) error
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
@@ -39,7 +41,9 @@ type IRepository interface {
 	get(string) (*models.Head, error)
 	delete(string) error
 	update(*models.Head) error
+	upsert(*models.Head) error
 	updateAll(models.Heads) error
+	deleteMany([]uuid.UUID) error
 }
 
 type IFilesService interface {

@@ -67,6 +67,7 @@ type IRepository interface {
 	upsertMany(models.Doctors) error
 	search(string) (models.Doctors, error)
 	deleteMany([]uuid.UUID) error
+	upsert(*models.Doctor) error
 }
 
 type IFilesService interface {
