@@ -31,7 +31,8 @@ func (r *Repository) getAll() (item models.EmployeesWithCount, err error) {
 		Relation("Human").
 		Relation("Human.PhotoMini").
 		Relation("Head").
-		Relation("Doctor")
+		Relation("Doctor").
+		Relation("EducationalAcademic")
 
 	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
@@ -52,6 +53,7 @@ func (r *Repository) get(slug string) (*models.Employee, error) {
 		Relation("TeachingActivities").
 		Relation("Head").
 		Relation("Doctor").
+		Relation("EducationalAcademic").
 		Scan(r.ctx)
 	return &item, err
 }

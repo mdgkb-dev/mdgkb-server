@@ -4,6 +4,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (s *Service) GetAll() (models.EducationalAcademics, error) {
@@ -27,7 +28,7 @@ func (s *Service) Create(item *models.EducationalAcademic) error {
 }
 
 func (s *Service) Update(item *models.EducationalAcademic) error {
-	err := s.repository.update(item)
+	err := s.repository.upsert(item)
 	if err != nil {
 		return err
 	}
@@ -45,4 +46,11 @@ func (s *Service) setQueryFilter(c *gin.Context) (err error) {
 
 func (s *Service) UpdateAll(items models.EducationalAcademics) error {
 	return s.repository.updateAll(items)
+}
+
+func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+	if len(idPool) == 0 {
+		return nil
+	}
+	return s.repository.deleteMany(idPool)
 }

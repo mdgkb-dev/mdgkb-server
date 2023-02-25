@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 
@@ -29,6 +30,7 @@ type IService interface {
 	Update(*models.EducationalAcademic) error
 	Delete(string) error
 	UpdateAll(academic models.EducationalAcademics) error
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
@@ -40,6 +42,8 @@ type IRepository interface {
 	update(*models.EducationalAcademic) error
 	delete(string) error
 	updateAll(models.EducationalAcademics) error
+	deleteMany([]uuid.UUID) error
+	upsert(item *models.EducationalAcademic) error
 }
 
 type IFilesService interface {
@@ -72,6 +76,11 @@ func CreateHandler(helper *helper.Helper) *Handler {
 	service := NewService(repo, helper)
 	filesService := NewFilesService(helper)
 	return NewHandler(service, filesService, helper)
+}
+
+func CreateService(helper *helper.Helper) *Service {
+	repo := NewRepository(helper)
+	return NewService(repo, helper)
 }
 
 // NewHandler constructor

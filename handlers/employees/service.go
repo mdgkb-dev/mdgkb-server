@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/certifications"
 	"mdgkb/mdgkb-server/handlers/doctors"
+	"mdgkb/mdgkb-server/handlers/educationalacademics"
 	"mdgkb/mdgkb-server/handlers/educations"
 	"mdgkb/mdgkb-server/handlers/experiences"
 	"mdgkb/mdgkb-server/handlers/heads"
@@ -33,6 +34,10 @@ func (s *Service) Create(item *models.Employee) error {
 		return err
 	}
 	err = doctors.CreateService(s.helper).Create(item.Doctor)
+	if err != nil {
+		return err
+	}
+	err = educationalacademics.CreateService(s.helper).Create(item.EducationalAcademic)
 	if err != nil {
 		return err
 	}
@@ -96,6 +101,16 @@ func (s *Service) Update(item *models.Employee) error {
 		return err
 	}
 	err = doctorsService.DeleteMany(item.DoctorsForDelete)
+	if err != nil {
+		return err
+	}
+
+	educationalAcademicsService := educationalacademics.CreateService(s.helper)
+	err = educationalAcademicsService.Update(item.EducationalAcademic)
+	if err != nil {
+		return err
+	}
+	err = educationalAcademicsService.DeleteMany(item.EducationalAcademicsForDelete)
 	if err != nil {
 		return err
 	}

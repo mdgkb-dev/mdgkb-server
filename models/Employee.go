@@ -18,10 +18,12 @@ type Employee struct {
 
 	PartTime bool `json:"partTime"`
 
-	Head             *Head       `bun:"rel:has-one" json:"head"`
-	HeadsForDelete   []uuid.UUID `bun:"-" json:"headsForDelete"`
-	Doctor           *Doctor     `bun:"rel:has-one" json:"doctor"`
-	DoctorsForDelete []uuid.UUID `bun:"-" json:"doctorsForDelete"`
+	Head                          *Head                `bun:"rel:has-one" json:"head"`
+	HeadsForDelete                []uuid.UUID          `bun:"-" json:"headsForDelete"`
+	Doctor                        *Doctor              `bun:"rel:has-one" json:"doctor"`
+	DoctorsForDelete              []uuid.UUID          `bun:"-" json:"doctorsForDelete"`
+	EducationalAcademic           *EducationalAcademic `bun:"rel:has-one" json:"educationalAcademic"`
+	EducationalAcademicsForDelete []uuid.UUID          `bun:"-" json:"educationalAcademicsForDelete"`
 
 	Regalias          Regalias    `bun:"rel:has-many" json:"regalias"`
 	RegaliasForDelete []uuid.UUID `bun:"-" json:"regaliasForDelete"`
@@ -112,5 +114,8 @@ func (item *Employee) SetIDForChildren() {
 
 	if item.Doctor != nil {
 		item.Doctor.EmployeeID = item.ID
+	}
+	if item.EducationalAcademic != nil {
+		item.EducationalAcademic.EmployeeID = item.ID
 	}
 }
