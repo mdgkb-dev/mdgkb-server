@@ -28,6 +28,9 @@ func (s *Service) Create(item *models.EducationalAcademic) error {
 }
 
 func (s *Service) Update(item *models.EducationalAcademic) error {
+	if item == nil {
+		return nil
+	}
 	err := s.repository.upsert(item)
 	if err != nil {
 		return err

@@ -52,7 +52,7 @@ func (r *Repository) get(slug string) (*models.Employee, error) {
 		Relation("Accreditations").
 		Relation("TeachingActivities").
 		Relation("Head").
-		Relation("Doctor").
+		Relation("Doctor.DoctorsDivisions.Division").
 		Relation("EducationalAcademic").
 		Scan(r.ctx)
 	return &item, err
