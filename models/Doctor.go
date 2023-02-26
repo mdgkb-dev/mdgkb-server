@@ -55,9 +55,6 @@ func (item *Doctor) SetFilePath(fileID *string) *string {
 }
 
 func (item *Doctor) SetForeignKeys() {
-	if item.Position != nil {
-		item.PositionID = item.Position.ID
-	}
 	if item.Timetable != nil {
 		item.TimetableID = item.Timetable.ID
 	}
