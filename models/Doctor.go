@@ -55,17 +55,11 @@ func (item *Doctor) SetFilePath(fileID *string) *string {
 }
 
 func (item *Doctor) SetForeignKeys() {
-	if item.Position != nil {
-		item.PositionID = item.Position.ID
-	}
 	if item.Timetable != nil {
 		item.TimetableID = item.Timetable.ID
 	}
 	if item.MedicalProfile != nil {
 		item.MedicalProfileID = item.MedicalProfile.ID
-	}
-	if item.Employee != nil {
-		item.EmployeeID = item.Employee.ID
 	}
 }
 

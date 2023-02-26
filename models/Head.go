@@ -12,10 +12,8 @@ type Head struct {
 	Employee   *Employee     `bun:"rel:belongs-to" json:"employee"`
 	EmployeeID uuid.NullUUID `bun:"type:uuid" json:"employeeId,omitempty"`
 
-	Position string    `json:"position"`
-	Tags     string    `json:"tags"`
-	Photo    *FileInfo `bun:"rel:belongs-to" json:"photo"`
-	PhotoID  uuid.UUID `bun:"type:uuid" json:"photoId"`
+	Position string `json:"position"`
+	Tags     string `json:"tags"`
 
 	Timetable   *Timetable    `bun:"rel:belongs-to" json:"timetable"`
 	TimetableID uuid.NullUUID `bun:"type:uuid" json:"timetableId"`
@@ -37,12 +35,6 @@ type Head struct {
 type Heads []*Head
 
 func (item *Head) SetForeignKeys() {
-	if item.Photo != nil {
-		item.PhotoID = item.Photo.ID.UUID
-	}
-	if item.Employee != nil {
-		item.EmployeeID = item.Employee.ID
-	}
 	if item.Timetable != nil {
 		item.TimetableID = item.Timetable.ID
 	}

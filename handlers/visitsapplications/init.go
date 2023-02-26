@@ -2,7 +2,6 @@ package visitsapplications
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/handlers/basehandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -21,7 +20,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	basehandler.IService
+	setQueryFilter(c *gin.Context) error
 	GetAll() (models.VisitsApplicationsWithCount, error)
 	Get(*string) (*models.VisitsApplication, error)
 	Create(*models.VisitsApplication) error
@@ -30,7 +29,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	basehandler.IRepository
+	setQueryFilter(c *gin.Context) error
 	getAll() (models.VisitsApplicationsWithCount, error)
 	get(*string) (*models.VisitsApplication, error)
 	create(*models.VisitsApplication) error

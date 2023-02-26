@@ -99,8 +99,8 @@ func (s *Service) CreateResponse(item *models.VacancyResponse) error {
 	return nil
 }
 
-func (s *Service) SetQueryFilter(c *gin.Context) error {
-	return s.repository.SetQueryFilter(c)
+func (s *Service) setQueryFilter(c *gin.Context) error {
+	return s.repository.setQueryFilter(c)
 }
 
 func (s *Service) UpdateMany(items models.Vacancies) error {

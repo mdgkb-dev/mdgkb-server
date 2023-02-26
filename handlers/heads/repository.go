@@ -4,6 +4,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	// _ "github.com/go-pg/pg/v10/orm"
 )
@@ -12,7 +13,7 @@ func (r *Repository) DB() *bun.DB {
 	return r.helper.DB.DB
 }
 
-func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
+func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
@@ -73,6 +74,26 @@ func (r *Repository) updateAll(items models.Heads) (err error) {
 	_, err = r.DB().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("item_order = EXCLUDED.item_order").
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) upsert(item *models.Head) (err error) {
+	_, err = r.DB().NewInsert().On("conflict (id) do update").
+		Model(item).
+		Set("employee_id = EXCLUDED.employee_id").
+		Set("position = EXCLUDED.position").
+		Set("timetable_id = EXCLUDED.timetable_id").
+		Set("is_main = EXCLUDED.is_main").
+		Set("contact_info_id = EXCLUDED.contact_info_id").
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
+	_, err = r.DB().NewDelete().
+		Model((*models.Head)(nil)).
+		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
 }

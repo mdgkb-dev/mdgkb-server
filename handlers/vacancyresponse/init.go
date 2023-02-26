@@ -2,7 +2,6 @@ package vacancyresponse
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/handlers/basehandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -25,7 +24,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	basehandler.IService
+	setQueryFilter(c *gin.Context) error
 	GetAll() (models.VacancyResponsesWithCount, error)
 	Get(string) (*models.VacancyResponse, error)
 	Create(*models.VacancyResponse) error
@@ -36,7 +35,8 @@ type IService interface {
 }
 
 type IRepository interface {
-	basehandler.IRepository
+	//basehandler.IRepository
+	setQueryFilter(c *gin.Context) error
 	create(*models.VacancyResponse) error
 	getAll() (models.VacancyResponsesWithCount, error)
 	get(string) (*models.VacancyResponse, error)

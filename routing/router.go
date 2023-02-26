@@ -163,7 +163,6 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	//r.Use(m.CORSMiddleware())
 	//r.Use(m.CheckPermission())
 	r.Use(gin.Logger())
-
 	r.Static("/api/v1/static", "./static/")
 	authGroup := r.Group("/api/v1/auth")
 	authRouter.Init(authGroup.Group(""), auth.CreateHandler(helper))

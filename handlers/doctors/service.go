@@ -13,14 +13,13 @@ import (
 )
 
 func (s *Service) Create(item *models.Doctor) error {
+	if item == nil {
+		return nil
+	}
 	err := timetables.CreateService(s.helper).Create(item.Timetable)
 	if err != nil {
 		return err
 	}
-	// err = employees.CreateService(s.helper).Create(item.Employee)
-	// if err != nil {
-	// 	return err
-	// }
 	item.SetForeignKeys()
 	err = s.repository.create(item)
 	if err != nil {
@@ -42,19 +41,18 @@ func (s *Service) Create(item *models.Doctor) error {
 }
 
 func (s *Service) Update(item *models.Doctor) error {
+	if item == nil {
+		return nil
+	}
 	err := timetables.CreateService(s.helper).Upsert(item.Timetable)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = s.repository.upsert(item)
 	if err != nil {
 		return err
 	}
-	// err = employees.CreateService(s.helper).Update(item.Employee)
-	// if err != nil {
-	// 	return err
-	// }
 	item.SetIDForChildren()
 	doctorPaidServicesService := doctorpaidservices.CreateService(s.helper)
 	err = doctorPaidServicesService.UpsertMany(item.DoctorPaidServices)

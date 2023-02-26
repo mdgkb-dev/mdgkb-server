@@ -2,10 +2,10 @@ package heads
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/handlers/basehandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
@@ -23,23 +23,29 @@ type IHandler interface {
 }
 
 type IService interface {
-	basehandler.IService
+	//basehandler.IService
+
+	setQueryFilter(c *gin.Context) error
 	Create(*models.Head) error
 	GetAll() (models.Heads, error)
 	Get(string) (*models.Head, error)
 	Delete(string) error
 	Update(*models.Head) error
 	UpdateAll(models.Heads) error
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
-	basehandler.IRepository
+	//basehandler.IRepository
 	create(*models.Head) error
 	getAll() (models.Heads, error)
 	get(string) (*models.Head, error)
 	delete(string) error
 	update(*models.Head) error
+	upsert(*models.Head) error
 	updateAll(models.Heads) error
+	deleteMany([]uuid.UUID) error
+	setQueryFilter(c *gin.Context) error
 }
 
 type IFilesService interface {

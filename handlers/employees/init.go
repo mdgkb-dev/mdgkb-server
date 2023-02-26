@@ -3,45 +3,26 @@ package employees
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
 
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/httpHelper/basehandler"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
-
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
-	GetAll(c *gin.Context)
-	Get(c *gin.Context)
-	Create(c *gin.Context)
-	Delete(c *gin.Context)
-	Update(c *gin.Context)
+	basehandler.IHandler
 }
 
 type IService interface {
-	setQueryFilter(*gin.Context) error
-
-	Create(*models.Employee) error
-	GetAll() (models.EmployeesWithCount, error)
-	Get(string) (*models.Employee, error)
-	Delete(string) error
-	Update(*models.Employee) error
+	basehandler.IService[models.Employee, models.Employees, models.EmployeesWithCount]
 }
 
 type IRepository interface {
-	setQueryFilter(*gin.Context) error
-	db() *bun.DB
-	create(*models.Employee) error
-	getAll() (models.EmployeesWithCount, error)
-	get(string) (*models.Employee, error)
-	delete(string) error
-	update(*models.Employee) error
+	basehandler.IRepository[models.Employee, models.Employees, models.EmployeesWithCount]
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.Employee, map[string][]*multipart.FileHeader) error
+	basehandler.IFilesService
 }
 
 type Handler struct {
