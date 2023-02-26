@@ -65,6 +65,6 @@ func (s *Service) EmailExists(email string, vacancyID string) (bool, error) {
 	return item, nil
 }
 
-func (s *Service) SetQueryFilter(c *gin.Context) error {
-	return s.repository.SetQueryFilter(c)
+func (s *Service) setQueryFilter(c *gin.Context) error {
+	return s.repository.setQueryFilter(c)
 }

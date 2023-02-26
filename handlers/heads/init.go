@@ -2,7 +2,6 @@ package heads
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/handlers/basehandler"
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
@@ -24,7 +23,9 @@ type IHandler interface {
 }
 
 type IService interface {
-	basehandler.IService
+	//basehandler.IService
+
+	setQueryFilter(c *gin.Context) error
 	Create(*models.Head) error
 	GetAll() (models.Heads, error)
 	Get(string) (*models.Head, error)
@@ -35,7 +36,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	basehandler.IRepository
+	//basehandler.IRepository
 	create(*models.Head) error
 	getAll() (models.Heads, error)
 	get(string) (*models.Head, error)
@@ -44,6 +45,7 @@ type IRepository interface {
 	upsert(*models.Head) error
 	updateAll(models.Heads) error
 	deleteMany([]uuid.UUID) error
+	setQueryFilter(c *gin.Context) error
 }
 
 type IFilesService interface {

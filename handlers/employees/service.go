@@ -23,7 +23,7 @@ func (s *Service) Create(item *models.Employee) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = s.repository.Create(item)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func (s *Service) Update(item *models.Employee) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = s.repository.Update(item)
 	if err != nil {
 		return err
 	}
@@ -186,11 +186,11 @@ func (s *Service) Update(item *models.Employee) error {
 }
 
 func (s *Service) GetAll() (models.EmployeesWithCount, error) {
-	return s.repository.getAll()
+	return s.repository.GetAll()
 }
 
 func (s *Service) Get(slug string) (*models.Employee, error) {
-	item, err := s.repository.get(slug)
+	item, err := s.repository.Get(slug)
 	if err != nil {
 		return nil, err
 	}
@@ -198,10 +198,10 @@ func (s *Service) Get(slug string) (*models.Employee, error) {
 }
 
 func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+	return s.repository.Delete(id)
 }
 
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
+func (s *Service) SetQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.SetQueryFilter(c)
 	return err
 }

@@ -251,6 +251,10 @@ github.com/pro-assistance/pro-assister v0.0.106-0.20230222162933-caf4fc609ed6 h1
 github.com/pro-assistance/pro-assister v0.0.106-0.20230222162933-caf4fc609ed6/go.mod h1:jiWOMP18P54CdmnpMtWzXpARXY4psfd9GmnSmu/6zO4=
 github.com/pro-assistance/pro-assister v0.0.106-0.20230222163358-2c8788ede44e h1:lCbEWhZUQcTBQnEto+NNvrdbwIcMLASR6yaj+GE9ELY=
 github.com/pro-assistance/pro-assister v0.0.106-0.20230222163358-2c8788ede44e/go.mod h1:jiWOMP18P54CdmnpMtWzXpARXY4psfd9GmnSmu/6zO4=
+github.com/pro-assistance/pro-assister v0.0.106-0.20230226160840-0feb74d67b63 h1:76MRJEpulJIf/I0VEccdmqmTngH6J056EN8x9Fy5dZE=
+github.com/pro-assistance/pro-assister v0.0.106-0.20230226160840-0feb74d67b63/go.mod h1:1ThBY/5qLM9qFEyuQyVganXkz+MxcWJuTB6cA5MPwXs=
+github.com/pro-assistance/pro-assister v0.0.106-0.20230226161337-d6b7274691bf h1:9xPpcnre0NHBrOAErupdDyfWw7tNFmiv6zA8WIE3RQ0=
+github.com/pro-assistance/pro-assister v0.0.106-0.20230226161337-d6b7274691bf/go.mod h1:1ThBY/5qLM9qFEyuQyVganXkz+MxcWJuTB6cA5MPwXs=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/robfig/cron/v3 v3.0.1 h1:WdRxkvbJztn8LMz/QEvLN5sBU+xKpSqwwUO1Pjr4qDs=
 github.com/robfig/cron/v3 v3.0.1/go.mod h1:eQICP3HwyT7UooqI/z+Ov+PtYAWygg1TEWWzGIFLtro=

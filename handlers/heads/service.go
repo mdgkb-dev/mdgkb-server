@@ -84,8 +84,8 @@ func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
 
-func (s *Service) SetQueryFilter(c *gin.Context) error {
-	return s.repository.SetQueryFilter(c)
+func (s *Service) setQueryFilter(c *gin.Context) error {
+	return s.repository.setQueryFilter(c)
 }
 
 func (s *Service) UpdateAll(items models.Heads) error {
