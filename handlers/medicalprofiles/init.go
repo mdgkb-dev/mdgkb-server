@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -20,6 +21,7 @@ type IHandler interface {
 }
 
 type IService interface {
+	SetQueryFilter(c *gin.Context) error
 	Create(*models.MedicalProfile) error
 	GetAll() (models.MedicalProfiles, error)
 	Get(string) (*models.MedicalProfile, error)
@@ -29,6 +31,7 @@ type IService interface {
 
 type IRepository interface {
 	db() *bun.DB
+	SetQueryFilter(c *gin.Context) error
 	create(*models.MedicalProfile) error
 	getAll() (models.MedicalProfiles, error)
 	get(string) (*models.MedicalProfile, error)
@@ -52,8 +55,9 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx    context.Context
-	helper *helper.Helper
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

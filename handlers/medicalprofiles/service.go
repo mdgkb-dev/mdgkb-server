@@ -2,6 +2,8 @@ package medicalprofiles
 
 import (
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.MedicalProfile) error {
@@ -34,4 +36,9 @@ func (s *Service) Get(id string) (*models.MedicalProfile, error) {
 
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
+}
+
+func (s *Service) SetQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.SetQueryFilter(c)
+	return err
 }
