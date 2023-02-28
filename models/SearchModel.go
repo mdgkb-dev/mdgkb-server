@@ -1,18 +1,23 @@
 package models
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/pro-assistance/pro-assister/sqlHelper/paginator"
+)
 
 type SearchModel struct {
-	Suggester       bool           `json:"suggester"`
-	SearchElements  SearchElements `bun:"-" json:"options"`
-	Query           string         `json:"query"`
-	MustBeTranslate bool           `json:"mustBeTranslate"`
-	TranslitQuery   string         `json:"translitQuery"`
-	SearchGroupID   string         `json:"searchGroupId"`
-	SearchGroups    SearchGroups   `json:"searchGroups"`
-	SearchGroup     *SearchGroup   `json:"searchGroup"`
-	SearchColumn    string         `json:"searchColumn"`
-	Count           int            `json:"count"`
+	Suggester       bool                `json:"suggester"`
+	SearchElements  SearchElements      `bun:"-" json:"options"`
+	Query           string              `json:"query"`
+	MustBeTranslate bool                `json:"mustBeTranslate"`
+	TranslitQuery   string              `json:"translitQuery"`
+	SearchGroupID   string              `json:"searchGroupId"`
+	SearchGroups    SearchGroups        `json:"searchGroups"`
+	SearchGroup     *SearchGroup        `json:"searchGroup"`
+	SearchColumn    string              `json:"searchColumn"`
+	Count           int                 `json:"count"`
+	Pagination      paginator.Paginator `json:"pagination"`
 }
 
 func (item *SearchModel) BuildRoutes() {

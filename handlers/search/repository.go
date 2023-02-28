@@ -80,7 +80,7 @@ func (r *Repository) fullTextSearch(model *models.SearchModel) (err error) {
 	}
 	q.OrderExpr("search_column  <=> (select q from query)")
 
-	r.queryFilter.HandleQuery(q)
+	model.Pagination.CreatePagination(q)
 	model.Count, err = q.ScanAndCount(r.ctx, &model.SearchElements)
 
 	return err
