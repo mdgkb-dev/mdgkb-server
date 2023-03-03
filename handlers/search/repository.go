@@ -3,6 +3,7 @@ package search
 import (
 	"fmt"
 	"mdgkb/mdgkb-server/models"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -56,10 +57,11 @@ type Patname struct {
 }
 
 func (r *Repository) fullTextSearch(model *models.SearchModel) (err error) {
+	query := strings.ToLower(model.Query)
 	src1 := r.db().NewSelect().
 		ColumnExpr("lexeme").
 		ColumnExpr("positions[1] as pos").
-		TableExpr(fmt.Sprintf("unnest(to_tsvector('simple','%s'))", model.Query))
+		TableExpr(fmt.Sprintf("unnest(to_tsvector('russian','%s'))", query))
 
 	subq := r.db().NewSelect().
 		ColumnExpr("f.pos").
@@ -67,18 +69,18 @@ func (r *Repository) fullTextSearch(model *models.SearchModel) (err error) {
 		TableExpr("fio as f").Join("join lexemes as l on l.lexeme % f.lexeme").Group("f.pos")
 
 	src2 := r.db().NewSelect().
-		ColumnExpr("to_tsquery('simple', string_agg(q.tq,'&')) as q").
+		ColumnExpr("to_tsquery('simple', string_agg(q.tq,'|')) as q").
 		TableExpr("(?) AS q", subq)
 
 	q := r.db().NewSelect().With("fio", src1).With("query", src2).
-		ColumnExpr(" search_column  <=> (select q from query) as rank").
+		ColumnExpr("ts_rank_cd(search_column, ?) as rank1, search_column  <=> (select q from query) as rank2", query).
 		Column("label", "description", "value", "key").
 		Table("search_elements").
 		Where("search_column @@ (select q from query)")
 	if model.SearchGroup.ID.Valid {
 		q.Where("key = '?'", bun.Safe(model.SearchGroup.Key))
 	}
-	q.OrderExpr("search_column  <=> (select q from query)")
+	q.OrderExpr("rank1 desc, rank2 asc")
 
 	model.Pagination.CreatePagination(q)
 	model.Count, err = q.ScanAndCount(r.ctx, &model.SearchElements)
@@ -87,10 +89,11 @@ func (r *Repository) fullTextSearch(model *models.SearchModel) (err error) {
 }
 
 func (r *Repository) elasticSuggester(model *models.SearchModel) (err error) {
+	query := strings.ToLower(model.Query)
 	src1 := r.db().NewSelect().
 		ColumnExpr("lexeme").
 		ColumnExpr("positions[1] as pos").
-		TableExpr(fmt.Sprintf("unnest(to_tsvector('simple','%s'))", model.Query))
+		TableExpr(fmt.Sprintf("unnest(to_tsvector('russian','%s'))", query))
 
 	subq := r.db().NewSelect().
 		ColumnExpr("f.pos").
@@ -98,18 +101,22 @@ func (r *Repository) elasticSuggester(model *models.SearchModel) (err error) {
 		TableExpr("fio as f").Join("join lexemes as l on l.lexeme % f.lexeme").Group("f.pos")
 
 	src2 := r.db().NewSelect().
-		ColumnExpr("to_tsquery('simple', string_agg(q.tq,'&')) as q").
+		ColumnExpr("to_tsquery('simple', string_agg(q.tq,'|')) as q").
 		TableExpr("(?) AS q", subq)
 
 	q := r.db().NewSelect().With("fio", src1).With("query", src2).
-		ColumnExpr(" search_column  <=> (select q from query) as rank").
+		ColumnExpr("ts_rank_cd(search_column, ?) as rank1, search_column  <=> (select q from query) as rank2", query).
 		Column("label", "description", "value", "key").
 		Table("search_elements").
 		Where("search_column @@ (select q from query)")
+	if model.SearchGroup.ID.Valid {
+		q.Where("key = '?'", bun.Safe(model.SearchGroup.Key))
+	}
+	q.OrderExpr("rank1 desc, rank2 asc")
 
 	r.queryFilter.HandleQuery(q)
-
-	q.OrderExpr("search_column  <=> (select q from query)").Limit(10)
+	q.OrderExpr("rank1 desc, rank2 asc")
+	q.Limit(10)
 	err = q.Scan(r.ctx, &model.SearchElements)
 	return err
 }
