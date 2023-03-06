@@ -1,6 +1,7 @@
 package pages
 
 import (
+	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/pageimages"
 	"mdgkb/mdgkb-server/handlers/pagesdocuments"
 	"mdgkb/mdgkb-server/handlers/pagesidemenus"
@@ -11,7 +12,12 @@ import (
 
 func (s *Service) Create(item *models.Page) error {
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
-	err := s.repository.create(item)
+	err := contactinfo.CreateService(s.helper).Create(item.ContactInfo)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -61,7 +67,12 @@ func (s *Service) Get(id *string) (*models.Page, error) {
 }
 
 func (s *Service) Update(item *models.Page) error {
-	err := s.repository.update(item)
+	err := contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
+	if err != nil {
+		return err
+	}
+	item.SetForeignKeys()
+	err = s.repository.update(item)
 	if err != nil {
 		return err
 	}

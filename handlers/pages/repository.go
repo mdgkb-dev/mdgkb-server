@@ -50,6 +50,11 @@ func (r *Repository) get(id *string) (*models.Page, error) {
 		Relation("PageSideMenus.PageSections.PageSectionDocuments.Scan").
 		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.PostAddresses").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactInfo.Websites").
 		Relation("PageComments.Comment").
 		Where("id = ?", *id).Scan(r.ctx)
 	return &item, err
@@ -84,6 +89,11 @@ func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
 		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
 		Relation("PageComments.Comment").
+		Relation("ContactInfo").
+		Relation("ContactInfo.Emails").
+		Relation("ContactInfo.PostAddresses").
+		Relation("ContactInfo.TelephoneNumbers").
+		Relation("ContactInfo.Websites").
 		Where("slug = ?", *slug).
 		Scan(r.ctx)
 	return &item, err
