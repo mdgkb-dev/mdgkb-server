@@ -15,7 +15,8 @@ type SearchElement struct {
 	Key                string             `json:"key"`
 	SearchGroup        *SearchGroup       `json:"searchGroup"`
 	SearchElementMetas SearchElementMetas `json:"searchElementMetas"`
-	Rank               float32            `json:"-"`
+	Rank1              float32            `json:"-"`
+	Rank2              float32            `json:"-"`
 }
 
 type SearchElements []*SearchElement

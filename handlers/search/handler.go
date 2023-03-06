@@ -2,7 +2,6 @@ package search
 
 import (
 	"encoding/json"
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -35,7 +34,6 @@ func (h *Handler) FullTextSearch(c *gin.Context) {
 		return
 	}
 	err = h.service.Search(&item)
-	fmt.Println(item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
