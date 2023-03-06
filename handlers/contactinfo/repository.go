@@ -34,6 +34,10 @@ func (r *Repository) upsert(item *models.ContactInfo) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(item).
 		Set("id = EXCLUDED.id").
+		Set("description = EXCLUDED.description").
+		Set("latitude = EXCLUDED.latitude").
+		Set("longitude = EXCLUDED.longitude").
+		Set("time = EXCLUDED.time").
 		Exec(r.ctx)
 	return err
 }
@@ -42,6 +46,10 @@ func (r *Repository) upsertMany(items models.ContactInfos) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("id = EXCLUDED.id").
+		Set("description = EXCLUDED.description").
+		Set("latitude = EXCLUDED.latitude").
+		Set("longitude = EXCLUDED.longitude").
+		Set("time = EXCLUDED.time").
 		Exec(r.ctx)
 	return err
 }

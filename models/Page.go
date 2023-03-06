@@ -15,8 +15,12 @@ type Page struct {
 	WithComments  bool          `json:"withComments"`
 	Collaps       bool          `json:"collaps"`
 	ShowContent   bool          `json:"showContent"`
+	ShowContacts  bool          `json:"showContacts"`
 
 	PagesGroup string `json:"pagesGroup"`
+
+	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
+	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
 
 	PageSideMenus          PageSideMenus `bun:"rel:has-many" json:"pageSideMenus"`
 	PageSideMenusForDelete []uuid.UUID   `bun:"-" json:"pageSideMenusForDelete"`
@@ -39,6 +43,12 @@ type Pages []*Page
 type PagesWithCount struct {
 	Pages Pages `json:"items"`
 	Count int   `json:"count"`
+}
+
+func (item *Page) SetForeignKeys() {
+	if item.ContactInfo != nil {
+		item.ContactInfoID = item.ContactInfo.ID
+	}
 }
 
 func (item *Page) SetIDForChildren() {

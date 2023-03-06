@@ -6,6 +6,10 @@ import (
 
 type ContactInfo struct {
 	ID                        uuid.UUID        `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
+	Time                      string           `json:"time"`
+	Description               string           `json:"description"`
+	Latitude                  string           `json:"latitude"`
+	Longitude                 string           `json:"longitude"`
 	EmailsForDelete           []uuid.UUID      `bun:"-" json:"emailsForDelete"`
 	Emails                    Emails           `bun:"rel:has-many" json:"emails"`
 	PostAddressesForDelete    []uuid.UUID      `bun:"-" json:"postAddressesForDelete"`
