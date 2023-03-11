@@ -13,9 +13,9 @@ import (
 type Human struct {
 	bun.BaseModel `bun:"humans,alias:humans"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	Name          string        `json:"name"`
-	Surname       string        `json:"surname"`
-	Patronymic    string        `json:"patronymic"`
+	Name          string        `json:"name" validate:"required,min=1,max=100"`
+	Surname       string        `json:"surname" validate:"required,min=1,max=100"`
+	Patronymic    string        `json:"patronymic" validate:"required,min=1,max=100"`
 	Snils         string        `json:"snils"`
 
 	PostIndex string `json:"postIndex"`
