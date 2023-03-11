@@ -1,0 +1,3 @@
+alter table residency_course_practice_places drop column residency_course_id;
+alter table residency_course_practice_places add division_id uuid REFERENCES divisions (id);
+alter table residency_course_practice_places add residency_course_practice_place_group_id uuid REFERENCES residency_course_practice_place_groups (id);
