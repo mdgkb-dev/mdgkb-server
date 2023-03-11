@@ -2,6 +2,7 @@ package residencycourses
 
 import (
 	"mdgkb/mdgkb-server/handlers/fileinfos"
+	"mdgkb/mdgkb-server/handlers/residencycoursepracticeplacegroups"
 	"mdgkb/mdgkb-server/handlers/residencycoursespecializations"
 	"mdgkb/mdgkb-server/models"
 
@@ -48,6 +49,10 @@ func (s *Service) Create(item *models.ResidencyCourse) error {
 	if err != nil {
 		return err
 	}
+	err = residencycoursepracticeplacegroups.CreateService(s.helper).CreateMany(item.ResidencyCoursePracticePlaceGroups)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -81,6 +86,15 @@ func (s *Service) Update(item *models.ResidencyCourse) error {
 		return err
 	}
 	err = residencyCourseSpecializationsService.DeleteMany(item.ResidencyCoursesSpecializationsForDelete)
+	if err != nil {
+		return err
+	}
+	residencyCoursePracticePlaceGroupsService := residencycoursepracticeplacegroups.CreateService(s.helper)
+	err = residencyCoursePracticePlaceGroupsService.UpsertMany(item.ResidencyCoursePracticePlaceGroups)
+	if err != nil {
+		return err
+	}
+	err = residencyCoursePracticePlaceGroupsService.DeleteMany(item.ResidencyCoursePracticePlaceGroupsForDelete)
 	if err != nil {
 		return err
 	}
