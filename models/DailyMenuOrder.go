@@ -23,7 +23,7 @@ type DailyMenuOrder struct {
 type DailyMenuOrders []*DailyMenuOrder
 
 type DailyMenuOrdersWithCount struct {
-	DailyMenuOrders DailyMenuOrders `json:"dailyMenuOrders"`
+	DailyMenuOrders DailyMenuOrders `json:"items"`
 	Count           int             `json:"count"`
 }
 
