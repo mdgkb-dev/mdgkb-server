@@ -101,3 +101,4 @@ start:
 
 kill:
 	kill -9 `cat mdgkb-server.pid`
+
