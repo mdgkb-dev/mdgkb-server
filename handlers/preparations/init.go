@@ -3,50 +3,25 @@ package preparations
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
 
-	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
-
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
+	"github.com/pro-assistance/pro-assister/httpHelper/basehandler"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 )
 
 type IHandler interface {
-	GetAll(c *gin.Context)
-	GetTags(c *gin.Context)
-	Get(c *gin.Context)
-	Create(c *gin.Context)
-	Delete(c *gin.Context)
-	Update(c *gin.Context)
-	UpdateMany(c *gin.Context)
+	basehandler.IHandler
 }
 
 type IService interface {
-	Create(*models.Preparation) error
-	GetAll() (models.Preparations, error)
-	Get(string) (*models.Preparation, error)
-	Delete(string) error
-	Update(*models.Preparation) error
-	UpsertMany(WithDeleted) error
-	GetTags() (models.PreparationsTags, error)
+	basehandler.IService[models.Preparation, models.Preparations, models.PreparationsWithCount]
 }
 
 type IRepository interface {
-	db() *bun.DB
-	create(*models.Preparation) error
-	getAll() (models.Preparations, error)
-	get(string) (*models.Preparation, error)
-	delete(string) error
-	update(*models.Preparation) error
-	upsertMany(models.Preparations) error
-	deleteMany([]uuid.UUID) error
-	getTags() (models.PreparationsTags, error)
+	basehandler.IRepository[models.Preparation, models.Preparations, models.PreparationsWithCount]
 }
-
 type IFilesService interface {
-	Upload(*gin.Context, *models.Preparation, map[string][]*multipart.FileHeader) error
+	basehandler.IFilesService
 }
 
 type Handler struct {
@@ -61,13 +36,13 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx    context.Context
-	helper *helper.Helper
+	ctx         context.Context
+	helper      *helper.Helper
+	queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {
-	uploader uploadHelper.Uploader
-	helper   *helper.Helper
+	helper *helper.Helper
 }
 
 func CreateHandler(helper *helper.Helper) *Handler {
