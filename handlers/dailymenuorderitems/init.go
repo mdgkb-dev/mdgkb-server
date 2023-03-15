@@ -5,6 +5,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 
@@ -28,6 +29,7 @@ type IService interface {
 	Delete(string) error
 	Update(*models.DailyMenuOrderItem) error
 	UpsertMany(models.DailyMenuOrderItems) error
+	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
@@ -39,6 +41,7 @@ type IRepository interface {
 	delete(string) error
 	update(*models.DailyMenuOrderItem) error
 	upsertMany(models.DailyMenuOrderItems) error
+	deleteMany([]uuid.UUID) error
 }
 
 type IFilesService interface {

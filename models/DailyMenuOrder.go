@@ -17,7 +17,10 @@ type DailyMenuOrder struct {
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
 	FormValueID uuid.NullUUID `bun:"type:uuid" json:"formValueId"`
 
-	DailyMenuOrderItems DailyMenuOrderItems `bun:"rel:has-many" json:"dailyMenuOrderItems"`
+	DailyMenuOrderItems          DailyMenuOrderItems `bun:"rel:has-many" json:"dailyMenuOrderItems"`
+	DailyMenuOrderItemsForDelete []uuid.UUID         `bun:"-" json:"dailyMenuOrderItemsForDelete"`
+
+	CreatedAt string `bun:"-" json:"createdAt"`
 }
 
 type DailyMenuOrders []*DailyMenuOrder

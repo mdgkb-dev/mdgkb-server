@@ -42,7 +42,7 @@ func (r *Repository) getAll() (models.DailyMenus, error) {
 func (r *Repository) get(id string) (*models.DailyMenu, error) {
 	item := models.DailyMenu{}
 	err := r.db().NewSelect().Model(&item).
-		Where("DailyMenus.id = ?", id).
+		Where("?TableAlias.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
 }
