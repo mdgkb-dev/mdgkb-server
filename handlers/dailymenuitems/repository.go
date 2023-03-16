@@ -69,6 +69,7 @@ func (r *Repository) upsertMany(items models.DailyMenuItems) (err error) {
 		Set("carbohydrates = EXCLUDED.carbohydrates").
 		Set("dietary = EXCLUDED.dietary").
 		Set("lean = EXCLUDED.lean").
+		Set("dishes_group_id = EXCLUDED.dishes_group_id").
 		Model(&items).
 		Exec(r.ctx)
 	return err

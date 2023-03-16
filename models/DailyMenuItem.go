@@ -17,6 +17,8 @@ type DailyMenuItem struct {
 	Quantity          int           `json:"quantity"`
 	DailyMenu         *DailyMenu    `bun:"rel:belongs-to" json:"dailyMenu"`
 	DailyMenuID       uuid.NullUUID `bun:"type:uuid"  json:"dailyMenuId"`
+	DishesGroup       *DishesGroup  `bun:"rel:belongs-to" json:"dishesGroup"`
+	DishesGroupID     uuid.NullUUID `bun:"type:uuid"  json:"dishesGroupId"`
 	DishSample        *DishSample   `bun:"rel:belongs-to" json:"dishSample"`
 	DishSampleID      uuid.NullUUID `bun:"type:uuid"  json:"dishSampleId"`
 	Available         bool          `json:"available"`
