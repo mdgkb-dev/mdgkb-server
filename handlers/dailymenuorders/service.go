@@ -43,6 +43,10 @@ func (s *Service) Update(item *models.DailyMenuOrder) error {
 	if err != nil {
 		return err
 	}
+	err = dailyMenuOrderItemsService.DeleteMany(item.DailyMenuOrderItemsForDelete)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

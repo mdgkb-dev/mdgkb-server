@@ -1,4 +1,4 @@
-package preparationstotags
+package residencycoursepracticeplaces
 
 import (
 	"context"
@@ -10,15 +10,15 @@ import (
 )
 
 type IService interface {
-	CreateMany(services models.PreparationsToTags) error
-	UpsertMany(models.PreparationsToTags) error
+	CreateMany(models.ResidencyCoursePracticePlaces) error
+	UpsertMany(models.ResidencyCoursePracticePlaces) error
 	DeleteMany([]uuid.UUID) error
 }
 
 type IRepository interface {
 	db() *bun.DB
-	createMany(models.PreparationsToTags) error
-	upsertMany(models.PreparationsToTags) error
+	createMany(models.ResidencyCoursePracticePlaces) error
+	upsertMany(models.ResidencyCoursePracticePlaces) error
 	deleteMany([]uuid.UUID) error
 }
 

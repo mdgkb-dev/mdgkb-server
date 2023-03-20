@@ -10,18 +10,19 @@ import (
 )
 
 type FormValue struct {
-	bun.BaseModel `bun:"form_values,alias:form_values"`
-	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
-	CreatedAt     time.Time     `json:"createdAt"`
-	IsNew         bool          `json:"isNew"`
-	ViewedByUser  bool          `json:"viewedByUser"`
-	EmailNotify   bool          `bun:"-" json:"emailNotify"`
-	ModComment    string        `json:"modComment"`
-	User          *User         `bun:"rel:belongs-to" json:"user"`
-	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
-	ApprovingDate *time.Time    `json:"approvingDate"`
-	Fields        Fields        `bun:"rel:has-many" json:"fields"`
-	FieldValues   FieldValues   `bun:"rel:has-many" json:"fieldValues"`
+	bun.BaseModel     `bun:"form_values,alias:form_values"`
+	ID                uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	CreatedAt         time.Time     `json:"createdAt"`
+	IsNew             bool          `json:"isNew"`
+	ViewedByUser      bool          `json:"viewedByUser"`
+	EmailNotify       bool          `bun:"-" json:"emailNotify"`
+	ModComment        string        `json:"modComment"`
+	User              *User         `bun:"rel:belongs-to" json:"user"`
+	UserID            uuid.NullUUID `bun:"type:uuid" json:"userId"`
+	ApprovingDate     *time.Time    `json:"approvingDate"`
+	WithApprovingDate bool          `json:"withApprovingDate"`
+	Fields            Fields        `bun:"rel:has-many" json:"fields"`
+	FieldValues       FieldValues   `bun:"rel:has-many" json:"fieldValues"`
 
 	FormStatus   *FormStatus   `bun:"rel:belongs-to" json:"formStatus"`
 	FormStatusID uuid.NullUUID `bun:"type:uuid" json:"formStatusId"`
@@ -35,6 +36,7 @@ type FormValue struct {
 	ResidencyApplication    *ResidencyApplication    `bun:"rel:has-one" json:"residencyApplication"`
 	VisitsApplication       *VisitsApplication       `bun:"rel:has-one" json:"visitsApplication"`
 	VacancyResponse         *VacancyResponse         `bun:"rel:has-one" json:"vacancyResponse"`
+	DailyMenuOrder          *DailyMenuOrder          `bun:"rel:has-one" json:"dailyMenuOrder"`
 
 	FormValueFiles          FormValueFiles `bun:"rel:has-many" json:"formValueFiles"`
 	FormValueFilesForDelete []uuid.UUID    `bun:"-" json:"formValueFilesForDelete"`

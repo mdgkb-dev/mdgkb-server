@@ -4,6 +4,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	// _ "github.com/go-pg/pg/v10/orm"
 )
@@ -55,6 +56,14 @@ func (r *Repository) upsertMany(items models.DailyMenuOrderItems) (err error) {
 		Set("quantity = EXCLUDED.quantity").
 		Set("daily_menu_order_id = EXCLUDED.daily_menu_order_id").
 		Model(&items).
+		Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
+	_, err = r.db().NewDelete().
+		Model((*models.DailyMenuOrderItem)(nil)).
+		Where("id IN (?)", bun.In(idPool)).
 		Exec(r.ctx)
 	return err
 }

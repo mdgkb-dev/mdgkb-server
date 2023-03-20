@@ -131,3 +131,11 @@ func (h *Handler) PDF(c *gin.Context) {
 	}
 	c.Data(http.StatusOK, "application/pdf", pdf)
 }
+
+func (h *Handler) GetTodayMenu(c *gin.Context) {
+	item, err := h.service.GetTodayActive()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}

@@ -65,6 +65,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("FormValues.CandidateApplication.CandidateExam").
 		Relation("FormValues.VacancyResponse.Vacancy").
 		Relation("FormValues.VisitsApplication.Division").
+		Relation("FormValues.DailyMenuOrder.DailyMenuOrderItems.DailyMenuItem").
 		Where("users_view.id = ?", id).
 		Scan(r.ctx)
 	return &item, err

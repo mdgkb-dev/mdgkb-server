@@ -32,6 +32,7 @@ func (r *Repository) getAll() (models.DailyMenus, error) {
 		Relation("DailyMenuItems", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("daily_menu_items.item_order")
 		}).
+		Relation("DailyMenuItems.DishesGroup").
 		Relation("DailyMenuItems.DishSample.DishesGroup").
 		Relation("DailyMenuItems.DishSample.Image")
 	r.queryFilter.HandleQuery(query)
@@ -42,7 +43,7 @@ func (r *Repository) getAll() (models.DailyMenus, error) {
 func (r *Repository) get(id string) (*models.DailyMenu, error) {
 	item := models.DailyMenu{}
 	err := r.db().NewSelect().Model(&item).
-		Where("DailyMenus.id = ?", id).
+		Where("?TableAlias.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
 }
@@ -54,6 +55,7 @@ func (r *Repository) getTodayActive() (*models.DailyMenu, error) {
 		Relation("DailyMenuItems", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("daily_menu_items.item_order")
 		}).
+		Relation("DailyMenuItems.DishesGroup").
 		Relation("DailyMenuItems.DishSample.DishesGroup").
 		Relation("DailyMenuItems.DishSample.Image").
 		Where("?TableAlias.item_date = ?", today).

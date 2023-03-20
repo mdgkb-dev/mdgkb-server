@@ -57,7 +57,7 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 		Relation("FormPattern.DefaultFormStatus").
 		Relation("FormPattern.FormStatusGroup").
 		Relation("FormPattern.Fields.MaskTokens").
-		Relation("ResidencyCoursePracticePlaces").
+		Relation("ResidencyCoursePracticePlaceGroups.ResidencyCoursePracticePlaces.Division").
 		Relation("StartYear").
 		Relation("EndYear").
 		Where("?TableAlias.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)

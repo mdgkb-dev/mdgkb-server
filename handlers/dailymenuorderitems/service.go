@@ -4,6 +4,7 @@ import (
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (s *Service) Create(item *models.DailyMenuOrderItem) error {
@@ -57,4 +58,11 @@ func (s *Service) UpsertMany(items models.DailyMenuOrderItems) error {
 		return err
 	}
 	return nil
+}
+
+func (s *Service) DeleteMany(id []uuid.UUID) error {
+	if len(id) == 0 {
+		return nil
+	}
+	return s.repository.deleteMany(id)
 }

@@ -16,6 +16,7 @@ type DailyMenu struct {
 	DailyMenuItems DailyMenuItems `bun:"rel:has-many" json:"dailyMenuItems"`
 	DishesGroups   DishesGroups   `bun:"-" json:"dishesGroups"`
 	StartTime      *string        `json:"startTime"`
+	EndTime        *string        `json:"endTime"`
 	Active         bool           `json:"active"`
 }
 

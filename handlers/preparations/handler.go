@@ -3,8 +3,6 @@ package preparations
 import (
 	"net/http"
 
-	"github.com/google/uuid"
-
 	"github.com/gin-gonic/gin"
 
 	"mdgkb/mdgkb-server/models"
@@ -12,11 +10,7 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Preparation
-	files, err := h.helper.HTTP.GetForm(c, &item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.filesService.Upload(c, &item, files)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -29,6 +23,10 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
+	err := h.service.SetQueryFilter(c)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	items, err := h.service.GetAll()
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
@@ -54,11 +52,7 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Preparation
-	files, err := h.helper.HTTP.GetForm(c, &item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.filesService.Upload(c, &item, files)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
@@ -67,32 +61,4 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
-}
-
-type WithDeleted struct {
-	Preparations           models.Preparations `json:"preparations"`
-	PreparationsForDeleted []uuid.UUID         `json:"preparationsForDeleted"`
-}
-
-func (h *Handler) UpdateMany(c *gin.Context) {
-	var items WithDeleted
-	_, err := h.helper.HTTP.GetForm(c, &items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	//err = h.filesService.Upload(c, &item, files)
-
-	err = h.service.UpsertMany(items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, items.Preparations)
-}
-
-func (h *Handler) GetTags(c *gin.Context) {
-	items, err := h.service.GetTags()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	c.JSON(http.StatusOK, items)
 }

@@ -33,7 +33,9 @@ type VisitsApplications []*VisitsApplication
 
 func (item *VisitsApplication) SetForeignKeys() {
 	item.DivisionID = item.Division.ID
-	item.GateID = item.Gate.ID
+	if item.Gate != nil {
+		item.GateID = item.Gate.ID
+	}
 	item.FormValueID = item.FormValue.ID
 }
 

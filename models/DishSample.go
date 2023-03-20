@@ -23,6 +23,12 @@ type DishSample struct {
 	Image            *FileInfo     `bun:"rel:belongs-to" json:"image"`
 	ImageID          uuid.NullUUID `bun:"type:uuid" json:"imageId"`
 	UpdatedAt        time.Time     `bun:",nullzero,notnull,default:current_timestamp" json:"updatedAt"`
+
+	Proteins      uint `json:"proteins"`
+	Fats          uint `json:"fats"`
+	Carbohydrates uint `json:"carbohydrates"`
+	Dietary       bool `json:"dietary"`
+	Lean          bool `json:"lean"`
 }
 
 type DishSamples []*DishSample

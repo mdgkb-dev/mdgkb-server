@@ -38,7 +38,7 @@ func (h *Handler) Update(c *gin.Context) {
 
 func (h *Handler) UpdateMany(c *gin.Context) {
 	var items models.FormValues
-	_, err := h.helper.HTTP.GetForm(c, &items)
+	err := c.Bind(&items)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

@@ -12,6 +12,8 @@ type PreparationRule struct {
 	Time                    string                 `bun:"rule_time" json:"time"`
 	PreparationRulesGroup   *PreparationRulesGroup `bun:"rel:belongs-to" json:"preparationRulesGroup"`
 	PreparationRulesGroupID uuid.NullUUID          `bun:"type:uuid" json:"preparationRulesGroupId"`
+
+	Order int `bun:"item_order" json:"order"`
 }
 
 type PreparationRules []*PreparationRule

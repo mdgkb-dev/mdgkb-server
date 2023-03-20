@@ -2,12 +2,13 @@ package preparations
 
 import (
 	"mdgkb/mdgkb-server/handlers/preparationrulesgroups"
-	"mdgkb/mdgkb-server/handlers/preparationstotags"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(item *models.Preparation) error {
-	err := s.repository.create(item)
+	err := s.repository.Create(item)
 	if err != nil {
 		return err
 	}
@@ -17,16 +18,11 @@ func (s *Service) Create(item *models.Preparation) error {
 	if err != nil {
 		return err
 	}
-
-	err = preparationstotags.CreateService(s.helper).CreateMany(item.PreparationsToTags)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
 func (s *Service) Update(item *models.Preparation) error {
-	err := s.repository.update(item)
+	err := s.repository.Update(item)
 	if err != nil {
 		return err
 	}
@@ -41,26 +37,15 @@ func (s *Service) Update(item *models.Preparation) error {
 	if err != nil {
 		return err
 	}
-
-	preparationsToTagsService := preparationstotags.CreateService(s.helper)
-	err = preparationsToTagsService.UpsertMany(item.PreparationsToTags)
-	if err != nil {
-		return err
-	}
-	err = preparationsToTagsService.DeleteMany(item.PreparationsToTagsForDelete)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
-func (s *Service) GetAll() (models.Preparations, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll() (models.PreparationsWithCount, error) {
+	return s.repository.GetAll()
 }
 
 func (s *Service) Get(id string) (*models.Preparation, error) {
-	item, err := s.repository.get(id)
+	item, err := s.repository.Get(id)
 	if err != nil {
 		return nil, err
 	}
@@ -68,44 +53,10 @@ func (s *Service) Get(id string) (*models.Preparation, error) {
 }
 
 func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+	return s.repository.Delete(id)
 }
 
-func (s *Service) UpsertMany(item WithDeleted) error {
-	err := s.repository.upsertMany(item.Preparations)
-	if err != nil {
-		return err
-	}
-	if len(item.PreparationsForDeleted) > 0 {
-		err = s.repository.deleteMany(item.PreparationsForDeleted)
-		if err != nil {
-			return err
-		}
-	}
-
-	item.Preparations.SetIDForChildren()
-	preparationRulesGroupsService := preparationrulesgroups.CreateService(s.helper)
-	err = preparationRulesGroupsService.UpsertMany(item.Preparations.GetPreparationRulesGroups())
-	if err != nil {
-		return err
-	}
-	err = preparationRulesGroupsService.DeleteMany(item.Preparations.GetPreparationRulesGroupsForDelete())
-	if err != nil {
-		return err
-	}
-
-	preparationsToTagsService := preparationstotags.CreateService(s.helper)
-	err = preparationsToTagsService.UpsertMany(item.Preparations.GetPreparationsToTags())
-	if err != nil {
-		return err
-	}
-	err = preparationsToTagsService.DeleteMany(item.Preparations.GetPreparationsToTagsForDelete())
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (s *Service) GetTags() (models.PreparationsTags, error) {
-	return s.repository.getTags()
+func (s *Service) SetQueryFilter(c *gin.Context) (err error) {
+	err = s.repository.SetQueryFilter(c)
+	return err
 }

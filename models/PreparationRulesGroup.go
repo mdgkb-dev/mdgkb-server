@@ -9,7 +9,7 @@ type PreparationRulesGroup struct {
 	bun.BaseModel `bun:"preparations_rules_groups,alias:preparations_rules_groups"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Name          string        `json:"name"`
-
+	Order         int           `bun:"item_order" json:"order"`
 	Preparation   *Preparation  `bun:"rel:belongs-to" json:"preparation"`
 	PreparationID uuid.NullUUID `bun:"type:uuid" json:"preparationId"`
 

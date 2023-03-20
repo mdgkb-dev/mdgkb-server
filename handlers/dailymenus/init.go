@@ -21,6 +21,7 @@ type IHandler interface {
 	UpdateAll(c *gin.Context)
 	PDF(c *gin.Context)
 	GetWeb(c *gin.Context)
+	GetTodayMenu(c *gin.Context)
 }
 
 type IService interface {

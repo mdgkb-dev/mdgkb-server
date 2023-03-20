@@ -47,7 +47,7 @@ func (r *Repository) updateAllOrder(items models.Banners) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("list_number = EXCLUDED.list_number").
-		Where("banner.id = EXCLUDED.id").
+		Where("?TableAlias.id = EXCLUDED.id").
 		Exec(r.ctx)
 	return err
 }
