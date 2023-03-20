@@ -1,10 +1,12 @@
 package meta
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/pro-assistance/pro-assister/projecthelper"
 )
 
@@ -48,4 +50,33 @@ func (h *Handler) GetOptions(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
+}
+
+var u = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
+
+func (h *Handler) GetWeb(c *gin.Context) {
+	u.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
+	ws, err := u.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		return
+	}
+	defer ws.Close()
+	for {
+		_, m, err := ws.ReadMessage()
+		if err == nil && string(m) == "ping" {
+			items, err := h.service.GetApplicationsCounts()
+			if err != nil {
+				fmt.Printf("error sending message: %s\n", err.Error())
+			}
+			err = ws.WriteJSON(items)
+			if err != nil {
+				fmt.Printf("error sending message: %s\n", err.Error())
+			}
+		}
+	}
 }
