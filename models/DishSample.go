@@ -29,6 +29,9 @@ type DishSample struct {
 	Carbohydrates uint `json:"carbohydrates"`
 	Dietary       bool `json:"dietary"`
 	Lean          bool `json:"lean"`
+
+	Composition string `json:"composition"`
+	Description string `json:"description"`
 }
 
 type DishSamples []*DishSample

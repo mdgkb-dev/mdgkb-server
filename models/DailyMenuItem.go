@@ -32,6 +32,9 @@ type DailyMenuItem struct {
 
 	Dietary bool `json:"dietary"`
 	Lean    bool `json:"lean"`
+
+	Composition string `json:"composition"`
+	Description string `json:"description"`
 }
 
 type DailyMenuItems []*DailyMenuItem
