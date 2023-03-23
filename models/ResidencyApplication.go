@@ -40,7 +40,7 @@ type ResidencyApplication struct {
 type ResidencyApplications []*ResidencyApplication
 
 type ResidencyApplicationsWithCount struct {
-	ResidencyApplications ResidencyApplications `json:"residencyApplications"`
+	ResidencyApplications ResidencyApplications `json:"items"`
 	Count                 int                   `json:"count"`
 }
 
