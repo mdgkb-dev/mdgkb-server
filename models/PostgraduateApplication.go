@@ -19,7 +19,7 @@ type PostgraduateApplication struct {
 type PostgraduateApplications []*PostgraduateApplication
 
 type PostgraduateApplicationsWithCount struct {
-	PostgraduateApplications PostgraduateApplications `json:"postgraduateApplications"`
+	PostgraduateApplications PostgraduateApplications `json:"items"`
 	Count                    int                      `json:"count"`
 }
 
