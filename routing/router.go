@@ -212,7 +212,6 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(helper))
 	donorRulesRouter.Init(api.Group("/donor-rules"), donorrules.CreateHandler(helper))
 	certificatesRouter.Init(api.Group("/certificates"), certificates.CreateHandler(helper))
-	metaRouter.Init(api.Group("/meta"), meta.CreateHandler(helper))
 	paidServicesRouter.Init(api.Group("/paid-services"), paidservices.CreateHandler(helper))
 	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalprofiles.CreateHandler(helper))
 	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatdirections.CreateHandler(helper))
@@ -248,6 +247,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dailyMenusHandler := dailymenus.CreateHandler(helper)
 	dailyMenusRouter.Init(api.Group("/daily-menus"), dailyMenusHandler)
 	ws.Group("/daily-menus").GET("/regular-update", dailyMenusHandler.GetWeb)
+
+	metaHandler := meta.CreateHandler(helper)
+	metaRouter.Init(api.Group("/meta"), metaHandler)
+	ws.Group("/meta").GET("/app-counts-regular-update", metaHandler.GetWeb)
 
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))

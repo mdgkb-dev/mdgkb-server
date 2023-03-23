@@ -62,6 +62,8 @@ func (r *Repository) updateAll(items models.DishSamples) (err error) {
 		Set("carbohydrates = EXCLUDED.carbohydrates").
 		Set("dietary = EXCLUDED.dietary").
 		Set("lean = EXCLUDED.lean").
+		Set("composition = EXCLUDED.composition").
+		Set("description = EXCLUDED.description").
 		Exec(r.ctx)
 	return err
 }
