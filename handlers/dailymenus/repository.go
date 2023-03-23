@@ -61,6 +61,7 @@ func (r *Repository) getTodayActive() (*models.DailyMenu, error) {
 		Where("?TableAlias.item_date = ?", today).
 		Where("?TableAlias.active = true").
 		Scan(r.ctx)
+
 	return &item, err
 }
 
