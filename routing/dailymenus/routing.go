@@ -14,6 +14,6 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.POST("/pdf", h.PDF)
 	r.POST("", h.Create)
 	r.DELETE("/:id", h.Delete)
+	r.PUT("/many", h.UpdateAll)
 	r.PUT("/:id", h.Update)
-	r.PUT("/", h.UpdateAll)
 }
