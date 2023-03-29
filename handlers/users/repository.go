@@ -47,25 +47,37 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
 		Relation("DoctorsUsers.Doctor").
 		Relation("Children.Human").
-		Relation("FormValues", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("form_values.created_at desc")
+		Relation("DailyMenuOrders.DailyMenuOrderItems.DailyMenuItem").
+		Relation("DailyMenuOrders", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("daily_menu_orders_view.created_at desc")
 		}).
-		Relation("FormValues.User").
-		Relation("FormValues.FormValueFiles.File").
-		Relation("FormValues.FieldValues.Field").
-		Relation("FormValues.FieldValues.File").
-		Relation("FormValues.Fields.File").
-		Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
+		Relation("DailyMenuOrders.FormValue.User.Human").
+		Relation("DailyMenuOrders.FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("DailyMenuOrders.FormValue.Fields.File").
+		Relation("DailyMenuOrders.FormValue.FormValueFiles.File").
+		Relation("DailyMenuOrders.FormValue.Fields.ValueType").
+		Relation("DailyMenuOrders.FormValue.FieldValues.File").
+		Relation("DailyMenuOrders.FormValue.FieldValues.Field.ValueType").
+		Relation("DailyMenuOrders.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+
+		//Relation("FormValues.User").
+		//Relation("FormValues.FormValueFiles.File").
+		//Relation("FormValues.FieldValues.Field").
+		//Relation("FormValues.FieldValues.File").
+		//Relation("FormValues.Fields.File").
+		//Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
 		//Relation("FormValues.DpoApplication.NmoCourse"). // TODO: исправить столбец в базе, когда будут заявки
-		Relation("FormValues.PostgraduateApplication.PostgraduateCourse", func(query *bun.SelectQuery) *bun.SelectQuery {
-			return query.ExcludeColumn("questions_file_id")
-		}).
-		Relation("FormValues.PostgraduateApplication.PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
-		Relation("FormValues.ResidencyApplication.ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
-		Relation("FormValues.CandidateApplication.CandidateExam").
-		Relation("FormValues.VacancyResponse.Vacancy").
-		Relation("FormValues.VisitsApplication.Division").
-		Relation("FormValues.DailyMenuOrder.DailyMenuOrderItems.DailyMenuItem").
+		//Relation("FormValues.PostgraduateApplication.PostgraduateCourse", func(query *bun.SelectQuery) *bun.SelectQuery {
+		//	return query.ExcludeColumn("questions_file_id")
+		//}).
+		//Relation("FormValues.PostgraduateApplication.PostgraduateCourse.PostgraduateCoursesSpecializations.Specialization").
+		//Relation("FormValues.ResidencyApplication.ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
+		//Relation("FormValues.CandidateApplication.CandidateExam").
+		//Relation("FormValues.VacancyResponse.Vacancy").
+		//Relation("FormValues.VisitsApplication.Division").
+		//Relation("FormValues.DailyMenuOrder.DailyMenuOrderItems.DailyMenuItem").
 		Where("users_view.id = ?", id).
 		Scan(r.ctx)
 	return &item, err

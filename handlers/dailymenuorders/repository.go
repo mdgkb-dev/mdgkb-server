@@ -21,7 +21,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) create(item *models.DailyMenuOrder) (err error) {
-	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).ExcludeColumn("user_id", "number").Exec(r.ctx)
 	return err
 }
 
@@ -65,13 +65,14 @@ func (r *Repository) delete(id string) (err error) {
 }
 
 func (r *Repository) update(item *models.DailyMenuOrder) (err error) {
-	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).ExcludeColumn("user_id", "number").Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 
 func (r *Repository) upsertMany(items models.DailyMenuOrders) (err error) {
 	_, err = r.db().NewInsert().On("conflict (id) do update").
 		Model(&items).
+		ExcludeColumn("user_id", "number").
 		Exec(r.ctx)
 	return err
 }

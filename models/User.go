@@ -47,7 +47,10 @@ type User struct {
 	VacancyResponses          VacancyResponses `bun:"rel:has-many" json:"vacancyResponses"`
 	VacancyResponsesForDelete []uuid.UUID      `bun:"-" json:"vacancyResponsesForDelete"`
 
-	FormValues FormValues `bun:"rel:has-many" json:"formValues"`
+	DailyMenuOrders          DailyMenuOrders `bun:"rel:has-many,join:id=user_id" json:"dailyMenuOrders"`
+	DailyMenuOrdersForDelete []uuid.UUID     `bun:"-" json:"dailyMenuOrdersForDelete"`
+
+	//FormValues FormValues `bun:"rel:has-many" json:"formValues"`
 }
 
 type Users []*User
