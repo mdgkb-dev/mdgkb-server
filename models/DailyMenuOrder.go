@@ -21,6 +21,7 @@ type DailyMenuOrder struct {
 	DailyMenuOrderItemsForDelete []uuid.UUID         `bun:"-" json:"dailyMenuOrderItemsForDelete"`
 
 	CreatedAt    string `bun:"-" json:"createdAt"`
+	IsNew        string `bun:"-" json:"isNew"`
 	FormStatusID string `bun:"-" json:"formStatusId"`
 }
 
