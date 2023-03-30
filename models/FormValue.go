@@ -40,6 +40,9 @@ type FormValue struct {
 
 	FormValueFiles          FormValueFiles `bun:"rel:has-many" json:"formValueFiles"`
 	FormValueFilesForDelete []uuid.UUID    `bun:"-" json:"formValueFilesForDelete"`
+
+	Chat   *Chat         `bun:"rel:belongs-to" json:"chat"`
+	ChatID uuid.NullUUID `bun:"type:uuid" json:"chatId"`
 }
 
 type FormValues []*FormValue
@@ -47,6 +50,7 @@ type FormValues []*FormValue
 func (item *FormValue) SetForeignKeys() {
 	item.UserID = item.User.ID
 	item.FormStatusID = item.FormStatus.ID
+	item.ChatID = item.Chat.ID
 	if item.Child != nil {
 		item.ChildID = item.Child.ID
 	}

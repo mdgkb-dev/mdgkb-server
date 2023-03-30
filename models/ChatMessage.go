@@ -13,10 +13,7 @@ type ChatMessage struct {
 	User          *User         `bun:"rel:belongs-to" json:"user"`
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
 	Message       string        `json:"message"`
-	IsAnswer      string        `json:"isAnswer"`
-	AnswerUser    *User         `bun:"rel:belongs-to" json:"answerUser"`
-	AnswerUserID  uuid.NullUUID `bun:"type:uuid" json:"answerUserId"`
-	Date          time.Time     `bun:"chat_message_date" json:"date"`
+	CreatedOn     time.Time     `bun:",nullzero,notnull" json:"createdOn"`
 }
 
 type ChatMessages []*ChatMessage

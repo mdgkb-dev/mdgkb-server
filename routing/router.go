@@ -1,6 +1,7 @@
 package routing
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/appointmenstypes"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -10,6 +11,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/candidateapplications"
 	"mdgkb/mdgkb-server/handlers/candidateexams"
 	"mdgkb/mdgkb-server/handlers/certificates"
+	"mdgkb/mdgkb-server/handlers/chats"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/dailymenuitems"
@@ -85,6 +87,7 @@ import (
 	candidateApplicationsRouter "mdgkb/mdgkb-server/routing/candidateapplications"
 	candidateExamsRouter "mdgkb/mdgkb-server/routing/candidateexams"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
+	chatsRouter "mdgkb/mdgkb-server/routing/chats"
 	childrenRouter "mdgkb/mdgkb-server/routing/children"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
 	dailyMenuItemsRouter "mdgkb/mdgkb-server/routing/dailymenuitems"
@@ -153,7 +156,6 @@ import (
 	visitsApplicationsRouter "mdgkb/mdgkb-server/routing/visitsapplications"
 
 	"github.com/gin-gonic/gin"
-
 	helperPack "github.com/pro-assistance/pro-assister/helper"
 )
 
@@ -241,6 +243,7 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dietsRouter.Init(api.Group("/diets"), diets.CreateHandler(helper))
 	dietsGroupsRouter.Init(api.Group("/diets-groups"), dietsgroups.CreateHandler(helper))
 	employeesRouter.Init(api.Group("/employees"), employees.CreateHandler(helper))
+	chatsRouter.Init(api.Group("/chats"), chats.CreateHandler(helper))
 	dishesGroupsRouter.Init(api.Group("/dishes-groups"), dishesgroups.CreateHandler(helper))
 	dishesSamplesRouter.Init(api.Group("/dishes-samples"), dishessamples.CreateHandler(helper))
 
@@ -250,7 +253,23 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 
 	metaHandler := meta.CreateHandler(helper)
 	metaRouter.Init(api.Group("/meta"), metaHandler)
-	ws.Group("/meta").GET("/app-counts-regular-update", metaHandler.GetWeb)
+	hub := newHub()
+	go hub.run()
+	ws.Group("/meta").GET("/app-counts-regular-update", func(c *gin.Context) {
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		fmt.Println(1)
+		serveWs(hub, c.Writer, c.Request)
+	})
 
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))

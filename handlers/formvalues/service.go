@@ -2,6 +2,7 @@ package formvalues
 
 import (
 	"fmt"
+	"mdgkb/mdgkb-server/handlers/chats"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/fieldsvalues"
 	"mdgkb/mdgkb-server/handlers/formvaluefiles"
@@ -32,6 +33,11 @@ func (s *Service) Upsert(item *models.FormValue) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	err = chats.CreateService(s.helper).Create(item.Chat)
+	if err != nil {
+		return err
 	}
 
 	item.SetForeignKeys()
