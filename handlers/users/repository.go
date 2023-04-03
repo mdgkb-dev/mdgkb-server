@@ -66,6 +66,7 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("FormValues.VacancyResponse.Vacancy").
 		Relation("FormValues.VisitsApplication.Division").
 		Relation("FormValues.DailyMenuOrder.DailyMenuOrderItems.DailyMenuItem").
+		Relation("Role").
 		Where("users_view.id = ?", id).
 		Scan(r.ctx)
 	return &item, err
@@ -99,7 +100,7 @@ func (r *Repository) emailExists(email string) (bool, error) {
 func (r *Repository) update(item *models.User) (err error) {
 	_, err = r.db().NewUpdate().Model(item).
 		OmitZero().
-		ExcludeColumn("password", "is_active", "role_id"). // all columns except col1
+		ExcludeColumn("password", "is_active"). // all columns except col1
 		Where("id = ?", item.ID).
 		Exec(r.ctx)
 	return err
