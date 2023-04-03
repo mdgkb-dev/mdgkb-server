@@ -11,8 +11,7 @@ type DailyMenuOrder struct {
 	bun.BaseModel `bun:"daily_menu_orders,select:daily_menu_orders_view,alias:daily_menu_orders_view"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	Date          time.Time     `bun:"item_date" json:"date"`
-	BoxNumber     uint          `json:"boxNumber"`
-	Number        uint          `bun:",notnull,autoincrement" json:"number"`
+	Number        *uint         `bun:",autoincrement,notnull," json:"number"`
 
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
 	FormValueID uuid.NullUUID `bun:"type:uuid" json:"formValueId"`
@@ -20,9 +19,10 @@ type DailyMenuOrder struct {
 	DailyMenuOrderItems          DailyMenuOrderItems `bun:"rel:has-many" json:"dailyMenuOrderItems"`
 	DailyMenuOrderItemsForDelete []uuid.UUID         `bun:"-" json:"dailyMenuOrderItemsForDelete"`
 
-	CreatedAt    string `bun:"-" json:"createdAt"`
-	IsNew        string `bun:"-" json:"isNew"`
-	FormStatusID string `bun:"-" json:"formStatusId"`
+	CreatedAt    string        `bun:"-" json:"createdAt"`
+	FormStatusID string        `bun:"-" json:"formStatusId"`
+	User         *User         `bun:"rel:belongs-to" json:"user"`
+	UserID       uuid.NullUUID `bun:"user_id,nullzero,type:uuid" json:"userId"`
 }
 
 type DailyMenuOrders []*DailyMenuOrder
