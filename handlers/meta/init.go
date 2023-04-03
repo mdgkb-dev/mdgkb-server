@@ -15,6 +15,7 @@ type IHandler interface {
 	GetSocial(c *gin.Context)
 	GetOptions(c *gin.Context)
 	GetApplicationsCounts(c *gin.Context)
+	GetWeb(c *gin.Context)
 }
 
 type IService interface {

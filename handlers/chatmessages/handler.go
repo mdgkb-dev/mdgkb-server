@@ -9,7 +9,10 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.ChatMessage
-	err := c.Bind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

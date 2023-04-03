@@ -5,17 +5,12 @@ CREATE TABLE chats (
 drop table chat_messages;
 create table chat_messages
 (
-    id         uuid      default uuid_generate_v4() not null
-        primary key,
+    id uuid default uuid_generate_v4() not null primary key,
     message    varchar,
-    admin_id   uuid
-        constraint chat_messages_user_id_fkey
-            references users
-            on update cascade on delete cascade,
+    user_id    uuid references users on update cascade on delete cascade,
     created_on timestamp default CURRENT_TIMESTAMP  not null,
-    chat_id    uuid
-        references chats
-            on update cascade on delete cascade
+    chat_id    uuid references chats on update cascade on delete cascade,
+    user_name  varchar
 );
 
 alter table form_values

@@ -7,10 +7,14 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, h handler.IHandler) {
+func Init(h handler.IHandler, api *gin.RouterGroup, ws *gin.RouterGroup) {
+	path := "/meta"
+	r := api.Group(path)
 	r.GET("/count/:table", h.GetCount)
 	r.GET("/schema", h.GetSchema)
 	r.GET("/social", h.GetSocial)
 	r.GET("/options", h.GetOptions)
 	r.GET("/get-applications-counts", h.GetApplicationsCounts)
+
+	ws.Group(path).GET("/app-counts-regular-update", h.GetWeb)
 }

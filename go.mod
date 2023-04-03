@@ -12,7 +12,7 @@ require (
 	github.com/gorilla/websocket v1.5.0
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
-	github.com/pro-assistance/pro-assister v0.0.106-0.20230323073631-5a64067340b0
+	github.com/pro-assistance/pro-assister v0.0.106-0.20230330151116-c29db0458af2
 	github.com/uptrace/bun v1.1.8
 	github.com/uptrace/bun/dbfixture v1.1.8
 	golang.org/x/crypto v0.5.0

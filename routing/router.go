@@ -1,7 +1,6 @@
 package routing
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/appointmenstypes"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
@@ -11,6 +10,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/candidateapplications"
 	"mdgkb/mdgkb-server/handlers/candidateexams"
 	"mdgkb/mdgkb-server/handlers/certificates"
+	"mdgkb/mdgkb-server/handlers/chatmessages"
 	"mdgkb/mdgkb-server/handlers/chats"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/comments"
@@ -87,6 +87,7 @@ import (
 	candidateApplicationsRouter "mdgkb/mdgkb-server/routing/candidateapplications"
 	candidateExamsRouter "mdgkb/mdgkb-server/routing/candidateexams"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
+	chatMessagesRouter "mdgkb/mdgkb-server/routing/chatmessages"
 	chatsRouter "mdgkb/mdgkb-server/routing/chats"
 	childrenRouter "mdgkb/mdgkb-server/routing/children"
 	commentsRouter "mdgkb/mdgkb-server/routing/comments"
@@ -243,34 +244,12 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dietsRouter.Init(api.Group("/diets"), diets.CreateHandler(helper))
 	dietsGroupsRouter.Init(api.Group("/diets-groups"), dietsgroups.CreateHandler(helper))
 	employeesRouter.Init(api.Group("/employees"), employees.CreateHandler(helper))
-	chatsRouter.Init(api.Group("/chats"), chats.CreateHandler(helper))
+	chatsRouter.Init(chats.CreateHandler(helper), api, ws)
+	chatMessagesRouter.Init(chatmessages.CreateHandler(helper), api)
 	dishesGroupsRouter.Init(api.Group("/dishes-groups"), dishesgroups.CreateHandler(helper))
 	dishesSamplesRouter.Init(api.Group("/dishes-samples"), dishessamples.CreateHandler(helper))
-
-	dailyMenusHandler := dailymenus.CreateHandler(helper)
-	dailyMenusRouter.Init(api.Group("/daily-menus"), dailyMenusHandler)
-	ws.Group("/daily-menus").GET("/regular-update", dailyMenusHandler.GetWeb)
-
-	metaHandler := meta.CreateHandler(helper)
-	metaRouter.Init(api.Group("/meta"), metaHandler)
-	hub := newHub()
-	go hub.run()
-	ws.Group("/meta").GET("/app-counts-regular-update", func(c *gin.Context) {
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		fmt.Println(1)
-		serveWs(hub, c.Writer, c.Request)
-	})
-
+	dailyMenusRouter.Init(api, ws, dailymenus.CreateHandler(helper))
+	metaRouter.Init(meta.CreateHandler(helper), api, ws)
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))
 	appointmentsTypesRouter.Init(api.Group("/appointments-types"), appointmenstypes.CreateHandler(helper))

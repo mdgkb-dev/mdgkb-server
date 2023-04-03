@@ -4,6 +4,7 @@ import (
 	"context"
 	"mdgkb/mdgkb-server/models"
 
+	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/httpHelper/basehandler"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
@@ -11,6 +12,7 @@ import (
 
 type IHandler interface {
 	basehandler.IHandler
+	Connect(c *gin.Context)
 }
 
 type IService interface {

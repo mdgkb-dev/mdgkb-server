@@ -7,10 +7,14 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, h handler.IHandler) {
+func Init(h handler.IHandler, api *gin.RouterGroup, ws *gin.RouterGroup) {
+	path := "/chats"
+	r := api.Group(path)
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
 	r.POST("", h.Create)
 	r.DELETE("/:id", h.Delete)
 	r.PUT("/:id", h.Update)
+
+	ws.Group(path).GET("/connect/:chatId/:userId", h.Connect)
 }
