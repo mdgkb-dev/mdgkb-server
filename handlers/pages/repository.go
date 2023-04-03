@@ -56,6 +56,7 @@ func (r *Repository) get(id *string) (*models.Page, error) {
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Websites").
 		Relation("PageComments.Comment").
+		Relation("Role").
 		Where("id = ?", *id).Scan(r.ctx)
 	return &item, err
 }
@@ -94,6 +95,7 @@ func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
 		Relation("ContactInfo.PostAddresses").
 		Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactInfo.Websites").
+		Relation("Role").
 		Where("slug = ?", *slug).
 		Scan(r.ctx)
 	return &item, err

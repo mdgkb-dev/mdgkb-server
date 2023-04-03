@@ -22,6 +22,9 @@ type Page struct {
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
 
+	Role   *Role         `bun:"rel:belongs-to" json:"role"`
+	RoleID uuid.NullUUID `bun:"type:uuid" json:"roleId"`
+
 	PageSideMenus          PageSideMenus `bun:"rel:has-many" json:"pageSideMenus"`
 	PageSideMenusForDelete []uuid.UUID   `bun:"-" json:"pageSideMenusForDelete"`
 
@@ -46,8 +49,11 @@ type PagesWithCount struct {
 }
 
 func (item *Page) SetForeignKeys() {
-	if item.ContactInfo != nil {
+	if item.ContactInfo != nil && item.Role.ID.Valid {
 		item.ContactInfoID = item.ContactInfo.ID
+	}
+	if item.Role != nil && item.Role.ID.Valid {
+		item.RoleID = item.Role.ID
 	}
 }
 

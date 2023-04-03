@@ -1,3 +1,5 @@
+drop view daily_menu_orders_view;
+
 create
 or replace view daily_menu_orders_view as
 SELECT
