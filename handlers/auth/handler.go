@@ -32,7 +32,8 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 	res, err := h.service.Login(&item, false)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, res)
