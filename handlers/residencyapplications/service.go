@@ -1,6 +1,7 @@
 package residencyapplications
 
 import (
+	"mdgkb/mdgkb-server/handlers/diplomas"
 	"mdgkb/mdgkb-server/handlers/formvalues"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/residencyapplicationspointsachievements"
@@ -42,6 +43,10 @@ func (s *Service) Create(item *models.ResidencyApplication) error {
 	if err != nil {
 		return err
 	}
+	err = diplomas.CreateService(s.helper).Upsert(item.Diploma)
+	if err != nil {
+		return err
+	}
 	item.SetForeignKeys()
 	err = s.repository.create(item)
 	if err != nil {
@@ -66,6 +71,10 @@ func (s *Service) Create(item *models.ResidencyApplication) error {
 
 func (s *Service) Update(item *models.ResidencyApplication) error {
 	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
+	if err != nil {
+		return err
+	}
+	err = diplomas.CreateService(s.helper).Upsert(item.Diploma)
 	if err != nil {
 		return err
 	}
