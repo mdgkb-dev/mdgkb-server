@@ -27,6 +27,9 @@ type ResidencyApplication struct {
 
 	AdmissionCommittee bool `json:"admissionCommittee"`
 
+	Diploma   *Diploma      `bun:"rel:belongs-to" json:"diploma"`
+	DiplomaID uuid.NullUUID `bun:"type:uuid" json:"diplomaId"`
+
 	ResidencyCourse   *ResidencyCourse `bun:"rel:belongs-to" json:"residencyCourse"`
 	ResidencyCourseID uuid.NullUUID    `bun:"type:uuid" json:"residencyCourseId"`
 
@@ -47,6 +50,7 @@ type ResidencyApplicationsWithCount struct {
 func (item *ResidencyApplication) SetForeignKeys() {
 	item.ResidencyCourseID = item.ResidencyCourse.ID
 	item.FormValueID = item.FormValue.ID
+	item.DiplomaID = item.Diploma.ID
 }
 
 func (item *ResidencyApplication) SetFilePath(fileID *string) *string {
@@ -71,6 +75,9 @@ func (item *ResidencyApplication) SetIDForChildren() {
 
 func (item *ResidencyApplication) GetCourseName() string {
 	name := ""
+	if item.ResidencyCourse == nil {
+		return name
+	}
 	for _, course := range item.ResidencyCourse.ResidencyCoursesSpecializations {
 		if course.Main {
 			name = course.Specialization.Name

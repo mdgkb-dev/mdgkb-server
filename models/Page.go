@@ -49,7 +49,7 @@ type PagesWithCount struct {
 }
 
 func (item *Page) SetForeignKeys() {
-	if item.ContactInfo != nil  {
+	if item.ContactInfo != nil {
 		item.ContactInfoID = item.ContactInfo.ID
 	}
 	if item.Role != nil && item.Role.ID.Valid {

@@ -5,7 +5,6 @@ import (
 	"mime/multipart"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -45,12 +44,12 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 		"item.FormValue.User.Email":             item.FormValue.User.Email,
 		"item.FormValue.User.Phone":             item.FormValue.User.Phone,
 		"CourseName":                            item.GetCourseName(),
-		"DiplomaSeries":                         item.FormValue.GetFieldValueByCode("DiplomaSeries"),
-		"DiplomaNumber":                         item.FormValue.GetFieldValueByCode("DiplomaNumber"),
-		"DiplomaSpeciality":                     item.FormValue.GetFieldValueByCode("DiplomaSpeciality"),
-		"DiplomaDate":                           item.FormValue.GetFieldValueByCode("DiplomaDate").(*time.Time).Format("02.01.2006"),
-		"UniversityEndYear":                     item.FormValue.GetFieldValueByCode("UniversityEndYear").(*time.Time).Format("2006"),
-		"UniversityName":                        item.FormValue.GetFieldValueByCode("UniversityName").(string),
+		"DiplomaSeries":                         item.Diploma.Series,
+		"DiplomaNumber":                         item.Diploma.Number,
+		"DiplomaSpeciality":                     item.Diploma.Speciality,
+		"DiplomaDate":                           item.Diploma.Date.Format("02.01.2006"),
+		"UniversityEndYear":                     item.Diploma.UniversityEndDate.Format("2006"),
+		"UniversityName":                        item.Diploma.UniversityName,
 	}
 	m["FreeApplication"] = point
 	m["PaidApplication"] = ""
