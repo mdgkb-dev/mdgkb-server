@@ -38,6 +38,9 @@ type ResidencyApplication struct {
 
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
 	FormValueID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
+
+	User   *User         `bun:"rel:belongs-to" json:"user"`
+	UserID uuid.NullUUID `bun:"user_id,nullzero,type:uuid" json:"userId"`
 }
 
 type ResidencyApplications []*ResidencyApplication

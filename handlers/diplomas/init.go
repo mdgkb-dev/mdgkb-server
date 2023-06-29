@@ -2,9 +2,10 @@ package diplomas
 
 import (
 	"context"
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/uptrace/bun"
-	"mdgkb/mdgkb-server/models"
 )
 
 type IService interface {
