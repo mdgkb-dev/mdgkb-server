@@ -1,7 +1,6 @@
 package formvalues
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/chats"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/fieldsvalues"
@@ -65,25 +64,26 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	if item.User.RejectEmail {
 		return nil
 	}
-	if item.FormStatus.SendEmail {
-		emailStruct := struct {
-			FormValue *models.FormValue
-			Host      string
-		}{
-			item,
-			s.helper.HTTP.Host,
-		}
-		mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/application.gohtml")
-		if err != nil {
-			return err
-		}
-		err = s.helper.Email.SendEmail([]string{item.User.Email}, "Статус вашей заявки изменён", mail)
-		if err != nil {
-			return err
-		}
-		fmt.Print("_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________")
-		fmt.Print(item.User.Email)
-	}
+	// TODO: ошибка "535 5.7.0 NEOBHODIM parol prilozheniya https://help.mail.ru/mail/security/protection/external / Application password is REQUIRED"
+	// if item.FormStatus.SendEmail {
+	// 	emailStruct := struct {
+	// 		FormValue *models.FormValue
+	// 		Host      string
+	// 	}{
+	// 		item,
+	// 		s.helper.HTTP.Host,
+	// 	}
+	// 	mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/application.gohtml")
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	err = s.helper.Email.SendEmail([]string{item.User.Email}, "Статус вашей заявки изменён", mail)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	fmt.Print("_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________")
+	// 	fmt.Print(item.User.Email)
+	// }
 	return nil
 }
 
