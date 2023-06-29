@@ -41,6 +41,9 @@ type ResidencyApplication struct {
 
 	User   *User         `bun:"rel:belongs-to" json:"user"`
 	UserID uuid.NullUUID `bun:"user_id,nullzero,type:uuid" json:"userId"`
+
+	FormStatusID  string `bun:"-" json:"formStatusId"`
+	ApprovingDate string `bun:"-" json:"approvingDate"`
 }
 
 type ResidencyApplications []*ResidencyApplication

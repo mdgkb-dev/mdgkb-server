@@ -41,7 +41,7 @@ type User struct {
 	CandidateApplications          CandidateApplications `bun:"rel:has-many" json:"candidateApplications"`
 	CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationsForDelete"`
 
-	ResidencyApplications ResidencyApplications `bun:"rel:has-many" json:"residencyApplications"`
+	ResidencyApplications ResidencyApplications `bun:"rel:has-many,join:id=user_id" json:"residencyApplications"`
 	//CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationsForDelete"`
 
 	VisitsApplications          VisitsApplications `bun:"rel:has-many" json:"visitsApplications"`

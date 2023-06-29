@@ -76,7 +76,7 @@ func (r *Repository) typeExists(email string, main bool) (bool, error) {
 }
 
 func (r *Repository) create(item *models.ResidencyApplication) (err error) {
-	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
+	_, err = r.db().NewInsert().Model(item).ExcludeColumn("user_id").Exec(r.ctx)
 	return err
 }
 
@@ -86,7 +86,7 @@ func (r *Repository) delete(id *string) (err error) {
 }
 
 func (r *Repository) update(item *models.ResidencyApplication) (err error) {
-	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+	_, err = r.db().NewUpdate().Model(item).ExcludeColumn("user_id").Where("id = ?", item.ID).Exec(r.ctx)
 	return err
 }
 

@@ -6,6 +6,7 @@ SELECT
     ra.*,
     fv.created_at,
     fv.form_status_id,
+    fv.approving_date,
     u.email,
     u.id as user_id,
     CONCAT_WS(' ' :: TEXT, h.surname, h.name, h.patronymic) AS full_name
