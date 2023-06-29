@@ -38,6 +38,7 @@ func (r *Repository) getAll() (item models.ResidencyApplicationsWithCount, err e
 func (r *Repository) get(id *string) (*models.ResidencyApplication, error) {
 	item := models.ResidencyApplication{}
 	err := r.db().NewSelect().Model(&item).
+		Relation("Diploma").
 		Relation("ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
 		Relation("ResidencyCourse.FormPattern.Fields.File").
 		Relation("ResidencyCourse.FormPattern.Fields.ValueType").
