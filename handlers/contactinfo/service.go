@@ -1,6 +1,7 @@
 package contactinfo
 
 import (
+	"mdgkb/mdgkb-server/handlers/addressinfos"
 	"mdgkb/mdgkb-server/handlers/email"
 	"mdgkb/mdgkb-server/handlers/postaddress"
 	"mdgkb/mdgkb-server/handlers/telephonenumber"
@@ -27,6 +28,10 @@ func (s *Service) Create(item *models.ContactInfo) error {
 		return err
 	}
 	err = postaddress.CreateService(s.helper).CreateMany(item.PostAddresses)
+	if err != nil {
+		return err
+	}
+	err = addressinfos.CreateService(s.helper).Upsert(item.AddressInfo)
 	if err != nil {
 		return err
 	}
@@ -139,6 +144,13 @@ func (s *Service) Upsert(item *models.ContactInfo) error {
 		return err
 	}
 	err = postAddressService.DeleteMany(item.PostAddressesForDelete)
+	if err != nil {
+		return err
+	}
+	err = addressinfos.CreateService(s.helper).Upsert(item.AddressInfo)
+	if err != nil {
+		return err
+	}
 	return err
 }
 

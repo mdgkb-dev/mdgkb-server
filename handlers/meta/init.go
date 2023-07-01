@@ -16,6 +16,7 @@ type IHandler interface {
 	GetOptions(c *gin.Context)
 	GetApplicationsCounts(c *gin.Context)
 	GetWeb(c *gin.Context)
+	GetAddress(c *gin.Context)
 }
 
 type IService interface {

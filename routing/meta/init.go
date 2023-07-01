@@ -13,6 +13,7 @@ func Init(h handler.IHandler, api *gin.RouterGroup, ws *gin.RouterGroup) {
 	r.GET("/count/:table", h.GetCount)
 	r.GET("/schema", h.GetSchema)
 	r.GET("/social", h.GetSocial)
+	r.POST("/address", h.GetAddress)
 	r.GET("/options", h.GetOptions)
 	r.GET("/get-applications-counts", h.GetApplicationsCounts)
 

@@ -1,7 +1,11 @@
 package meta
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -79,4 +83,49 @@ func (h *Handler) GetWeb(c *gin.Context) {
 			}
 		}
 	}
+}
+
+type Address struct {
+	ID       string `json:"id"`
+	FullName string `json:"fullName"`
+	Name     string `json:"name"`
+	Type     string `json:"type"`
+	Zip      int    `json:"zip"`
+}
+
+type Addresses []*Address
+
+type Result struct {
+	Result Addresses `json:"result"`
+}
+
+func (h *Handler) GetAddress(c *gin.Context) {
+	var item models.KladrAPI
+	_, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	ctx := context.Background()
+	url := item.GetURL()
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		log.Println(err)
+	}
+	cli := &http.Client{}
+	resp, err := cli.Do(request)
+	if err != nil {
+		log.Println(err)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	resp.Body.Close()
+	res := Result{}
+	err = json.Unmarshal(body, &res)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	c.JSON(http.StatusOK, res.Result[1:])
 }

@@ -103,3 +103,7 @@ func (item *Human) SetFilePath(fileID *string) *string {
 	}
 	return nil
 }
+
+func (item *Human) GetFullAddress() string {
+	return item.ContactInfo.AddressInfo.GetFullAddress()
+}

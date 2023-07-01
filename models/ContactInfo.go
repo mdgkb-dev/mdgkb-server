@@ -18,6 +18,7 @@ type ContactInfo struct {
 	TelephoneNumbers          TelephoneNumbers `bun:"rel:has-many" json:"telephoneNumbers"`
 	WebsitesForDelete         []uuid.UUID      `bun:"-" json:"websitesForDelete"`
 	Websites                  Websites         `bun:"rel:has-many" json:"websites"`
+	AddressInfo               *AddressInfo     `bun:"rel:has-one" json:"addressInfo"`
 }
 
 type ContactInfos []*ContactInfo
@@ -35,6 +36,7 @@ func (item *ContactInfo) SetIDForChildren() {
 	for i := range item.Websites {
 		item.Websites[i].ContactInfoID = item.ID
 	}
+	item.AddressInfo.ContactInfoID = item.ID
 }
 
 func (items ContactInfos) SetIDForChildren() {
