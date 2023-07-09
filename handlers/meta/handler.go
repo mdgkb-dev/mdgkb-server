@@ -86,11 +86,11 @@ func (h *Handler) GetWeb(c *gin.Context) {
 }
 
 type Address struct {
-	ID       string `json:"id"`
-	FullName string `json:"fullName"`
-	Name     string `json:"name"`
-	Type     string `json:"type"`
-	Zip      int    `json:"zip"`
+	ID       string      `json:"id"`
+	FullName string      `json:"fullName"`
+	Name     string      `json:"name"`
+	Type     string      `json:"type"`
+	Zip      interface{} `json:"zip"`
 }
 
 type Addresses []*Address
@@ -107,6 +107,7 @@ func (h *Handler) GetAddress(c *gin.Context) {
 	}
 	ctx := context.Background()
 	url := item.GetURL()
+	fmt.Println(url)
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		log.Println(err)
@@ -124,6 +125,7 @@ func (h *Handler) GetAddress(c *gin.Context) {
 	resp.Body.Close()
 	res := Result{}
 	err = json.Unmarshal(body, &res)
+	fmt.Println(err)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}

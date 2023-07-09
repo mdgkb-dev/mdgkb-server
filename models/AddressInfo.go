@@ -17,7 +17,7 @@ type AddressInfo struct {
 	Flat          string       `json:"flat"`
 	Zip           int          `json:"zip"`
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
-	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
+	ContactInfoID uuid.UUID    `bun:"cii,type:uuid" json:"contactInfoId"`
 }
 
 type AddressInfos []*AddressInfo

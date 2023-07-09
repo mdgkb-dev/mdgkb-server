@@ -10,3 +10,6 @@ CREATE TABLE address_infos (
 
 alter table address_infos
     add column contact_info_id uuid REFERENCES contact_infos(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+alter table address_infos
+rename column contact_info_id to cii;
