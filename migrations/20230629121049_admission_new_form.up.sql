@@ -7,7 +7,6 @@ INSERT INTO public.form_patterns (id, title, code, form_status_group_id, default
 
 insert into public.fields (id, name, required, field_order, form_id, form_pattern_id, value_type_id, form_value_id, file_id, comment, code, required_for_cancel, mask)
 values
-    ('7edddb38-dc9e-434c-900f-66b77c9bee2c', 'Дата окончания университета', true, 0, null, '5d77e0ca-1e75-40c7-ba9f-48f979611c41', 'efdd456c-091b-49d9-ac32-d0d345f88e64', null, '325f5b33-b389-43c7-97f2-eb7c4353d9e5', '', 'UniversityEndYear', false, ''),
         ('fb8bddfa-9862-474c-af50-ef9872d815bd', 'Договор с Департаментом здравоохранения города Москвы', false, 0, null, '5d77e0ca-1e75-40c7-ba9f-48f979611c41', '9fa59e5f-b5f4-4dd0-821f-b9aa6eb25a10', null, '1fbf3919-b631-482f-ae67-8ee8b0ac694a', 'Только для заключивших договор с Департаментом здравоохранения города Москвы', 'ContractDzm', false, ''),
         ('36ee773e-d834-47b9-8561-172075c649ed', 'Документ, удостоверяющий личность, гражданство', true, 0, null, '5d77e0ca-1e75-40c7-ba9f-48f979611c41', '9fa59e5f-b5f4-4dd0-821f-b9aa6eb25a10', null, '99eef918-7914-4887-8776-8d49ddaa9f9f', 'Со страницей регистрации', '', false, ''),
         ('58dfa01c-0812-44ab-a442-7be1a69c7c49', 'Заявление в ординатуру', true, 0, null, '5d77e0ca-1e75-40c7-ba9f-48f979611c41', '9fa59e5f-b5f4-4dd0-821f-b9aa6eb25a10', null, '7500c585-fd7d-4318-8edf-5e319f9becd7', 'Заполняется от руки четким подчерком синими чернилами или заполняется машинописным шрифтом, подписи в заявлении ставятся СИНЕЙ ручкой', '', false, ''),

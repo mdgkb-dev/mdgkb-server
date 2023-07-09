@@ -65,7 +65,6 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	if item.User.RejectEmail {
 		return nil
 	}
-	// TODO: ошибка "535 5.7.0 NEOBHODIM parol prilozheniya https://help.mail.ru/mail/security/protection/external / Application password is REQUIRED"
 	if item.FormStatus.SendEmail {
 		emailStruct := struct {
 			FormValue *models.FormValue

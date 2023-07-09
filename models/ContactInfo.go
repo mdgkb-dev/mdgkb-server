@@ -18,7 +18,7 @@ type ContactInfo struct {
 	TelephoneNumbers          TelephoneNumbers `bun:"rel:has-many" json:"telephoneNumbers"`
 	WebsitesForDelete         []uuid.UUID      `bun:"-" json:"websitesForDelete"`
 	Websites                  Websites         `bun:"rel:has-many" json:"websites"`
-	AddressInfo               *AddressInfo     `bun:"rel:has-one" json:"addressInfo"`
+	AddressInfo               *AddressInfo     `bun:"rel:has-one,join:id=cii" json:"addressInfo"`
 }
 
 type ContactInfos []*ContactInfo
