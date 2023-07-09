@@ -1,6 +1,7 @@
 package contactinfo
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/addressinfos"
 	"mdgkb/mdgkb-server/handlers/email"
 	"mdgkb/mdgkb-server/handlers/postaddress"
@@ -147,6 +148,15 @@ func (s *Service) Upsert(item *models.ContactInfo) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("ADDDD")
+	fmt.Println("ADDDD")
+	fmt.Println("ADDDD")
+	fmt.Println("ADDDD")
+	fmt.Println("ADDDD")
+	fmt.Println("ADDDD")
+	fmt.Println("ADDDD")
+	fmt.Println("ADDDD")
+	fmt.Println(item.AddressInfo)
 	err = addressinfos.CreateService(s.helper).Upsert(item.AddressInfo)
 	if err != nil {
 		return err
