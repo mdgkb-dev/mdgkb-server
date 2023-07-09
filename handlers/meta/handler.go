@@ -86,11 +86,12 @@ func (h *Handler) GetWeb(c *gin.Context) {
 }
 
 type Address struct {
-	ID       string      `json:"id"`
-	FullName string      `json:"fullName"`
-	Name     string      `json:"name"`
-	Type     string      `json:"type"`
-	Zip      interface{} `json:"zip"`
+	ID        string      `json:"id"`
+	FullName  string      `json:"fullName"`
+	Name      string      `json:"name"`
+	Type      string      `json:"type"`
+	TypeShort string      `json:"typeShort"`
+	Zip       interface{} `json:"zip"`
 }
 
 type Addresses []*Address
