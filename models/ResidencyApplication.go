@@ -44,6 +44,11 @@ type ResidencyApplication struct {
 
 	FormStatusID  string `bun:"-" json:"formStatusId"`
 	ApprovingDate string `bun:"-" json:"approvingDate"`
+	CreatedAt     string `bun:"-" json:"createdAt"`
+	FullName      string `bun:"-" json:"fullName"`
+	CourseName    string `bun:"-" json:"courseName"`
+	Email         string `bun:"-" json:"email"`
+	PointsSum     string `bun:"-" json:"pointsSum"`
 }
 
 type ResidencyApplications []*ResidencyApplication
