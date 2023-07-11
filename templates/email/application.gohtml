@@ -4,11 +4,11 @@
         <p style="margin:50px 30px 0 30px; text-align:center; font-size:14px; line-height:30px; color:#343E5C;letter-spacing:1px">
             <b>Уважаемый клиент!</b>
         </p>
-        <p style="margin:0 30px 50px 30px; text-align:left; font-size:12px; line-height:14px; color:#343E5C;letter-spacing:1px">
+        <a style="margin:0 30px 50px 30px; text-align:left; font-size:12px; line-height:14px; color:#343E5C;letter-spacing:1px">
             Статус вашей заявки изменён.<br>
             <b>Статус: {{.FormValue.FormStatus.Label }}.</b><br>
              {{.FormValue.ModComment }} <br><br>
-            Работу с заявкой можно продолжать в личном кабинете.
+            Работу с заявкой можно продолжать в <a href="{{.Host}}/profile">личном кабинете.</a>
             Для доступа к личному кабинету необходимо авторизироваться в системе.
             <br>
             <br>
