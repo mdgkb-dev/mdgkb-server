@@ -49,6 +49,7 @@ func (r *Repository) get(id *string) (*models.FormStatus, error) {
 	err := r.db().NewSelect().Model(&item).
 		Relation("Icon").
 		Relation("FormStatusGroup").
+		Relation("FormStatusEmails").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
 		Where("form_statuses_view.id = ?", *id).Scan(r.ctx)
 	return &item, err

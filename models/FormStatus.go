@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/uploadHelper"
 	"github.com/uptrace/bun"
@@ -27,6 +29,8 @@ type FormStatus struct {
 	FormStatusGroupID uuid.NullUUID    `bun:"type:uuid"  json:"formStatusGroupId"`
 
 	Code string `bun:"-" json:"code"`
+
+	FormStatusEmails FormStatusEmails `bun:"rel:has-many" json:"formStatusEmails"`
 }
 
 type FormStatuses []*FormStatus
@@ -81,4 +85,15 @@ func (items FormStatuses) GetFormStatusToFormStatusesForDelete() []string {
 		itemsForGet = append(itemsForGet, item.FormStatusToFormStatusesForDelete...)
 	}
 	return itemsForGet
+}
+
+func (item *FormStatus) SentAdminEmails(formValue *FormValue, sender EmailSender, templateParser TemplateParser) {
+	go func() {
+		for _, email := range item.FormStatusEmails {
+			err := email.Send(formValue, sender, templateParser)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}()
 }

@@ -1,10 +1,10 @@
 package formvalues
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/chats"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/fieldsvalues"
+	"mdgkb/mdgkb-server/handlers/formstatuses"
 	"mdgkb/mdgkb-server/handlers/formvaluefiles"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
@@ -59,8 +59,18 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	if err != nil {
 		return err
 	}
-	if oldFormValue == nil || oldFormValue.FormStatus == nil || item.FormStatus.ID == oldFormValue.FormStatus.ID {
-		return nil
+
+	formStatusID := item.FormStatus.ID.UUID.String()
+	formStatus, err := formstatuses.CreateService(s.helper).Get(&formStatusID)
+	if err != nil {
+		return err
+	}
+	formStatus.SentAdminEmails(item, s.helper.Email, s.helper.Templater)
+	
+	if oldFormValue != nil && oldFormValue.FormStatus != nil {
+		if item.FormStatus.ID == oldFormValue.FormStatus.ID {
+			return nil
+		}
 	}
 	if item.User.RejectEmail {
 		return nil
@@ -81,8 +91,6 @@ func (s *Service) Upsert(item *models.FormValue) error {
 		if err != nil {
 			return err
 		}
-		fmt.Print("_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________")
-		fmt.Print(item.User.Email)
 	}
 	return nil
 }

@@ -1,50 +1,28 @@
-package formstatuses
+package formstatusemails
 
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
 
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/httpHelper/basehandler"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
-
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
-	GetAll(c *gin.Context)
-	GetAllByGroupID(c *gin.Context)
-	Get(c *gin.Context)
-	Create(c *gin.Context)
-	Update(c *gin.Context)
-	UpdateMany(c *gin.Context)
-	Delete(c *gin.Context)
+	basehandler.IHandler
 }
 
 type IService interface {
-	setQueryFilter(*gin.Context) error
-	GetAll() (models.FormStatuses, error)
-	GetAllByGroupID(*string) (models.FormStatuses, error)
-	Get(*string) (*models.FormStatus, error)
-	Upsert(*models.FormStatus) error
-	UpsertMany(models.FormStatuses) error
-	Delete(*string) error
+	basehandler.IService[models.FormStatusEmail, models.FormStatusEmails, models.FormStatusEmailsWithCount]
 }
 
 type IRepository interface {
-	setQueryFilter(*gin.Context) error
-	db() *bun.DB
-	getAll() (models.FormStatuses, error)
-	GetAllByGroupID(*string) (models.FormStatuses, error)
-	get(*string) (*models.FormStatus, error)
-	upsert(*models.FormStatus) error
-	upsertMany(models.FormStatuses) error
-	delete(*string) error
+	basehandler.IRepository[models.FormStatusEmail, models.FormStatusEmails, models.FormStatusEmailsWithCount]
 }
 
 type IFilesService interface {
-	Upload(*gin.Context, *models.FormStatus, map[string][]*multipart.FileHeader) error
+	basehandler.IFilesService
 }
 
 type Handler struct {
