@@ -20,7 +20,7 @@ type AddressInfo struct {
 	RegionID   string `json:"regionId"`
 	CityID     string `json:"cityId"`
 	StreetID   string `json:"streetId"`
-	BuildingID string `json:"buildingId"`
+	BuildingID string `bun:"b_id" json:"buildingId"`
 
 	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
 	ContactInfoID uuid.UUID    `bun:"cii,type:uuid" json:"contactInfoId"`

@@ -43,7 +43,7 @@ func (r *Repository) upsert(item *models.AddressInfo) (err error) {
 		Set("city_id = EXCLUDED.city_id").
 		Set("street = EXCLUDED.street").
 		Set("street_id = EXCLUDED.street_id").
-		Set("building_id = EXCLUDED.building_id").
+		Set("b_id = EXCLUDED.b_id").
 		Set("flat = EXCLUDED.flat").
 		Set("zip = EXCLUDED.zip").
 		Set("cii = EXCLUDED.cii").
