@@ -18,7 +18,6 @@ type AddressInfo struct {
 	Zip           int       `json:"zip"`
 
 	RegionID   string `json:"regionId"`
-	DistrictID string `json:"districtId"`
 	CityID     string `json:"cityId"`
 	StreetID   string `json:"streetId"`
 	BuildingID string `json:"buildingId"`

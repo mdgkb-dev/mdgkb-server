@@ -66,7 +66,7 @@ func (s *Service) Upsert(item *models.FormValue) error {
 		return err
 	}
 	formStatus.SentAdminEmails(item, s.helper.Email, s.helper.Templater)
-	
+
 	if oldFormValue != nil && oldFormValue.FormStatus != nil {
 		if item.FormStatus.ID == oldFormValue.FormStatus.ID {
 			return nil
