@@ -65,7 +65,10 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	if err != nil {
 		return err
 	}
-	formStatus.SentAdminEmails(item, s.helper.Email, s.helper.Templater)
+	// если новое - слать письмо админу
+	if oldFormValue == nil {
+		formStatus.SentAdminEmails(item, s.helper.Email, s.helper.Templater)
+	}
 
 	if oldFormValue != nil && oldFormValue.FormStatus != nil {
 		if item.FormStatus.ID == oldFormValue.FormStatus.ID {
