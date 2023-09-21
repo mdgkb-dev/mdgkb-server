@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.2.0
-	github.com/fatih/structtag v1.2.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-pg/pg/v10 v10.10.6
 	github.com/go-playground/validator/v10 v10.11.2
@@ -12,17 +11,24 @@ require (
 	github.com/gorilla/websocket v1.5.0
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
-	github.com/pro-assistance/pro-assister v0.0.106-0.20230330151116-c29db0458af2
+	github.com/pro-assistance/pro-assister v0.0.106-0.20230921074829-47a80c057ffd
 	github.com/uptrace/bun v1.1.8
 	github.com/uptrace/bun/dbfixture v1.1.8
 	golang.org/x/crypto v0.5.0
 )
 
 require (
+	github.com/lestrrat-go/strftime v1.0.6 // indirect
+	github.com/oiime/logrusbun v0.1.1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5 // indirect
+)
+
+require (
 	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.7.2 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.1.0 // indirect
-	github.com/fatih/color v1.13.0 // indirect
+	github.com/fatih/structtag v1.2.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-pg/zerochecker v0.2.0 // indirect
@@ -36,9 +42,9 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/lukasjarosch/go-docx v0.4.4 // indirect
+	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
+	github.com/lukasjarosch/go-docx v0.4.6 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
-	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -47,6 +53,7 @@ require (
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
@@ -58,7 +65,6 @@ require (
 	github.com/unidoc/unidoc v2.2.0+incompatible // indirect
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.8 // indirect
 	github.com/uptrace/bun/driver/pgdriver v1.1.5 // indirect
-	github.com/uptrace/bun/extra/bundebug v1.1.5 // indirect
 	github.com/vmihailenco/bufpool v0.1.11 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect

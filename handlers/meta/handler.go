@@ -17,7 +17,7 @@ import (
 func (h *Handler) GetCount(c *gin.Context) {
 	table := c.Param("table")
 	items, err := h.service.GetCount(&table)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
@@ -33,7 +33,7 @@ func (h *Handler) GetSocial(c *gin.Context) {
 
 func (h *Handler) GetApplicationsCounts(c *gin.Context) {
 	items, err := h.service.GetApplicationsCounts()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
@@ -46,11 +46,11 @@ func (h *Handler) GetOptions(c *gin.Context) {
 	optionModel.Label = c.Query("label")
 	optionModel.Value = c.Query("value")
 	optionModel.SortColumn = c.Query("sortColumn")
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	items, err := h.service.GetOptions(&optionModel)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
@@ -103,7 +103,7 @@ type Result struct {
 func (h *Handler) GetAddress(c *gin.Context) {
 	var item models.KladrAPI
 	_, err := h.helper.HTTP.GetForm(c, &item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	ctx := context.Background()
@@ -127,7 +127,7 @@ func (h *Handler) GetAddress(c *gin.Context) {
 	res := Result{}
 	err = json.Unmarshal(body, &res)
 	fmt.Println(err)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, res.Result[1:])

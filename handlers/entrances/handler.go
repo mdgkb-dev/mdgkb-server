@@ -8,7 +8,7 @@ import (
 
 func (h *Handler) GetAll(c *gin.Context) {
 	items, err := h.service.GetAll()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)

@@ -1,7 +1,9 @@
 package news
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -69,6 +71,7 @@ func (r *Repository) getAll() (items models.NewsWithCount, err error) {
 		Relation("NewsLikes").
 		Relation("NewsViews")
 	r.queryFilter.HandleQuery(query)
+	fmt.Println(time.Now())
 	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }

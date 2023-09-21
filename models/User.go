@@ -100,3 +100,7 @@ func (i *User) SetIDForChildren() {
 		}
 	}
 }
+
+func (item *User) SetJWTClaimsMap(claims map[string]interface{}) {
+	return
+}
