@@ -80,6 +80,36 @@ func (h *Handler) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, news)
 }
 
+func (h *Handler) GetMain(c *gin.Context) {
+	err := h.service.SetQueryFilter(c)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	news, err := h.service.GetMain()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	for i := range news.News {
+		news.News[i].ViewsCount = len(news.News[i].NewsViews)
+	}
+	c.JSON(http.StatusOK, news)
+}
+
+func (h *Handler) GetSubMain(c *gin.Context) {
+	err := h.service.SetQueryFilter(c)
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	news, err := h.service.GetSubMain()
+	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+		return
+	}
+	for i := range news.News {
+		news.News[i].ViewsCount = len(news.News[i].NewsViews)
+	}
+	c.JSON(http.StatusOK, news)
+}
+
 func (h *Handler) Update(c *gin.Context) {
 	var item models.News
 	files, err := h.helper.HTTP.GetForm(c, &item)

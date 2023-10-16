@@ -8,6 +8,8 @@ import (
 
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
+	r.GET("/main", h.GetMain)
+	r.GET("/submain", h.GetSubMain)
 	r.GET("/relation-news", h.GetAll)
 	r.GET("/", h.GetAll)
 	r.GET("/:slug", h.GetBySLug)
