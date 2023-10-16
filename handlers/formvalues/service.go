@@ -4,7 +4,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/chats"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/fieldsvalues"
-	"mdgkb/mdgkb-server/handlers/formstatuses"
+	// "mdgkb/mdgkb-server/handlers/formstatuses"
 	"mdgkb/mdgkb-server/handlers/formvaluefiles"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
@@ -60,41 +60,41 @@ func (s *Service) Upsert(item *models.FormValue) error {
 		return err
 	}
 
-	formStatusID := item.FormStatus.ID.UUID.String()
-	formStatus, err := formstatuses.CreateService(s.helper).Get(&formStatusID)
-	if err != nil {
-		return err
-	}
+	// formStatusID := item.FormStatus.ID.UUID.String()
+	// formStatus, err := formstatuses.CreateService(s.helper).Get(&formStatusID)
+	// if err != nil {
+	// 	return err
+	// }
 	// если новое - слать письмо админу
-	if oldFormValue == nil {
-		formStatus.SentAdminEmails(item, s.helper.Email, s.helper.Templater)
-	}
+	// if oldFormValue == nil {
+	// 	formStatus.SentAdminEmails(item, s.helper.Email, s.helper.Templater)
+	// }
 
 	if oldFormValue != nil && oldFormValue.FormStatus != nil {
 		if item.FormStatus.ID == oldFormValue.FormStatus.ID {
 			return nil
 		}
 	}
-	if item.User.RejectEmail {
-		return nil
-	}
-	if item.FormStatus.SendEmail {
-		emailStruct := struct {
-			FormValue *models.FormValue
-			Host      string
-		}{
-			item,
-			s.helper.HTTP.Host,
-		}
-		mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/application.gohtml")
-		if err != nil {
-			return err
-		}
-		err = s.helper.Email.SendEmail([]string{item.User.Email}, "Статус вашей заявки изменён", mail)
-		if err != nil {
-			return err
-		}
-	}
+	// if item.User.RejectEmail {
+	// 	return nil
+	// }
+	// if item.FormStatus.SendEmail {
+	// 	emailStruct := struct {
+	// 		FormValue *models.FormValue
+	// 		Host      string
+	// 	}{
+	// 		item,
+	// 		s.helper.HTTP.Host,
+	// 	}
+	// 	mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/application.gohtml")
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	err = s.helper.Email.SendEmail([]string{item.User.Email}, "Статус вашей заявки изменён", mail)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
 	return nil
 }
 
