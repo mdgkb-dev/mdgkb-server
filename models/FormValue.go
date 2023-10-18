@@ -110,9 +110,7 @@ func (item *FormValue) GetFiles() FileInfos {
 
 func (item *FormValue) GetFormValueFiles() FormValueFiles {
 	itemsForGet := make(FormValueFiles, 0)
-	for i := range item.FormValueFiles {
-		itemsForGet = append(itemsForGet, item.FormValueFiles[i])
-	}
+	itemsForGet = append(itemsForGet, item.FormValueFiles...)
 	return itemsForGet
 }
 

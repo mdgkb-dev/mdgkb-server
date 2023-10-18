@@ -84,7 +84,7 @@ func (items Doctors) InitAppointmentsSlots() {
 	}
 }
 
-func (item *Doctor) InitAppointments(days []time.Time) Appointments {
+func (item *Doctor) InitAppointments(_ []time.Time) Appointments {
 	appointments := make(Appointments, 0)
 	if item.Timetable == nil {
 		return appointments

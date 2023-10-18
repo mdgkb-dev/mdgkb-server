@@ -9,6 +9,7 @@ type PageSideMenu struct {
 	bun.BaseModel         `bun:"page_side_menus,alias:page_side_menus"`
 	ID                    uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Name                  string        `json:"name"`
+	Slug                  string        `json:"slug"`
 	RouteAnchor           string        `json:"routeAnchor"`
 	Description           string        `json:"description"`
 	Order                 int           `bun:"item_order" json:"order"`

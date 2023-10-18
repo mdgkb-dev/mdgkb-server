@@ -105,7 +105,7 @@ func (a *Adapter) createTableifNotExists() error {
 }
 
 // AddPolicy adds a policy rule to the storage.
-func (a *Adapter) AddPolicy(sec string, ptype string, rule []string) error {
+func (a *Adapter) AddPolicy(_ string, ptype string, rule []string) error {
 	line := savePolicyLine(ptype, rule)
 	_, err := a.db.NewInsert().Model(line).
 		Table(a.tableName).
@@ -167,7 +167,7 @@ func savePolicyLine(ptype string, rule []string) *CasbinRule {
 //}
 
 // RemoveFilteredPolicy removes policy rules that match the filter from the storage.
-func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int, fieldValues ...string) error {
+func (a *Adapter) RemoveFilteredPolicy(_ string, ptype string, fieldIndex int, fieldValues ...string) error {
 	query := a.db.NewDelete().Model((*CasbinRule)(nil)).Table(a.tableName).Where("ptype = ?", ptype)
 
 	idx := fieldIndex + len(fieldValues)

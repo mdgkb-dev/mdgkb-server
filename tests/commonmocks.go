@@ -93,7 +93,7 @@ var TrueMock = true
 type MockEmail struct{}
 
 // SetRequest struct
-func (e *MockEmail) SetRequest(from string, to []string, subject string) {
+func (e *MockEmail) SetRequest(_ string, _ []string, _ string) {
 }
 
 // GetFromUser struct
@@ -102,7 +102,7 @@ func (e *MockEmail) GetFromUser() string {
 }
 
 // SendHTMLEmail func
-func (e *MockEmail) SendHTMLEmail(templateData interface{}, templates ...string) error {
+func (e *MockEmail) SendHTMLEmail(_ interface{}, _ ...string) error {
 	return nil
 }
 
@@ -112,6 +112,6 @@ func (e *MockEmail) SendEmail() error {
 }
 
 // ParseTemplate func
-func (e *MockEmail) ParseTemplate(data interface{}, templates ...string) error {
+func (e *MockEmail) ParseTemplate(_ interface{}, _ ...string) error {
 	return nil
 }

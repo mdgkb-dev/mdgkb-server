@@ -23,11 +23,12 @@ func (r *Repository) getAll() (models.Menus, error) {
 		Relation("Page").
 		Relation("Icon").
 		Relation("SubMenus", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Order("sub_menus.sub_menu_order")
+			return q.Where("sub_menus.hide != true").Order("sub_menus.sub_menu_order")
 		}).
 		Relation("SubMenus.Page").
 		Relation("SubMenus.Icon").
 		Order("menus.menu_order").
+		Where("?TableAlias.hide != true").
 		Scan(r.ctx)
 	return items, err
 }

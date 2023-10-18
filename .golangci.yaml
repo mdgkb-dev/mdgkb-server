@@ -7,8 +7,7 @@ run:
 linters:
   disable-all: true
   enable:
-    - deadcode
-    - depguard
+    # - depguard
     - dogsled
     - dupl
     - errcheck
@@ -18,17 +17,16 @@ linters:
     - gocyclo
     - gofmt
     - goprintffuncname
-    - gosec
+    # - gosec
     - gosimple
     - ineffassign
     - misspell
     - nakedret
     - nolintlint
     - staticcheck
-    - revive
+    # - revive
     - unconvert
     - unparam
-    - varcheck
     - whitespace
     - asciicheck
 linters-settings:

@@ -29,7 +29,7 @@ func (r *Repository) getAll() (models.PointsAchievements, error) {
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.PointsAchievement, error) {
+func (r *Repository) get(_ *string) (*models.PointsAchievement, error) {
 	item := models.PointsAchievement{}
 	err := r.db().NewSelect().Model(&item).
 		Scan(r.ctx)

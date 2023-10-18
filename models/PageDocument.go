@@ -32,12 +32,6 @@ func (items PageDocuments) SetForeignKeys() {
 	}
 }
 
-func (items PageDocuments) SetFilePath(fileID *string) *string {
-	for range items {
-		//if item.PageSectionDocument.Scan.ID.UUID.String() == *fileID {
-		//	item.PageSectionDocument.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
-		//	return &item.PageSectionDocument.Scan.FileSystemPath
-		//}
-	}
+func (items PageDocuments) SetFilePath(_ *string) *string {
 	return nil
 }
