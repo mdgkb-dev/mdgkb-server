@@ -14,7 +14,7 @@ func (s *Service) Create(item *models.Diet) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.Diet) error {
+func (s *Service) Update(_ *models.Diet) error {
 	//err := timetables.CreateService(s.helper).Upsert(item.Timetable)
 	//if err != nil {
 	//	return err

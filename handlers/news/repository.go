@@ -76,6 +76,34 @@ func (r *Repository) getAll() (items models.NewsWithCount, err error) {
 	return items, err
 }
 
+func (r *Repository) getMain() (items models.NewsWithCount, err error) {
+	items.News = make([]*models.News, 0)
+	query := r.DB().NewSelect().Model(&items.News).
+		Relation("NewsToCategories.Category").
+		Relation("NewsToTags.Tag").
+		Relation("PreviewImage").
+		Relation("NewsLikes").
+		Relation("NewsViews").
+		Where("news_view.main = ?", true)
+	r.queryFilter.HandleQuery(query)
+	items.Count, err = query.ScanAndCount(r.ctx)
+	return items, err
+}
+
+func (r *Repository) getSubMain() (items models.NewsWithCount, err error) {
+	items.News = make([]*models.News, 0)
+	query := r.DB().NewSelect().Model(&items.News).
+		Relation("NewsToCategories.Category").
+		Relation("NewsToTags.Tag").
+		Relation("PreviewImage").
+		Relation("NewsLikes").
+		Relation("NewsViews").
+		Where("news_view.sub_main = ?", true)
+	r.queryFilter.HandleQuery(query)
+	items.Count, err = query.ScanAndCount(r.ctx)
+	return items, err
+}
+
 func (r *Repository) getBySlug(slug string) (*models.News, error) {
 	item := models.News{}
 	err := r.DB().NewSelect().Model(&item).

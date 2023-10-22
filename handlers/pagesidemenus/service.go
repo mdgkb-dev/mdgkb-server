@@ -60,6 +60,9 @@ func (s *Service) UpsertMany(items models.PageSideMenus) error {
 	if len(items) == 0 {
 		return nil
 	}
+	for i := range items {
+		items[i].Slug = s.helper.Util.MakeSlug(items[i].Name, false)
+	}
 	err := s.repository.upsertMany(items)
 	if err != nil {
 		return err

@@ -58,6 +58,14 @@ func (s *Service) GetAll() (models.NewsWithCount, error) {
 	return s.repository.getAll()
 }
 
+func (s *Service) GetMain() (models.NewsWithCount, error) {
+	return s.repository.getMain()
+}
+
+func (s *Service) GetSubMain() (models.NewsWithCount, error) {
+	return s.repository.getSubMain()
+}
+
 func (s *Service) RemoveTag(item *models.NewsToTag) error {
 	return s.repository.removeTag(item)
 }

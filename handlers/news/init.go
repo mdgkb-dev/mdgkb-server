@@ -12,6 +12,8 @@ import (
 )
 
 type IHandler interface {
+	GetMain(c *gin.Context)
+	GetSubMain(c *gin.Context)
 	GetAll(c *gin.Context)
 	GetBySLug(c *gin.Context)
 	Create(c *gin.Context)
@@ -37,6 +39,8 @@ type IService interface {
 	UpdateComment(*models.NewsComment) error
 	RemoveComment(string) error
 	GetAll() (models.NewsWithCount, error)
+	GetMain() (models.NewsWithCount, error)
+	GetSubMain() (models.NewsWithCount, error)
 	Delete(string) error
 	DeleteLike(string) error
 	GetBySlug(string) (*models.News, error)
@@ -52,6 +56,8 @@ type IRepository interface {
 	createComment(*models.NewsComment) error
 	updateComment(*models.NewsComment) error
 	removeComment(string) error
+	getMain() (models.NewsWithCount, error)
+	getSubMain() (models.NewsWithCount, error)
 	getAll() (models.NewsWithCount, error)
 	delete(string) error
 	deleteLike(string) error
