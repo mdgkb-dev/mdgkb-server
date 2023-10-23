@@ -82,11 +82,11 @@ func (h *Handler) GetAll(c *gin.Context) {
 
 func (h *Handler) GetMain(c *gin.Context) {
 	err := h.service.SetQueryFilter(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	news, err := h.service.GetMain()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	for i := range news.News {
@@ -97,11 +97,11 @@ func (h *Handler) GetMain(c *gin.Context) {
 
 func (h *Handler) GetSubMain(c *gin.Context) {
 	err := h.service.SetQueryFilter(c)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	news, err := h.service.GetSubMain()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	for i := range news.News {
