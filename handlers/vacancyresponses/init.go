@@ -1,4 +1,4 @@
-package vacancyresponse
+package vacancyresponses
 
 import (
 	"context"

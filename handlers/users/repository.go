@@ -71,6 +71,14 @@ func (r *Repository) get(id string) (*models.User, error) {
 		Relation("ResidencyApplications.FormValue.FieldValues.Field.ValueType").
 		Relation("ResidencyApplications.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("ResidencyApplications.FormValue.User").
+		Relation("VacancyResponses.Vacancy").
+		Relation("VacancyResponses.FormValue.Fields.File").
+		Relation("VacancyResponses.FormValue.FormValueFiles.File").
+		Relation("VacancyResponses.FormValue.Fields.ValueType").
+		Relation("VacancyResponses.FormValue.FieldValues.File").
+		Relation("VacancyResponses.FormValue.FieldValues.Field.ValueType").
+		Relation("VacancyResponses.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
+		Relation("VacancyResponses.FormValue.User").
 		//Relation("FormValues.User").
 		//Relation("FormValues.FormValueFiles.File").
 		//Relation("FormValues.FieldValues.Field").

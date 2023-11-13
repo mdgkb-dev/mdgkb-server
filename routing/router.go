@@ -74,7 +74,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/treatdirections"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
-	"mdgkb/mdgkb-server/handlers/vacancyresponse"
+	"mdgkb/mdgkb-server/handlers/vacancyresponses"
 	"mdgkb/mdgkb-server/handlers/valuetypes"
 	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
@@ -151,7 +151,7 @@ import (
 	treatDirectionsRouter "mdgkb/mdgkb-server/routing/treatdirections"
 	usersRouter "mdgkb/mdgkb-server/routing/users"
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
-	vacancyResponseRouter "mdgkb/mdgkb-server/routing/vacancyresponse"
+	vacancyResponsesRouter "mdgkb/mdgkb-server/routing/vacancyresponses"
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valuetypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingrules"
 	visitsApplicationsRouter "mdgkb/mdgkb-server/routing/visitsapplications"
@@ -196,7 +196,7 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(helper))
 	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(helper))
 	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(helper))
-	vacancyResponseRouter.Init(api.Group("/vacancy-responses"), vacancyresponse.CreateHandler(helper))
+	vacancyResponsesRouter.Init(api.Group("/vacancy-responses"), vacancyresponses.CreateHandler(helper))
 	pageSectionsRouter.Init(api.Group("/page-sections"), pagesections.CreateHandler(helper))
 	valueTypesRouter.Init(api.Group("/value-types"), valuetypes.CreateHandler(helper))
 	searchRouter.Init(api.Group("/search"), search.CreateHandler(helper))

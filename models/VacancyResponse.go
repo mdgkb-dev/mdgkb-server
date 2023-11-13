@@ -15,17 +15,20 @@ type VacancyResponse struct {
 	FormValue   *FormValue    `bun:"rel:belongs-to" json:"formValue"`
 	FormValueID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"formValueId"`
 
-	Date         string `bun:"created_at" json:"date"`
+	User   *User         `bun:"rel:belongs-to" json:"user"`
+	UserID uuid.NullUUID `bun:"user_id,nullzero,type:uuid" json:"userId"`
+
 	FormStatusID string `bun:"-" json:"formStatusId"`
 	FullName     string `bun:"-" json:"fullName"`
 	Title        string `bun:"-" json:"title"`
 	Email        string `bun:"-" json:"email"`
+	CreatedAt    string `bun:"-" json:"createdAt"`
 }
 
 type VacancyResponses []*VacancyResponse
 
 type VacancyResponsesWithCount struct {
-	VacancyResponses VacancyResponses `json:"vacancyResponses"`
+	VacancyResponses VacancyResponses `json:"items"`
 	Count            int              `json:"count"`
 }
 
