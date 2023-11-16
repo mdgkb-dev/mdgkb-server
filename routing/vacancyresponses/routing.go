@@ -1,7 +1,7 @@
-package vacancyresponse
+package vacancyresponses
 
 import (
-	handler "mdgkb/mdgkb-server/handlers/vacancyresponse"
+	handler "mdgkb/mdgkb-server/handlers/vacancyresponses"
 
 	"github.com/gin-gonic/gin"
 )

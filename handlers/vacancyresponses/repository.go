@@ -1,6 +1,7 @@
-package vacancyresponse
+package vacancyresponses
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +22,7 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 }
 
 func (r *Repository) create(item *models.VacancyResponse) (err error) {
+	fmt.Printf("%+v\n", item)
 	_, err = r.DB().NewInsert().Model(item).Exec(r.ctx)
 	return err
 }
@@ -44,7 +46,13 @@ func (r *Repository) get(id string) (*models.VacancyResponse, error) {
 	err := r.DB().NewSelect().
 		Model(&item).
 		Relation("Vacancy").
-		Relation("FormValue.User.Human").
+		Relation("FormValue.User.Human.ContactInfo").
+		Relation("FormValue.User.Human.ContactInfo.AddressInfo").
+		Relation("FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("fields.field_order")
+		}).
+		Relation("FormValue.Fields.File").
+		Relation("FormValue.FormValueFiles.File").
 		Relation("FormValue.Fields.ValueType").
 		Relation("FormValue.FieldValues.File").
 		Relation("FormValue.FieldValues.Field.ValueType").
