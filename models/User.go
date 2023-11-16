@@ -103,5 +103,5 @@ func (i *User) SetIDForChildren() {
 }
 
 func (i *User) SetJWTClaimsMap(claims map[string]interface{}) {
-	claims[middleware.ClaimUserID.String()] = item.ID.UUID
+	claims[middleware.ClaimUserID.String()] = i.ID.UUID
 }
