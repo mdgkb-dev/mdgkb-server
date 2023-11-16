@@ -38,6 +38,7 @@ type News struct {
 
 	NewsToCategories       NewsToCategories `bun:"rel:has-many" json:"newsToCategories"`
 	NewsToTags             NewsToTags       `bun:"rel:has-many" json:"newsToTags"`
+	NewsToTagsForDelete    []string         `bun:"-" json:"newsToTagsForDelete"`
 	NewsDoctors            NewsDoctors      `bun:"rel:has-many" json:"newsDoctors"`
 	NewsDoctorsForDelete   []uuid.UUID      `bun:"-" json:"newsDoctorsForDelete"`
 	NewsDivisions          NewsDivisions    `bun:"rel:has-many" json:"newsDivisions"`

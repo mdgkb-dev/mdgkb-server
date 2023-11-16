@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,14 +16,25 @@ func CreateMiddleware(helper *helper.Helper) *Middleware {
 	return &Middleware{helper: helper}
 }
 
-func (m *Middleware) Authentication() gin.HandlerFunc {
+func (m *Middleware) InjectRequestInfo() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userID, _ := m.helper.Token.GetUserID(c)
-		c.Set("userId", userID)
-		//if err != nil {
-		//	c.JSON(http.StatusUnauthorized, err)
-		//	return
-		//}
+		err := Claims{ClaimUserID, ClaimDomainIDS}.Inject(c.Request, m.helper.Token)
+		fmt.Println(err)
+		if m.helper.HTTP.HandleError(c, err) {
+			return
+		}
+		if err != nil {
+			return
+		}
+		err = m.helper.SQL.InjectQueryFilter(c)
+		if m.helper.HTTP.HandleError(c, err) {
+			return
+		}
+
+		if err != nil {
+			return
+		}
+		c.Next()
 	}
 }
 

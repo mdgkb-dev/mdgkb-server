@@ -11,7 +11,7 @@ import (
 
 func (h *Handler) GetAll(c *gin.Context) {
 	items, err := h.service.GetAll()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
@@ -25,19 +25,19 @@ type WithDeleted struct {
 func (h *Handler) UpdateMany(c *gin.Context) {
 	var item WithDeleted
 	files, err := h.helper.HTTP.GetForm(c, &item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	err = h.filesService.Upload(c, item.Certificates, files)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	err = h.service.UpsertMany(item.Certificates)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	err = h.service.DeleteMany(item.CertificatesForDelete)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, item.Certificates)

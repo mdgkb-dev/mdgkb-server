@@ -1,6 +1,7 @@
 package models
 
 import (
+	"mdgkb/mdgkb-server/middleware"
 	"time"
 
 	"github.com/google/uuid"
@@ -99,4 +100,8 @@ func (i *User) SetIDForChildren() {
 			i.DonorRulesUsers[index].UserID = i.ID.UUID
 		}
 	}
+}
+
+func (i *User) SetJWTClaimsMap(claims map[string]interface{}) {
+	claims[middleware.ClaimUserID.String()] = item.ID.UUID
 }
