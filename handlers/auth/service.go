@@ -9,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
-	err := item.GenerateHashPassword()
+func (s *Service) Register(item *models.User) (t *models.TokensWithUser, err error) {
+	err = item.GenerateHashPassword()
 	if err != nil {
 		return nil, err
 	}
@@ -25,14 +25,16 @@ func (s *Service) Register(item *models.User) (*models.TokensWithUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	ts, err := s.helper.Token.CreateToken(item.ID.UUID.String(), string(item.Role.Name), item.Role.ID.UUID.String())
+	token, err := s.helper.Token.CreateToken(item)
 	if err != nil {
 		return nil, err
 	}
-	return &models.TokensWithUser{Tokens: ts, User: *item}, nil
+	t = &models.TokensWithUser{}
+	t.Init(token, *item)
+	return t, err
 }
 
-func (s *Service) Login(item *models.Login, skipPassword bool) (*models.TokensWithUser, error) {
+func (s *Service) Login(item *models.Login, skipPassword bool) (t *models.TokensWithUser, err error) {
 	findedUser, err := users.CreateService(s.helper).GetByEmail(item.Email)
 	if err != nil {
 		return nil, err
@@ -40,11 +42,13 @@ func (s *Service) Login(item *models.Login, skipPassword bool) (*models.TokensWi
 	if !findedUser.CompareWithHashPassword(item.Password) && !skipPassword {
 		return nil, errors.New("wrong login or password")
 	}
-	ts, err := s.helper.Token.CreateToken(findedUser.ID.UUID.String(), string(findedUser.Role.Name), findedUser.Role.ID.UUID.String())
+	token, err := s.helper.Token.CreateToken(findedUser)
 	if err != nil {
 		return nil, err
 	}
-	return &models.TokensWithUser{Tokens: ts, User: *findedUser}, nil
+	t = &models.TokensWithUser{}
+	t.Init(token, *findedUser)
+	return t, err
 }
 
 func (s *Service) FindUserByEmail(email string) (*models.User, error) {

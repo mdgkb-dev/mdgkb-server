@@ -13,7 +13,7 @@ import (
 func (h *Handler) Get(c *gin.Context) {
 	id := c.Param("id")
 	item, err := h.service.Get(id)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
@@ -22,15 +22,15 @@ func (h *Handler) Get(c *gin.Context) {
 func (h *Handler) Update(c *gin.Context) {
 	var item models.FormValue
 	files, err := h.helper.HTTP.GetForm(c, &item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	err = h.filesService.Upload(c, &item, files)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	err = h.service.Upsert(&item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
@@ -39,11 +39,11 @@ func (h *Handler) Update(c *gin.Context) {
 func (h *Handler) UpdateMany(c *gin.Context) {
 	var items models.FormValues
 	err := c.Bind(&items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	err = h.service.UpsertMany(items)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
@@ -52,7 +52,7 @@ func (h *Handler) UpdateMany(c *gin.Context) {
 func (h *Handler) DocumentsToPDF(c *gin.Context) {
 	id := c.Param("id")
 	item, err := h.service.Get(id)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	files := item.GetFiles()
@@ -63,7 +63,7 @@ func (h *Handler) DocumentsToPDF(c *gin.Context) {
 		filesToMerge = append(filesToMerge, files[i])
 	}
 	mergedPDF, err := h.helper.PDF.MergeFilesToPDF(filesToMerge)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.Header("Content-Description", "File Transfer")
@@ -74,11 +74,11 @@ func (h *Handler) DocumentsToPDF(c *gin.Context) {
 func (h *Handler) DocumentsToZip(c *gin.Context) {
 	id := c.Param("id")
 	item, err := h.service.Get(id)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	mergedPDF, err := h.filesService.FilesToZip(item.GetFiles())
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.Header("Content-Description", "File Transfer")
