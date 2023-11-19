@@ -14,6 +14,7 @@ type MapNode struct {
 
 type MapNodes []*MapNode
 
+// asd
 type Graph struct {
 	nodes map[int]map[int]int
 }
