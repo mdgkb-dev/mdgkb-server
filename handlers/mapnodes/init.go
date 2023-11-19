@@ -24,6 +24,7 @@ type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
 	UploadMapNodes(models.MapNodes) error
+	DeleteAll(models.MapNodes) error
 }
 
 type Handler struct {
