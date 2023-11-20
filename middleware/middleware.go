@@ -16,9 +16,9 @@ func CreateMiddleware(helper *helper.Helper) *Middleware {
 }
 
 func (m *Middleware) Authentication() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		userID, _ := m.helper.Token.GetUserID(c)
-		c.Set("userId", userID)
+	return func(_ *gin.Context) {
+		// userID, _ := m.helper.Token.GetUserID(c)
+		// c.Set("userId", userID)
 		//if err != nil {
 		//	c.JSON(http.StatusUnauthorized, err)
 		//	return

@@ -8,7 +8,7 @@ import (
 
 func (h *Handler) GetAllWeekdays(c *gin.Context) {
 	items, err := h.service.GetAllWeekdays()
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
+	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
