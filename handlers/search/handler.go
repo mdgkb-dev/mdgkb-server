@@ -10,11 +10,9 @@ import (
 
 func (h *Handler) Search(c *gin.Context) {
 	var item models.SearchModel
-	err := json.Unmarshal([]byte(c.Query("searchModel")), &item)
-	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
-		return
-	}
-	err = h.service.SearchObjects(&item)
+	item.Key = c.Query("key")
+	item.Query = c.Query("query")
+	err := h.service.SearchObjects(&item)
 	if h.helper.HTTP.HandleError(c, err, http.StatusInternalServerError) {
 		return
 	}
