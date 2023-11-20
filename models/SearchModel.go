@@ -10,6 +10,7 @@ type SearchModel struct {
 	Suggester       bool                `json:"suggester"`
 	SearchElements  SearchElements      `bun:"-" json:"options"`
 	Query           string              `json:"query"`
+	Key             string              `json:"key"`
 	MustBeTranslate bool                `json:"mustBeTranslate"`
 	TranslitQuery   string              `json:"translitQuery"`
 	SearchGroupID   string              `json:"searchGroupId"`
