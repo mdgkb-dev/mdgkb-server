@@ -1,6 +1,7 @@
 package donorrules
 
 import (
+	"mdgkb/mdgkb-server/middleware"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -10,15 +11,16 @@ import (
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
-	// id, _ := h.helper.Token.GetUserID(c)
+	id, _ := h.helper.Token.ExtractTokenMetadata(c.Request, middleware.ClaimUserID)
 	//if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
 	//	return
 	//}
-	// items, err := h.service.GetAll(id)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// 	return
-	// }
-	c.JSON(http.StatusOK, nil)
+	uid := uuid.MustParse(id)
+	items, err := h.service.GetAll(&uid)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
 }
 
 type RulesWithDeleted struct {
@@ -49,11 +51,11 @@ func (h *Handler) AddToUser(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	// userID, err := h.helper.Token.GetUserID(c)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// 	return
-	// }
-	// item.UserID = *userID
+	userID, err := h.helper.Token.ExtractTokenMetadata(c.Request, middleware.ClaimUserID)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	item.UserID = uuid.MustParse(userID)
 	err = h.service.AddToUser(&item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
@@ -68,11 +70,11 @@ func (h *Handler) DeleteFromUser(c *gin.Context) {
 		return
 	}
 	item.DonorRuleID = donorRuleID
-	// userID, err := h.helper.Token.GetUserID(c)
-	// if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
-	// 	return
-	// }
-	// item.UserID = *userID
+	userID, err := h.helper.Token.ExtractTokenMetadata(c.Request, middleware.ClaimUserID)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	item.UserID = uuid.MustParse(userID)
 	err = h.service.DeleteFromUser(&item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return

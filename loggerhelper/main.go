@@ -1,7 +1,7 @@
 package loggerhelper
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -21,7 +21,7 @@ func NewLogger() *logrus.Logger {
 
 func setupOutput(l *logrus.Logger) {
 	path := "logs"
-	l.SetOutput(ioutil.Discard) // Send all logs to nowhere by default
+	l.SetOutput(io.Discard) // Send all logs to nowhere by default
 
 	tForm := "%Y-%m-%d_%H:%M"
 	ageOpt := rotatelogs.WithMaxAge(time.Hour * 24 * 7)

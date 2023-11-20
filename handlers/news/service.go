@@ -138,6 +138,10 @@ func (s *Service) Update(item *models.News) error {
 	if err != nil {
 		return err
 	}
+	err = newstotags.CreateService(s.helper).DeleteMany(item.NewsToTagsForDelete)
+	if err != nil {
+		return err
+	}
 	newsImagersService := newsimages.CreateService(s.helper)
 	err = newsImagersService.UpsertMany(item.NewsImages)
 	if err != nil {

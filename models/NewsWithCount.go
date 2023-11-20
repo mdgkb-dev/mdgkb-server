@@ -1,6 +1,6 @@
 package models
 
 type NewsWithCount struct {
-	News  []*News `json:"news"`
+	News  []*News `json:"items"`
 	Count int     `json:"count"`
 }

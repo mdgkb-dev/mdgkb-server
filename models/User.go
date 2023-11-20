@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	"mdgkb/mdgkb-server/middleware"
 	"time"
 
 	"github.com/google/uuid"
@@ -103,5 +103,5 @@ func (i *User) SetIDForChildren() {
 }
 
 func (i *User) SetJWTClaimsMap(claims map[string]interface{}) {
-	fmt.Println(claims)
+	claims[middleware.ClaimUserID.String()] = i.ID.UUID
 }

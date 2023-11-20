@@ -1,6 +1,8 @@
 package users
 
 import (
+	"fmt"
+	"mdgkb/mdgkb-server/middleware"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -74,51 +76,51 @@ type FavouriteForm struct {
 }
 
 func (h *Handler) AddToUser(c *gin.Context) {
-	// userID, err := h.helper.Token.GetUserID(c)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// 	return
-	// }
+	userID, err := h.helper.Token.ExtractTokenMetadata(c.Request, middleware.ClaimUserID)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
 
-	// domain := c.Param("domain")
-	// table := fmt.Sprintf("%ss_users", domain)
-	// domainCol := fmt.Sprintf("%s_id", domain)
+	domain := c.Param("domain")
+	table := fmt.Sprintf("%ss_users", domain)
+	domainCol := fmt.Sprintf("%s_id", domain)
 
-	// fav := FavouriteForm{}
-	// err = c.Bind(&fav)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// 	return
-	// }
-	// domainID := fav.ID
+	fav := FavouriteForm{}
+	err = c.Bind(&fav)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	domainID := fav.ID
 
-	// values := map[string]interface{}{
-	// 	domainCol: domainID,
-	// 	"user_id": userID,
-	// }
-	// item := h.service.AddToUser(values, table)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// 	return
-	// }
-	c.JSON(http.StatusOK, nil)
+	values := map[string]interface{}{
+		domainCol: domainID,
+		"user_id": userID,
+	}
+	item := h.service.AddToUser(values, table)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
 }
 
 func (h *Handler) RemoveFromUser(c *gin.Context) {
-	// userID, err := h.helper.Token.GetUserID(c)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// return
-	// }
+	userID, err := h.helper.Token.ExtractTokenMetadata(c.Request, middleware.ClaimUserID)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
 
-	// domain := c.Param("domain")
-	// table := fmt.Sprintf("%ss_users", domain)
+	domain := c.Param("domain")
+	table := fmt.Sprintf("%ss_users", domain)
 	// domainCol := fmt.Sprintf("%s_id", domain)
 
-	// domainID := c.Param("id")
-	// values := map[string]interface{}{
-	// domainCol: domainID,
-	// "user_id": userID,
-	// }
-	// item, err := h.service.RemoveFromUser(values, table)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// 	return
-	// }
-	c.JSON(http.StatusOK, nil)
+	_ = c.Param("id")
+	values := map[string]interface{}{
+		// domainCol: domainID,
+		"user_id": userID,
+	}
+	item := h.service.RemoveFromUser(values, table)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
 }

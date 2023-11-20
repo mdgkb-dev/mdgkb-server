@@ -78,12 +78,14 @@ func (h *Handler) RefreshToken(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-
+	//userId, err := h.helper.Token.ExtractTokenMetadata(c.Request, "user_id")
+	//if h.helper.HTTP.HandleError(c, err) {
+	//	return
+	//}
 	user, err := users.CreateService(h.helper).Get(t.UserID)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-
 	tokens, err := h.helper.Token.RefreshToken(t.RefreshToken, user)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
@@ -197,17 +199,10 @@ func (h *Handler) CheckPathPermissions(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	// userRoleID := ""
-	// if c.Request.Header.Get("token") != "null" {
-	// 	accessDetails, err := h.helper.Token.GetAccessDetail(c)
-	// 	if h.helper.HTTP.HandleError(c, err) {
-	// 		return
-	// 	}
-	// 	userRoleID = accessDetails.UserRoleID
-	// }
-	// err = h.service.CheckPathPermissions(path, userRoleID)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// 	return
-	// }
+	userRoleID := ""
+	err = h.service.CheckPathPermissions(path, userRoleID)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
 	c.JSON(http.StatusOK, nil)
 }

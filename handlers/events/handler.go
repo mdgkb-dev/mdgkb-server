@@ -1,10 +1,12 @@
 package events
 
 import (
+	"mdgkb/mdgkb-server/middleware"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (h *Handler) CreateEventApplication(c *gin.Context) {
@@ -13,15 +15,15 @@ func (h *Handler) CreateEventApplication(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	// userID, err := h.helper.Token.GetUserID(c)
-	// if h.helper.HTTP.HandleError(c, err) {
-	// 	return
-	// }
+	userID, err := h.helper.Token.ExtractTokenMetadata(c.Request, middleware.ClaimUserID)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
 	err = h.service.CreateEventApplication(&item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	// item.UserID = *userID
+	item.UserID = uuid.MustParse(userID)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
