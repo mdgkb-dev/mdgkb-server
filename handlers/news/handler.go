@@ -180,22 +180,9 @@ func (h *Handler) DeleteLike(c *gin.Context) {
 }
 
 func (h *Handler) GetBySLug(c *gin.Context) {
-	item, err := h.service.GetBySlug(c.Param("slug"))
+	item, err := h.service.GetBySlug(c, c.Param("slug"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
-	}
-	item.ViewsCount = len(item.NewsViews)
-	ip, err := h.helper.HTTP.GetClientIPHelper(c.Request)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	newsView := models.NewsView{IPAddress: ip, NewsID: item.ID}
-	err = h.service.CreateViewOfNews(&newsView)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	if newsView.ID.Valid {
-		item.ViewsCount++
 	}
 	c.JSON(http.StatusOK, item)
 }

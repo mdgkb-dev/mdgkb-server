@@ -1,6 +1,7 @@
 package news
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
@@ -110,8 +111,26 @@ func (s *Service) DeleteLike(id string) error {
 	return s.repository.deleteLike(id)
 }
 
-func (s *Service) GetBySlug(slug string) (*models.News, error) {
-	return s.repository.getBySlug(slug)
+func (s *Service) GetBySlug(c *gin.Context, slug string) (*models.News, error) {
+	item, err := s.repository.getBySlug(slug)
+	if err != nil {
+		return nil, err
+	}
+	item.ViewsCount = len(item.NewsViews)
+	// ip, err := s.helper.HTTP.GetClientIPHelper(c.Request)
+	// if err !=nil {
+	// return nil, err
+	// }
+	fmt.Println(c.ClientIP())
+	newsView := models.NewsView{IPAddress: c.ClientIP(), NewsID: item.ID}
+	err = s.CreateViewOfNews(&newsView)
+	if err != nil {
+		return nil, err
+	}
+	if newsView.ID.Valid {
+		item.ViewsCount++
+	}
+	return item, nil
 }
 
 func (s *Service) Update(item *models.News) error {

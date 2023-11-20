@@ -43,7 +43,7 @@ type IService interface {
 	GetSubMain() (models.NewsWithCount, error)
 	Delete(string) error
 	DeleteLike(string) error
-	GetBySlug(string) (*models.News, error)
+	GetBySlug(*gin.Context, string) (*models.News, error)
 	CreateViewOfNews(*models.NewsView) error
 }
 

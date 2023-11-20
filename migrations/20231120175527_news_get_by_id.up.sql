@@ -1,0 +1,1 @@
+UPDATE search_groups SET value_column ='id' WHERE key = 'news';
