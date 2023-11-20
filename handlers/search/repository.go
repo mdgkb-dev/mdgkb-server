@@ -34,6 +34,14 @@ func (r *Repository) getGroups(groupID string) (models.SearchGroups, error) {
 	return items, err
 }
 
+func (r *Repository) getGroupByKey(key string) (*models.SearchGroup, error) {
+	item := models.SearchGroup{}
+	query := r.db().NewSelect().Model(&item).
+		Relation("SearchGroupMetaColumns").Where("key = ?", key)
+	err := query.Scan(r.ctx)
+	return &item, err
+}
+
 func (r *Repository) search(searchModel *models.SearchModel) error {
 	search := searchModel.Query
 	if searchModel.MustBeTranslate {

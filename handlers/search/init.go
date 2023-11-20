@@ -32,6 +32,7 @@ type IRepository interface {
 	db() *bun.DB
 	setQueryFilter(*gin.Context) error
 	getGroups(string) (models.SearchGroups, error)
+	getGroupByKey(string) (*models.SearchGroup, error)
 	search(*models.SearchModel) error
 	fullTextSearch(*models.SearchModel) error
 	elasticSuggester(*models.SearchModel) error
