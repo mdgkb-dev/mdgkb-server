@@ -43,18 +43,22 @@ func (r *Repository) getGroupByKey(key string) (*models.SearchGroup, error) {
 }
 
 func (r *Repository) search(searchModel *models.SearchModel) error {
-	search := searchModel.Query
-	if searchModel.MustBeTranslate {
-		search = r.helper.Util.TranslitToRu(searchModel.Query)
+	querySelect := fmt.Sprintf("SELECT %s.%s as value, substring(%s for 40) as label", searchModel.SearchGroup.Table, searchModel.SearchGroup.ValueColumn, searchModel.SearchGroup.LabelColumn)
+	queryFrom := fmt.Sprintf("FROM %s", searchModel.SearchGroup.Table)
+	join := ""
+
+	condition := fmt.Sprintf("where replace(regexp_replace(%s, '[^а-яА-Яa-zA-Z0-9. ]', '', 'g'), ' ' , '') ILIKE %s", searchModel.SearchGroup.SearchColumn, "'%"+searchModel.Query+"%'")
+	conditionTranslitToRu := fmt.Sprintf("or replace(regexp_replace(%s, '[^а-яА-Яa-zA-Z0-9. ]', '', 'g'), ' ', '') ILIKE %s", searchModel.SearchGroup.SearchColumn, "'%"+r.helper.Util.TranslitToRu(searchModel.Query)+"%'")
+	conditionTranslitToEng := fmt.Sprintf("or replace(regexp_replace(%s, '[^а-яА-Яa-zA-Z0-9. ]', '', 'g'), ' ', '') ILIKE %s", searchModel.SearchGroup.SearchColumn, "'%"+r.helper.Util.TranslitToEng(searchModel.Query)+"%'")
+
+	queryOrder := fmt.Sprintf("ORDER BY %s", searchModel.SearchGroup.LabelColumn)
+	query := fmt.Sprintf("%s %s %s %s %s %s %s", querySelect, queryFrom, join, condition, conditionTranslitToRu, conditionTranslitToEng, queryOrder)
+	rows, err := r.db().QueryContext(r.ctx, query)
+	if err != nil {
+		return err
 	}
-	err := r.db().
-		NewSelect().
-		Model(&searchModel.SearchGroup.SearchElements).
-		ColumnExpr("id, ? as value, ? as label", bun.Ident(searchModel.SearchGroup.ValueColumn), bun.Ident(searchModel.SearchGroup.LabelColumn)).
-		ModelTableExpr(searchModel.SearchGroup.Table).
-		Where("lower(regexp_replace(?::varchar, '[^а-яА-Яa-zA-Z0-9 ]', '', 'g')) LIKE lower(?)", bun.Ident(searchModel.SearchGroup.SearchColumn), "%"+search+"%").
-		Order(searchModel.SearchGroup.SearchColumn).
-		Scan(r.ctx)
+
+	err = r.db().ScanRows(r.ctx, rows, &searchModel.SearchGroup.SearchElements)
 	return err
 }
 
