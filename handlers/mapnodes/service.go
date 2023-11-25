@@ -7,7 +7,12 @@ import (
 )
 
 func (s *Service) UploadMapNodes(items models.MapNodes) error {
-	err := s.repository.UploadMapNodes(items)
+	err := s.repository.DeleteAll(items)
+	if err != nil {
+		return err
+	}
+
+	err = s.repository.UploadMapNodes(items)
 	if err != nil {
 		return err
 	}
