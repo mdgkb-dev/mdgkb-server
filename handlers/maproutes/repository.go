@@ -1,4 +1,4 @@
-package mapnodes
+package maproutes
 
 import (
 	"mdgkb/mdgkb-server/models"
@@ -20,12 +20,12 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	return nil
 }
 
-func (r *Repository) UploadMapNodes(items models.MapNodes) (err error) {
-	_, err = r.db().NewInsert().Model(items).Exec(r.ctx)
-	return err
-}
+func (r *Repository) GetMapRoute(startNodeID string, endNodeID string) (*models.MapRoute, error) {
+	item := models.MapRoute{}
+	err := r.db().NewSelect().Model(&item).
+		Where("?TableAlias.start_node_id = ?", startNodeID).
+		Where("?TableAlias.end_node_id = ?", endNodeID).
+		Scan(r.ctx)
 
-func (r *Repository) DeleteAll() (err error) {
-	_, err = r.db().NewDelete().Model((*models.MapNode)(nil)).Exec(r.ctx)
-	return err
+	return &item, err
 }

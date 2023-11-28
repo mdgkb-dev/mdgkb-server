@@ -1,4 +1,4 @@
-package mapnodes
+package maproutes
 
 import (
 	"context"
@@ -12,19 +12,18 @@ import (
 )
 
 type IHandler interface {
-	UploadMapNodes(c *gin.Context)
+	GetMapRoute(c *gin.Context)
 }
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
-	UploadMapNodes(NodesRequest) error
+	GetMapRoute(startID string, endID string) (*models.MapRoute, error)
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
-	UploadMapNodes(models.MapNodes) error
-	DeleteAll() error
+	GetMapRoute(startID string, endID string) (*models.MapRoute, error)
 }
 
 type Handler struct {

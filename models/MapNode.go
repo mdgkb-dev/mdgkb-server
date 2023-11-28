@@ -11,7 +11,7 @@ type MapNode struct {
 	Name          string        `json:"name"`
 	IsEntry       bool          `json:"isEntry"`
 	Neighbors     MapNodes
-	NeighborsUUID []uuid.NullUUID `json:"neighbors"`
+	NeighborsUUID []uuid.NullUUID `json:"neighborNodesMapRoutes"`
 }
 
 type MapNodes []*MapNode

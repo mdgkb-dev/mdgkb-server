@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/google/uuid"
@@ -23,6 +24,7 @@ type MapRoute struct {
 type MapRoutes []*MapRoute
 
 func (i *MapRoute) Calculate(nodes MapNodes, g *Graph) {
+	// nodes.InitNeighbors()
 	routeNodes, _ := Dijkstra(g, i.StartNode, i.EndNode)
 
 	for _, v := range routeNodes {
@@ -33,6 +35,7 @@ func (i *MapRoute) Calculate(nodes MapNodes, g *Graph) {
 
 func (items MapRoutes) Calculate(nodes MapNodes) {
 	for _, node := range nodes {
+		node.IsEntry = true
 		if !node.IsEntry {
 			continue
 		}
@@ -48,6 +51,7 @@ func (items MapRoutes) Calculate(nodes MapNodes) {
 
 	for i := range items {
 		items[i].Calculate(nodes, &g)
+		fmt.Println(items[i].MapRouteNodes)
 	}
 }
 
@@ -74,7 +78,11 @@ func Dijkstra(graph *Graph, start, end *MapNode) (MapNodes, int) {
 	for len(visited) < len(graph.nodes) {
 		currentNode = minDistance(distances, visited)
 		visited[currentNode] = true
-
+		// fmt.Println("currentNodeGraph", graph.nodes[currentNode])
+		// fmt.Println("lens", len(visited), currentNode)
+		if currentNode == nil {
+			break
+		}
 		for neighbor, weight := range graph.nodes[currentNode] {
 			if distances[currentNode]+weight < distances[neighbor] {
 				distances[neighbor] = distances[currentNode] + weight
@@ -107,9 +115,9 @@ func minDistance(distances map[*MapNode]int, visited map[*MapNode]bool) *MapNode
 }
 
 func (i *Graph) Init(nodes MapNodes) {
-
+	i.nodes = make(map[*MapNode]map[*MapNode]int)
+	nodes.InitNeighbors()
 	for _, v := range nodes {
 		i.nodes[v] = v.Neighbors.ToMap()
 	}
-
 }

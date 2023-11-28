@@ -1,21 +1,28 @@
 package mapnodes
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) UploadMapNodes(items models.MapNodes) error {
-	err := s.repository.DeleteAll(items)
-	if err != nil {
-		return err
-	}
+func (s *Service) UploadMapNodes(items NodesRequest) error {
+	// err := s.repository.DeleteAll()
+	// if err != nil {
+	// 	return err
+	// }
 
-	err = s.repository.UploadMapNodes(items)
-	if err != nil {
-		return err
-	}
+	// err = s.repository.UploadMapNodes(items)
+	// if err != nil {
+	// 	return err
+	// }
+
+	routes := make(models.MapRoutes, 0)
+	routes.Calculate(items.MapNodes)
+	// fmt.Println(routes)
+	fmt.Printf("%+v\n", routes)
+
 	return nil
 }
 

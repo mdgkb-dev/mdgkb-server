@@ -41,6 +41,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/hospitalizations"
 	"mdgkb/mdgkb-server/handlers/hospitalizationstypes"
 	"mdgkb/mdgkb-server/handlers/mapnodes"
+	"mdgkb/mdgkb-server/handlers/maproutes"
 	"mdgkb/mdgkb-server/handlers/medicalprofiles"
 	"mdgkb/mdgkb-server/handlers/menus"
 	"mdgkb/mdgkb-server/handlers/meta"
@@ -119,6 +120,7 @@ import (
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalizations"
 	hospitalizationsTypesRouter "mdgkb/mdgkb-server/routing/hospitalizationstypes"
 	mapnodesRouter "mdgkb/mdgkb-server/routing/mapnodes"
+	maproutesRouter "mdgkb/mdgkb-server/routing/maproutes"
 	medicalProfilesRouter "mdgkb/mdgkb-server/routing/medicalprofiles"
 	menusRouter "mdgkb/mdgkb-server/routing/menus"
 	metaRouter "mdgkb/mdgkb-server/routing/meta"
@@ -257,4 +259,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	appointmentsTypesRouter.Init(api.Group("/appointments-types"), appointmenstypes.CreateHandler(helper))
 	dailyMenuOrdersRouter.Init(api.Group("/daily-menu-orders"), dailymenuorders.CreateHandler(helper))
 	mapnodesRouter.Init(api.Group("/map-nodes"), mapnodes.CreateHandler(helper))
+	maproutesRouter.Init(api.Group("/map-routes"), maproutes.CreateHandler(helper))
 }
