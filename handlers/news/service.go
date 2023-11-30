@@ -1,7 +1,6 @@
 package news
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
@@ -117,12 +116,11 @@ func (s *Service) GetBySlug(c *gin.Context, slug string) (*models.News, error) {
 		return nil, err
 	}
 	item.ViewsCount = len(item.NewsViews)
-	// ip, err := s.helper.HTTP.GetClientIPHelper(c.Request)
-	// if err !=nil {
-	// return nil, err
-	// }
-	fmt.Println(c.ClientIP())
-	newsView := models.NewsView{IPAddress: c.ClientIP(), NewsID: item.ID}
+
+	g := &models.GeoIP{}
+	country, city := g.GetByIP(c.ClientIP())
+
+	newsView := models.NewsView{IPAddress: c.ClientIP(), NewsID: item.ID, Country: country, City: city}
 	err = s.CreateViewOfNews(&newsView)
 	if err != nil {
 		return nil, err
