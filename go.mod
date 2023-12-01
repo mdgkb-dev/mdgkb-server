@@ -9,6 +9,7 @@ require (
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/websocket v1.5.0
+	github.com/ip2location/ip2location-go/v9 v9.6.1
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
@@ -22,7 +23,10 @@ require (
 
 require (
 	github.com/lestrrat-go/strftime v1.0.6 // indirect
+	github.com/oschwald/geoip2-golang v1.9.0 // indirect
+	github.com/oschwald/maxminddb-golang v1.11.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	lukechampine.com/uint128 v1.2.0 // indirect
 )
 
 require (
@@ -71,7 +75,7 @@ require (
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/image v0.0.0-20220617043117-41969df76e82 // indirect
 	golang.org/x/net v0.5.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/sys v0.9.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/ini.v1 v1.66.6 // indirect
