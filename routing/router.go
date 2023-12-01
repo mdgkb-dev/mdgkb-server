@@ -80,6 +80,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/valuetypes"
 	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	appointmentsTypesRouter "mdgkb/mdgkb-server/routing/appointmentstypes"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
@@ -159,6 +160,7 @@ import (
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valuetypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingrules"
 	visitsApplicationsRouter "mdgkb/mdgkb-server/routing/visitsapplications"
+	fileInfosRouter "mdgkb/mdgkb-server/routing/fileinfos"
 
 	"github.com/gin-gonic/gin"
 	helperPack "github.com/pro-assistance/pro-assister/helper"
@@ -260,4 +262,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dailyMenuOrdersRouter.Init(api.Group("/daily-menu-orders"), dailymenuorders.CreateHandler(helper))
 	mapnodesRouter.Init(api.Group("/map-nodes"), mapnodes.CreateHandler(helper))
 	maproutesRouter.Init(api.Group("/map-routes"), maproutes.CreateHandler(helper))
+	fileInfosRouter.Init(api.Group("/file-infos"), fileinfos.CreateHandler(helper))
 }
