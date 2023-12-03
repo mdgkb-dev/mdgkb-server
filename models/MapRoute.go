@@ -78,7 +78,7 @@ func Dijkstra(graph *Graph, start, end *MapNode) (MapNodes, int) {
 	for len(visited) < len(graph.nodes) {
 		currentNode = minDistance(distances, visited)
 		visited[currentNode] = true
-		// fmt.Println("currentNodeGraph", graph.nodes[currentNode])
+		// fmt.Println("currentNodeGraFph", graph.nodes[currentNode])
 		// fmt.Println("lens", len(visited), currentNode)
 		if currentNode == nil {
 			break

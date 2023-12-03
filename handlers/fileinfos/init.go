@@ -7,8 +7,8 @@ import (
 
 	"github.com/pro-assistance/pro-assister/helper"
 
-	"github.com/uptrace/bun"
 	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 )
 
 type IHandler interface {
@@ -27,7 +27,7 @@ type IRepository interface {
 	update(info *models.FileInfo) error
 	upsert(info *models.FileInfo) error
 	upsertMany(infos models.FileInfos) error
-	//deleteMany([]string) error
+	// deleteMany([]string) error
 }
 
 type IFilesService interface {
@@ -35,7 +35,7 @@ type IFilesService interface {
 }
 
 type Handler struct {
-	service IService
+	service      IService
 	filesService IFilesService
 	helper       *helper.Helper
 }

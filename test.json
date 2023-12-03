@@ -1,0 +1,49 @@
+{
+	"mapNodes": [
+		{
+			"id": "2AB8D4FEEEE94C199F3D8D708DFADE90",
+			"isEntry": false,
+			"neighborNodesMapRoutes": [
+				"E0ECE465F2D4453E93C8C457380DBC59"
+			]
+		},
+		{
+			"id": "5ABBE39EC8834E3A93FBDAEE59DFBB02",
+			"isEntry": false,
+			"neighborNodesMapRoutes": [
+				"6838E3481DFA4C9FA6F48F684B30253F",
+				"E0ECE465F2D4453E93C8C457380DBC59"
+			]
+		},
+		{
+			"id": "539C3F4D81FC491BB3EDE38CE3213CC5",
+			"isEntry": false,
+			"neighborNodesMapRoutes": [
+				"6838E3481DFA4C9FA6F48F684B30253F"
+			]
+		},
+		{
+			"id": "6838E3481DFA4C9FA6F48F684B30253F",
+			"isEntry": false,
+			"neighborNodesMapRoutes": [
+				"5ABBE39EC8834E3A93FBDAEE59DFBB02",
+				"539C3F4D81FC491BB3EDE38CE3213CC5"
+			]
+		},
+		{
+			"id": "1163A704F4A144FF915303AC12705424",
+			"isEntry": false,
+			"neighborNodesMapRoutes": [
+				"5ABBE39EC8834E3A93FBDAEE59DFBB02"
+			]
+		},
+		{
+			"id": "E0ECE465F2D4453E93C8C457380DBC59",
+			"isEntry": false,
+			"neighborNodesMapRoutes": [
+				"5ABBE39EC8834E3A93FBDAEE59DFBB02",
+				"2AB8D4FEEEE94C199F3D8D708DFADE90"
+			]
+		}
+	]
+}

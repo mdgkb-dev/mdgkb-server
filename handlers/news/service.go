@@ -189,10 +189,15 @@ func (s *Service) Update(item *models.News) error {
 	}
 	return err
 }
+
 func (s *Service) Delete(id string) error {
 	return s.repository.delete(id)
 }
 
 func (s *Service) SetQueryFilter(c *gin.Context) error {
 	return s.repository.SetQueryFilter(c)
+}
+
+func (s *Service) GetSuggestionNews(id string) ([]*models.News, error) {
+	return s.repository.GetSuggestionNews(id)
 }

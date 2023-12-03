@@ -32,6 +32,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/entrances"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
+	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/formpatterns"
 	"mdgkb/mdgkb-server/handlers/formstatuses"
 	"mdgkb/mdgkb-server/handlers/formstatusgroups"
@@ -80,7 +81,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/valuetypes"
 	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
-	"mdgkb/mdgkb-server/handlers/fileinfos"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	appointmentsTypesRouter "mdgkb/mdgkb-server/routing/appointmentstypes"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
@@ -112,6 +112,7 @@ import (
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
 	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
+	fileInfosRouter "mdgkb/mdgkb-server/routing/fileinfos"
 	formPatternsRouter "mdgkb/mdgkb-server/routing/formpatterns"
 	formStatusesRouter "mdgkb/mdgkb-server/routing/formstatuses"
 	formStatusGroupsRouter "mdgkb/mdgkb-server/routing/formstatusgroups"
@@ -160,17 +161,16 @@ import (
 	valueTypesRouter "mdgkb/mdgkb-server/routing/valuetypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingrules"
 	visitsApplicationsRouter "mdgkb/mdgkb-server/routing/visitsapplications"
-	fileInfosRouter "mdgkb/mdgkb-server/routing/fileinfos"
 
 	"github.com/gin-gonic/gin"
 	helperPack "github.com/pro-assistance/pro-assister/helper"
 )
 
 func Init(r *gin.Engine, helper *helperPack.Helper) {
-	//m := middleware.CreateMiddleware(helper)
+	// m := middleware.CreateMiddleware(helper)
 
-	//r.Use(m.CORSMiddleware())
-	//r.Use(m.CheckPermission())
+	// r.Use(m.CORSMiddleware())
+	// r.Use(m.CheckPermission())
 	r.Use(gin.Logger())
 	r.Static("/api/v1/static", "./static/")
 	authGroup := r.Group("/api/v1/auth")
@@ -179,9 +179,9 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	api := r.Group("/api/v1")
 	ws := r.Group("/ws")
 
-	//api.Use(m.Authentication())
-	//api.Use(m.CORSMiddleware())
-	//ws.Use(m.CORSMiddleware())
+	// api.Use(m.Authentication())
+	// api.Use(m.CORSMiddleware())
+	// ws.Use(m.CORSMiddleware())
 	api.GET("/subscribe/:channel", helper.Broker.ServeHTTP)
 
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(helper))

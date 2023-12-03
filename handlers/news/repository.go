@@ -154,3 +154,24 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 	}
 	return nil
 }
+
+func (r *Repository) GetSuggestionNews(id string) ([]*models.News, error) {
+	items := make([]*models.News, 0)
+	generalNewsQuery := r.DB().NewSelect().
+		ColumnExpr("news_view.id as news_id, news_to_tags.tag_id as tag_id").
+		Model((*models.News)(nil)).
+		Join("join news_to_tags on news_to_tags.news_id = news_view.id").
+		Where("?TableAlias.id =? ", id)
+
+	err := r.DB().NewSelect().
+		With("gen_news", generalNewsQuery).
+		Model(&items).
+		ColumnExpr("news_view.id, news_view.title, news_view.published_on,views_count, count(news_to_tags.id) as tag_count ").
+		Join("left join news_to_tags on news_to_tags.news_id = news_view.id").
+		Join("left join gen_news on gen_news.tag_id = news_to_tags.tag_id").
+		Group("news_view.id", "news_to_tags.tag_id", "news_view.title", "news_view.published_on", "views_count").
+		Order("tag_count desc", "views_count", "published_on desc").
+		Limit(4).
+		Scan(r.ctx)
+	return items, err
+}

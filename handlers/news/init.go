@@ -26,6 +26,7 @@ type IHandler interface {
 	CreateComment(c *gin.Context)
 	UpdateComment(c *gin.Context)
 	RemoveComment(c *gin.Context)
+	GetSuggestionNews(c *gin.Context)
 }
 
 type IService interface {
@@ -45,6 +46,7 @@ type IService interface {
 	DeleteLike(string) error
 	GetBySlug(*gin.Context, string) (*models.News, error)
 	CreateViewOfNews(*models.NewsView) error
+	GetSuggestionNews(id string) ([]*models.News, error)
 }
 
 type IRepository interface {
@@ -64,6 +66,7 @@ type IRepository interface {
 	getBySlug(string) (*models.News, error)
 	createViewOfNews(*models.NewsView) error
 	SetQueryFilter(*gin.Context) error
+	GetSuggestionNews(id string) ([]*models.News, error)
 }
 
 type IFilesService interface {
@@ -77,13 +80,13 @@ type Handler struct {
 }
 
 type Service struct {
-	//basehandler.Service
+	// basehandler.Service
 	repository IRepository
 	helper     *helper.Helper
 }
 
 type Repository struct {
-	//baseHandler.Repository
+	// baseHandler.Repository
 
 	ctx         context.Context
 	helper      *helper.Helper

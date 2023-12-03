@@ -186,3 +186,11 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, item)
 }
+
+func (h *Handler) GetSuggestionNews(c *gin.Context) {
+	items, err := h.service.GetSuggestionNews(c.Param("id"))
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, items)
+}
