@@ -10,6 +10,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/newstocategories"
 	"mdgkb/mdgkb-server/handlers/newstotags"
 	"mdgkb/mdgkb-server/models"
+	"mdgkb/mdgkb-server/models/exportmodels"
 
 	"github.com/gin-gonic/gin"
 )
@@ -200,4 +201,8 @@ func (s *Service) SetQueryFilter(c *gin.Context) error {
 
 func (s *Service) GetSuggestionNews(id string) ([]*models.News, error) {
 	return s.repository.GetSuggestionNews(id)
+}
+
+func (s *Service) GetAggregateViews(opts *exportmodels.NewsView) (models.ChartDataSets, error) {
+	return s.repository.GetAggregateViews(opts)
 }

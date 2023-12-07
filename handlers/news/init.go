@@ -3,6 +3,7 @@ package news
 import (
 	"context"
 	"mdgkb/mdgkb-server/models"
+	"mdgkb/mdgkb-server/models/exportmodels"
 	"mime/multipart"
 
 	"github.com/pro-assistance/pro-assister/helper"
@@ -47,6 +48,7 @@ type IService interface {
 	GetBySlug(*gin.Context, string) (*models.News, error)
 	CreateViewOfNews(*models.NewsView) error
 	GetSuggestionNews(id string) ([]*models.News, error)
+	GetAggregateViews(*exportmodels.NewsView) (models.ChartDataSets, error)
 }
 
 type IRepository interface {
@@ -67,6 +69,7 @@ type IRepository interface {
 	createViewOfNews(*models.NewsView) error
 	SetQueryFilter(*gin.Context) error
 	GetSuggestionNews(id string) ([]*models.News, error)
+	GetAggregateViews(*exportmodels.NewsView) (models.ChartDataSets, error)
 }
 
 type IFilesService interface {

@@ -17,6 +17,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/dailymenuitems"
 	"mdgkb/mdgkb-server/handlers/dailymenuorders"
 	"mdgkb/mdgkb-server/handlers/dailymenus"
+	"mdgkb/mdgkb-server/handlers/dataexport"
 	"mdgkb/mdgkb-server/handlers/diets"
 	"mdgkb/mdgkb-server/handlers/dietsgroups"
 	"mdgkb/mdgkb-server/handlers/dishesgroups"
@@ -97,6 +98,7 @@ import (
 	dailyMenuItemsRouter "mdgkb/mdgkb-server/routing/dailymenuitems"
 	dailyMenuOrdersRouter "mdgkb/mdgkb-server/routing/dailymenuorders"
 	dailyMenusRouter "mdgkb/mdgkb-server/routing/dailymenus"
+	dataexportRouter "mdgkb/mdgkb-server/routing/dataexport"
 	dietsRouter "mdgkb/mdgkb-server/routing/diets"
 	dietsGroupsRouter "mdgkb/mdgkb-server/routing/dietsgroups"
 	dishesGroupsRouter "mdgkb/mdgkb-server/routing/dishesgroups"
@@ -263,4 +265,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	mapnodesRouter.Init(api.Group("/map-nodes"), mapnodes.CreateHandler(helper))
 	maproutesRouter.Init(api.Group("/map-routes"), maproutes.CreateHandler(helper))
 	fileInfosRouter.Init(api.Group("/file-infos"), fileinfos.CreateHandler(helper))
+	dataexportRouter.Init(api.Group("/export-data"), dataexport.CreateHandler(helper))
 }

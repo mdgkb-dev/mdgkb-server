@@ -3,6 +3,7 @@ package news
 import (
 	"fmt"
 	"mdgkb/mdgkb-server/models"
+	"mdgkb/mdgkb-server/models/exportmodels"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -172,6 +173,17 @@ func (r *Repository) GetSuggestionNews(id string) ([]*models.News, error) {
 		Group("news_view.id", "news_to_tags.tag_id", "news_view.title", "news_view.published_on", "views_count").
 		Order("tag_count desc", "views_count", "published_on desc").
 		Limit(4).
+		Scan(r.ctx)
+	return items, err
+}
+
+func (r *Repository) GetAggregateViews(opt *exportmodels.NewsView) (models.ChartDataSets, error) {
+	items := make(models.ChartDataSets, 0)
+	err := r.DB().NewSelect().Model(&items).
+		ColumnExpr(opt.GetColExpr()).
+		Table("news n").
+		Join("news_views nv on nv.id = nv.news_id").
+		Group(opt.GetColExpr()).
 		Scan(r.ctx)
 	return items, err
 }
