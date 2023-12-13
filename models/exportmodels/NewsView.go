@@ -3,6 +3,7 @@ package exportmodels
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 )
 
 type NewsView struct {
@@ -19,6 +20,7 @@ const (
 )
 
 func (item *NewsView) GetColExpr() string {
+	fmt.Sprintln(item)
 	if item.Type == NewsViewTypeExportCities {
 		return "city as label, 100.0 * count(*) / sum(count(*)) over() as value"
 	}
@@ -40,7 +42,7 @@ func (item *NewsView) GetGroupExpr() string {
 	return ""
 }
 
-const newsViewKey = "newsView"
+const newsViewKey = "news"
 
 func (item *NewsView) ParseExportOptions(options map[string]map[string]interface{}) error {
 	opt, ok := options[newsViewKey]

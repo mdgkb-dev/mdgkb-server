@@ -2,6 +2,7 @@ package dataexport
 
 import (
 	"encoding/json"
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/exportmodels"
@@ -22,12 +23,16 @@ func (h *Handler) Data(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
+	fmt.Println(opts)
 	newsExport := exportmodels.NewsView{}
 
 	opts.Parse(&newsExport)
+	fmt.Println(opts)
 	items, err := news.NewRepository(h.helper).GetAggregateViews(&newsExport)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	c.JSON(http.StatusOK, items)
+	item := models.ChartQuery{}
+	item.InitFromDataSets(items)
+	c.JSON(http.StatusOK, item)
 }
