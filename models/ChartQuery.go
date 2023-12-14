@@ -5,7 +5,7 @@ import (
 )
 
 type ChartQuery struct {
-	EntityID uuid.UUID     `bun:"type=uuid" json:"entityId"`
+	EntityID uuid.NullUUID `bun:"type=uuid" json:"entityId"`
 	Type     ChartDataType `json:"chartDataType"`
 	DataSets ChartDataSets `json:"datasets"`
 	Labels   []string      `json:"labels"`

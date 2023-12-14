@@ -26,7 +26,7 @@ func (item *NewsView) GetColExpr() string {
 	}
 
 	if item.Type == NewsViewTypeExportDates {
-		return "nv.created_at::date as label, count(nv.created_at::date) as value"
+		return "nv.created_at::date as label, count(nv.created_at::date)::float as value"
 	}
 	return ""
 }
