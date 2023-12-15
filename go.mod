@@ -3,6 +3,7 @@ module mdgkb/mdgkb-server
 go 1.18
 
 require (
+	github.com/AvraamMavridis/randomcolor v0.0.0-20180822172341-208aff70bf2c
 	github.com/elastic/go-elasticsearch/v8 v8.2.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-pg/pg/v10 v10.10.6

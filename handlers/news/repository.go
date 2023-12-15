@@ -179,11 +179,16 @@ func (r *Repository) GetSuggestionNews(id string) ([]*models.News, error) {
 
 func (r *Repository) GetAggregateViews(opt *exportmodels.NewsView) (models.ChartDataSets, error) {
 	items := make(models.ChartDataSets, 0)
-	err := r.DB().NewSelect().
+	query := r.DB().NewSelect().
 		ColumnExpr(opt.GetColExpr()).
 		TableExpr("news n").
 		Join("join news_views nv on n.id = nv.news_id and nv.created_at is not null").
-		Group(opt.GetGroupExpr()).
-		Scan(r.ctx, &items)
+		Group(opt.GetGroupExpr())
+
+	if len(opt.IDPool) > 0 {
+		query.Where("n.id in (?)", bun.In(opt.IDPool))
+	}
+
+	err := query.Scan(r.ctx, &items)
 	return items, err
 }

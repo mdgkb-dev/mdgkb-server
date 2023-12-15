@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/AvraamMavridis/randomcolor"
 	"github.com/google/uuid"
 )
 
@@ -27,5 +28,6 @@ func (item *ChartQuery) InitFromDataSets(dataSets ChartDataSets) {
 	for _, dataSet := range dataSets {
 		item.Labels = append(item.Labels, dataSet.Label)
 		item.DataSets[0].Data = append(item.DataSets[0].Data, dataSet.Value)
+		item.DataSets[0].BackgroundColor = append(item.DataSets[0].BackgroundColor, randomcolor.GetRandomColorInHex())
 	}
 }
