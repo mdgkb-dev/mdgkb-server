@@ -28,6 +28,7 @@ type IHandler interface {
 	UpdateComment(c *gin.Context)
 	RemoveComment(c *gin.Context)
 	GetSuggestionNews(c *gin.Context)
+	GetNewsComments(c *gin.Context)
 }
 
 type IService interface {
@@ -46,6 +47,7 @@ type IService interface {
 	Delete(string) error
 	DeleteLike(string) error
 	GetBySlug(*gin.Context, string) (*models.News, error)
+	GetNewsComments(*gin.Context, string) (*models.NewsComments, error)
 	CreateViewOfNews(*models.NewsView) error
 	GetSuggestionNews(id string) ([]*models.News, error)
 	GetAggregateViews(*exportmodels.NewsView) (models.ChartDataSets, error)
@@ -66,6 +68,7 @@ type IRepository interface {
 	delete(string) error
 	deleteLike(string) error
 	getBySlug(string) (*models.News, error)
+	getNewsComments(string) (*models.NewsComments, error)
 	createViewOfNews(*models.NewsView) error
 	SetQueryFilter(*gin.Context) error
 	GetSuggestionNews(id string) ([]*models.News, error)

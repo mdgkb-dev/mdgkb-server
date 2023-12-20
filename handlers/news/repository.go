@@ -117,10 +117,10 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		Relation("Event.Form.Fields.ValueType").
 		Relation("Event.EventApplications.FieldValues").
 		Relation("Event.EventApplications.User").
-		Relation("NewsComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
-		}).
-		Relation("NewsComments.Comment.User.Human").
+		// Relation("NewsComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
+		// 	return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
+		// }).
+		// Relation("NewsComments.Comment.User.Human").
 		Relation("NewsImages", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("news_images.news_image_order")
 		}).
@@ -131,6 +131,17 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		Relation("NewsDoctors.Doctor.Employee.Regalias").
 		Where("news_view.id = ?", slug).Scan(r.ctx)
 	return &item, err
+}
+
+func (r *Repository) getNewsComments(id string) (*models.NewsComments, error) {
+	items := models.NewsComments{}
+	err := r.DB().NewSelect().Model(&items).
+		Relation("Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
+		}).
+		Relation("Comment.User.Human").
+		Where("news_comments.news_id = ?", id).Scan(r.ctx)
+	return &items, err
 }
 
 func (r *Repository) delete(id string) (err error) {
