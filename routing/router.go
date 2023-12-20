@@ -40,6 +40,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/formvalues"
 	"mdgkb/mdgkb-server/handlers/gates"
 	"mdgkb/mdgkb-server/handlers/heads"
+	"mdgkb/mdgkb-server/handlers/holidayforms"
 	"mdgkb/mdgkb-server/handlers/hospitalizations"
 	"mdgkb/mdgkb-server/handlers/hospitalizationstypes"
 	"mdgkb/mdgkb-server/handlers/mapnodes"
@@ -121,6 +122,7 @@ import (
 	formValuesRouter "mdgkb/mdgkb-server/routing/formvalues"
 	gatesRouter "mdgkb/mdgkb-server/routing/gates"
 	headsRouter "mdgkb/mdgkb-server/routing/heads"
+	holidayformsRouter "mdgkb/mdgkb-server/routing/holidayforms"
 	hospitalizationRouter "mdgkb/mdgkb-server/routing/hospitalizations"
 	hospitalizationsTypesRouter "mdgkb/mdgkb-server/routing/hospitalizationstypes"
 	mapnodesRouter "mdgkb/mdgkb-server/routing/mapnodes"
@@ -266,4 +268,5 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	maproutesRouter.Init(api.Group("/map-routes"), maproutes.CreateHandler(helper))
 	fileInfosRouter.Init(api.Group("/file-infos"), fileinfos.CreateHandler(helper))
 	dataexportRouter.Init(api.Group("/export-data"), dataexport.CreateHandler(helper))
+	holidayformsRouter.Init(api.Group("/holiday-forms"), holidayforms.CreateHandler(helper))
 }
