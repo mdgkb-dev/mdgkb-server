@@ -14,6 +14,7 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.GET("/relation-news", h.GetAll)
 	r.GET("", h.GetAll)
 	r.GET("/:slug", h.GetBySLug)
+	r.GET("/comments/:id", h.GetNewsComments)
 	r.POST("", h.Create)
 	r.PUT("/:id", h.Update)
 	r.POST("/like", h.CreateLike)

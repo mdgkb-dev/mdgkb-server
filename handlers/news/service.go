@@ -206,3 +206,7 @@ func (s *Service) GetSuggestionNews(id string) ([]*models.News, error) {
 func (s *Service) GetAggregateViews(opts *exportmodels.NewsView) (models.ChartDataSets, error) {
 	return s.repository.GetAggregateViews(opts)
 }
+
+	func (s *Service) GetNewsComments(c *gin.Context, id string) (*models.NewsComments, error) {
+	return s.repository.getNewsComments(id)
+}
