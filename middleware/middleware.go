@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -18,24 +17,35 @@ func CreateMiddleware(helper *helper.Helper) *Middleware {
 
 func (m *Middleware) InjectRequestInfo() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		err := Claims{ClaimUserID, ClaimDomainIDS}.Inject(c.Request, m.helper.Token)
-		fmt.Println(err)
-		if m.helper.HTTP.HandleError(c, err) {
-			return
-		}
-		if err != nil {
-			return
-		}
-		err = m.helper.SQL.InjectQueryFilter(c)
-		if m.helper.HTTP.HandleError(c, err) {
-			return
-		}
-
-		if err != nil {
-			return
-		}
+		m.injectClaims(c)
+		m.injectFTSP(c)
 		c.Next()
 	}
+}
+
+func (m *Middleware) injectClaims(c *gin.Context) {
+	err := Claims{ClaimUserID, ClaimDomainIDS}.Inject(c.Request, m.helper.Token)
+	if m.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	if err != nil {
+		return
+	}
+	err = m.helper.SQL.InjectQueryFilter(c)
+	if m.helper.HTTP.HandleError(c, err) {
+		return
+	}
+
+	if err != nil {
+		return
+	}
+}
+
+func (m *Middleware) injectFTSP(c *gin.Context) {
+	_ = c.Query("qid")
+	// if qid != nil {
+	// 	Query.Inject(c.Request, m.helper.Token)
+	// }
 }
 
 func (m *Middleware) methodIsAllowed(requestMethod string) bool {
