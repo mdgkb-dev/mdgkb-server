@@ -1,6 +1,7 @@
 package holidayforms
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,13 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) create(item *models.HolidayForm) error {
-	_, err := r.db().NewInsert().Model(item).Exec(r.ctx)
+	fmt.Println(item)
+	_, err := r.db().NewInsert().
+		Model(item).
+		// Set("needing = ?", pgdialect.Array(item.Needing)).
+		// Set("place = ?", pgdialect.Array(item.Place)).
+		Exec(r.ctx)
+
 	return err
 }
 

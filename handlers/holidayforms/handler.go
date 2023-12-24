@@ -1,6 +1,7 @@
 package holidayforms
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -9,10 +10,11 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.HolidayForm
-	err := c.Bind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
+	fmt.Println(item)
 	err = h.service.Create(&item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
