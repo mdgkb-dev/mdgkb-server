@@ -3,9 +3,11 @@ package middleware
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/sqlHelper"
 )
 
 type Middleware struct {
@@ -14,6 +16,26 @@ type Middleware struct {
 
 func CreateMiddleware(helper *helper.Helper) *Middleware {
 	return &Middleware{helper: helper}
+}
+
+func (m *Middleware) InjectFTSP() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if !strings.Contains(c.Request.URL.Path, "ftsp") {
+			return
+		}
+		ftsp := &sqlHelper.FTSPQuery{}
+		err := ftsp.FromForm(c)
+		if m.helper.HTTP.HandleError(c, err) {
+			return
+		}
+		fmt.Println("ftsp", ftsp)
+		m.helper.SQL.InjectFTSP2(c.Request, &ftsp.FTSP)
+
+		if err != nil {
+			return
+		}
+		c.Next()
+	}
 }
 
 func (m *Middleware) InjectRequestInfo() gin.HandlerFunc {

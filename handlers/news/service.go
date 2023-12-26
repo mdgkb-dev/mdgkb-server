@@ -1,6 +1,7 @@
 package news
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
@@ -55,8 +56,8 @@ func (s *Service) Create(item *models.News) error {
 	return err
 }
 
-func (s *Service) GetAll(ftsp bool) (models.NewsWithCount, error) {
-	return s.Repository.getAll(ftsp)
+func (s *Service) GetAll(c context.Context, ftsp bool) (models.NewsWithCount, error) {
+	return s.Repository.getAll(c, ftsp)
 }
 
 func (s *Service) GetMain() (models.NewsWithCount, error) {

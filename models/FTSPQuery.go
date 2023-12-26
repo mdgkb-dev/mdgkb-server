@@ -1,6 +1,8 @@
 package models
 
-import "github.com/pro-assistance/pro-assister/sqlHelper"
+import (
+	"github.com/pro-assistance/pro-assister/sqlHelper"
+)
 
 type FTSPQuery struct {
 	QID  string         `json:"qid"`

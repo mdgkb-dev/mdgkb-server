@@ -1,7 +1,6 @@
 package news
 
 import (
-	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -9,17 +8,7 @@ import (
 )
 
 func (h *Handler) FTSP(c *gin.Context) {
-	var item models.FTSPQuery
-	_, err := h.helper.HTTP.GetForm(c, &item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	fmt.Println(item)
-	err = h.service.SetQueryFilter(c, item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	data, err := h.service.GetAll(true)
+	data, err := h.service.GetAll(c.Request.Context(), true)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -89,7 +78,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	news, err := h.service.GetAll(false)
+	news, err := h.service.GetAll(c.Request.Context(), false)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

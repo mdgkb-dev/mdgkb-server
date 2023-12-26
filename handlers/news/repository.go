@@ -1,6 +1,7 @@
 package news
 
 import (
+	"context"
 	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/exportmodels"
@@ -64,9 +65,8 @@ func (r *Repository) removeComment(id string) error {
 	return err
 }
 
-func (r *Repository) getAll(ftsp bool) (items models.NewsWithCount, err error) {
+func (r *Repository) getAll(c context.Context, ftsp bool) (items models.NewsWithCount, err error) {
 	items.News = make([]*models.News, 0)
-	fmt.Println(r.FTSP)
 	query := r.DB().NewSelect().Model(&items.News).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
@@ -74,7 +74,11 @@ func (r *Repository) getAll(ftsp bool) (items models.NewsWithCount, err error) {
 		Relation("NewsLikes").
 		Relation("NewsViews")
 	if ftsp {
-		r.FTSP.HandleQuery(query)
+		fmt.Println("filter")
+		f := r.helper.SQL.ExtractFTSP(c)
+		fmt.Println(f)
+		f.HandleQuery(query)
+		// r.helper.SQL.HandleFTSPQuery(c, query)
 	} else {
 		r.queryFilter.HandleQuery(query)
 	}

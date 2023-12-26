@@ -42,7 +42,7 @@ type IService interface {
 	CreateComment(*models.NewsComment) error
 	UpdateComment(*models.NewsComment) error
 	RemoveComment(string) error
-	GetAll(bool) (models.NewsWithCount, error)
+	GetAll(context.Context, bool) (models.NewsWithCount, error)
 	GetMain() (models.NewsWithCount, error)
 	GetSubMain() (models.NewsWithCount, error)
 	Delete(string) error
@@ -65,7 +65,7 @@ type IRepository interface {
 	removeComment(string) error
 	getMain() (models.NewsWithCount, error)
 	getSubMain() (models.NewsWithCount, error)
-	getAll(bool) (models.NewsWithCount, error)
+	getAll(context.Context, bool) (models.NewsWithCount, error)
 	delete(string) error
 	deleteLike(string) error
 	getBySlug(string) (*models.News, error)

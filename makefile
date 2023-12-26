@@ -10,6 +10,7 @@ else
 	main := cmd/server/*.go
 endif
 
+#####
 run: migrate
 	reflex -r '\.go' -s -- sh -c "go run $(main)"
 
@@ -36,6 +37,11 @@ dump_from_remote:
 
 dump: dump_from_remote
 
+show_sql_error: 
+	@./cmd/scripts/write_last_sql_error.sh | sed 's/\\//g'
+
+update_assister: 
+	go get github.com/pro-assistance/pro-assister@${tag} 
 ########
 #DOCKER#
 ########
