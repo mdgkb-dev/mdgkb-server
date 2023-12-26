@@ -14,6 +14,7 @@ import (
 
 type IHandler interface {
 	GetMain(c *gin.Context)
+	FTSP(c *gin.Context)
 	GetSubMain(c *gin.Context)
 	GetAll(c *gin.Context)
 	GetBySLug(c *gin.Context)
@@ -32,7 +33,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	SetQueryFilter(*gin.Context) error
+	SetQueryFilter(*gin.Context, models.FTSPQuery) error
 	Create(*models.News) error
 	Update(*models.News) error
 	CreateLike(*models.NewsLike) error
@@ -41,7 +42,7 @@ type IService interface {
 	CreateComment(*models.NewsComment) error
 	UpdateComment(*models.NewsComment) error
 	RemoveComment(string) error
-	GetAll() (models.NewsWithCount, error)
+	GetAll(bool) (models.NewsWithCount, error)
 	GetMain() (models.NewsWithCount, error)
 	GetSubMain() (models.NewsWithCount, error)
 	Delete(string) error
@@ -64,13 +65,13 @@ type IRepository interface {
 	removeComment(string) error
 	getMain() (models.NewsWithCount, error)
 	getSubMain() (models.NewsWithCount, error)
-	getAll() (models.NewsWithCount, error)
+	getAll(bool) (models.NewsWithCount, error)
 	delete(string) error
 	deleteLike(string) error
 	getBySlug(string) (*models.News, error)
 	getNewsComments(string) (*models.NewsComments, error)
 	createViewOfNews(*models.NewsView) error
-	SetQueryFilter(*gin.Context) error
+	SetQueryFilter(*gin.Context, models.FTSPQuery) error
 	GetSuggestionNews(id string) ([]*models.News, error)
 	GetAggregateViews(*exportmodels.NewsView) (models.ChartDataSets, error)
 }
@@ -87,7 +88,7 @@ type Handler struct {
 
 type Service struct {
 	// basehandler.Service
-	repository IRepository
+	Repository IRepository
 	helper     *helper.Helper
 }
 
@@ -97,6 +98,7 @@ type Repository struct {
 	ctx         context.Context
 	helper      *helper.Helper
 	queryFilter *sqlHelper.QueryFilter
+	FTSP        sqlHelper.FTSP
 }
 
 type FilesService struct {
@@ -116,7 +118,7 @@ func NewHandler(s IService, filesService IFilesService, helper *helper.Helper) *
 }
 
 func NewService(repository IRepository, helper *helper.Helper) *Service {
-	return &Service{repository: repository, helper: helper}
+	return &Service{Repository: repository, helper: helper}
 }
 
 func NewRepository(helper *helper.Helper) *Repository {

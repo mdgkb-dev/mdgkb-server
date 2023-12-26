@@ -26,7 +26,7 @@ func (s *Service) Create(item *models.News) error {
 	}
 	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
-	err = s.repository.create(item)
+	err = s.Repository.create(item)
 	if err != nil {
 		return err
 	}
@@ -55,28 +55,28 @@ func (s *Service) Create(item *models.News) error {
 	return err
 }
 
-func (s *Service) GetAll() (models.NewsWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(ftsp bool) (models.NewsWithCount, error) {
+	return s.Repository.getAll(ftsp)
 }
 
 func (s *Service) GetMain() (models.NewsWithCount, error) {
-	return s.repository.getMain()
+	return s.Repository.getMain()
 }
 
 func (s *Service) GetSubMain() (models.NewsWithCount, error) {
-	return s.repository.getSubMain()
+	return s.Repository.getSubMain()
 }
 
 func (s *Service) RemoveTag(item *models.NewsToTag) error {
-	return s.repository.removeTag(item)
+	return s.Repository.removeTag(item)
 }
 
 func (s *Service) AddTag(item *models.NewsToTag) error {
-	return s.repository.removeTag(item)
+	return s.Repository.removeTag(item)
 }
 
 func (s *Service) CreateLike(item *models.NewsLike) error {
-	return s.repository.createLike(item)
+	return s.Repository.createLike(item)
 }
 
 func (s *Service) CreateComment(item *models.NewsComment) error {
@@ -86,7 +86,7 @@ func (s *Service) CreateComment(item *models.NewsComment) error {
 		return err
 	}
 	item.SetForeignKeys()
-	return s.repository.createComment(item)
+	return s.Repository.createComment(item)
 }
 
 func (s *Service) UpdateComment(item *models.NewsComment) error {
@@ -96,23 +96,23 @@ func (s *Service) UpdateComment(item *models.NewsComment) error {
 		return err
 	}
 	item.SetForeignKeys()
-	return s.repository.updateComment(item)
+	return s.Repository.updateComment(item)
 }
 
 func (s *Service) CreateViewOfNews(item *models.NewsView) error {
-	return s.repository.createViewOfNews(item)
+	return s.Repository.createViewOfNews(item)
 }
 
 func (s *Service) RemoveComment(id string) error {
-	return s.repository.removeComment(id)
+	return s.Repository.removeComment(id)
 }
 
 func (s *Service) DeleteLike(id string) error {
-	return s.repository.deleteLike(id)
+	return s.Repository.deleteLike(id)
 }
 
 func (s *Service) GetBySlug(c *gin.Context, slug string) (*models.News, error) {
-	item, err := s.repository.getBySlug(slug)
+	item, err := s.Repository.getBySlug(slug)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (s *Service) Update(item *models.News) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = s.Repository.update(item)
 	if err != nil {
 		return err
 	}
@@ -192,21 +192,21 @@ func (s *Service) Update(item *models.News) error {
 }
 
 func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+	return s.Repository.delete(id)
 }
 
-func (s *Service) SetQueryFilter(c *gin.Context) error {
-	return s.repository.SetQueryFilter(c)
+func (s *Service) SetQueryFilter(c *gin.Context, item models.FTSPQuery) error {
+	return s.Repository.SetQueryFilter(c, item)
 }
 
 func (s *Service) GetSuggestionNews(id string) ([]*models.News, error) {
-	return s.repository.GetSuggestionNews(id)
+	return s.Repository.GetSuggestionNews(id)
 }
 
 func (s *Service) GetAggregateViews(opts *exportmodels.NewsView) (models.ChartDataSets, error) {
-	return s.repository.GetAggregateViews(opts)
+	return s.Repository.GetAggregateViews(opts)
 }
 
-	func (s *Service) GetNewsComments(c *gin.Context, id string) (*models.NewsComments, error) {
-	return s.repository.getNewsComments(id)
+func (s *Service) GetNewsComments(c *gin.Context, id string) (*models.NewsComments, error) {
+	return s.Repository.getNewsComments(id)
 }

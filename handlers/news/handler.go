@@ -1,11 +1,30 @@
 package news
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+func (h *Handler) FTSP(c *gin.Context) {
+	var item models.FTSPQuery
+	_, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	fmt.Println(item)
+	err = h.service.SetQueryFilter(c, item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	data, err := h.service.GetAll(true)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data})
+}
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.News
@@ -66,11 +85,11 @@ func (h *Handler) CreateLike(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	err := h.service.SetQueryFilter(c)
+	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	news, err := h.service.GetAll()
+	news, err := h.service.GetAll(false)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -81,7 +100,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) GetMain(c *gin.Context) {
-	err := h.service.SetQueryFilter(c)
+	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -96,7 +115,7 @@ func (h *Handler) GetMain(c *gin.Context) {
 }
 
 func (h *Handler) GetSubMain(c *gin.Context) {
-	err := h.service.SetQueryFilter(c)
+	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
