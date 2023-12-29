@@ -63,6 +63,8 @@ func (item ExportType) GetExporter(helper *helper.Helper) FileWriter {
 		writer := &PDFWriter{}
 		writer.PDF = helper.PDF
 		return writer
+	case ExportTypeChart:
+		return nil
 	default:
 		return nil
 	}

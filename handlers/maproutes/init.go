@@ -13,17 +13,20 @@ import (
 
 type IHandler interface {
 	GetMapRoute(c *gin.Context)
+	Create(c *gin.Context)
 }
 
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	GetMapRoute(startID string, endID string) (*models.MapRoute, error)
+	UploadMapNodes(NodesRequest) error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
 	GetMapRoute(startID string, endID string) (*models.MapRoute, error)
+	UploadMapNodes(models.MapNodes) error
 }
 
 type Handler struct {

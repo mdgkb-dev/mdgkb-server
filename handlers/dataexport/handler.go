@@ -26,7 +26,10 @@ func (h *Handler) Data(c *gin.Context) {
 	fmt.Println(opts)
 	newsExport := exportmodels.NewsView{}
 
-	opts.Parse(&newsExport)
+	err = opts.Parse(&newsExport)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
 	fmt.Println(opts)
 	items, err := news.NewRepository(h.helper).GetAggregateViews(&newsExport)
 	if h.helper.HTTP.HandleError(c, err) {

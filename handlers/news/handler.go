@@ -7,6 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func (h *Handler) FTSP(c *gin.Context) {
+	data, err := h.service.GetAll(c.Request.Context(), true)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data, FTSP: *h.helper.SQL.ExtractFTSP(c.Request.Context())})
+}
+
 func (h *Handler) Create(c *gin.Context) {
 	var item models.News
 	files, err := h.helper.HTTP.GetForm(c, &item)
@@ -66,11 +74,11 @@ func (h *Handler) CreateLike(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	err := h.service.SetQueryFilter(c)
+	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	news, err := h.service.GetAll()
+	news, err := h.service.GetAll(c.Request.Context(), false)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -81,7 +89,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) GetMain(c *gin.Context) {
-	err := h.service.SetQueryFilter(c)
+	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -96,7 +104,7 @@ func (h *Handler) GetMain(c *gin.Context) {
 }
 
 func (h *Handler) GetSubMain(c *gin.Context) {
-	err := h.service.SetQueryFilter(c)
+	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

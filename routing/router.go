@@ -83,6 +83,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/valuetypes"
 	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
+	"mdgkb/mdgkb-server/middleware"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
 	appointmentsTypesRouter "mdgkb/mdgkb-server/routing/appointmentstypes"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
@@ -171,8 +172,8 @@ import (
 )
 
 func Init(r *gin.Engine, helper *helperPack.Helper) {
-	// m := middleware.CreateMiddleware(helper)
-
+	m := middleware.CreateMiddleware(helper)
+	r.Use(m.InjectFTSP())
 	// r.Use(m.CORSMiddleware())
 	// r.Use(m.CheckPermission())
 	r.Use(gin.Logger())

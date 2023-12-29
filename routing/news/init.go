@@ -23,6 +23,7 @@ func Init(r *gin.RouterGroup, h handler.IHandler) {
 	r.DELETE("/comment/:id", h.RemoveComment)
 	r.PUT("/comment/:id", h.UpdateComment)
 	r.POST("/comment", h.CreateComment)
+	r.POST("/ftsp", h.FTSP)
 	r.DELETE("/:id", h.Delete)
 	r.DELETE("/like/:id", h.DeleteLike)
 }

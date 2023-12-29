@@ -1,6 +1,7 @@
 package news
 
 import (
+	"context"
 	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/exportmodels"
@@ -15,11 +16,12 @@ func (r *Repository) DB() *bun.DB {
 	return r.helper.DB.DB
 }
 
-func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
+func (r *Repository) SetQueryFilter(c *gin.Context, item models.FTSPQuery) (err error) {
 	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
+	r.FTSP = item.FTSP
 	return nil
 }
 
@@ -63,7 +65,7 @@ func (r *Repository) removeComment(id string) error {
 	return err
 }
 
-func (r *Repository) getAll() (items models.NewsWithCount, err error) {
+func (r *Repository) getAll(c context.Context, ftsp bool) (items models.NewsWithCount, err error) {
 	items.News = make([]*models.News, 0)
 	query := r.DB().NewSelect().Model(&items.News).
 		Relation("NewsToCategories.Category").
@@ -71,7 +73,15 @@ func (r *Repository) getAll() (items models.NewsWithCount, err error) {
 		Relation("PreviewImage").
 		Relation("NewsLikes").
 		Relation("NewsViews")
-	r.queryFilter.HandleQuery(query)
+	if ftsp {
+		fmt.Println("filter")
+		f := r.helper.SQL.ExtractFTSP(c)
+		fmt.Println(f)
+		f.HandleQuery(query)
+		// r.helper.SQL.HandleFTSPQuery(c, query)
+	} else {
+		r.queryFilter.HandleQuery(query)
+	}
 	fmt.Println(time.Now())
 	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
