@@ -280,6 +280,10 @@ github.com/pro-assistance/pro-assister v0.1.4-0.20231226112347-32536043eec6 h1:8
 github.com/pro-assistance/pro-assister v0.1.4-0.20231226112347-32536043eec6/go.mod h1:ZzJp+6I6R8F4Ivt8IF/c+Cc2NDs7RfKbX0grs3CBaJU=
 github.com/pro-assistance/pro-assister v0.1.4-0.20231226113000-f6f89f49c57b h1:n2m7G+Xxf3bzWGEFZW9RHfkZ0XWM/jKWj+9K6ORLloM=
 github.com/pro-assistance/pro-assister v0.1.4-0.20231226113000-f6f89f49c57b/go.mod h1:ZzJp+6I6R8F4Ivt8IF/c+Cc2NDs7RfKbX0grs3CBaJU=
+github.com/pro-assistance/pro-assister v0.1.4-0.20231228095913-c858c81f799b h1:YkYtpDfoP3TY52JTz2KzY9DkucP/uWSeMXaajP89Jwk=
+github.com/pro-assistance/pro-assister v0.1.4-0.20231228095913-c858c81f799b/go.mod h1:ZzJp+6I6R8F4Ivt8IF/c+Cc2NDs7RfKbX0grs3CBaJU=
+github.com/pro-assistance/pro-assister v0.1.4-0.20231228201705-87d3a42b2006 h1:9qYEaZR6ktZIh/msbLkBniDeGyE7TcqLUlk+K3FzomU=
+github.com/pro-assistance/pro-assister v0.1.4-0.20231228201705-87d3a42b2006/go.mod h1:ZzJp+6I6R8F4Ivt8IF/c+Cc2NDs7RfKbX0grs3CBaJU=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5 h1:mZHayPoR0lNmnHyvtYjDeq0zlVHn9K/ZXoy17ylucdo=
 github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5/go.mod h1:GEXHk5HgEKCvEIIrSpFI3ozzG5xOKA2DVlEX/gGnewM=

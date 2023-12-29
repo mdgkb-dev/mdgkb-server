@@ -23,13 +23,21 @@ func (m *Middleware) InjectFTSP() gin.HandlerFunc {
 		if !strings.Contains(c.Request.URL.Path, "ftsp") {
 			return
 		}
-		ftsp := &sqlHelper.FTSPQuery{}
-		err := ftsp.FromForm(c)
+		ftspQuery := &sqlHelper.FTSPQuery{}
+		err := ftspQuery.FromForm(c)
 		if m.helper.HTTP.HandleError(c, err) {
 			return
 		}
-		fmt.Println("ftsp", ftsp)
-		m.helper.SQL.InjectFTSP2(c.Request, &ftsp.FTSP)
+
+		ftsp, found := ftspStore.GetOrCreateFTSP(ftspQuery)
+
+		if !found {
+			c.JSON(http.StatusOK, nil)
+			c.Abort()
+			return
+		}
+
+		m.helper.SQL.InjectFTSP2(c.Request, &ftsp)
 
 		if err != nil {
 			return

@@ -12,7 +12,7 @@ func (h *Handler) FTSP(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data})
+	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data, FTSP: *h.helper.SQL.ExtractFTSP(c.Request.Context())})
 }
 
 func (h *Handler) Create(c *gin.Context) {

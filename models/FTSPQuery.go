@@ -9,5 +9,6 @@ type FTSPQuery struct {
 	FTSP sqlHelper.FTSP `json:"ftsp"`
 }
 type FTSPAnswer struct {
-	Data interface{} `json:"data"`
+	Data interface{}    `json:"data"`
+	FTSP sqlHelper.FTSP `json:"ftsp"`
 }

@@ -29,3 +29,8 @@ func (r *Repository) GetMapRoute(startNodeID string, endNodeID string) (*models.
 
 	return &item, err
 }
+
+func (r *Repository) UploadMapNodes(items models.MapNodes) (err error) {
+	_, err = r.db().NewInsert().Model(items).Exec(r.ctx)
+	return err
+}
