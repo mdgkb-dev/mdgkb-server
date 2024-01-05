@@ -63,6 +63,7 @@ type Division struct {
 	HasAmbulatory bool `json:"hasAmbulatory"`
 
 	CommentsCount string `bun:"-" json:"commentsCount"`
+	MapNodeName   string `bun:"-"`
 }
 
 type Divisions []*Division

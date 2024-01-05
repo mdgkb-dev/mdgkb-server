@@ -25,7 +25,12 @@ func (r *Repository) UploadMapNodes(items models.MapNodes) (err error) {
 	return err
 }
 
-func (r *Repository) DeleteAll() (err error) {
-	_, err = r.db().NewDelete().Model((*models.MapNode)(nil)).Exec(r.ctx)
+func (r *Repository) DeleteAll() error {
+	_, err := r.db().NewDelete().Model(&models.MapNode{}).Where("id is not null").Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) CreateMany(items models.MapNodes) error {
+	_, err := r.db().NewInsert().Model(&items).Exec(r.ctx)
 	return err
 }

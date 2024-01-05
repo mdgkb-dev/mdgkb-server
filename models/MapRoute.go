@@ -23,6 +23,15 @@ type MapRoute struct {
 
 type MapRoutes []*MapRoute
 
+func (items MapRoutes) GetMapRouteNodes() MapRouteNodes {
+	itemsForAdd := make(MapRouteNodes, 0)
+
+	for v := range items {
+		itemsForAdd = append(itemsForAdd, items[v].MapRouteNodes...)
+	}
+	return itemsForAdd
+}
+
 func (i *MapRoute) Calculate(nodes MapNodes, g *Graph) {
 	// nodes.InitNeighbors()
 	routeNodes, _ := Dijkstra(g, i.StartNode, i.EndNode)

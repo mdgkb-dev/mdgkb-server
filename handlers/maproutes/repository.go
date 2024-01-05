@@ -29,3 +29,13 @@ func (r *Repository) GetMapRoute(startNodeID string, endNodeID string) (*models.
 
 	return &item, err
 }
+
+func (r *Repository) DeleteAll() error {
+	_, err := r.db().NewDelete().Model(&models.MapRoute{}).Where("id is not null").Exec(r.ctx)
+	return err
+}
+
+func (r *Repository) CreateMany(items models.MapRoutes) error {
+	_, err := r.db().NewInsert().Model(&items).Exec(r.ctx)
+	return err
+}
