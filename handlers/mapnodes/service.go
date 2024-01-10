@@ -14,27 +14,27 @@ func (s *Service) CreateMany(items models.MapNodes) error {
 		return err
 	}
 
-	err = s.repository.CreateMany(items)
-	if err != nil {
-		return err
-	}
+	// err = s.repository.CreateMany(items)
+	// if err != nil {
+	// 	return err
+	// }
 
 	routes := make(models.MapRoutes, 0)
-	routes.Calculate(items)
-	fmt.Printf("%+v\n", routes)
-
+	r := routes.Calculate(items)
+	// fmt.Printf("%+v\n", routes)
+	//
 	maproutesService := maproutes.CreateService(s.helper)
-
+	//
 	err = maproutesService.DeleteAll()
 	if err != nil {
 		return err
 	}
+	fmt.Println("routesLen", len(r))
 
-	err = maproutesService.CreateMany(routes)
+	err = maproutesService.CreateMany(r)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 

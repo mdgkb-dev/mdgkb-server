@@ -23,8 +23,11 @@ func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
 func (r *Repository) GetMapRoute(startNodeID string, endNodeID string) (*models.MapRoute, error) {
 	item := models.MapRoute{}
 	err := r.db().NewSelect().Model(&item).
-		Where("?TableAlias.start_node_id = ?", startNodeID).
-		Where("?TableAlias.end_node_id = ?", endNodeID).
+		Relation("MapRouteNodes", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("item_order")
+		}).
+		Where("?TableAlias.start_node_name = ? and ?TableAlias.end_node_name = ?", startNodeID, endNodeID).
+		WhereOr("?TableAlias.start_node_name = ? and ?TableAlias.end_node_name = ?", endNodeID, startNodeID).
 		Scan(r.ctx)
 
 	return &item, err

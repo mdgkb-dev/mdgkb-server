@@ -8,7 +8,7 @@ import (
 )
 
 func (r *Repository) DeleteAll() error {
-	_, err := r.db().NewDelete().Model(&models.MapRouteNode{}).Where("id is not null").Exec(r.ctx)
+	_, err := r.db().NewDelete().Model(&models.MapRouteNode{}).Where("map_node_name is not null").Exec(r.ctx)
 	return err
 }
 
