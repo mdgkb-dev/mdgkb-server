@@ -19,14 +19,16 @@ type IHandler interface {
 type IService interface {
 	setQueryFilter(*gin.Context) error
 	GetMapRoute(startID string, endID string) (*models.MapRoute, error)
-	UploadMapNodes(NodesRequest) error
+	CreateMany(items models.MapRoutes) error
+	DeleteAll() error
 }
 
 type IRepository interface {
 	setQueryFilter(*gin.Context) error
 	db() *bun.DB
 	GetMapRoute(startID string, endID string) (*models.MapRoute, error)
-	UploadMapNodes(models.MapNodes) error
+	DeleteAll() error
+	CreateMany(items models.MapRoutes) error
 }
 
 type Handler struct {
