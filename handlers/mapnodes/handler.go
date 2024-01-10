@@ -24,6 +24,5 @@ func (h *Handler) UploadMapNodes(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(err, "dddd")
 	c.JSON(http.StatusOK, items)
 }

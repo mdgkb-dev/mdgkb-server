@@ -13,7 +13,6 @@ import (
 
 type IHandler interface {
 	GetMapRoute(c *gin.Context)
-	Create(c *gin.Context)
 }
 
 type IService interface {
