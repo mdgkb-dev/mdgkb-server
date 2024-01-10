@@ -13,4 +13,5 @@ type Building struct {
 	Number        string      `json:"number"`
 	Floors        []*Floor    `bun:"rel:has-many" json:"floors"`
 	Entrances     []*Entrance `bun:"rel:has-many" json:"entrances"`
+	MapNodeName   string      `bun:"-"`
 }

@@ -1,4 +1,4 @@
-package mapnodes
+package maproutenodes
 
 import (
 	"context"
@@ -7,24 +7,18 @@ import (
 	"github.com/pro-assistance/pro-assister/helper"
 	"github.com/pro-assistance/pro-assister/sqlHelper"
 
-	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
-type IHandler interface {
-	UploadMapNodes(c *gin.Context)
-}
-
 type IService interface {
-	setQueryFilter(*gin.Context) error
-	CreateMany(models.MapNodes) error
+	CreateMany(items models.MapRouteNodes) error
+	DeleteAll() error
 }
 
 type IRepository interface {
-	setQueryFilter(*gin.Context) error
 	db() *bun.DB
 	DeleteAll() error
-	CreateMany(models.MapNodes) error
+	CreateMany(items models.MapRouteNodes) error
 }
 
 type Handler struct {

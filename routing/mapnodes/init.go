@@ -8,5 +8,5 @@ import (
 
 // Init func
 func Init(r *gin.RouterGroup, h handler.IHandler) {
-	r.POST("/upload-map-nodes", h.UploadMapNodes)
+	r.POST("/upload", h.UploadMapNodes)
 }
