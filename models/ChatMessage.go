@@ -13,7 +13,7 @@ type ChatMessage struct {
 	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	User          *User         `bun:"rel:belongs-to" json:"user"`
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
-	UserName      string        `bun:"type:uuid" json:"userName"`
+	// UserName      string        `bun:"type:uuid" json:"userName"`
 
 	Chat      *Chat           `bun:"rel:belongs-to" json:"chat"`
 	ChatID    uuid.NullUUID   `bun:"type:uuid" json:"chatId"`
@@ -28,8 +28,8 @@ const (
 	ping  ChatMessageType = "ping"
 	enter ChatMessageType = "enter"
 	exit  ChatMessageType = "exit"
-	//message ChatMessageType = "message"
-	//write   ChatMessageType = "write"
+	// message ChatMessageType = "message"
+	// write   ChatMessageType = "write"
 )
 
 type ChatMessages []*ChatMessage

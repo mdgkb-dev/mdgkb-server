@@ -1,6 +1,7 @@
 package pagesidemenus
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/pagesections"
 	"mdgkb/mdgkb-server/models"
 
@@ -63,20 +64,24 @@ func (s *Service) UpsertMany(items models.PageSideMenus) error {
 	for i := range items {
 		items[i].Slug = s.helper.Util.MakeSlug(items[i].Name, false)
 	}
+	fmt.Println("2.2")
 	err := s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}
 	items.SetIDForChildren()
+	fmt.Println("2.3")
 	pageSectionsService := pagesections.CreateService(s.helper)
 	err = pageSectionsService.DeleteMany(items.GetPageSectionsForDelete())
 	if err != nil {
 		return err
 	}
+	fmt.Println("2.4")
 	err = pageSectionsService.UpsertMany(items.GetPageSections())
 	if err != nil {
 		return err
 	}
+	fmt.Println("2.5")
 	return nil
 }
 

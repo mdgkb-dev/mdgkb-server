@@ -1,6 +1,7 @@
 package pages
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/pageimages"
 	"mdgkb/mdgkb-server/handlers/pagesdocuments"
@@ -72,6 +73,7 @@ func (s *Service) Update(item *models.Page) error {
 		return err
 	}
 	item.SetForeignKeys()
+	fmt.Println("1")
 	err = s.repository.update(item)
 	if err != nil {
 		return err
@@ -79,6 +81,7 @@ func (s *Service) Update(item *models.Page) error {
 	item.SetIDForChildren()
 
 	pageSideMenusService := pagesidemenus.CreateService(s.helper)
+	fmt.Println("2")
 	err = pageSideMenusService.UpsertMany(item.PageSideMenus)
 	if err != nil {
 		return err
@@ -88,6 +91,7 @@ func (s *Service) Update(item *models.Page) error {
 		return err
 	}
 
+	fmt.Println("3")
 	pagesDocumentsService := pagesdocuments.CreateService(s.helper)
 	err = pagesDocumentsService.UpsertMany(item.PageDocuments)
 	if err != nil {
@@ -97,11 +101,13 @@ func (s *Service) Update(item *models.Page) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("4")
 	pageImagesService := pageimages.CreateService(s.helper)
 	err = pageImagesService.UpsertMany(item.PageImages)
 	if err != nil {
 		return err
 	}
+	fmt.Println("5")
 	err = pageImagesService.DeleteMany(item.PageImagesForDelete)
 	if err != nil {
 		return err

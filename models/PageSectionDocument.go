@@ -50,7 +50,17 @@ func (items PageSectionDocuments) SetFilePath(fileID *string) *string {
 func (items PageSectionDocuments) GetScans() FileInfos {
 	itemsForGet := make(FileInfos, 0)
 	for _, item := range items {
-		itemsForGet = append(itemsForGet, item.Scan)
+		if !itemsForGet.Exists(item.Scan.ID) {
+			itemsForGet = append(itemsForGet, item.Scan)
+		}
 	}
 	return itemsForGet
+}
+
+func (items FileInfos) Exists(id uuid.NullUUID) bool {
+	exists := false
+	for i := range items {
+		exists = items[i].ID.UUID.String() == id.UUID.String()
+	}
+	return exists
 }

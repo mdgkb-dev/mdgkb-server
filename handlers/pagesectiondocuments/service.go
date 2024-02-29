@@ -1,6 +1,7 @@
 package pagesectiondocuments
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/models"
 
@@ -28,12 +29,22 @@ func (s *Service) UpsertMany(items models.PageSectionDocuments) error {
 		return nil
 	}
 
-	err := fileinfos.CreateService(s.helper).UpsertMany(items.GetScans())
-	if err != nil {
-		return err
+	fmt.Println("2.4.2.1")
+	f := fileinfos.CreateService(s.helper)
+	scans := items.GetScans()
+	for i := range scans {
+		err := f.Upsert(scans[i])
+		if err != nil {
+			return err
+		}
 	}
+	// err := fileinfos.CreateService(s.helper).UpsertMany(items.GetScans())
+	// if err != nil {
+	// 	return err
+	// }
 	items.SetForeignKeys()
-	err = s.repository.upsertMany(items)
+	fmt.Println("2.4.2.2")
+	err := s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}

@@ -35,7 +35,9 @@ func (s *Service) Upsert(item *models.FormValue) error {
 			return err
 		}
 	}
-
+	if item.Chat == nil {
+		item.Chat = &models.Chat{}
+	}
 	err = chats.CreateService(s.helper).Create(item.Chat)
 	if err != nil {
 		return err

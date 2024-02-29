@@ -1,6 +1,7 @@
 package pagesections
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/handlers/pagesectiondocuments"
 	"mdgkb/mdgkb-server/handlers/pagesectionimages"
 	"mdgkb/mdgkb-server/models"
@@ -85,25 +86,29 @@ func (s *Service) UpsertMany(items models.PageSections) error {
 	if len(items) == 0 {
 		return nil
 	}
+	fmt.Println("2.4.1")
 	err := s.repository.upsertMany(items)
 	if err != nil {
 		return err
 	}
 	items.SetIDForChildren()
+	fmt.Println("2.4.2")
 	documentService := pagesectiondocuments.CreateService(s.helper)
-	err = documentService.DeleteMany(items.GetDocumentsIDForDelete())
-	if err != nil {
-		return err
-	}
 	err = documentService.UpsertMany(items.GetDocuments())
 	if err != nil {
 		return err
 	}
+	err = documentService.DeleteMany(items.GetDocumentsIDForDelete())
+	if err != nil {
+		return err
+	}
+	fmt.Println("2.4.3")
 	documentFieldsService := pagesectionimages.CreateService(s.helper)
 	err = documentFieldsService.UpsertMany(items.GetDocumentTypeImages())
 	if err != nil {
 		return err
 	}
+	fmt.Println("2.4.3")
 	err = documentFieldsService.DeleteMany(items.GetDocumentTypeImagesForDelete())
 	if err != nil {
 		return err

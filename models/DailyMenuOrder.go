@@ -19,7 +19,7 @@ type DailyMenuOrder struct {
 	DailyMenuOrderItems          DailyMenuOrderItems `bun:"rel:has-many" json:"dailyMenuOrderItems"`
 	DailyMenuOrderItemsForDelete []uuid.UUID         `bun:"-" json:"dailyMenuOrderItemsForDelete"`
 
-	IsNew        string        `bun:"-" json:"isNew"`
+	IsNew        bool          `bun:"-" json:"isNew"`
 	CreatedAt    string        `bun:"-" json:"createdAt"`
 	FormStatusID string        `bun:"-" json:"formStatusId"`
 	User         *User         `bun:"rel:belongs-to" json:"user"`
