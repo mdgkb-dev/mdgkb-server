@@ -11,7 +11,7 @@ type PageSectionDocument struct {
 	bun.BaseModel  `bun:"page_section_documents,alias:page_section_documents"`
 	ID             uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
 	Name           string        `json:"name"`
-	Order          uint          `bun:"item_order" json:"order"`
+	Order          int           `bun:"item_order" json:"order"`
 	PageSection    *PageSection  `bun:"rel:belongs-to" json:"pageSection"`
 	PageSectionID  uuid.NullUUID `bun:"type:uuid" json:"pageSectionId"`
 	DownloadToFile bool          `json:"downloadToFile"`

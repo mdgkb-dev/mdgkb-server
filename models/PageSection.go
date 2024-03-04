@@ -10,7 +10,7 @@ type PageSection struct {
 	bun.BaseModel `bun:"page_sections,alias:page_sections"`
 	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id,omitempty"`
 	Name          string        `json:"name,omitempty"`
-	Order         uint          `bun:"item_order" json:"order"`
+	Order         int           `bun:"item_order" json:"order"`
 	Description   string        `json:"description,omitempty"`
 
 	PageSideMenuID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"pageSideMenuId"`
