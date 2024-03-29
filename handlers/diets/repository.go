@@ -13,7 +13,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -30,7 +29,6 @@ func (r *Repository) getAll() (items models.Diets, err error) {
 		Relation("DietAge").
 		Relation("Timetable.TimetableDays.ScheduleItems.Dishes")
 	// Join("JOIN positions on Diets_view.position_id = positions.id and positions.show = true")
-	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
 	return items, err
 }

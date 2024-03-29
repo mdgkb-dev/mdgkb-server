@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -21,7 +21,7 @@ type Certificates []*Certificate
 func (items Certificates) SetFilePath(fileID string) *string {
 	for i := range items {
 		if items[i].Scan.ID.UUID.String() == fileID {
-			items[i].Scan.FileSystemPath = uploadHelper.BuildPath(&fileID)
+			items[i].Scan.FileSystemPath = uploader.BuildPath(&fileID)
 			return &items[i].Scan.FileSystemPath
 		}
 	}

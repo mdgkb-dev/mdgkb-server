@@ -12,7 +12,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -27,7 +26,6 @@ func (r *Repository) create(item *models.PaidService) (err error) {
 func (r *Repository) getAll() (models.PaidServices, error) {
 	items := make(models.PaidServices, 0)
 	query := r.db().NewSelect().Model(&items)
-	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

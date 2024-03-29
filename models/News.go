@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 
 	"github.com/google/uuid"
@@ -52,11 +52,11 @@ type News struct {
 
 func (item *News) SetFilePath(fileID *string) *string {
 	if item.PreviewImage.ID.UUID.String() == *fileID {
-		item.PreviewImage.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.PreviewImage.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.PreviewImage.FileSystemPath
 	}
 	if item.MainImage.ID.UUID.String() == *fileID {
-		item.MainImage.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.MainImage.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.MainImage.FileSystemPath
 	}
 	path := item.NewsImages.SetFilePath(fileID)

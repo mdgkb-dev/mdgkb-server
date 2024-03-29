@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 
-	"github.com/pro-assistance/pro-assister/sqlHelper/paginator"
+	"github.com/pro-assistance/pro-assister/helpers/sql/paginator"
 )
 
 type SearchModel struct {

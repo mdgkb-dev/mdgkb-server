@@ -1,40 +1,28 @@
 package pages
 
 import (
+	"context"
+
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *Repository) create(item *models.Page) (err error) {
-	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) Create(c context.Context, item *models.Page) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) getAll() (item models.PagesWithCount, err error) {
+func (r *Repository) GetAll(c context.Context) (item models.PagesWithCount, err error) {
 	item.Pages = make(models.Pages, 0)
-	query := r.db().NewSelect().Model(&item.Pages)
-	r.queryFilter.HandleQuery(query)
-	item.Count, err = query.ScanAndCount(r.ctx)
+	query := r.helper.DB.IDB(c).NewSelect().Model(&item.Pages)
+	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }
 
-func (r *Repository) get(id *string) (*models.Page, error) {
+func (r *Repository) Get(c context.Context, id *string) (*models.Page, error) {
 	item := models.Page{}
-	err := r.db().NewSelect().
+	err := r.helper.DB.IDB(c).NewSelect().
 		Model(&item).
 		Relation("PageSections.PageSectionDocuments.Scan").
 		Relation("PageSections.PageSectionImages").
@@ -50,30 +38,30 @@ func (r *Repository) get(id *string) (*models.Page, error) {
 		Relation("PageSideMenus.PageSections.PageSectionDocuments.Scan").
 		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.PostAddresses").
-		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites").
+		Relation("Contact").
+		Relation("Contact.Emails").
+		Relation("Contact.PostAddresses").
+		Relation("Contact.Phones").
+		Relation("Contact.Websites").
 		Relation("PageComments.Comment").
 		Relation("Role").
-		Where("id = ?", *id).Scan(r.ctx)
+		Where("id = ?", *id).Scan(c)
 	return &item, err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.Page{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id *string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.Page{}).Where("id = ?", *id).Exec(c)
 	return err
 }
 
-func (r *Repository) update(item *models.Page) (err error) {
-	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, item *models.Page) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
 	return err
 }
 
-func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
+func (r *Repository) GetBySlug(c context.Context, slug *string) (*models.Page, error) {
 	item := models.Page{}
-	err := r.db().NewSelect().
+	err := r.helper.DB.IDB(c).NewSelect().
 		Model(&item).
 		Relation("PageSections.PageSectionDocuments.Scan").
 		Relation("PageSections.PageSectionImages").
@@ -90,13 +78,13 @@ func (r *Repository) getBySlug(slug *string) (*models.Page, error) {
 		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
 		Relation("PageComments.Comment").
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.PostAddresses").
-		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites").
+		Relation("Contact").
+		Relation("Contact.Emails").
+		Relation("Contact.PostAddresses").
+		Relation("Contact.Phones").
+		Relation("Contact.Websites").
 		Relation("Role").
 		Where("slug = ?", *slug).
-		Scan(r.ctx)
+		Scan(c)
 	return &item, err
 }

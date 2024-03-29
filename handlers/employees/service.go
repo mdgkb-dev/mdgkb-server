@@ -1,6 +1,8 @@
 package employees
 
 import (
+	"context"
+
 	"mdgkb/mdgkb-server/handlers/accreditations"
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/certifications"
@@ -33,7 +35,7 @@ func (s *Service) Create(item *models.Employee) error {
 	if err != nil {
 		return err
 	}
-	err = doctors.CreateService(s.helper).Create(item.Doctor)
+	err = doctors.S.Create(context.TODO(), item.Doctor)
 	if err != nil {
 		return err
 	}
@@ -95,12 +97,11 @@ func (s *Service) Update(item *models.Employee) error {
 		return err
 	}
 
-	doctorsService := doctors.CreateService(s.helper)
-	err = doctorsService.Update(item.Doctor)
+	err = doctors.S.Update(context.TODO(), item.Doctor)
 	if err != nil {
 		return err
 	}
-	err = doctorsService.DeleteMany(item.DoctorsForDelete)
+	err = doctors.S.DeleteMany(context.TODO(), item.DoctorsForDelete)
 	if err != nil {
 		return err
 	}

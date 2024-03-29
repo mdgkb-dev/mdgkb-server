@@ -2,10 +2,11 @@ package formvalues
 
 import (
 	"fmt"
-	"mdgkb/mdgkb-server/models"
 	"net/http"
 
-	"github.com/pro-assistance/pro-assister/pdfHelper"
+	"mdgkb/mdgkb-server/models"
+
+	"github.com/pro-assistance/pro-assister/helpers/pdf"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,7 +57,7 @@ func (h *Handler) DocumentsToPDF(c *gin.Context) {
 		return
 	}
 	files := item.GetFiles()
-	filesToMerge := make(pdfHelper.IFiles, 0)
+	filesToMerge := make(pdf.IFiles, 0)
 	for i := range files {
 		fullPath := h.helper.Uploader.GetFullPath(&files[i].FileSystemPath)
 		files[i].FileSystemPath = *fullPath

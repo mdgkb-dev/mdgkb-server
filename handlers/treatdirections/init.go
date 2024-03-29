@@ -2,8 +2,9 @@ package treatdirections
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pro-assistance/pro-assister/helper"
@@ -56,7 +57,7 @@ type Repository struct {
 }
 
 type FilesService struct {
-	//uploader uploadHelper.Uploader
+	// uploader uploader.Uploader
 	helper *helper.Helper
 }
 

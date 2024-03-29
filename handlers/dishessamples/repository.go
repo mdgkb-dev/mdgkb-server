@@ -13,7 +13,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -27,7 +26,6 @@ func (r *Repository) create(item *models.DishSample) (err error) {
 
 func (r *Repository) getAll() (items models.DishSamples, err error) {
 	query := r.db().NewSelect().Model(&items)
-	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
 	return items, err
 }

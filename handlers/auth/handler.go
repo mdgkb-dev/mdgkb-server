@@ -2,9 +2,10 @@ package auth
 
 import (
 	"errors"
+	"net/http"
+
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,14 +25,14 @@ func (h *Handler) Register(c *gin.Context) {
 
 func (h *Handler) Login(c *gin.Context) {
 	var item models.Login
-	err := c.Bind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.validator.Login(&item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
+	// err = h.validator.Login(&item)
+	// if h.helper.HTTP.HandleError(c, err) {
+	// 	return
+	// }
 	res, err := h.service.Login(&item, false)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())

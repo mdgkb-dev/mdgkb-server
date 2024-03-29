@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -29,19 +29,19 @@ type NewsSlides []*NewsSlide
 
 func (item *NewsSlide) SetFilePath(fileID *string) *string {
 	if item.DesktopImg.ID.UUID.String() == *fileID {
-		item.DesktopImg.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.DesktopImg.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.DesktopImg.FileSystemPath
 	}
 	if item.LaptopImg.ID.UUID.String() == *fileID {
-		item.LaptopImg.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.LaptopImg.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.LaptopImg.FileSystemPath
 	}
 	if item.TabletImg.ID.UUID.String() == *fileID {
-		item.TabletImg.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.TabletImg.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.TabletImg.FileSystemPath
 	}
 	if item.MobileImg.ID.UUID.String() == *fileID {
-		item.MobileImg.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.MobileImg.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.MobileImg.FileSystemPath
 	}
 	return nil

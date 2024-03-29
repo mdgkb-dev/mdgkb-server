@@ -3,9 +3,10 @@ package news
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/exportmodels"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -17,10 +18,6 @@ func (r *Repository) DB() *bun.DB {
 }
 
 func (r *Repository) SetQueryFilter(c *gin.Context, item models.FTSPQuery) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
-	if err != nil {
-		return err
-	}
 	r.FTSP = item.FTSP
 	return nil
 }
@@ -77,10 +74,7 @@ func (r *Repository) getAll(c context.Context, ftsp bool) (items models.NewsWith
 		fmt.Println("filter")
 		f := r.helper.SQL.ExtractFTSP(c)
 		fmt.Println(f)
-		f.HandleQuery(query)
-		// r.helper.SQL.HandleFTSPQuery(c, query)
-	} else {
-		r.queryFilter.HandleQuery(query)
+		r.helper.SQL.HandleFTSPQuery(c, query)
 	}
 	fmt.Println(time.Now())
 	items.Count, err = query.ScanAndCount(r.ctx)
@@ -96,7 +90,6 @@ func (r *Repository) getMain() (items models.NewsWithCount, err error) {
 		Relation("NewsLikes").
 		Relation("NewsViews").
 		Where("news_view.main = ?", true)
-	r.queryFilter.HandleQuery(query)
 	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
@@ -110,7 +103,6 @@ func (r *Repository) getSubMain() (items models.NewsWithCount, err error) {
 		Relation("NewsLikes").
 		Relation("NewsViews").
 		Where("news_view.sub_main = ?", true)
-	r.queryFilter.HandleQuery(query)
 	items.Count, err = query.ScanAndCount(r.ctx)
 	return items, err
 }
@@ -169,11 +161,7 @@ func (r *Repository) createViewOfNews(newsView *models.NewsView) (err error) {
 	return err
 }
 
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
-	if err != nil {
-		return err
-	}
+func (r *Repository) setQueryFilter() (err error) {
 	return nil
 }
 

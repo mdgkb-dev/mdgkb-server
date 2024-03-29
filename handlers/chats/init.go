@@ -2,12 +2,12 @@ package chats
 
 import (
 	"context"
+
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pro-assistance/pro-assister/handlers/basehandler"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/httpHelper/basehandler"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
 )
 
 type IHandler interface {
@@ -39,9 +39,8 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
+	ctx    context.Context
+	helper *helper.Helper
 }
 
 type FilesService struct {

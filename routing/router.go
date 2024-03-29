@@ -1,14 +1,12 @@
 package routing
 
 import (
-	"mdgkb/mdgkb-server/handlers/appointmenstypes"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
 	"mdgkb/mdgkb-server/handlers/buildings"
 	"mdgkb/mdgkb-server/handlers/callbackrequests"
 	"mdgkb/mdgkb-server/handlers/candidateapplications"
-	"mdgkb/mdgkb-server/handlers/candidateexams"
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/chatmessages"
 	"mdgkb/mdgkb-server/handlers/chats"
@@ -31,9 +29,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/educationyears"
 	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/entrances"
-	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/faqs"
-	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/formpatterns"
 	"mdgkb/mdgkb-server/handlers/formstatuses"
 	"mdgkb/mdgkb-server/handlers/formstatusgroups"
@@ -61,16 +57,12 @@ import (
 	"mdgkb/mdgkb-server/handlers/partnertypes"
 	"mdgkb/mdgkb-server/handlers/pointsachievements"
 	"mdgkb/mdgkb-server/handlers/postgraduateapplications"
-	"mdgkb/mdgkb-server/handlers/postgraduatecourses"
-	"mdgkb/mdgkb-server/handlers/preparations"
 	"mdgkb/mdgkb-server/handlers/projects"
 	"mdgkb/mdgkb-server/handlers/questions"
 	"mdgkb/mdgkb-server/handlers/residencyapplications"
 	"mdgkb/mdgkb-server/handlers/residencycourses"
 	"mdgkb/mdgkb-server/handlers/roles"
-	"mdgkb/mdgkb-server/handlers/search"
 	"mdgkb/mdgkb-server/handlers/sideorganizations"
-	"mdgkb/mdgkb-server/handlers/specializations"
 	"mdgkb/mdgkb-server/handlers/supportmessages"
 	"mdgkb/mdgkb-server/handlers/tags"
 	"mdgkb/mdgkb-server/handlers/teachers"
@@ -80,18 +72,14 @@ import (
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/handlers/vacancies"
 	"mdgkb/mdgkb-server/handlers/vacancyresponses"
-	"mdgkb/mdgkb-server/handlers/valuetypes"
 	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
-	"mdgkb/mdgkb-server/middleware"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
-	appointmentsTypesRouter "mdgkb/mdgkb-server/routing/appointmentstypes"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
 	buildingsRouter "mdgkb/mdgkb-server/routing/buildings"
 	callbackRequestsRouter "mdgkb/mdgkb-server/routing/callbackrequests"
 	candidateApplicationsRouter "mdgkb/mdgkb-server/routing/candidateapplications"
-	candidateExamsRouter "mdgkb/mdgkb-server/routing/candidateexams"
 	certificatesRouter "mdgkb/mdgkb-server/routing/certificates"
 	chatMessagesRouter "mdgkb/mdgkb-server/routing/chatmessages"
 	chatsRouter "mdgkb/mdgkb-server/routing/chats"
@@ -114,9 +102,7 @@ import (
 	educationYearsRouter "mdgkb/mdgkb-server/routing/educationyears"
 	employeesRouter "mdgkb/mdgkb-server/routing/employees"
 	entrancesRouter "mdgkb/mdgkb-server/routing/entrances"
-	eventsRouter "mdgkb/mdgkb-server/routing/events"
 	faqRouter "mdgkb/mdgkb-server/routing/faqs"
-	fileInfosRouter "mdgkb/mdgkb-server/routing/fileinfos"
 	formPatternsRouter "mdgkb/mdgkb-server/routing/formpatterns"
 	formStatusesRouter "mdgkb/mdgkb-server/routing/formstatuses"
 	formStatusGroupsRouter "mdgkb/mdgkb-server/routing/formstatusgroups"
@@ -144,16 +130,12 @@ import (
 	partnerTypesRouter "mdgkb/mdgkb-server/routing/partnertypes"
 	pointsAchievementsRouter "mdgkb/mdgkb-server/routing/pointsachievements"
 	postgraduateApplicationsRouter "mdgkb/mdgkb-server/routing/postgraduateapplications"
-	postgraduateCoursesRouter "mdgkb/mdgkb-server/routing/postgraduatecourses"
-	preparationsRouter "mdgkb/mdgkb-server/routing/preparations"
 	projectsRouter "mdgkb/mdgkb-server/routing/projects"
 	questionsRouter "mdgkb/mdgkb-server/routing/questions"
 	residencyApplicationsRouter "mdgkb/mdgkb-server/routing/residencyapplications"
 	residencyCoursesRouter "mdgkb/mdgkb-server/routing/residencycourses"
 	rolesRouter "mdgkb/mdgkb-server/routing/roles"
-	searchRouter "mdgkb/mdgkb-server/routing/search"
 	sideOrganizationsRouter "mdgkb/mdgkb-server/routing/sideorganizations"
-	specializationsRouter "mdgkb/mdgkb-server/routing/specializations"
 	supportMessagesRouter "mdgkb/mdgkb-server/routing/supportmessages"
 	tagsRouter "mdgkb/mdgkb-server/routing/tags"
 	teachersRouter "mdgkb/mdgkb-server/routing/teachers"
@@ -163,25 +145,26 @@ import (
 	usersRouter "mdgkb/mdgkb-server/routing/users"
 	vacanciesRouter "mdgkb/mdgkb-server/routing/vacancies"
 	vacancyResponsesRouter "mdgkb/mdgkb-server/routing/vacancyresponses"
-	valueTypesRouter "mdgkb/mdgkb-server/routing/valuetypes"
 	visitingRulesRouter "mdgkb/mdgkb-server/routing/visitingrules"
 	visitsApplicationsRouter "mdgkb/mdgkb-server/routing/visitsapplications"
 
 	"github.com/gin-gonic/gin"
 	helperPack "github.com/pro-assistance/pro-assister/helper"
+	"github.com/pro-assistance/pro-assister/middleware"
+	baseRouter "github.com/pro-assistance/pro-assister/routing"
 )
 
 func Init(r *gin.Engine, helper *helperPack.Helper) {
 	m := middleware.CreateMiddleware(helper)
-	r.Use(m.InjectFTSP())
-	// r.Use(m.CORSMiddleware())
-	// r.Use(m.CheckPermission())
-	r.Use(gin.Logger())
-	r.Static("/api/v1/static", "./static/")
-	authGroup := r.Group("/api/v1/auth")
-	authRouter.Init(authGroup.Group(""), auth.CreateHandler(helper))
+	api, apiNoToken := baseRouter.Init(r, helper)
+	// api.Use(m.InjectClaims())
+	api.Use(m.InjectFTSP())
 
-	api := r.Group("/api/v1")
+	authRouter.Init(apiNoToken.Group("/auth"), auth.CreateHandler(helper))
+
+	// authGroup := r.Group("/api/auth")
+	// authRouter.Init(authGroup.Group(""), auth.CreateHandler(helper))
+
 	ws := r.Group("/ws")
 
 	// api.Use(m.Authentication())
@@ -191,7 +174,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 
 	bannersRouter.Init(api.Group("/banners"), banners.CreateHandler(helper))
 	buildingsRouter.Init(api.Group("/buildings"), buildings.CreateHandler(helper))
-	doctorsRouter.Init(api.Group("/doctors"), doctors.CreateHandler(helper))
+
+	doctors.Init(helper)
+	doctorsRouter.Init(api.Group("/doctors"), doctors.H)
+
 	hospitalizationRouter.Init(api.Group("/hospitalizations"), hospitalizations.CreateHandler(helper))
 	hospitalizationsTypesRouter.Init(api.Group("/hospitalizations-types"), hospitalizationstypes.CreateHandler(helper))
 	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(helper))
@@ -203,19 +189,19 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	usersRouter.Init(api.Group("/users"), users.CreateHandler(helper))
 	timetablesRouter.Init(api.Group("/timetables"), timetables.CreateHandler(helper))
 	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(helper))
-	pagesRouter.Init(api.Group("/pages"), pages.CreateHandler(helper))
+
+	pages.Init(helper)
+	pagesRouter.Init(api.Group("/pages"), pages.H)
+
 	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(helper))
 	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(helper))
 	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(helper))
 	vacancyResponsesRouter.Init(api.Group("/vacancy-responses"), vacancyresponses.CreateHandler(helper))
 	pageSectionsRouter.Init(api.Group("/page-sections"), pagesections.CreateHandler(helper))
-	valueTypesRouter.Init(api.Group("/value-types"), valuetypes.CreateHandler(helper))
-	searchRouter.Init(api.Group("/search"), search.CreateHandler(helper))
 	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(helper))
 	visitingRulesRouter.Init(api.Group("/visiting-rules"), visitingrules.CreateHandler(helper))
 	newsSlidesRouter.Init(api.Group("/news-slides"), newsslides.CreateHandler(helper))
 	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(helper))
-	eventsRouter.Init(api.Group("/events"), events.CreateHandler(helper))
 	timetablePatternsRouter.Init(api.Group("/timetable-patterns"), timetablepatterns.CreateHandler(helper))
 	formPatternsRouter.Init(api.Group("/form-patterns"), formpatterns.CreateHandler(helper))
 	paidProgramsRouter.Init(api.Group("/paid-programs"), paidprograms.CreateHandler(helper))
@@ -223,16 +209,17 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	partnerTypesRouter.Init(api.Group("/partner-types"), partnertypes.CreateHandler(helper))
 	pageSideMenusRouter.Init(api.Group("/page-side-menus"), pagesidemenus.CreateHandler(helper))
 	partnersRouter.Init(api.Group("/partners"), partners.CreateHandler(helper))
-	preparationsRouter.Init(api.Group("/preparations"), preparations.CreateHandler(helper))
 	donorRulesRouter.Init(api.Group("/donor-rules"), donorrules.CreateHandler(helper))
 	certificatesRouter.Init(api.Group("/certificates"), certificates.CreateHandler(helper))
 	paidServicesRouter.Init(api.Group("/paid-services"), paidservices.CreateHandler(helper))
-	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalprofiles.CreateHandler(helper))
+
+	medicalprofiles.Init(helper)
+	medicalProfilesRouter.Init(api.Group("/medical-profiles"), medicalprofiles.H)
+
 	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatdirections.CreateHandler(helper))
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackrequests.CreateHandler(helper))
 	visitsApplicationsRouter.Init(api.Group("/visits-applications"), visitsapplications.CreateHandler(helper))
 	nmoCoursesRouter.Init(api.Group("/nmo-courses"), nmocourses.CreateHandler(helper))
-	postgraduateCoursesRouter.Init(api.Group("/postgraduate-courses"), postgraduatecourses.CreateHandler(helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoapplications.CreateHandler(helper))
 	educationalAcademicsRouter.Init(api.Group("/educational-academics"), educationalacademics.CreateHandler(helper))
 	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyapplications.CreateHandler(helper))
@@ -245,9 +232,9 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	appointmentsRouter.Init(api.Group("/appointments"), appointments.CreateHandler(helper))
 	childrenRouter.Init(api.Group("/children"), children.CreateHandler(helper))
 	gatesRouter.Init(api.Group("/gates"), gates.CreateHandler(helper))
-	specializationsRouter.Init(api.Group("/specializations"), specializations.CreateHandler(helper))
+	// specializationsRouter.Init(api.Group("/specializations"), specializations.CreateHandler(helper))
 	candidateApplicationsRouter.Init(api.Group("/candidate-applications"), candidateapplications.CreateHandler(helper))
-	candidateExamsRouter.Init(api.Group("/candidate-exams"), candidateexams.CreateHandler(helper))
+	// candidateExamsRouter.Init(api.Group("/candidate-exams"), candidateexams.CreateHandler(helper))
 	rolesRouter.Init(api.Group("/roles"), roles.CreateHandler(helper))
 	residencyCoursesRouter.Init(api.Group("/residency-courses"), residencycourses.CreateHandler(helper))
 	educationYearsRouter.Init(api.Group("/education-years"), educationyears.CreateHandler(helper))
@@ -263,11 +250,9 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	metaRouter.Init(meta.CreateHandler(helper), api, ws)
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))
-	appointmentsTypesRouter.Init(api.Group("/appointments-types"), appointmenstypes.CreateHandler(helper))
 	dailyMenuOrdersRouter.Init(api.Group("/daily-menu-orders"), dailymenuorders.CreateHandler(helper))
 	mapnodesRouter.Init(api.Group("/map-nodes"), mapnodes.CreateHandler(helper))
 	maproutesRouter.Init(api.Group("/map-routes"), maproutes.CreateHandler(helper))
-	fileInfosRouter.Init(api.Group("/file-infos"), fileinfos.CreateHandler(helper))
 	dataexportRouter.Init(api.Group("/export-data"), dataexport.CreateHandler(helper))
 	holidayformsRouter.Init(api.Group("/holiday-forms"), holidayforms.CreateHandler(helper))
 }

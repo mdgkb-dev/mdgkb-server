@@ -19,7 +19,6 @@ func (r *Repository) create(item *models.PageSideMenu) (err error) {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -42,7 +41,6 @@ func (r *Repository) getAll() (models.PageSideMenus, error) {
 		Relation("PageSections.PageSectionImages.FileInfo").
 		Order("public_document_type_order")
 
-	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

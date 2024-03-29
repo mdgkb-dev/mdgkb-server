@@ -1,95 +1,35 @@
 package pages
 
 import (
-	"context"
-	"mdgkb/mdgkb-server/models"
-	"mime/multipart"
-
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
-
-	"github.com/gin-gonic/gin"
-	"github.com/uptrace/bun"
 )
 
-type IHandler interface {
-	GetAll(c *gin.Context)
-	Get(c *gin.Context)
-	Create(c *gin.Context)
-	Update(c *gin.Context)
-	Delete(c *gin.Context)
-
-	GetBySlug(c *gin.Context)
-}
-
-type IService interface {
-	setQueryFilter(*gin.Context) error
-	GetAll() (models.PagesWithCount, error)
-	Get(*string) (*models.Page, error)
-	Create(*models.Page) error
-	Update(*models.Page) error
-	Delete(*string) error
-
-	GetBySlug(*string) (*models.Page, error)
-}
-
-type IRepository interface {
-	db() *bun.DB
-	setQueryFilter(*gin.Context) error
-	create(*models.Page) error
-	getAll() (models.PagesWithCount, error)
-	get(*string) (*models.Page, error)
-	update(*models.Page) error
-	delete(*string) error
-
-	getBySlug(*string) (*models.Page, error)
-}
-
-type IFilesService interface {
-	Upload(*gin.Context, *models.Page, map[string][]*multipart.FileHeader) error
-}
-
 type Handler struct {
-	service      IService
-	filesService IFilesService
-	helper       *helper.Helper
+	helper *helper.Helper
 }
 
 type Service struct {
-	repository IRepository
-	helper     *helper.Helper
+	helper *helper.Helper
 }
 
 type Repository struct {
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
+	helper *helper.Helper
 }
 
 type FilesService struct {
 	helper *helper.Helper
 }
 
-func CreateHandler(helper *helper.Helper) *Handler {
-	repo := NewRepository(helper)
-	service := NewService(repo, helper)
-	filesService := NewFilesService(helper)
-	return NewHandler(service, filesService, helper)
-}
+var (
+	H *Handler
+	S *Service
+	R *Repository
+	F *FilesService
+)
 
-// NewHandler constructor
-func NewHandler(s IService, filesService IFilesService, helper *helper.Helper) *Handler {
-	return &Handler{service: s, filesService: filesService, helper: helper}
-}
-
-func NewService(repository IRepository, helper *helper.Helper) *Service {
-	return &Service{repository: repository, helper: helper}
-}
-
-func NewRepository(helper *helper.Helper) *Repository {
-	return &Repository{ctx: context.Background(), helper: helper}
-}
-
-func NewFilesService(helper *helper.Helper) *FilesService {
-	return &FilesService{helper: helper}
+func Init(h *helper.Helper) {
+	H = &Handler{helper: h}
+	S = &Service{helper: h}
+	R = &Repository{helper: h}
+	F = &FilesService{helper: h}
 }

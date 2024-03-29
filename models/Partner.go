@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
@@ -22,7 +22,7 @@ type Partners []*Partner
 
 func (item *Partner) SetFilePath(fileID *string) *string {
 	if item.Image.ID.UUID.String() == *fileID {
-		item.Image.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.Image.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.Image.FileSystemPath
 	}
 	return nil

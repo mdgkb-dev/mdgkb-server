@@ -13,7 +13,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -39,7 +38,6 @@ func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error)
 		Relation("FormPattern.Fields.MaskTokens").
 		Relation("StartYear").
 		Relation("EndYear")
-	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }
@@ -65,7 +63,8 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 		Relation("ResidencyCoursePracticePlaceGroups.ResidencyCoursePracticePlaces.Division").
 		Relation("StartYear").
 		Relation("EndYear").
-		Where("?TableAlias.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
+		// Where("?TableAlias.? = ?", bun.Safe(r..Col), r..Value).
+		Scan(r.ctx)
 	return &item, err
 }
 

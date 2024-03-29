@@ -25,7 +25,6 @@ func (r *Repository) create(item *models.HolidayForm) error {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}

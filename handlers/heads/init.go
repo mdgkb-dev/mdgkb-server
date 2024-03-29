@@ -2,13 +2,13 @@ package heads
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,7 +23,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	//basehandler.IService
+	// basehandler.IService
 
 	setQueryFilter(c *gin.Context) error
 	Create(*models.Head) error
@@ -36,7 +36,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	//basehandler.IRepository
+	// basehandler.IRepository
 	create(*models.Head) error
 	getAll() (models.Heads, error)
 	get(string) (*models.Head, error)
@@ -64,13 +64,12 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
+	ctx    context.Context
+	helper *helper.Helper
 }
 
 type FilesService struct {
-	uploader uploadHelper.Uploader
+	uploader uploader.Uploader
 	helper   *helper.Helper
 }
 

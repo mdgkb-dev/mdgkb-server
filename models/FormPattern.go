@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -45,7 +45,7 @@ func (item *FormPattern) SetIDForChildren() {
 
 func (item *FormPattern) SetFilePath(fileID *string) *string {
 	if item.PersonalDataAgreement.ID.UUID.String() == *fileID {
-		item.PersonalDataAgreement.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.PersonalDataAgreement.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.PersonalDataAgreement.FileSystemPath
 	}
 	for i := range item.Fields {

@@ -33,7 +33,6 @@ func (r *Repository) getAll() (item models.DivisionsWithCount, err error) {
 		Relation("TreatDirection").
 		Relation("Chief.Employee.Human")
 
-	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }
@@ -75,7 +74,7 @@ func (r *Repository) get() (*models.Division, error) {
 		Relation("VisitingRulesGroups.VisitingRules", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("visiting_rules.rule_order")
 		}).
-		Where("divisions_view.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).
+		// Where("divisions_view.? = ?", bun.Safe(r..Col), r..Value).
 		Scan(r.ctx)
 
 	return &item, err
@@ -118,7 +117,6 @@ func (r *Repository) getBySearch(search string) (models.Divisions, error) {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}

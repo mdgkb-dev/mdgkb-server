@@ -2,11 +2,11 @@ package comments
 
 import (
 	"context"
+
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	httpHelper2 "github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -52,9 +52,8 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *httpHelper2.QueryFilter
+	ctx    context.Context
+	helper *helper.Helper
 }
 
 func CreateHandler(helper *helper.Helper) *Handler {
@@ -62,6 +61,7 @@ func CreateHandler(helper *helper.Helper) *Handler {
 	service := NewService(repo, helper)
 	return NewHandler(service, helper)
 }
+
 func CreateService(helper *helper.Helper) *Service {
 	repo := NewRepository(helper)
 	return NewService(repo, helper)

@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -54,7 +54,7 @@ type Employee struct {
 func (item *Employee) SetFilePath(fileID *string) *string {
 	for i := range item.Certificates {
 		if item.Certificates[i].Scan.ID.UUID.String() == *fileID {
-			item.Certificates[i].Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
+			item.Certificates[i].Scan.FileSystemPath = uploader.BuildPath(fileID)
 			return &item.Certificates[i].Scan.FileSystemPath
 		}
 	}

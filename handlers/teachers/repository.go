@@ -20,7 +20,6 @@ func (r *Repository) getAll() (models.Teachers, error) {
 		Relation("Employee.Regalias").
 		Relation("Employee.Human.Photo").
 		Relation("Employee.Human.PhotoMini")
-	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }
@@ -68,7 +67,6 @@ func (r *Repository) upsertMany(items models.Teachers) (err error) {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}

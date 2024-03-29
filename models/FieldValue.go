@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -99,7 +99,7 @@ func (item *FieldValue) GetFieldValuesFiles() FieldValuesFiles {
 
 func (item *FieldValue) SetFilePath(fileID *string) *string {
 	if item.File.ID.UUID.String() == *fileID {
-		item.File.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.File.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.File.FileSystemPath
 	}
 	return nil
@@ -108,7 +108,7 @@ func (item *FieldValue) SetFilePath(fileID *string) *string {
 func (items FieldValues) SetFilePath(fileID string) *string {
 	for i := range items {
 		if items[i].File.ID.UUID.String() == fileID {
-			items[i].File.FileSystemPath = uploadHelper.BuildPath(&fileID)
+			items[i].File.FileSystemPath = uploader.BuildPath(&fileID)
 			return &items[i].File.FileSystemPath
 		}
 	}

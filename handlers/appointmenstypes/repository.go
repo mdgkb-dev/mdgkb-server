@@ -13,10 +13,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -36,7 +32,6 @@ func (r *Repository) getAll() (items models.AppointmentsTypes, err error) {
 		Relation("FormPattern.Fields.ValueType").
 		Relation("FormPattern.PersonalDataAgreement").
 		Order("appointments_types.item_order")
-	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
 	return items, err
 }

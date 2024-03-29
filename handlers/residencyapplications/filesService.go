@@ -40,7 +40,7 @@ func (s *FilesService) FillApplicationTemplate(item *models.ResidencyApplication
 		"item.FormValue.User.Human.Citizenship": item.FormValue.User.Human.Citizenship,
 		"item.FormValue.User.Human.Snils":       item.FormValue.User.Human.Snils,
 		//"item.FormValue.User.Human.PostIndex":   item.FormValue.User.Human.PostIndex,
-		"item.FormValue.User.Human.PostIndex": item.FormValue.User.Human.ContactInfo.AddressInfo.Zip,
+		"item.FormValue.User.Human.PostIndex": item.FormValue.User.Human.Contact.Address.Zip,
 		"item.FormValue.User.Human.Address":   item.FormValue.User.Human.GetFullAddress(),
 		"item.FormValue.User.Email":           item.FormValue.User.Email,
 		"item.FormValue.User.Phone":           item.FormValue.User.Phone,

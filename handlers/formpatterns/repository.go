@@ -13,10 +13,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -27,7 +23,6 @@ func (r *Repository) getAll() (models.FormPatterns, error) {
 		Relation("Fields.File").
 		Relation("Fields.ValueType")
 
-	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }
@@ -44,7 +39,8 @@ func (r *Repository) get() (*models.FormPattern, error) {
 		Relation("DefaultFormStatus").
 		Relation("PersonalDataAgreement").
 		Relation("Fields.MaskTokens").
-		Where("form_patterns.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
+		// Where("form_patterns.? = ?", bun.Safe(r..Col), r..Value).
+		Scan(r.ctx)
 
 	return &item, err
 }

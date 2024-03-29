@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -63,7 +63,7 @@ type Repository struct {
 }
 
 type FilesService struct {
-	uploader uploadHelper.Uploader
+	uploader uploader.Uploader
 	helper   *helper.Helper
 }
 

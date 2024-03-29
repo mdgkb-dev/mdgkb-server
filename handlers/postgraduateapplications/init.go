@@ -2,11 +2,11 @@ package postgraduateapplications
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
 
+	"mdgkb/mdgkb-server/models"
+
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
@@ -58,9 +58,8 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
+	ctx    context.Context
+	helper *helper.Helper
 }
 
 type FilesService struct {

@@ -1,18 +1,18 @@
 package doctors
 
 import (
+	"context"
+
+	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/doctorpaidservices"
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
-func (s *Service) Create(item *models.Doctor) error {
+func (s *Service) Create(c context.Context, item *models.Doctor) error {
 	if item == nil {
 		return nil
 	}
@@ -21,7 +21,7 @@ func (s *Service) Create(item *models.Doctor) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func (s *Service) Create(item *models.Doctor) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.Doctor) error {
+func (s *Service) Update(c context.Context, item *models.Doctor) error {
 	if item == nil {
 		return nil
 	}
@@ -49,7 +49,7 @@ func (s *Service) Update(item *models.Doctor) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.upsert(item)
+	err = R.Upsert(c, item)
 	if err != nil {
 		return err
 	}
@@ -75,67 +75,63 @@ func (s *Service) Update(item *models.Doctor) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Doctors, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.Doctors, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) GetAllTimetables() (models.Doctors, error) {
-	return s.repository.getAllTimetables()
+func (s *Service) GetAllTimetables(c context.Context) (models.Doctors, error) {
+	return R.GetAllTimetables(c)
 }
 
-func (s *Service) GetAllAdmin() (models.DoctorsWithCount, error) {
-	return s.repository.getAllAdmin()
-}
-
-func (s *Service) Get(slug string) (*models.Doctor, error) {
-	item, err := s.repository.get(slug)
+func (s *Service) Get(c context.Context, slug string) (*models.Doctor, error) {
+	item, err := R.Get(c, slug)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) GetByDivisionID(divisionID string) (models.Doctors, error) {
-	return s.repository.getByDivisionID(divisionID)
+func (s *Service) GetByDivisionID(c context.Context, divisionID string) (models.Doctors, error) {
+	return R.GetByDivisionID(c, divisionID)
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) CreateComment(item *models.DoctorComment) error {
+func (s *Service) CreateComment(c context.Context, item *models.DoctorComment) error {
 	commentsService := comments.CreateService(s.helper)
 	err := commentsService.UpsertOne(item.Comment)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	return s.repository.createComment(item)
+	return R.CreateComment(c, item)
 }
 
-func (s *Service) UpdateComment(item *models.DoctorComment) error {
+func (s *Service) UpdateComment(c context.Context, item *models.DoctorComment) error {
 	commentsService := comments.CreateService(s.helper)
 	err := commentsService.UpdateOne(item.Comment)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	return s.repository.updateComment(item)
+	return R.UpdateComment(c, item)
 }
 
-func (s *Service) RemoveComment(id string) error {
-	return s.repository.removeComment(id)
+func (s *Service) RemoveComment(c context.Context, id string) error {
+	return R.RemoveComment(c, id)
 }
 
-func (s *Service) UpsertMany(items models.Doctors) error {
+func (s *Service) UpsertMany(c context.Context, items models.Doctors) error {
 	if len(items) == 0 {
 		return nil
 	}
-	return s.repository.upsertMany(items)
+	return R.UpsertMany(c, items)
 }
 
-func (s *Service) CreateSlugs() error {
-	_, err := s.repository.getAll()
+func (s *Service) CreateSlugs(c context.Context) error {
+	_, err := R.GetAll(c)
 	if err != nil {
 		return err
 	}
@@ -148,19 +144,9 @@ func (s *Service) CreateSlugs() error {
 	return err
 }
 
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
-}
-
-func (s *Service) Search(query string) (models.Doctors, error) {
-	queryRu := s.helper.Util.TranslitToRu(query)
-	return s.repository.search(queryRu)
-}
-
-func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+func (s *Service) DeleteMany(c context.Context, idPool []uuid.UUID) error {
 	if len(idPool) == 0 {
 		return nil
 	}
-	return s.repository.deleteMany(idPool)
+	return R.DeleteMany(c, idPool)
 }

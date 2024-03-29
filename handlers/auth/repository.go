@@ -15,7 +15,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -70,7 +69,6 @@ func (r *Repository) getAllPathPermissionsAdmin() (item models.PathPermissionsWi
 	query := r.db().NewSelect().Model(&item.PathPermissions).
 		Relation("PathPermissionsRoles")
 
-	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }

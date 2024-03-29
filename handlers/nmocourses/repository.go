@@ -13,7 +13,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -30,7 +29,6 @@ func (r *Repository) getAll() (item models.NmoCoursesWithCount, err error) {
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("Specialization")
-	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }
@@ -50,7 +48,8 @@ func (r *Repository) get() (*models.NmoCourse, error) {
 		Relation("FormPattern.FormStatusGroup").
 		// Relation("FormPattern.PersonalDataAgreement").
 		Relation("Specialization").
-		Where("?TableAlias.? = ?", bun.Safe(r.queryFilter.Col), r.queryFilter.Value).Scan(r.ctx)
+		// Where("?TableAlias.? = ?", bun.Safe(r..Col), r..Value).
+		Scan(r.ctx)
 	return &item, err
 }
 

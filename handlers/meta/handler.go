@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"mdgkb/mdgkb-server/models"
 	"net/http"
+
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/pro-assistance/pro-assister/projecthelper"
+	"github.com/pro-assistance/pro-assister/helpers/project"
 )
 
 func (h *Handler) GetCount(c *gin.Context) {
@@ -24,7 +25,7 @@ func (h *Handler) GetCount(c *gin.Context) {
 }
 
 func (h *Handler) GetSchema(c *gin.Context) {
-	c.JSON(http.StatusOK, projecthelper.SchemasLib)
+	c.JSON(http.StatusOK, project.SchemasLib)
 }
 
 func (h *Handler) GetSocial(c *gin.Context) {

@@ -1,14 +1,14 @@
 package models
 
 import (
-	"github.com/pro-assistance/pro-assister/sqlHelper"
+	"github.com/pro-assistance/pro-assister/helpers/sql"
 )
 
 type FTSPQuery struct {
-	QID  string         `json:"qid"`
-	FTSP sqlHelper.FTSP `json:"ftsp"`
+	QID  string   `json:"qid"`
+	FTSP sql.FTSP `json:"ftsp"`
 }
 type FTSPAnswer struct {
-	Data interface{}    `json:"data"`
-	FTSP sqlHelper.FTSP `json:"ftsp"`
+	Data interface{} `json:"data"`
+	FTSP sql.FTSP    `json:"ftsp"`
 }

@@ -1,16 +1,12 @@
 package doctors
 
 import (
-	"mdgkb/mdgkb-server/models"
 	"net/http"
+
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/gin-gonic/gin"
 )
-
-//type doctorsParams struct {
-//	Main  bool `form:"main"`
-//	Limit int  `form:"limit"`
-//}
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Doctor
@@ -18,11 +14,11 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	err = F.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Create(&item)
+	err = S.Create(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -30,31 +26,23 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	err := h.service.setQueryFilter(c)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	items, err := h.service.GetAll()
+	items, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
 }
 
-func (h *Handler) GetAllAdmin(c *gin.Context) {
-	err := h.service.setQueryFilter(c)
+func (h *Handler) FTSP(c *gin.Context) {
+	data, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	items, err := h.service.GetAllAdmin()
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	c.JSON(http.StatusOK, items)
+	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data, FTSP: *h.helper.SQL.ExtractFTSP(c.Request.Context())})
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	item, err := h.service.Get(c.Param("slug"))
+	item, err := S.Get(c.Request.Context(), c.Param("slug"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -62,7 +50,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) GetByDivisionID(c *gin.Context) {
-	item, err := h.service.GetByDivisionID(c.Param("divisionId"))
+	item, err := S.GetByDivisionID(c.Request.Context(), c.Param("divisionId"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -70,7 +58,7 @@ func (h *Handler) GetByDivisionID(c *gin.Context) {
 }
 
 func (h *Handler) Delete(c *gin.Context) {
-	err := h.service.Delete(c.Param("id"))
+	err := S.Delete(c.Request.Context(), c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -84,11 +72,11 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 
-	err = h.filesService.Upload(c, &item, files)
+	err = F.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Update(&item)
+	err = S.Update(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -103,7 +91,7 @@ func (h *Handler) CreateComment(c *gin.Context) {
 		return
 	}
 
-	err = h.service.CreateComment(&item)
+	err = S.CreateComment(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -117,7 +105,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.UpdateComment(&item)
+	err = S.UpdateComment(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -125,7 +113,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 }
 
 func (h *Handler) RemoveComment(c *gin.Context) {
-	err := h.service.RemoveComment(c.Param("id"))
+	err := S.RemoveComment(c.Request.Context(), c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
@@ -133,21 +121,8 @@ func (h *Handler) RemoveComment(c *gin.Context) {
 }
 
 func (h *Handler) CreateSlugs(c *gin.Context) {
-	err := h.service.CreateSlugs()
+	err := S.CreateSlugs(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	c.JSON(http.StatusOK, nil)
-}
-
-func (h *Handler) Search(c *gin.Context) {
-	query := c.Query("query")
-	if query != "" {
-		items, err := h.service.Search(query)
-		if h.helper.HTTP.HandleError(c, err) {
-			return
-		}
-		c.JSON(http.StatusOK, items)
 		return
 	}
 	c.JSON(http.StatusOK, nil)

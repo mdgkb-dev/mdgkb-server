@@ -1,24 +1,18 @@
 package pages
 
 import (
-	"fmt"
-	"mdgkb/mdgkb-server/handlers/contactinfo"
+	"context"
+
 	"mdgkb/mdgkb-server/handlers/pageimages"
 	"mdgkb/mdgkb-server/handlers/pagesdocuments"
 	"mdgkb/mdgkb-server/handlers/pagesidemenus"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.Page) error {
+func (s *Service) Create(c context.Context, item *models.Page) error {
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
-	err := contactinfo.CreateService(s.helper).Create(item.ContactInfo)
-	if err != nil {
-		return err
-	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err := R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -55,33 +49,26 @@ func (s *Service) Create(item *models.Page) error {
 	//}
 }
 
-func (s *Service) GetAll() (models.PagesWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.PagesWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id *string) (*models.Page, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id *string) (*models.Page, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Update(item *models.Page) error {
-	err := contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
-	if err != nil {
-		return err
-	}
-	item.SetForeignKeys()
-	fmt.Println("1")
-	err = s.repository.update(item)
+func (s *Service) Update(c context.Context, item *models.Page) error {
+	err := R.Update(c, item)
 	if err != nil {
 		return err
 	}
 	item.SetIDForChildren()
 
 	pageSideMenusService := pagesidemenus.CreateService(s.helper)
-	fmt.Println("2")
 	err = pageSideMenusService.UpsertMany(item.PageSideMenus)
 	if err != nil {
 		return err
@@ -91,7 +78,6 @@ func (s *Service) Update(item *models.Page) error {
 		return err
 	}
 
-	fmt.Println("3")
 	pagesDocumentsService := pagesdocuments.CreateService(s.helper)
 	err = pagesDocumentsService.UpsertMany(item.PageDocuments)
 	if err != nil {
@@ -101,13 +87,11 @@ func (s *Service) Update(item *models.Page) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("4")
 	pageImagesService := pageimages.CreateService(s.helper)
 	err = pageImagesService.UpsertMany(item.PageImages)
 	if err != nil {
 		return err
 	}
-	fmt.Println("5")
 	err = pageImagesService.DeleteMany(item.PageImagesForDelete)
 	if err != nil {
 		return err
@@ -115,19 +99,14 @@ func (s *Service) Update(item *models.Page) error {
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id *string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) GetBySlug(slug *string) (*models.Page, error) {
-	item, err := s.repository.getBySlug(slug)
+func (s *Service) GetBySlug(c context.Context, slug *string) (*models.Page, error) {
+	item, err := R.GetBySlug(c, slug)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
 }

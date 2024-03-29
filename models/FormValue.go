@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -90,7 +90,7 @@ func (item *FormValue) SetFilePath(fileID *string) *string {
 	}
 	for i := range item.FormValueFiles {
 		if item.FormValueFiles[i].File.ID.UUID.String() == *fileID {
-			item.FormValueFiles[i].File.FileSystemPath = uploadHelper.BuildPath(fileID)
+			item.FormValueFiles[i].File.FileSystemPath = uploader.BuildPath(fileID)
 			fmt.Println(item.FormValueFiles[i].File.FileSystemPath)
 			return &item.FormValueFiles[i].File.FileSystemPath
 		}

@@ -13,7 +13,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -27,7 +26,6 @@ func (r *Repository) getAll() (models.FormStatuses, error) {
 		Relation("Icon").
 		Relation("FormStatusGroup").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon")
-	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }
@@ -39,7 +37,6 @@ func (r *Repository) GetAllByGroupID(id *string) (models.FormStatuses, error) {
 		Relation("Icon").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
 		Where("form_statuses_view.form_status_group_id = ?", *id)
-	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -63,7 +63,7 @@ func (items FormStatuses) GetFormStatusToFormStatuses() FormStatusToFormStatuses
 
 func (item *FormStatus) SetFilePath(fileID *string) *string {
 	if item.Icon.ID.UUID.String() == *fileID {
-		item.Icon.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.Icon.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.Icon.FileSystemPath
 	}
 	return nil

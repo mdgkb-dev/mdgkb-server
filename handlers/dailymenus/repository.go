@@ -14,7 +14,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -35,7 +34,6 @@ func (r *Repository) getAll() (models.DailyMenus, error) {
 		Relation("DailyMenuItems.DishesGroup").
 		Relation("DailyMenuItems.DishSample.DishesGroup").
 		Relation("DailyMenuItems.DishSample.Image")
-	r.queryFilter.HandleQuery(query)
 	err := query.Scan(r.ctx)
 	return items, err
 }

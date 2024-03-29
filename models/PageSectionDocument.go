@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
@@ -34,7 +34,7 @@ func (items PageSectionDocuments) SetForeignKeys() {
 
 func (item *PageSectionDocument) SetFilePath(fileID *string) *string {
 	if item.Scan.ID.UUID.String() == *fileID {
-		item.Scan.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.Scan.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.Scan.FileSystemPath
 	}
 	return nil

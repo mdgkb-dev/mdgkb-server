@@ -1,7 +1,6 @@
 package appointments
 
 import (
-	"mdgkb/mdgkb-server/handlers/doctors"
 	"mdgkb/mdgkb-server/handlers/formvalues"
 	"mdgkb/mdgkb-server/models"
 
@@ -69,17 +68,17 @@ func (s *Service) DeleteMany(id []string) error {
 }
 
 func (s *Service) Init() error {
-	doctorsWithTimetable, err := doctors.CreateService(s.helper).GetAllTimetables()
-	if err != nil {
-		return err
-	}
-	doctorsWithTimetable.InitAppointmentsSlots()
-	days := s.helper.Util.GetMonthDays()
-	appointmentsToInsert := doctorsWithTimetable.InitAppointments(days)
-	err = s.repository.upsertMany(appointmentsToInsert)
-	if err != nil {
-		return err
-	}
+	// doctorsWithTimetable, err := doctors.CreateService(s.helper).GetAllTimetables()
+	// if err != nil {
+	// 	return err
+	// }
+	// doctorsWithTimetable.InitAppointmentsSlots()
+	// days := s.helper.Util.GetMonthDays()
+	// appointmentsToInsert := doctorsWithTimetable.InitAppointments(days)
+	// err = s.repository.upsertMany(appointmentsToInsert)
+	// if err != nil {
+	// 	return err
+	// }
 	return nil
 }
 

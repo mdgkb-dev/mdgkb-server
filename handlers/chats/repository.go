@@ -13,7 +13,6 @@ func (r *Repository) DB() *bun.DB {
 }
 
 func (r *Repository) SetQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -30,7 +29,6 @@ func (r *Repository) GetAll() (item models.ChatsWithCount, err error) {
 	query := r.DB().NewSelect().Model(&item.Chats).
 		Relation("ChatMessages")
 
-	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }
@@ -42,6 +40,7 @@ func (r *Repository) Get(slug string) (*models.Chat, error) {
 		Scan(r.ctx)
 	return &item, err
 }
+
 func (r *Repository) Delete(id string) (err error) {
 	_, err = r.DB().NewDelete().Model(&models.Chat{}).Where("id = ?", id).Exec(r.ctx)
 	return err

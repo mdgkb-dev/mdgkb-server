@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -41,7 +41,7 @@ func (items FileInfos) GetPathsAndNames() (paths []string, names []string) {
 
 func (item *FileInfo) SetFilePath(fileID *string) *string {
 	if item.ID.UUID.String() == *fileID {
-		item.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.FileSystemPath
 	}
 	return nil

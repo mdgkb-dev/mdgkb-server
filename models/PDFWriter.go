@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/pdfHelper"
+	"github.com/pro-assistance/pro-assister/helpers/pdf"
 	"github.com/uptrace/bun"
 )
 
@@ -14,7 +14,7 @@ type PDFWriter struct {
 
 	WithAge         bool `json:"withAge"`
 	CountAverageAge bool `json:"countAverageAge"`
-	PDF             *pdfHelper.PDFHelper
+	PDF             *pdf.PDF
 }
 
 func (item *PDFWriter) WriteFile(headers [][]interface{}, _ Agregator, data [][]interface{}) ([]byte, error) {

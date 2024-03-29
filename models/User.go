@@ -1,8 +1,9 @@
 package models
 
 import (
-	"mdgkb/mdgkb-server/middleware"
 	"time"
+
+	"github.com/pro-assistance/pro-assister/middleware"
 
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
@@ -43,7 +44,7 @@ type User struct {
 	CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationsForDelete"`
 
 	ResidencyApplications ResidencyApplications `bun:"rel:has-many,join:id=user_id" json:"residencyApplications"`
-	//CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationsForDelete"`
+	// CandidateApplicationsForDelete []uuid.UUID           `bun:"-" json:"сandidateApplicationsForDelete"`
 
 	VisitsApplications          VisitsApplications `bun:"rel:has-many" json:"visitsApplications"`
 	VisitsApplicationsForDelete []uuid.UUID        `bun:"-" json:"visitsApplicationsForDelete"`

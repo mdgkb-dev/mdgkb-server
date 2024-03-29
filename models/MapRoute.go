@@ -31,7 +31,7 @@ func (items MapRoutes) GetMapRouteNodes() MapRouteNodes {
 	return itemsForGet
 }
 
-func (items MapRoutes) SetIdForChildren() {
+func (items MapRoutes) SetIDForChildren() {
 	for i := range items {
 		for j := range items[i].MapRouteNodes {
 			items[i].MapRouteNodes[j].MapRouteID = items[i].ID
@@ -133,11 +133,9 @@ func BFSWithPath(graph *Graph, start, end *MapNode) (MapNodes, int) {
 			// fmt.Println("neighbor", neighbor)
 			// fmt.Println("visited[neighbor]", visited[neighbor])
 			if !visited[neighbor] {
-
 				queue = append(queue, neighbor)
 				visited[neighbor] = true
 				previous[neighbor] = currentNode
-
 			}
 		}
 	}

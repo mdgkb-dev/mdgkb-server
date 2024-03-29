@@ -2,6 +2,8 @@ package auth
 
 import (
 	"errors"
+	"fmt"
+
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
@@ -36,12 +38,14 @@ func (s *Service) Register(item *models.User) (t *models.TokensWithUser, err err
 
 func (s *Service) Login(item *models.Login, skipPassword bool) (t *models.TokensWithUser, err error) {
 	findedUser, err := users.CreateService(s.helper).GetByEmail(item.Email)
+	fmt.Println(findedUser)
 	if err != nil {
 		return nil, err
 	}
 	if !findedUser.CompareWithHashPassword(item.Password) && !skipPassword {
 		return nil, errors.New("wrong login or password")
 	}
+	fmt.Println(findedUser)
 	token, err := s.helper.Token.CreateToken(findedUser)
 	if err != nil {
 		return nil, err

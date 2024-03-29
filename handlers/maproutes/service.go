@@ -48,7 +48,7 @@ func (s *Service) CreateMany(items models.MapRoutes) error {
 		return err
 	}
 
-	items.SetIdForChildren()
+	items.SetIDForChildren()
 	maproutenodesService := maproutenodes.CreateService(s.helper)
 
 	err = maproutenodesService.DeleteAll()

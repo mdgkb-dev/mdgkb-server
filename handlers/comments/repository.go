@@ -55,7 +55,6 @@ func (r *Repository) getAll() (item models.CommentsWithCount, err error) {
 		Relation("DoctorComment.Doctor.Employee.Human").
 		Relation("DivisionComment.Division").
 		Relation("User.Human")
-	r.queryFilter.HandleQuery(query)
 	item.Count, err = query.ScanAndCount(r.ctx)
 	return item, err
 }
@@ -85,7 +84,6 @@ func (r *Repository) upsertOne(item *models.Comment) (err error) {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}

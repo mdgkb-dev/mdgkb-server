@@ -5,7 +5,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
+	baseModels "github.com/pro-assistance/pro-assister/models"
 	"github.com/uptrace/bun"
 	// "time"
 )
@@ -36,14 +37,14 @@ type Human struct {
 	PhotoMini   *FileInfo2    `bun:"rel:belongs-to" json:"photoMini"`
 	PhotoMiniID uuid.NullUUID `bun:"type:uuid" json:"photoMiniId"`
 
-	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
-	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
+	Contact   *baseModels.Contact `bun:"rel:belongs-to" json:"contact"`
+	ContactID uuid.NullUUID       `bun:"type:uuid" json:"contactId"`
 }
 
 type Humans []*Human
 
 func (item *Human) SetForeignKeys() {
-	item.ContactInfoID = item.ContactInfo.ID
+	item.ContactID = item.Contact.ID
 	item.PhotoID = item.Photo.ID
 
 	if item.PhotoMini != nil {
@@ -61,11 +62,11 @@ func (item *Human) GetFullName() string {
 	return fmt.Sprintf("%s %s %s", item.Surname, item.Name, item.Patronymic)
 }
 
-func (items Humans) GetContactInfos() ContactInfos {
-	itemsForGet := make(ContactInfos, len(items))
+func (items Humans) GetContacts() baseModels.Contacts {
+	itemsForGet := make(baseModels.Contacts, len(items))
 	for i := range items {
-		if items[i].ContactInfo != nil {
-			itemsForGet[i] = items[i].ContactInfo
+		if items[i].Contact != nil {
+			itemsForGet[i] = items[i].Contact
 		}
 	}
 	return itemsForGet
@@ -74,7 +75,7 @@ func (items Humans) GetContactInfos() ContactInfos {
 func (items Humans) GetPhotos() FileInfos {
 	itemsForGet := make(FileInfos, len(items))
 	for i := range items {
-		if items[i].ContactInfo != nil {
+		if items[i].Contact != nil {
 			itemsForGet[i] = items[i].Photo
 		}
 	}
@@ -94,16 +95,16 @@ func (items Humans) GetFileInfos() FileInfos {
 
 func (item *Human) SetFilePath(fileID *string) *string {
 	if item.Photo.ID.UUID.String() == *fileID {
-		item.Photo.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.Photo.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.Photo.FileSystemPath
 	}
 	if item.PhotoMini.ID.UUID.String() == *fileID {
-		item.PhotoMini.FileSystemPath = uploadHelper.BuildPath(fileID)
+		item.PhotoMini.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.PhotoMini.FileSystemPath
 	}
 	return nil
 }
 
 func (item *Human) GetFullAddress() string {
-	return item.ContactInfo.AddressInfo.GetFullAddress()
+	return item.Contact.Address.GetFullAddress()
 }

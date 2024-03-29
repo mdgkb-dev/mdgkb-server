@@ -2,9 +2,11 @@ package users
 
 import (
 	"fmt"
-	"mdgkb/mdgkb-server/middleware"
-	"mdgkb/mdgkb-server/models"
 	"net/http"
+
+	"mdgkb/mdgkb-server/models"
+
+	"github.com/pro-assistance/pro-assister/middleware"
 
 	"github.com/gin-gonic/gin"
 )

@@ -2,8 +2,9 @@ package banners
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/pro-assistance/pro-assister/helper"
 
@@ -57,7 +58,6 @@ type Service struct {
 type Repository struct {
 	ctx    context.Context
 	helper *helper.Helper
-	//queryFilter *sqlHelper.QueryFilter
 }
 
 type FilesService struct {

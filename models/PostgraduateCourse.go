@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -71,19 +71,19 @@ func (item *PostgraduateCourse) SetIDForChildren() {
 
 func (item *PostgraduateCourse) SetFilePath(fileID string) *string {
 	if item.QuestionsFile.ID.UUID.String() == fileID {
-		item.QuestionsFile.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		item.QuestionsFile.FileSystemPath = uploader.BuildPath(&fileID)
 		return &item.QuestionsFile.FileSystemPath
 	}
 	if item.Calendar.ID.UUID.String() == fileID {
-		item.Calendar.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		item.Calendar.FileSystemPath = uploader.BuildPath(&fileID)
 		return &item.Calendar.FileSystemPath
 	}
 	if item.ProgramFile.ID.UUID.String() == fileID {
-		item.ProgramFile.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		item.ProgramFile.FileSystemPath = uploader.BuildPath(&fileID)
 		return &item.ProgramFile.FileSystemPath
 	}
 	if item.Annotation.ID.UUID.String() == fileID {
-		item.Annotation.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		item.Annotation.FileSystemPath = uploader.BuildPath(&fileID)
 		return &item.Annotation.FileSystemPath
 	}
 	filePath := item.PostgraduateCoursePlans.SetFilePath(fileID)

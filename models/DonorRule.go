@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -34,7 +34,7 @@ func (items DonorRules) GetImages() FileInfos {
 
 func (item *DonorRule) SetFilePath(fileID string) *string {
 	if item.Image.ID.UUID.String() == fileID {
-		item.Image.FileSystemPath = uploadHelper.BuildPath(&fileID)
+		item.Image.FileSystemPath = uploader.BuildPath(&fileID)
 		return &item.Image.FileSystemPath
 	}
 	return nil

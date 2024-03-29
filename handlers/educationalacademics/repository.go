@@ -14,7 +14,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -26,9 +25,8 @@ func (r *Repository) getAll() (models.EducationalAcademics, error) {
 	query := r.db().NewSelect().
 		Model(&items).
 		Relation("Employee.Human.PhotoMini").
-		Relation("Employee.Human.ContactInfo.Emails").
-		Relation("Employee.Human.ContactInfo.TelephoneNumbers")
-	r.queryFilter.HandleQuery(query)
+		Relation("Employee.Human.Contact.Emails").
+		Relation("Employee.Human.Contact.Phones")
 	err := query.Scan(r.ctx)
 	return items, err
 }

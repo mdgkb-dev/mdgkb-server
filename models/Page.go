@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
+	baseModels "github.com/pro-assistance/pro-assister/models"
 	"github.com/uptrace/bun"
 )
 
@@ -19,8 +20,8 @@ type Page struct {
 
 	PagesGroup string `json:"pagesGroup"`
 
-	ContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"contactInfo"`
-	ContactInfoID uuid.UUID    `bun:"type:uuid" json:"contactInfoId"`
+	Contact   *baseModels.Contact `bun:"rel:belongs-to" json:"contact"`
+	ContactID uuid.NullUUID       `bun:"type:uuid" json:"contactId"`
 
 	Role   *Role         `bun:"rel:belongs-to" json:"role"`
 	RoleID uuid.NullUUID `bun:"type:uuid" json:"roleId"`
@@ -49,8 +50,8 @@ type PagesWithCount struct {
 }
 
 func (item *Page) SetForeignKeys() {
-	if item.ContactInfo != nil {
-		item.ContactInfoID = item.ContactInfo.ID
+	if item.Contact != nil {
+		item.ContactID = item.Contact.ID
 	}
 	if item.Role != nil && item.Role.ID.Valid {
 		item.RoleID = item.Role.ID

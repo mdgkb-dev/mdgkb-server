@@ -14,7 +14,6 @@ func (r *Repository) db() *bun.DB {
 }
 
 func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	r.queryFilter, err = r.helper.SQL.CreateQueryFilter(c)
 	if err != nil {
 		return err
 	}
@@ -25,7 +24,6 @@ func (r *Repository) getAll() (item models.FormStatusGroupsWithCount, err error)
 	query := r.db().NewSelect().
 		Model(&item.FormStatusGroups).
 		Relation("FormStatuses")
-	r.queryFilter.HandleQuery(query)
 	err = query.Scan(r.ctx)
 	//err = query.Scan(r.ctx)
 	fmt.Println(item.FormStatusGroups)

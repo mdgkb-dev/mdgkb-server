@@ -2,12 +2,12 @@ package vacancyresponses
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/models"
 	"mime/multipart"
+
+	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +35,7 @@ type IService interface {
 }
 
 type IRepository interface {
-	//basehandler.IRepository
+	// basehandler.IRepository
 	setQueryFilter(c *gin.Context) error
 	create(*models.VacancyResponse) error
 	getAll() (models.VacancyResponsesWithCount, error)
@@ -62,9 +62,8 @@ type Service struct {
 }
 
 type Repository struct {
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
+	ctx    context.Context
+	helper *helper.Helper
 }
 
 type FilesService struct {

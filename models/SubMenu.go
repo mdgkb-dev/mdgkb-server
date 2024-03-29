@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
@@ -31,7 +31,7 @@ type SubMenus []*SubMenu
 func (items SubMenus) SetFilePath(fileID *string) *string {
 	for _, item := range items {
 		if item.Icon.ID.UUID.String() == *fileID {
-			item.Icon.FileSystemPath = uploadHelper.BuildPath(fileID)
+			item.Icon.FileSystemPath = uploader.BuildPath(fileID)
 			return &item.Icon.FileSystemPath
 		}
 	}

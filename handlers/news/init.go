@@ -2,12 +2,13 @@ package news
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/models"
-	"mdgkb/mdgkb-server/models/exportmodels"
 	"mime/multipart"
 
+	"mdgkb/mdgkb-server/models"
+	"mdgkb/mdgkb-server/models/exportmodels"
+
 	"github.com/pro-assistance/pro-assister/helper"
-	"github.com/pro-assistance/pro-assister/sqlHelper"
+	"github.com/pro-assistance/pro-assister/helpers/sql"
 
 	"github.com/gin-gonic/gin"
 )
@@ -95,10 +96,9 @@ type Service struct {
 type Repository struct {
 	// baseHandler.Repository
 
-	ctx         context.Context
-	helper      *helper.Helper
-	queryFilter *sqlHelper.QueryFilter
-	FTSP        sqlHelper.FTSP
+	ctx    context.Context
+	helper *helper.Helper
+	FTSP   sql.FTSP
 }
 
 type FilesService struct {

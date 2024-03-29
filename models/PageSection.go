@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 	"github.com/uptrace/bun"
 )
 
@@ -62,7 +62,7 @@ func (item PageSection) SetFilePath(fileID *string) *string {
 	}
 	for i := range item.PageSectionImages {
 		if item.PageSectionImages[i].FileInfo.ID.UUID.String() == *fileID {
-			item.PageSectionImages[i].FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
+			item.PageSectionImages[i].FileInfo.FileSystemPath = uploader.BuildPath(fileID)
 			return &item.PageSectionImages[i].FileInfo.FileSystemPath
 		}
 	}

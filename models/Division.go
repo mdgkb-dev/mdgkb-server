@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
-	"github.com/pro-assistance/pro-assister/socialHelper"
+	"github.com/pro-assistance/pro-assister/helpers/social"
 	"github.com/uptrace/bun"
 )
 
@@ -53,11 +53,11 @@ type Division struct {
 	Chief                    *Doctor                  `bun:"rel:belongs-to" json:"chief"`
 	ChiefID                  uuid.NullUUID            `bun:"type:uuid" json:"chiefId"`
 
-	NewsDivisions           NewsDivisions        `bun:"rel:has-many" json:"newsDivisions"`
-	NewsDivisionsForDelete  []uuid.UUID          `bun:"-" json:"newsDivisionsForDelete"`
-	SocialMedias            socialHelper.Socials `bun:"-" json:"socialMedias"`
-	DivisionVideos          DivisionVideos       `bun:"rel:has-many" json:"divisionVideos"`
-	DivisionVideosForDelete []uuid.UUID          `bun:"-" json:"divisionVideosForDelete"`
+	NewsDivisions           NewsDivisions  `bun:"rel:has-many" json:"newsDivisions"`
+	NewsDivisionsForDelete  []uuid.UUID    `bun:"-" json:"newsDivisionsForDelete"`
+	SocialMedias            social.Socials `bun:"-" json:"socialMedias"`
+	DivisionVideos          DivisionVideos `bun:"rel:has-many" json:"divisionVideos"`
+	DivisionVideosForDelete []uuid.UUID    `bun:"-" json:"divisionVideosForDelete"`
 
 	HasDiagnostic bool `json:"hasDiagnostic"`
 	HasAmbulatory bool `json:"hasAmbulatory"`

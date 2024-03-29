@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/pro-assistance/pro-assister/uploadHelper"
+	"github.com/pro-assistance/pro-assister/helpers/uploader"
 
 	"github.com/google/uuid"
 )
@@ -33,7 +33,7 @@ func (i PageImages) SetFileInfoID() {
 func (i PageImages) SetFilePath(fileID *string) *string {
 	for _, item := range i {
 		if item.FileInfo.ID.UUID.String() == *fileID {
-			item.FileInfo.FileSystemPath = uploadHelper.BuildPath(fileID)
+			item.FileInfo.FileSystemPath = uploader.BuildPath(fileID)
 			return &item.FileInfo.FileSystemPath
 		}
 	}

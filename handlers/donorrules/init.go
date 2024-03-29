@@ -56,7 +56,7 @@ type Repository struct {
 }
 
 type FilesService struct {
-	//uploader uploadHelper.Uploader
+	//uploader uploader.Uploader
 	helper *helper.Helper
 }
 

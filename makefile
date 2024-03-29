@@ -40,8 +40,11 @@ dump: dump_from_remote
 show_sql_error: 
 	@./cmd/scripts/write_last_sql_error.sh | sed 's/\\//g'
 
+lint:
+	./cmd/golangci.sh
+
 update_assister: 
-	go get github.com/pro-assistance/pro-assister@${tag} 
+	@./cmd/scripts/update_assister.sh
 ########
 #DOCKER#
 ########
