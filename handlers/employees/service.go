@@ -15,17 +15,15 @@ import (
 	"mdgkb/mdgkb-server/handlers/regalias"
 	"mdgkb/mdgkb-server/handlers/teachingactivities"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.Employee) error {
+func (s *Service) Create(c context.Context, item *models.Employee) error {
 	err := human.CreateService(s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.Create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -75,13 +73,13 @@ func (s *Service) Create(item *models.Employee) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.Employee) error {
+func (s *Service) Update(c context.Context, item *models.Employee) error {
 	err := human.CreateService(s.helper).Update(item.Human)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.Update(item)
+	err = R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -186,23 +184,18 @@ func (s *Service) Update(item *models.Employee) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.EmployeesWithCount, error) {
-	return s.repository.GetAll()
+func (s *Service) GetAll(c context.Context) (models.EmployeesWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(slug string) (*models.Employee, error) {
-	item, err := s.repository.Get(slug)
+func (s *Service) Get(c context.Context, slug string) (*models.Employee, error) {
+	item, err := R.Get(c, slug)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.Delete(id)
-}
-
-func (s *Service) SetQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.SetQueryFilter(c)
-	return err
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }

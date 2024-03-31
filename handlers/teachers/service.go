@@ -1,6 +1,7 @@
 package teachers
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/employees"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/models"
@@ -51,7 +52,7 @@ func (s *Service) Update(item *models.Teacher) error {
 	if err != nil {
 		return err
 	}
-	err = employees.CreateService(s.helper).Update(item.Employee)
+	err = employees.S.Update(context.TODO(), item.Employee)
 	if err != nil {
 		return err
 	}

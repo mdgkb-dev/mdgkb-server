@@ -241,7 +241,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	pointsAchievementsRouter.Init(api.Group("/points-achievements"), pointsachievements.CreateHandler(helper))
 	dietsRouter.Init(api.Group("/diets"), diets.CreateHandler(helper))
 	dietsGroupsRouter.Init(api.Group("/diets-groups"), dietsgroups.CreateHandler(helper))
-	employeesRouter.Init(api.Group("/employees"), employees.CreateHandler(helper))
+
+	employees.Init(helper)
+	employeesRouter.Init(api.Group("/employees"), employees.H)
+
 	chatsRouter.Init(chats.CreateHandler(helper), api, ws)
 	chatMessagesRouter.Init(chatmessages.CreateHandler(helper), api)
 	dishesGroupsRouter.Init(api.Group("/dishes-groups"), dishesgroups.CreateHandler(helper))
