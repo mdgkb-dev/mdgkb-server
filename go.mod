@@ -14,7 +14,7 @@ require (
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
-	github.com/pro-assistance/pro-assister v1.0.7
+	github.com/pro-assistance/pro-assister v1.0.31
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/sirupsen/logrus v1.9.3
 	github.com/uptrace/bun v1.1.16

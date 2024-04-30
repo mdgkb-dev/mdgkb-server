@@ -1,27 +1,15 @@
 package postgraduatecourses
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *Repository) getAll() (item models.PostgraduateCoursesWithCount, err error) {
+func (r *Repository) GetAll(c context.Context) (item models.PostgraduateCoursesWithCount, err error) {
 	item.PostgraduateCourses = make(models.PostgraduateCourses, 0)
-	query := r.db().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		Model(&item.PostgraduateCourses).
 		Relation("PostgraduateCoursesTeachers.Teacher.Employee.Human").
 		Relation("PostgraduateCoursesSpecializations.Specialization").
@@ -29,13 +17,13 @@ func (r *Repository) getAll() (item models.PostgraduateCoursesWithCount, err err
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Relation("QuestionsFile")
-	item.Count, err = query.ScanAndCount(r.ctx)
+	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }
 
-func (r *Repository) get() (*models.PostgraduateCourse, error) {
+func (r *Repository) Get(c context.Context) (*models.PostgraduateCourse, error) {
 	item := models.PostgraduateCourse{}
-	err := r.db().NewSelect().Model(&item).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("PostgraduateCoursesTeachers.Teacher.Employee.Human").
 		Relation("PostgraduateCoursesSpecializations.Specialization").
 		Relation("PostgraduateCoursesDates").
@@ -54,31 +42,31 @@ func (r *Repository) get() (*models.PostgraduateCourse, error) {
 		Relation("FormPattern.Fields.ValueType").
 		Relation("FormPattern.Fields.MaskTokens").
 		// Where("postgraduate_courses_view.? = ?", bun.Safe(r..Col), r..Value).
-		Scan(r.ctx)
+		Scan(c)
 	return &item, err
 }
 
-func (r *Repository) create(item *models.PostgraduateCourse) (err error) {
-	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) Create(c context.Context, item *models.PostgraduateCourse) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.PostgraduateCourse{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id *string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.PostgraduateCourse{}).Where("id = ?", *id).Exec(c)
 	return err
 }
 
-func (r *Repository) update(item *models.PostgraduateCourse) (err error) {
-	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, item *models.PostgraduateCourse) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.PostgraduateCourses) (err error) {
-	_, err = r.db().NewInsert().On("CONFLICT (id) DO UPDATE").
+func (r *Repository) UpsertMany(c context.Context, items models.PostgraduateCourses) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("cost = EXCLUDED.cost").
 		Set("years = EXCLUDED.years").
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }

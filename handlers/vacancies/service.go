@@ -1,18 +1,17 @@
 package vacancies
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/vacancyduties"
 	"mdgkb/mdgkb-server/handlers/vacancyrequirements"
 	"mdgkb/mdgkb-server/handlers/vacancyresponses"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.Vacancy) error {
+func (s *Service) Create(c context.Context, item *models.Vacancy) error {
 	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
-	err := s.repository.create(item)
+	err := R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -30,26 +29,26 @@ func (s *Service) Create(item *models.Vacancy) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.VacanciesWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.VacanciesWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id *string) (*models.Vacancy, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id *string) (*models.Vacancy, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) GetBySlug(slug *string) (*models.Vacancy, error) {
-	return s.repository.getBySlug(slug)
+func (s *Service) GetBySlug(c context.Context, slug *string) (*models.Vacancy, error) {
+	return R.GetBySlug(c, slug)
 }
 
-func (s *Service) Update(item *models.Vacancy) error {
+func (s *Service) Update(c context.Context, item *models.Vacancy) error {
 	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
-	err := s.repository.update(item)
+	err := R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -74,24 +73,24 @@ func (s *Service) Update(item *models.Vacancy) error {
 		return err
 	}
 
-	err = vacancyresponses.CreateService(s.helper).DeleteMany(item.VacancyResponsesForDelete)
+	err = vacancyresponses.S.DeleteMany(c, item.VacancyResponsesForDelete)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id *string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) CreateResponse(item *models.VacancyResponse) error {
+func (s *Service) CreateResponse(c context.Context, item *models.VacancyResponse) error {
 	//err := human.CreateService(s.helper).Create(item.Human)
 	//if err != nil {
 	//	return err
 	//}
 	item.SetForeignKeys()
-	err := s.repository.createResponse(item)
+	err := R.CreateResponse(c, item)
 	if err != nil {
 		return err
 	}
@@ -99,13 +98,9 @@ func (s *Service) CreateResponse(item *models.VacancyResponse) error {
 	return nil
 }
 
-func (s *Service) setQueryFilter(c *gin.Context) error {
-	return s.repository.setQueryFilter(c)
-}
-
-func (s *Service) UpdateMany(items models.Vacancies) error {
+func (s *Service) UpdateMany(c context.Context, items models.Vacancies) error {
 	items.SetForeignKeys()
-	err := s.repository.upsertMany(items)
+	err := R.UpsertMany(c, items)
 	if err != nil {
 		return err
 	}

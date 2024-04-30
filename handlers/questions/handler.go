@@ -15,11 +15,11 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	err = F.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Create(&item)
+	err = S.Create(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -42,12 +42,16 @@ func (h *Handler) Create(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-func (h *Handler) GetAll(c *gin.Context) {
-	err := h.service.setQueryFilter(c)
+func (h *Handler) FTSP(c *gin.Context) {
+	data, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	items, err := h.service.GetAll()
+	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data, FTSP: *h.helper.SQL.ExtractFTSP(c.Request.Context())})
+}
+
+func (h *Handler) GetAll(c *gin.Context) {
+	items, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -56,7 +60,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 
 func (h *Handler) Get(c *gin.Context) {
 	id := c.Param("id")
-	item, err := h.service.Get(id)
+	item, err := S.Get(c.Request.Context(), id)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -65,7 +69,7 @@ func (h *Handler) Get(c *gin.Context) {
 
 func (h *Handler) Delete(c *gin.Context) {
 	id := c.Param("id")
-	err := h.service.Delete(id)
+	err := S.Delete(c.Request.Context(), id)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -74,11 +78,11 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) Update(c *gin.Context) {
 	var item models.Question
-	err := c.Bind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Update(&item)
+	err = S.Update(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -87,7 +91,7 @@ func (h *Handler) Update(c *gin.Context) {
 
 func (h *Handler) ReadAnswers(c *gin.Context) {
 	userID := c.Param("user-id")
-	err := h.service.ReadAnswers(userID)
+	err := S.ReadAnswers(c.Request.Context(), userID)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -100,7 +104,7 @@ func (h *Handler) ChangeNewStatus(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.ChangeNewStatus(id, isNew)
+	err = S.ChangeNewStatus(c.Request.Context(), id, isNew)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -109,7 +113,7 @@ func (h *Handler) ChangeNewStatus(c *gin.Context) {
 
 func (h *Handler) Publish(c *gin.Context) {
 	id := c.Param("id")
-	err := h.service.Publish(id)
+	err := S.Publish(c, id)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -122,7 +126,7 @@ func (h *Handler) UpsertMany(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.UpsertMany(items)
+	err = S.UpsertMany(c, items)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

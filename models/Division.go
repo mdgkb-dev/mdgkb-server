@@ -4,6 +4,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/pro-assistance/pro-assister/helpers/social"
 	"github.com/uptrace/bun"
+
+	baseModels "github.com/pro-assistance/pro-assister/models"
 )
 
 type Division struct {
@@ -12,8 +14,9 @@ type Division struct {
 	Name          string        `json:"name"`
 	Info          string        `json:"info"`
 
-	ContactInfo               *ContactInfo     `bun:"rel:belongs-to" json:"contactInfo"`
-	ContactInfoID             uuid.UUID        `bun:"type:uuid" json:"contactInfoId"`
+	Contact   *baseModels.Contact `bun:"rel:belongs-to" json:"contact"`
+	ContactID uuid.NullUUID       `bun:"type:uuid" json:"contactId"`
+
 	IsCenter                  bool             `json:"isCenter"`
 	Address                   string           `json:"address"`
 	Slug                      string           `json:"slug"`
@@ -41,8 +44,8 @@ type Division struct {
 	VisitingRulesGroups          VisitingRulesGroups `bun:"rel:has-many" json:"visitingRulesGroups"`
 	VisitingRulesGroupsForDelete []uuid.UUID         `bun:"-" json:"visitingRulesGroupsForDelete"`
 
-	HospitalizationContactInfoID uuid.UUID    `bun:"type:uuid" json:"hospitalizationContactInfoId"`
-	HospitalizationContactInfo   *ContactInfo `bun:"rel:belongs-to" json:"hospitalizationContactInfo"`
+	HospitalizationContactInfoID uuid.NullUUID       `bun:"type:uuid" json:"hospitalizationContactInfoId"`
+	HospitalizationContactInfo   *baseModels.Contact `bun:"rel:belongs-to" json:"hospitalizationContactInfo"`
 
 	HospitalizationDoctorID uuid.NullUUID `bun:"type:uuid" json:"hospitalizationDoctorId"`
 	HospitalizationDoctor   *Doctor       `bun:"rel:belongs-to" json:"hospitalizationDoctor"`
@@ -79,9 +82,6 @@ func (item *Division) SetFilePath(fileID *string) *string {
 func (item *Division) SetForeignKeys() {
 	if item.HospitalizationContactInfo != nil {
 		item.HospitalizationContactInfoID = item.HospitalizationContactInfo.ID
-	}
-	if item.ContactInfo != nil {
-		item.ContactInfoID = item.ContactInfo.ID
 	}
 	if item.HospitalizationDoctor != nil {
 		item.HospitalizationDoctorID = item.HospitalizationDoctor.ID

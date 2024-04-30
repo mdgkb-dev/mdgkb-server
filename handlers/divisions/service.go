@@ -1,8 +1,8 @@
 package divisions
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/comments"
-	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/divisionimages"
 	"mdgkb/mdgkb-server/handlers/divisionvideos"
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
@@ -10,11 +10,9 @@ import (
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/handlers/visitingrulesgroups"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.Division) error {
+func (s *Service) Create(c context.Context, item *models.Division) error {
 	timetableService := timetables.CreateService(s.helper)
 	err := timetableService.Create(item.Timetable)
 	if err != nil {
@@ -27,11 +25,11 @@ func (s *Service) Create(item *models.Division) error {
 	}
 	item.Slug = s.helper.Util.MakeSlug(item.Name, true)
 
-	contactInfoService := contactinfo.CreateService(s.helper)
-	err = contactInfoService.Create(item.ContactInfo)
-	if err != nil {
-		return err
-	}
+	// contactInfoService := contactinfo.CreateService(s.helper)
+	// err = contactInfoService.Create(item.ContactInfo)
+	// if err != nil {
+	// 	return err
+	// }
 	item.SetForeignKeys()
 
 	doctorsDivisionsService := doctorsdivisions.CreateService(s.helper)
@@ -40,7 +38,7 @@ func (s *Service) Create(item *models.Division) error {
 		return err
 	}
 
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -63,7 +61,7 @@ func (s *Service) Create(item *models.Division) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.Division) error {
+func (s *Service) Update(c context.Context, item *models.Division) error {
 	timetableService := timetables.CreateService(s.helper)
 	err := timetableService.Upsert(item.Timetable)
 	if err != nil {
@@ -76,12 +74,12 @@ func (s *Service) Update(item *models.Division) error {
 		return err
 	}
 
-	contactInfoService := contactinfo.CreateService(s.helper)
-	err = contactInfoService.Upsert(item.ContactInfo)
-	if err != nil {
-		return err
-	}
-	item.SetForeignKeys()
+	// contactInfoService := contactinfo.CreateService(s.helper)
+	// err = contactInfoService.Upsert(item.ContactInfo)
+	// if err != nil {
+	// 	return err
+	// }
+	// item.SetForeignKeys()
 
 	item.SetIDForChildren()
 	doctorsDivisionsService := doctorsdivisions.CreateService(s.helper)
@@ -121,54 +119,47 @@ func (s *Service) Update(item *models.Division) error {
 	if err != nil {
 		return err
 	}
-	return s.repository.update(item)
+	return R.Update(c, item)
 }
 
-func (s *Service) GetAll() (models.DivisionsWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.DivisionsWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get() (*models.Division, error) {
-	item, err := s.repository.get()
+func (s *Service) Get(c context.Context) (*models.Division, error) {
+	item, err := R.Get(c)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) CreateComment(item *models.DivisionComment) error {
-	commentsService := comments.CreateService(s.helper)
-	err := commentsService.UpsertOne(item.Comment)
+func (s *Service) CreateComment(c context.Context, item *models.DivisionComment) error {
+	err := comments.S.UpsertOne(context.TODO(), item.Comment)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	return s.repository.createComment(item)
+	return R.CreateComment(c, item)
 }
 
-func (s *Service) UpdateComment(item *models.DivisionComment) error {
-	commentsService := comments.CreateService(s.helper)
-	err := commentsService.UpdateOne(item.Comment)
+func (s *Service) UpdateComment(c context.Context, item *models.DivisionComment) error {
+	err := comments.S.UpdateOne(context.TODO(), item.Comment)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	return s.repository.updateComment(item)
+	return R.UpdateComment(c, item)
 }
 
-func (s *Service) RemoveComment(id string) error {
-	return s.repository.removeComment(id)
+func (s *Service) RemoveComment(c context.Context, id string) error {
+	return R.RemoveComment(c, id)
 }
 
-func (s *Service) GetBySearch(search string) (models.Divisions, error) {
-	return s.repository.getBySearch(search)
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) GetBySearch(c context.Context, search string) (models.Divisions, error) {
+	return R.GetBySearch(c, search)
 }

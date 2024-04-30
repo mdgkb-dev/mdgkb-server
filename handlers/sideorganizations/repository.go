@@ -76,11 +76,11 @@ func (r *Repository) create(ctx *gin.Context, organization *models.SideOrganizat
 
 func (r *Repository) getAll(ctx *gin.Context) (items []models.SideOrganization, err error) {
 	err = r.db().NewSelect().Model(&items).
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.PostAddresses").
-		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites").
+		// Relation("ContactInfo").
+		// Relation("ContactInfo.Emails").
+		// Relation("ContactInfo.PostAddresses").
+		// Relation("ContactInfo.TelephoneNumbers").
+		// Relation("ContactInfo.Websites").
 		Order("side_organization.name").
 		Scan(ctx)
 
@@ -89,11 +89,11 @@ func (r *Repository) getAll(ctx *gin.Context) (items []models.SideOrganization, 
 
 func (r *Repository) get(ctx *gin.Context, id string) (item models.SideOrganization, err error) {
 	err = r.db().NewSelect().Model(&item).
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.PostAddresses").
-		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites").
+		// Relation("ContactInfo").
+		// Relation("ContactInfo.Emails").
+		// Relation("ContactInfo.PostAddresses").
+		// Relation("ContactInfo.TelephoneNumbers").
+		// Relation("ContactInfo.Websites").
 		Where("side_organization.id = ?", id).
 		Scan(ctx)
 	return item, err
@@ -104,11 +104,11 @@ func (r *Repository) update(ctx *gin.Context, organization *models.SideOrganizat
 	var existingOrg models.SideOrganization
 
 	_ = r.db().NewSelect().Model(&existingOrg).
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.PostAddresses").
-		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites").
+		// Relation("ContactInfo").
+		// Relation("ContactInfo.Emails").
+		// Relation("ContactInfo.PostAddresses").
+		// Relation("ContactInfo.TelephoneNumbers").
+		// Relation("ContactInfo.Websites").
 		Where("side_organization.id = ?", organization.ID).
 		Scan(ctx)
 
@@ -257,11 +257,11 @@ func (r *Repository) delete(ctx *gin.Context, id string) (err error) {
 	var organization models.SideOrganization
 
 	err = r.db().NewSelect().Model(&organization).
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.PostAddresses").
-		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites").
+		// Relation("ContactInfo").
+		// Relation("ContactInfo.Emails").
+		// Relation("ContactInfo.PostAddresses").
+		// Relation("ContactInfo.TelephoneNumbers").
+		// Relation("ContactInfo.Websites").
 		Where("side_organization.id = ?", id).
 		Scan(ctx)
 

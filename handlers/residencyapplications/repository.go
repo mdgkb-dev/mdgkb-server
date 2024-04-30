@@ -1,27 +1,15 @@
 package residencyapplications
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *Repository) getAll() (item models.ResidencyApplicationsWithCount, err error) {
+func (r *Repository) GetAll(c context.Context) (item models.ResidencyApplicationsWithCount, err error) {
 	item.ResidencyApplications = make(models.ResidencyApplications, 0)
-	query := r.db().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		Model(&item.ResidencyApplications).
 		Relation("ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
 		Relation("FormValue.FieldValues.File").
@@ -29,13 +17,15 @@ func (r *Repository) getAll() (item models.ResidencyApplicationsWithCount, err e
 		Relation("FormValue.FieldValues.Field").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("FormValue.User.Human")
-	item.Count, err = query.ScanAndCount(r.ctx)
+
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
+	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }
 
-func (r *Repository) get(id *string) (*models.ResidencyApplication, error) {
+func (r *Repository) Get(c context.Context, id *string) (*models.ResidencyApplication, error) {
 	item := models.ResidencyApplication{}
-	err := r.db().NewSelect().Model(&item).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("Diploma").
 		Relation("ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
 		Relation("ResidencyCourse.FormPattern.Fields.File").
@@ -55,48 +45,48 @@ func (r *Repository) get(id *string) (*models.ResidencyApplication, error) {
 		Relation("ResidencyApplicationPointsAchievements.PointsAchievement", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("points_achievement.points_achievements_order")
 		}).
-		Where("residency_applications_view.id = ?", *id).Scan(r.ctx)
+		Where("residency_applications_view.id = ?", *id).Scan(c)
 	return &item, err
 }
 
-func (r *Repository) emailExists(email string, courseID string) (bool, error) {
-	exists, err := r.db().NewSelect().Model((*models.ResidencyApplication)(nil)).
+func (r *Repository) EmailExists(c context.Context, email string, courseID string) (bool, error) {
+	exists, err := r.helper.DB.IDB(c).NewSelect().Model((*models.ResidencyApplication)(nil)).
 		Join("JOIN form_values ON residency_applications_view.form_value_id = form_values.id").
 		Join("JOIN users ON users.id = form_values.user_id and lower(users.email) = lower(?)", email).
-		Where("residency_applications_view.residency_course_id = ?", courseID).Exists(r.ctx)
+		Where("residency_applications_view.residency_course_id = ?", courseID).Exists(c)
 	return exists, err
 }
 
-func (r *Repository) typeExists(email string, main bool) (bool, error) {
-	exists, err := r.db().NewSelect().Model((*models.ResidencyApplication)(nil)).
+func (r *Repository) TypeExists(c context.Context, email string, main bool) (bool, error) {
+	exists, err := r.helper.DB.IDB(c).NewSelect().Model((*models.ResidencyApplication)(nil)).
 		Where("residency_applications_view.main = ? and lower(residency_applications_view.email) = lower(?)", main, email).
-		Exists(r.ctx)
+		Exists(c)
 	return exists, err
 }
 
-func (r *Repository) create(item *models.ResidencyApplication) (err error) {
-	_, err = r.db().NewInsert().Model(item).ExcludeColumn("user_id").Exec(r.ctx)
+func (r *Repository) Create(c context.Context, item *models.ResidencyApplication) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).ExcludeColumn("user_id").Exec(c)
 	return err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.ResidencyApplication{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id *string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.ResidencyApplication{}).Where("id = ?", *id).Exec(c)
 	return err
 }
 
-func (r *Repository) update(item *models.ResidencyApplication) (err error) {
-	_, err = r.db().NewUpdate().Model(item).ExcludeColumn("user_id").Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, item *models.ResidencyApplication) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).ExcludeColumn("user_id").Where("id = ?", item.ID).Exec(c)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.ResidencyApplications) (err error) {
-	_, err = r.db().NewInsert().On("CONFLICT (id) DO UPDATE").
+func (r *Repository) UpsertMany(c context.Context, items models.ResidencyApplications) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("residency_course_id = EXCLUDED.residency_course_id").
 		Set("points_achievements = EXCLUDED.points_achievements").
 		Set("points_entrance = EXCLUDED.points_entrance").
 		Set("application_num = EXCLUDED.application_num").
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }

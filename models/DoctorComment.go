@@ -10,7 +10,7 @@ type DoctorComment struct {
 	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	DoctorID      uuid.NullUUID `bun:"type:uuid" json:"doctorId"`
 	Doctor        *Doctor       `bun:"rel:belongs-to" json:"doctor"`
-	CommentID     uuid.UUID     `bun:"type:uuid" json:"commentId"`
+	CommentID     uuid.NullUUID `bun:"type:uuid" json:"commentId"`
 	Comment       *Comment      `bun:"rel:belongs-to" json:"comment"`
 }
 

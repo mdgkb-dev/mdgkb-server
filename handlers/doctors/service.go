@@ -3,13 +3,14 @@ package doctors
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/doctorpaidservices"
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
+
+	"github.com/google/uuid"
 )
 
 func (s *Service) Create(c context.Context, item *models.Doctor) error {
@@ -100,8 +101,8 @@ func (s *Service) Delete(c context.Context, id string) error {
 }
 
 func (s *Service) CreateComment(c context.Context, item *models.DoctorComment) error {
-	commentsService := comments.CreateService(s.helper)
-	err := commentsService.UpsertOne(item.Comment)
+	commentsService := comments.S
+	err := commentsService.UpsertOne(context.TODO(), item.Comment)
 	if err != nil {
 		return err
 	}
@@ -110,8 +111,8 @@ func (s *Service) CreateComment(c context.Context, item *models.DoctorComment) e
 }
 
 func (s *Service) UpdateComment(c context.Context, item *models.DoctorComment) error {
-	commentsService := comments.CreateService(s.helper)
-	err := commentsService.UpdateOne(item.Comment)
+	commentsService := comments.S
+	err := commentsService.UpdateOne(context.TODO(), item.Comment)
 	if err != nil {
 		return err
 	}

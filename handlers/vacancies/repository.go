@@ -1,48 +1,40 @@
 package vacancies
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) DB() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *Repository) create(item *models.Vacancy) (err error) {
-	_, err = r.DB().NewInsert().Model(item).ExcludeColumn("responses_count", "new_responses_count").Exec(r.ctx)
+func (r *Repository) Create(c context.Context, item *models.Vacancy) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).ExcludeColumn("responses_count", "new_responses_count").Exec(c)
 	return err
 }
 
-func (r *Repository) getAll() (item models.VacanciesWithCount, err error) {
+func (r *Repository) GetAll(c context.Context) (item models.VacanciesWithCount, err error) {
 	item.Vacancies = make(models.Vacancies, 0)
-	query := r.DB().NewSelect().Model(&item.Vacancies).
+	query := r.helper.DB.IDB(c).NewSelect().Model(&item.Vacancies).
 		Relation("VacancyResponses").
 		Relation("Division").
 		Relation("FormPattern").
 		Relation("VacancyDuties").
 		Relation("VacancyRequirements").
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.TelephoneNumbers").
+		// Relation("ContactInfo").
+		// Relation("ContactInfo.Emails").
+		// Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactDoctor.Employee.Human").
 		Relation("VacancyResponses.FormValue")
-	item.Count, err = query.ScanAndCount(r.ctx)
+
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
+
+	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }
 
-func (r *Repository) get(id *string) (*models.Vacancy, error) {
+func (r *Repository) Get(c context.Context, id *string) (*models.Vacancy, error) {
 	item := models.Vacancy{}
-	err := r.DB().NewSelect().
+	err := r.helper.DB.IDB(c).NewSelect().
 		Model(&item).
 		Relation("Division").
 		Relation("VacancyDuties", func(q *bun.SelectQuery) *bun.SelectQuery {
@@ -51,9 +43,9 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 		Relation("VacancyRequirements", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("vacancy_requirements.vacancy_requirement_order")
 		}).
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.TelephoneNumbers").
+		// Relation("ContactInfo").
+		// Relation("ContactInfo.Emails").
+		// Relation("ContactInfo.TelephoneNumbers").
 		Relation("ContactDoctor.Employee.Human").
 		Relation("VacancyResponses.FormValue.User.Human").
 		Relation("VacancyResponses.FormValue.Fields.File").
@@ -70,13 +62,13 @@ func (r *Repository) get(id *string) (*models.Vacancy, error) {
 		Relation("FormPattern.Fields.ValueType").
 		// Relation("FormPattern.PersonalDataAgreement").
 		Where("vacancies_view.id = ?", *id).
-		Scan(r.ctx)
+		Scan(c)
 	return &item, err
 }
 
-func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
+func (r *Repository) GetBySlug(c context.Context, slug *string) (*models.Vacancy, error) {
 	item := models.Vacancy{}
-	err := r.DB().NewSelect().
+	err := r.helper.DB.IDB(c).NewSelect().
 		Model(&item).
 		Relation("Division").
 		Relation("VacancyDuties").
@@ -99,31 +91,31 @@ func (r *Repository) getBySlug(slug *string) (*models.Vacancy, error) {
 		Relation("FormPattern.Fields.File").
 		Relation("FormPattern.Fields.ValueType").
 		Where("vacancies_view.slug = ?", *slug).
-		Scan(r.ctx)
+		Scan(c)
 	return &item, err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.DB().NewDelete().Model(&models.Vacancy{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id *string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.Vacancy{}).Where("id = ?", *id).Exec(c)
 	return err
 }
 
-func (r *Repository) update(item *models.Vacancy) (err error) {
-	_, err = r.DB().NewUpdate().Model(item).ExcludeColumn("responses_count", "new_responses_count").Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, item *models.Vacancy) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).ExcludeColumn("responses_count", "new_responses_count").Where("id = ?", item.ID).Exec(c)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.Vacancies) (err error) {
-	_, err = r.DB().NewInsert().On("conflict (id) do update").Model(&items).ExcludeColumn("responses_count", "new_responses_count").
+func (r *Repository) UpsertMany(c context.Context, items models.Vacancies) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) do update").Model(&items).ExcludeColumn("responses_count", "new_responses_count").
 		Set("id = EXCLUDED.id").
 		Set("min_salary = EXCLUDED.min_salary").
 		Set("max_salary = EXCLUDED.max_salary").
 		Set("form_pattern_id = EXCLUDED.form_pattern_id").
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) createResponse(item *models.VacancyResponse) (err error) {
-	_, err = r.DB().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) CreateResponse(c context.Context, item *models.VacancyResponse) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }

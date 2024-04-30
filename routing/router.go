@@ -42,7 +42,8 @@ import (
 	"mdgkb/mdgkb-server/handlers/mapnodes"
 	"mdgkb/mdgkb-server/handlers/maproutes"
 	"mdgkb/mdgkb-server/handlers/medicalprofiles"
-	"mdgkb/mdgkb-server/handlers/menus"
+
+	// "mdgkb/mdgkb-server/handlers/menus"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/news"
 	"mdgkb/mdgkb-server/handlers/newsslides"
@@ -115,7 +116,6 @@ import (
 	mapnodesRouter "mdgkb/mdgkb-server/routing/mapnodes"
 	maproutesRouter "mdgkb/mdgkb-server/routing/maproutes"
 	medicalProfilesRouter "mdgkb/mdgkb-server/routing/medicalprofiles"
-	menusRouter "mdgkb/mdgkb-server/routing/menus"
 	metaRouter "mdgkb/mdgkb-server/routing/meta"
 	newsRouter "mdgkb/mdgkb-server/routing/news"
 	newsSlidesRouter "mdgkb/mdgkb-server/routing/newsslides"
@@ -180,28 +180,43 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 
 	hospitalizationRouter.Init(api.Group("/hospitalizations"), hospitalizations.CreateHandler(helper))
 	hospitalizationsTypesRouter.Init(api.Group("/hospitalizations-types"), hospitalizationstypes.CreateHandler(helper))
-	divisionsRouter.Init(api.Group("/divisions"), divisions.CreateHandler(helper))
+
+	divisions.Init(helper)
+	divisionsRouter.Init(api.Group("/divisions"), divisions.H)
+
 	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(helper))
-	commentsRouter.Init(api.Group("/comments"), comments.CreateHandler(helper))
+
+	comments.Init(helper)
+	commentsRouter.Init(api.Group("/comments"), comments.H)
+
 	newsRouter.Init(api.Group("/news"), news.CreateHandler(helper))
 	sideOrganizationsRouter.Init(api.Group("/side-organizations"), sideorganizations.CreateHandler(helper))
 	tagsRouter.Init(api.Group("/tags"), tags.CreateHandler(helper))
 	usersRouter.Init(api.Group("/users"), users.CreateHandler(helper))
 	timetablesRouter.Init(api.Group("/timetables"), timetables.CreateHandler(helper))
-	menusRouter.Init(api.Group("/menus"), menus.CreateHandler(helper))
+
+	// menusRouter.Init(api.Group("/menus"), menus.CreateHandler(helper))
 
 	pages.Init(helper)
 	pagesRouter.Init(api.Group("/pages"), pages.H)
 
 	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(helper))
 	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(helper))
-	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.CreateHandler(helper))
-	vacancyResponsesRouter.Init(api.Group("/vacancy-responses"), vacancyresponses.CreateHandler(helper))
+
+	vacancies.Init(helper)
+	vacanciesRouter.Init(api.Group("/vacancies"), vacancies.H)
+
+	vacancyresponses.Init(helper)
+	vacancyResponsesRouter.Init(api.Group("/vacancy-responses"), vacancyresponses.H)
+
 	pageSectionsRouter.Init(api.Group("/page-sections"), pagesections.CreateHandler(helper))
 	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(helper))
 	visitingRulesRouter.Init(api.Group("/visiting-rules"), visitingrules.CreateHandler(helper))
 	newsSlidesRouter.Init(api.Group("/news-slides"), newsslides.CreateHandler(helper))
-	questionsRouter.Init(api.Group("/questions"), questions.CreateHandler(helper))
+
+	questions.Init(helper)
+	questionsRouter.Init(api.Group("/questions"), questions.H)
+
 	timetablePatternsRouter.Init(api.Group("/timetable-patterns"), timetablepatterns.CreateHandler(helper))
 	formPatternsRouter.Init(api.Group("/form-patterns"), formpatterns.CreateHandler(helper))
 	paidProgramsRouter.Init(api.Group("/paid-programs"), paidprograms.CreateHandler(helper))
@@ -218,11 +233,17 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 
 	treatDirectionsRouter.Init(api.Group("/treat-directions"), treatdirections.CreateHandler(helper))
 	callbackRequestsRouter.Init(api.Group("/callback-requests"), callbackrequests.CreateHandler(helper))
-	visitsApplicationsRouter.Init(api.Group("/visits-applications"), visitsapplications.CreateHandler(helper))
+
+	visitsapplications.Init(helper)
+	visitsApplicationsRouter.Init(api.Group("/visits-applications"), visitsapplications.H)
+
 	nmoCoursesRouter.Init(api.Group("/nmo-courses"), nmocourses.CreateHandler(helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoapplications.CreateHandler(helper))
 	educationalAcademicsRouter.Init(api.Group("/educational-academics"), educationalacademics.CreateHandler(helper))
-	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyapplications.CreateHandler(helper))
+
+	residencyapplications.Init(helper)
+	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyapplications.H)
+
 	formValuesRouter.Init(api.Group("/form-values"), formvalues.CreateHandler(helper))
 	formStatusesRouter.Init(api.Group("/form-statuses"), formstatuses.CreateHandler(helper))
 	formStatusGroupsRouter.Init(api.Group("/form-status-groups"), formstatusgroups.CreateHandler(helper))
@@ -236,7 +257,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	candidateApplicationsRouter.Init(api.Group("/candidate-applications"), candidateapplications.CreateHandler(helper))
 	// candidateExamsRouter.Init(api.Group("/candidate-exams"), candidateexams.CreateHandler(helper))
 	rolesRouter.Init(api.Group("/roles"), roles.CreateHandler(helper))
-	residencyCoursesRouter.Init(api.Group("/residency-courses"), residencycourses.CreateHandler(helper))
+
+	residencycourses.Init(helper)
+	residencyCoursesRouter.Init(api.Group("/residency-courses"), residencycourses.H)
+
 	educationYearsRouter.Init(api.Group("/education-years"), educationyears.CreateHandler(helper))
 	pointsAchievementsRouter.Init(api.Group("/points-achievements"), pointsachievements.CreateHandler(helper))
 	dietsRouter.Init(api.Group("/diets"), diets.CreateHandler(helper))

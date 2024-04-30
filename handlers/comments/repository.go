@@ -1,91 +1,82 @@
 package comments
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) createMany(items models.Comments) (err error) {
-	_, err = r.db().NewInsert().Model(&items).Exec(r.ctx)
+func (r *Repository) CreateMany(c context.Context, items models.Comments) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(&items).Exec(c)
 	return err
 }
 
-func (r *Repository) deleteMany(idPool []string) (err error) {
-	_, err = r.db().NewDelete().
+func (r *Repository) DeleteMany(c context.Context, idPool []string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().
 		Model((*models.Comment)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.Comments) (err error) {
-	_, err = r.db().NewInsert().On("conflict (id) do update").
+func (r *Repository) UpsertMany(c context.Context, items models.Comments) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("user_id = EXCLUDED.user_id").
 		Set("text = EXCLUDED.text").
 		Set("rating = EXCLUDED.rating").
 		Set("published_on = EXCLUDED.published_on").
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) get(id uuid.UUID) (item models.Comment, err error) {
-	err = r.db().NewSelect().Model(&item).
+func (r *Repository) Get(c context.Context, id uuid.NullUUID) (item models.Comment, err error) {
+	err = r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("NewsComment.News").
 		Relation("DoctorComment.Doctor.Employee.Human").
 		Relation("DivisionComment.Division").
 		Relation("User.Human").
-		Where("comments.id = ?", id).Scan(r.ctx)
+		Where("comments.id = ?", id).Scan(c)
 
 	return item, err
 }
 
-func (r *Repository) getAll() (item models.CommentsWithCount, err error) {
+func (r *Repository) GetAll(c context.Context) (item models.CommentsWithCount, err error) {
 	item.Comments = make(models.Comments, 0)
-	query := r.db().NewSelect().Model(&item.Comments).
+	query := r.helper.DB.IDB(c).NewSelect().Model(&item.Comments).
 		Relation("NewsComment.News").
 		Relation("DoctorComment.Doctor.Employee.Human").
 		Relation("DivisionComment.Division").
 		Relation("User.Human")
-	item.Count, err = query.ScanAndCount(r.ctx)
+
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
+	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }
 
-func (r *Repository) getAllMain() (models.Comments, error) {
+func (r *Repository) GetAllMain(c context.Context) (models.Comments, error) {
 	items := make(models.Comments, 0)
-	query := r.db().NewSelect().Model(&items).Where("comments.positive = true").Order("published_on desc").Limit(4)
-	err := query.Scan(r.ctx)
+	query := r.helper.DB.IDB(c).NewSelect().Model(&items).Where("comments.positive = true").Order("published_on desc").Limit(4)
+	err := query.Scan(c)
 
 	return items, err
 }
 
-func (r *Repository) updateOne(item *models.Comment) error {
-	_, err := r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) UpdateOne(c context.Context, item *models.Comment) error {
+	_, err := r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
 	return err
 }
 
-func (r *Repository) upsertOne(item *models.Comment) (err error) {
-	_, err = r.db().NewInsert().On("conflict (id) do update").
+func (r *Repository) UpsertOne(c context.Context, item *models.Comment) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) do update").
 		Model(item).
 		Set("user_id = EXCLUDED.user_id").
 		Set("text = EXCLUDED.text").
 		Set("rating = EXCLUDED.rating").
 		Set("published_on = EXCLUDED.published_on").
-		Exec(r.ctx)
+		Exec(c)
 	return err
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	if err != nil {
-		return err
-	}
-	return nil
 }

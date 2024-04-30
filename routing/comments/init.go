@@ -6,9 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init(r *gin.RouterGroup, h handler.IHandler) {
+func Init(r *gin.RouterGroup, h *handler.Handler) {
 	r.GET("/main", h.GetAllMain)
-	r.GET("/", h.GetAll)
+	r.GET("", h.GetAll)
 	r.PUT("/:id", h.UpdateOne)
+	r.POST("/ftsp", h.FTSP)
 	r.POST("", h.UpsertOne)
 }

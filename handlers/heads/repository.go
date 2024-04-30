@@ -31,12 +31,12 @@ func (r *Repository) getAll() (models.Heads, error) {
 		Relation("Employee.Human.Photo").
 		Relation("Employee.Human.PhotoMini").
 		Relation("Departments.Division").
-		Relation("Timetable.TimetableDays.Weekday").
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.PostAddresses").
-		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites")
+		Relation("Timetable.TimetableDays.Weekday")
+		// Relation("ContactInfo").
+		// Relation("ContactInfo.Emails").
+		// Relation("ContactInfo.PostAddresses").
+		// Relation("ContactInfo.TelephoneNumbers").
+		// Relation("ContactInfo.Websites")
 	err := query.Scan(r.ctx)
 	return items, err
 }
@@ -49,11 +49,11 @@ func (r *Repository) get(id string) (*models.Head, error) {
 		Relation("Employee.Regalias").
 		Relation("Departments.Division").
 		Relation("Timetable.TimetableDays.Weekday").
-		Relation("ContactInfo").
-		Relation("ContactInfo.Emails").
-		Relation("ContactInfo.PostAddresses").
-		Relation("ContactInfo.TelephoneNumbers").
-		Relation("ContactInfo.Websites").
+		// Relation("ContactInfo").
+		// Relation("ContactInfo.Emails").
+		// Relation("ContactInfo.PostAddresses").
+		// Relation("ContactInfo.TelephoneNumbers").
+		// Relation("ContactInfo.Websites").
 		Scan(r.ctx)
 	return &item, err
 }

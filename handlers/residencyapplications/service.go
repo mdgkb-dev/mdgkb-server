@@ -1,44 +1,43 @@
 package residencyapplications
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/diplomas"
 	"mdgkb/mdgkb-server/handlers/formvalues"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/residencyapplicationspointsachievements"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.ResidencyApplicationsWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.ResidencyApplicationsWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id *string) (*models.ResidencyApplication, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id *string) (*models.ResidencyApplication, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) EmailExists(email string, courseID string) (bool, error) {
-	item, err := s.repository.emailExists(email, courseID)
+func (s *Service) EmailExists(c context.Context, email string, courseID string) (bool, error) {
+	item, err := R.EmailExists(c, email, courseID)
 	if err != nil {
 		return item, err
 	}
 	return item, nil
 }
 
-func (s *Service) TypeExists(email string, main bool) (bool, error) {
-	item, err := s.repository.typeExists(email, main)
+func (s *Service) TypeExists(c context.Context, email string, main bool) (bool, error) {
+	item, err := R.TypeExists(c, email, main)
 	if err != nil {
 		return item, err
 	}
 	return item, nil
 }
 
-func (s *Service) Create(item *models.ResidencyApplication) error {
+func (s *Service) Create(c context.Context, item *models.ResidencyApplication) error {
 	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
@@ -48,7 +47,7 @@ func (s *Service) Create(item *models.ResidencyApplication) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -69,7 +68,7 @@ func (s *Service) Create(item *models.ResidencyApplication) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.ResidencyApplication) error {
+func (s *Service) Update(c context.Context, item *models.ResidencyApplication) error {
 	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
@@ -79,7 +78,7 @@ func (s *Service) Update(item *models.ResidencyApplication) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -96,12 +95,12 @@ func (s *Service) Update(item *models.ResidencyApplication) error {
 	return nil
 }
 
-func (s *Service) UpdateWithForm(item *models.FormValue) error {
+func (s *Service) UpdateWithForm(c context.Context, item *models.FormValue) error {
 	err := formvalues.CreateService(s.helper).Upsert(item)
 	if err != nil {
 		return err
 	}
-	err = s.repository.update(item.ResidencyApplication)
+	err = R.Update(c, item.ResidencyApplication)
 	if err != nil {
 		return err
 	}
@@ -118,22 +117,17 @@ func (s *Service) UpdateWithForm(item *models.FormValue) error {
 	return nil
 }
 
-func (s *Service) UpsertMany(items models.ResidencyApplications) error {
+func (s *Service) UpsertMany(c context.Context, items models.ResidencyApplications) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	err := R.UpsertMany(c, items)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) Delete(c context.Context, id *string) error {
+	return R.Delete(c, id)
 }

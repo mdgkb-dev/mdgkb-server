@@ -10,7 +10,7 @@ import (
 
 type Comment struct {
 	bun.BaseModel `bun:"comments,alias:comments"`
-	ID            uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
+	ID            uuid.NullUUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id" `
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
 	Text          string        `json:"text"`
 	ModChecked    bool          `json:"modChecked"`
@@ -27,3 +27,8 @@ type Comment struct {
 }
 
 type Comments []*Comment
+
+type CommentsWithCount struct {
+	Comments Comments `json:"items"`
+	Count    int      `json:"count"`
+}

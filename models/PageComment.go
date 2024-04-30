@@ -12,7 +12,7 @@ type PageComment struct {
 	Page      *Page         `bun:"rel:belongs-to" json:"page"`
 	PageID    uuid.NullUUID `bun:"type:uuid" json:"pageId"`
 	Comment   *Comment      `bun:"rel:belongs-to" json:"comment"`
-	CommentID uuid.UUID     `bun:"type:uuid" json:"commentId"`
+	CommentID uuid.NullUUID `bun:"type:uuid" json:"commentId"`
 }
 
 type PageComments []*PageComment

@@ -81,8 +81,8 @@ func (s *Service) CreateLike(item *models.NewsLike) error {
 }
 
 func (s *Service) CreateComment(item *models.NewsComment) error {
-	commentsService := comments.CreateService(s.helper)
-	err := commentsService.UpsertOne(item.Comment)
+	commentsService := comments.S
+	err := commentsService.UpsertOne(context.TODO(), item.Comment)
 	if err != nil {
 		return err
 	}
@@ -91,8 +91,8 @@ func (s *Service) CreateComment(item *models.NewsComment) error {
 }
 
 func (s *Service) UpdateComment(item *models.NewsComment) error {
-	commentsService := comments.CreateService(s.helper)
-	err := commentsService.UpdateOne(item.Comment)
+	commentsService := comments.S
+	err := commentsService.UpdateOne(context.TODO(), item.Comment)
 	if err != nil {
 		return err
 	}

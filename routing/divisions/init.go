@@ -7,10 +7,11 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, h handler.IHandler) {
+func Init(r *gin.RouterGroup, h *handler.Handler) {
 	r.GET("", h.GetAll)
 	r.GET("/get", h.Get)
-	r.POST("/", h.Create)
+	r.POST("ftsp", h.FTSP)
+	r.POST("", h.Create)
 	r.DELETE("/:id", h.Delete)
 	r.PUT("/:id", h.Update)
 	r.DELETE("/comment/:id", h.RemoveComment)

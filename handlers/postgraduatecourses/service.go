@@ -1,29 +1,28 @@
 package postgraduatecourses
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/postgraduatecoursedates"
 	"mdgkb/mdgkb-server/handlers/postgraduatecourseplans"
 	"mdgkb/mdgkb-server/handlers/postgraduatecoursespecializations"
 	"mdgkb/mdgkb-server/handlers/postgraduatecourseteachers"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.PostgraduateCoursesWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.PostgraduateCoursesWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get() (*models.PostgraduateCourse, error) {
-	item, err := s.repository.get()
+func (s *Service) Get(c context.Context) (*models.PostgraduateCourse, error) {
+	item, err := R.Get(c)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Create(item *models.PostgraduateCourse) error {
+func (s *Service) Create(c context.Context, item *models.PostgraduateCourse) error {
 	fileInfosService := fileinfos.CreateService(s.helper)
 	err := fileInfosService.Create(item.QuestionsFile)
 	if err != nil {
@@ -42,7 +41,7 @@ func (s *Service) Create(item *models.PostgraduateCourse) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -67,7 +66,7 @@ func (s *Service) Create(item *models.PostgraduateCourse) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.PostgraduateCourse) error {
+func (s *Service) Update(c context.Context, item *models.PostgraduateCourse) error {
 	fileInfosService := fileinfos.CreateService(s.helper)
 	err := fileInfosService.Upsert(item.QuestionsFile)
 	if err != nil {
@@ -86,7 +85,7 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -130,22 +129,17 @@ func (s *Service) Update(item *models.PostgraduateCourse) error {
 	return nil
 }
 
-func (s *Service) UpsertMany(items models.PostgraduateCourses) error {
+func (s *Service) UpsertMany(c context.Context, items models.PostgraduateCourses) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	err := R.UpsertMany(c, items)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) Delete(c context.Context, id *string) error {
+	return R.Delete(c, id)
 }

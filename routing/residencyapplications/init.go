@@ -7,12 +7,15 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, h handler.IHandler) {
-	r.GET("/", h.GetAll)
+func Init(r *gin.RouterGroup, h *handler.Handler) {
+	r.GET("", h.GetAll)
 	r.GET("/:id", h.Get)
 	r.GET("/email-exists/:email/:courseId", h.EmailExists)
 	r.GET("/type-exists/:email/:main", h.TypeExists)
+
+	r.POST("/ftsp", h.FTSP)
 	r.POST("", h.Create)
+
 	r.DELETE("/:id", h.Delete)
 	r.PUT("/form/:id", h.UpdateWithForm)
 	r.PUT("/:id", h.Update)

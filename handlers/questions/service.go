@@ -1,15 +1,14 @@
 package questions
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.Question) error {
+func (s *Service) Create(c context.Context, item *models.Question) error {
 	usersService := users.CreateService(s.helper)
 	err := usersService.UpsertEmail(item.User)
 	if err != nil {
@@ -25,7 +24,7 @@ func (s *Service) Create(item *models.Question) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -36,19 +35,19 @@ func (s *Service) Create(item *models.Question) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.QuestionsWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.QuestionsWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id string) (*models.Question, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id string) (*models.Question, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Update(item *models.Question) error {
+func (s *Service) Update(c context.Context, item *models.Question) error {
 	emailStruct := struct {
 		Question *models.Question
 		Host     string
@@ -65,35 +64,30 @@ func (s *Service) Update(item *models.Question) error {
 		return err
 	}
 
-	return s.repository.update(item)
+	return R.Update(c, item)
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) ChangeNewStatus(id string, isNew bool) error {
-	return s.repository.changeNewStatus(id, isNew)
+func (s *Service) ChangeNewStatus(c context.Context, id string, isNew bool) error {
+	return R.ChangeNewStatus(c, id, isNew)
 }
 
-func (s *Service) ReadAnswers(userID string) error {
-	return s.repository.readAnswers(userID)
+func (s *Service) ReadAnswers(c context.Context, userID string) error {
+	return R.ReadAnswers(c, userID)
 }
 
-func (s *Service) Publish(id string) error {
-	return s.repository.publish(id)
+func (s *Service) Publish(c context.Context, id string) error {
+	return R.Publish(c, id)
 }
 
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
-}
-
-func (s *Service) UpsertMany(items models.Questions) error {
+func (s *Service) UpsertMany(c context.Context, items models.Questions) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	err := R.UpsertMany(c, items)
 	if err != nil {
 		return err
 	}

@@ -1,32 +1,31 @@
 package visitsapplications
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/formvalues"
 	"mdgkb/mdgkb-server/handlers/visits"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.VisitsApplicationsWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.VisitsApplicationsWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id *string) (*models.VisitsApplication, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id *string) (*models.VisitsApplication, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Create(item *models.VisitsApplication) error {
+func (s *Service) Create(c context.Context, item *models.VisitsApplication) error {
 	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -38,13 +37,13 @@ func (s *Service) Create(item *models.VisitsApplication) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.VisitsApplication) error {
+func (s *Service) Update(c context.Context, item *models.VisitsApplication) error {
 	err := formvalues.CreateService(s.helper).Upsert(item.FormValue)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -61,10 +60,6 @@ func (s *Service) Update(item *models.VisitsApplication) error {
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) error {
-	return s.repository.setQueryFilter(c)
+func (s *Service) Delete(c context.Context, id *string) error {
+	return R.Delete(c, id)
 }

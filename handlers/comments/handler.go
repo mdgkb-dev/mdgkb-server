@@ -9,11 +9,7 @@ import (
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
-	err := h.service.setQueryFilter(c)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	comments, err := h.service.GetAll()
+	comments, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -21,11 +17,19 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) GetAllMain(c *gin.Context) {
-	comments, err := h.service.GetAllMain()
+	comments, err := S.GetAllMain(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, comments)
+}
+
+func (h *Handler) FTSP(c *gin.Context) {
+	data, err := S.GetAll(c.Request.Context())
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data, FTSP: *h.helper.SQL.ExtractFTSP(c.Request.Context())})
 }
 
 func (h *Handler) UpdateOne(c *gin.Context) {
@@ -34,7 +38,7 @@ func (h *Handler) UpdateOne(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.UpdateOne(&item)
+	err = S.UpdateOne(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -47,7 +51,7 @@ func (h *Handler) UpsertOne(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.UpsertOne(&item)
+	err = S.UpsertOne(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

@@ -1,27 +1,15 @@
 package residencycourses
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error) {
+func (r *Repository) GetAll(c context.Context) (item models.ResidencyCoursesWithCount, err error) {
 	item.ResidencyCourses = make(models.ResidencyCourses, 0)
-	query := r.db().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		Model(&item.ResidencyCourses).
 		Relation("MainTeacher.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
@@ -38,13 +26,15 @@ func (r *Repository) getAll() (item models.ResidencyCoursesWithCount, err error)
 		Relation("FormPattern.Fields.MaskTokens").
 		Relation("StartYear").
 		Relation("EndYear")
-	item.Count, err = query.ScanAndCount(r.ctx)
+
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
+	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }
 
-func (r *Repository) get() (*models.ResidencyCourse, error) {
+func (r *Repository) Get(c context.Context) (*models.ResidencyCourse, error) {
 	item := models.ResidencyCourse{}
-	err := r.db().NewSelect().Model(&item).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("MainTeacher.Human.PhotoMini").
 		Relation("MainTeacher.Human.Photo").
 		Relation("ResidencyCoursesSpecializations.Specialization").
@@ -64,33 +54,33 @@ func (r *Repository) get() (*models.ResidencyCourse, error) {
 		Relation("StartYear").
 		Relation("EndYear").
 		// Where("?TableAlias.? = ?", bun.Safe(r..Col), r..Value).
-		Scan(r.ctx)
+		Scan(c)
 	return &item, err
 }
 
-func (r *Repository) create(item *models.ResidencyCourse) (err error) {
-	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) Create(c context.Context, item *models.ResidencyCourse) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.ResidencyCourse{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id *string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.ResidencyCourse{}).Where("id = ?", *id).Exec(c)
 	return err
 }
 
-func (r *Repository) update(item *models.ResidencyCourse) (err error) {
-	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, item *models.ResidencyCourse) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.ResidencyCourses) (err error) {
-	_, err = r.db().NewInsert().On("CONFLICT (id) DO UPDATE").
+func (r *Repository) UpsertMany(c context.Context, items models.ResidencyCourses) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("CONFLICT (id) DO UPDATE").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("cost = EXCLUDED.cost").
 		Set("free_places = EXCLUDED.free_places").
 		Set("paid_places = EXCLUDED.paid_places").
 		Set("main_teacher_id = EXCLUDED.main_teacher_id").
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
