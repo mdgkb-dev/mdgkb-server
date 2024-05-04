@@ -1,32 +1,31 @@
 package formpatterns
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/fields"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.FormPatterns, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.FormPatterns, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get() (*models.FormPattern, error) {
-	item, err := s.repository.get()
+func (s *Service) Get(c context.Context) (*models.FormPattern, error) {
+	item, err := R.Get(c)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Create(item *models.FormPattern) error {
+func (s *Service) Create(c context.Context, item *models.FormPattern) error {
 	err := fileinfos.CreateService(s.helper).Create(item.PersonalDataAgreement)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -39,13 +38,13 @@ func (s *Service) Create(item *models.FormPattern) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.FormPattern) error {
+func (s *Service) Update(c context.Context, item *models.FormPattern) error {
 	err := fileinfos.CreateService(s.helper).Upsert(item.PersonalDataAgreement)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.update(item)
+	err = R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -67,11 +66,6 @@ func (s *Service) Update(item *models.FormPattern) error {
 	return nil
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }

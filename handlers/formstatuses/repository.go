@@ -1,59 +1,45 @@
 package formstatuses
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
-
-	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *Repository) getAll() (models.FormStatuses, error) {
+func (r *Repository) GetAll(c context.Context) (models.FormStatuses, error) {
 	items := make(models.FormStatuses, 0)
-	query := r.db().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		Model(&items).
 		Relation("Icon").
 		Relation("FormStatusGroup").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon")
-	err := query.Scan(r.ctx)
+	err := query.Scan(c)
 	return items, err
 }
 
-func (r *Repository) GetAllByGroupID(id *string) (models.FormStatuses, error) {
+func (r *Repository) GetAllByGroupID(c context.Context, id *string) (models.FormStatuses, error) {
 	items := make(models.FormStatuses, 0)
-	query := r.db().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		Model(&items).
 		Relation("Icon").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
 		Where("form_statuses_view.form_status_group_id = ?", *id)
-	err := query.Scan(r.ctx)
+	err := query.Scan(c)
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.FormStatus, error) {
+func (r *Repository) Get(c context.Context, id *string) (*models.FormStatus, error) {
 	item := models.FormStatus{}
-	err := r.db().NewSelect().Model(&item).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("Icon").
 		Relation("FormStatusGroup").
 		Relation("FormStatusEmails").
 		Relation("FormStatusToFormStatuses.ChildFormStatus.Icon").
-		Where("form_statuses_view.id = ?", *id).Scan(r.ctx)
+		Where("form_statuses_view.id = ?", *id).Scan(c)
 	return &item, err
 }
 
-func (r *Repository) upsert(item *models.FormStatus) (err error) {
-	_, err = r.db().NewInsert().On("conflict (id) do update").
+func (r *Repository) Upsert(c context.Context, item *models.FormStatus) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) do update").
 		Model(item).
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
@@ -65,12 +51,12 @@ func (r *Repository) upsert(item *models.FormStatus) (err error) {
 		Set("is_editable = EXCLUDED.is_editable").
 		Set("form_status_group_id = EXCLUDED.form_status_group_id").
 		Set("icon_id = EXCLUDED.icon_id").
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.FormStatuses) (err error) {
-	_, err = r.db().NewInsert().On("conflict (id) do update").
+func (r *Repository) UpsertMany(c context.Context, items models.FormStatuses) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) do update").
 		Model(&items).
 		Set("id = EXCLUDED.id").
 		Set("name = EXCLUDED.name").
@@ -80,11 +66,11 @@ func (r *Repository) upsertMany(items models.FormStatuses) (err error) {
 		Set("mod_action_name = EXCLUDED.mod_action_name").
 		Set("user_action_name = EXCLUDED.user_action_name").
 		Set("is_editable = EXCLUDED.is_editable").
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.FormStatus{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id *string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.FormStatus{}).Where("id = ?", *id).Exec(c)
 	return err
 }

@@ -1,41 +1,35 @@
 package formstatuses
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/formstatustoformstatuses"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) GetAll(c context.Context) (models.FormStatuses, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) GetAll() (models.FormStatuses, error) {
-	return s.repository.getAll()
+func (s *Service) GetAllByGroupID(c context.Context, id *string) (models.FormStatuses, error) {
+	return R.GetAllByGroupID(c, id)
 }
 
-func (s *Service) GetAllByGroupID(id *string) (models.FormStatuses, error) {
-	return s.repository.GetAllByGroupID(id)
-}
-
-func (s *Service) Get(id *string) (*models.FormStatus, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id *string) (*models.FormStatus, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Upsert(item *models.FormStatus) error {
+func (s *Service) Upsert(c context.Context, item *models.FormStatus) error {
 	err := fileinfos.CreateService(s.helper).Upsert(item.Icon)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.upsert(item)
+	err = R.Upsert(c, item)
 	if err != nil {
 		return err
 	}
@@ -48,11 +42,11 @@ func (s *Service) Upsert(item *models.FormStatus) error {
 	return err
 }
 
-func (s *Service) UpsertMany(items models.FormStatuses) error {
+func (s *Service) UpsertMany(c context.Context, items models.FormStatuses) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	err := R.UpsertMany(c, items)
 	if err != nil {
 		return err
 	}
@@ -70,6 +64,6 @@ func (s *Service) UpsertMany(items models.FormStatuses) error {
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id *string) error {
+	return R.Delete(c, id)
 }

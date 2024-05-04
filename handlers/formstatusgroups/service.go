@@ -1,47 +1,41 @@
 package formstatusgroups
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) GetAll(c context.Context) (models.FormStatusGroupsWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) GetAll() (models.FormStatusGroupsWithCount, error) {
-	return s.repository.getAll()
-}
-
-func (s *Service) Get(id *string) (*models.FormStatusGroup, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id *string) (*models.FormStatusGroup, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Upsert(item *models.FormStatusGroup) error {
-	err := s.repository.upsert(item)
+func (s *Service) Upsert(c context.Context, item *models.FormStatusGroup) error {
+	err := R.Upsert(c, item)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) UpsertMany(items models.FormStatusGroups) error {
+func (s *Service) UpsertMany(c context.Context, items models.FormStatusGroups) error {
 	if len(items) == 0 {
 		return nil
 	}
-	err := s.repository.upsertMany(items)
+	err := R.UpsertMany(c, items)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id *string) error {
+	return R.Delete(c, id)
 }

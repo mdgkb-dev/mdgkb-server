@@ -1,35 +1,26 @@
 package formpatterns
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	return nil
-}
-
-func (r *Repository) getAll() (models.FormPatterns, error) {
+func (r *Repository) GetAll(c context.Context) (models.FormPatterns, error) {
 	items := make(models.FormPatterns, 0)
-	query := r.db().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		Model(&items).
 		Relation("Fields.File").
 		Relation("Fields.ValueType")
 
-	err := query.Scan(r.ctx)
+	err := query.Scan(c)
 	return items, err
 }
 
-func (r *Repository) get() (*models.FormPattern, error) {
+func (r *Repository) Get(c context.Context) (*models.FormPattern, error) {
 	item := models.FormPattern{}
-	err := r.db().NewSelect().Model(&item).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
@@ -40,22 +31,22 @@ func (r *Repository) get() (*models.FormPattern, error) {
 		Relation("PersonalDataAgreement").
 		Relation("Fields.MaskTokens").
 		// Where("form_patterns.? = ?", bun.Safe(r..Col), r..Value).
-		Scan(r.ctx)
+		Scan(c)
 
 	return &item, err
 }
 
-func (r *Repository) create(item *models.FormPattern) (err error) {
-	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) Create(c context.Context, item *models.FormPattern) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) delete(id string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.FormPattern{}).Where("id = ?", id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.FormPattern{}).Where("id = ?", id).Exec(c)
 	return err
 }
 
-func (r *Repository) update(item *models.FormPattern) (err error) {
-	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, item *models.FormPattern) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
 	return err
 }

@@ -218,7 +218,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	questionsRouter.Init(api.Group("/questions"), questions.H)
 
 	timetablePatternsRouter.Init(api.Group("/timetable-patterns"), timetablepatterns.CreateHandler(helper))
-	formPatternsRouter.Init(api.Group("/form-patterns"), formpatterns.CreateHandler(helper))
+
+	formpatterns.Init(helper)
+	formPatternsRouter.Init(api.Group("/form-patterns"), formpatterns.H)
+
 	paidProgramsRouter.Init(api.Group("/paid-programs"), paidprograms.CreateHandler(helper))
 	paidProgramsGroupsRouter.Init(api.Group("/paid-programs-groups"), paidprogramsgroups.CreateHandler(helper))
 	partnerTypesRouter.Init(api.Group("/partner-types"), partnertypes.CreateHandler(helper))
@@ -245,8 +248,13 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyapplications.H)
 
 	formValuesRouter.Init(api.Group("/form-values"), formvalues.CreateHandler(helper))
-	formStatusesRouter.Init(api.Group("/form-statuses"), formstatuses.CreateHandler(helper))
-	formStatusGroupsRouter.Init(api.Group("/form-status-groups"), formstatusgroups.CreateHandler(helper))
+
+	formstatuses.Init(helper)
+	formStatusesRouter.Init(api.Group("/form-statuses"), formstatuses.H)
+
+	formstatusgroups.Init(helper)
+	formStatusGroupsRouter.Init(api.Group("/form-status-groups"), formstatusgroups.H)
+
 	postgraduateApplicationsRouter.Init(api.Group("/postgraduate-applications"), postgraduateapplications.CreateHandler(helper))
 	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(helper))
 	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalmanagers.CreateHandler(helper))
