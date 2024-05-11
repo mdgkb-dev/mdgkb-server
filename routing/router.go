@@ -158,9 +158,11 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	m := middleware.CreateMiddleware(helper)
 	api, apiNoToken := baseRouter.Init(r, helper)
 	// api.Use(m.InjectClaims())
+	//
 	api.Use(m.InjectFTSP())
 
-	authRouter.Init(apiNoToken.Group("/auth"), auth.CreateHandler(helper))
+	auth.Init(helper)
+	authRouter.Init(apiNoToken.Group("/auth"), auth.H)
 
 	// authGroup := r.Group("/api/auth")
 	// authRouter.Init(authGroup.Group(""), auth.CreateHandler(helper))
@@ -192,7 +194,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	newsRouter.Init(api.Group("/news"), news.CreateHandler(helper))
 	sideOrganizationsRouter.Init(api.Group("/side-organizations"), sideorganizations.CreateHandler(helper))
 	tagsRouter.Init(api.Group("/tags"), tags.CreateHandler(helper))
-	usersRouter.Init(api.Group("/users"), users.CreateHandler(helper))
+
+	users.Init(helper)
+	usersRouter.Init(api.Group("/users"), users.H)
+
 	timetablesRouter.Init(api.Group("/timetables"), timetables.CreateHandler(helper))
 
 	// menusRouter.Init(api.Group("/menus"), menus.CreateHandler(helper))

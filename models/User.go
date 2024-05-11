@@ -56,6 +56,7 @@ type User struct {
 	DailyMenuOrdersForDelete []uuid.UUID     `bun:"-" json:"dailyMenuOrdersForDelete"`
 
 	// FormValues FormValues `bun:"rel:has-many" json:"formValues"`
+	UserAccountID uuid.NullUUID `bun:"type:uuid" json:"-"`
 }
 
 type Users []*User

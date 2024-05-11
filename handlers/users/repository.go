@@ -1,38 +1,27 @@
 package users
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
 	//_ "github.com/go-pg/pg/v10/orm"
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *Repository) getAll() (item models.UsersWithCount, err error) {
+func (r *Repository) GetAll(c context.Context) (item models.UsersWithCount, err error) {
 	item.Users = make(models.Users, 0)
-	query := r.db().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		Model(&item.Users).
 		Relation("Human").
 		Relation("Role")
 
-	item.Count, err = query.ScanAndCount(r.ctx)
+	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }
 
-func (r *Repository) get(id string) (*models.User, error) {
+func (r *Repository) Get(c context.Context, id string) (*models.User, error) {
 	item := models.User{}
-	err := r.db().NewSelect().
+	err := r.helper.DB.IDB(c).NewSelect().
 		Model(&item).
 		Relation("Human.Photo").
 		Relation("Human.Contact.Address").
@@ -94,13 +83,13 @@ func (r *Repository) get(id string) (*models.User, error) {
 		// Relation("FormValues.VisitsApplication.Division").
 		// Relation("FormValues.DailyMenuOrder.DailyMenuOrderItems.DailyMenuItem").
 		Where("users_view.id = ?", id).
-		Scan(r.ctx)
+		Scan(c)
 	return &item, err
 }
 
-func (r *Repository) getByEmail(id string) (*models.User, error) {
+func (r *Repository) GetByEmail(c context.Context, id string) (*models.User, error) {
 	item := models.User{}
-	err := r.db().NewSelect().Model(&item).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("Human.Photo").
 		Relation("Human.Contact.Address").
 		//Relation("Questions").
@@ -110,75 +99,82 @@ func (r *Repository) getByEmail(id string) (*models.User, error) {
 		Relation("Role").
 		Relation("DoctorsUsers").
 		Where("users_view.email = ? AND users_view.is_active = true", id).
-		Scan(r.ctx)
+		Scan(c)
 	return &item, err
 }
 
-func (r *Repository) create(user *models.User) (err error) {
-	_, err = r.db().NewInsert().Model(user).Exec(r.ctx)
+func (r *Repository) Create(c context.Context, user *models.User) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(user).Exec(c)
 	return err
 }
 
-func (r *Repository) emailExists(email string) (bool, error) {
-	exists, err := r.db().NewSelect().Model((*models.User)(nil)).Where("users_view.email = ? and is_active = true", email).Exists(r.ctx)
+func (r *Repository) EmailExists(c context.Context, email string) (bool, error) {
+	exists, err := r.helper.DB.IDB(c).NewSelect().Model((*models.User)(nil)).Where("users_view.email = ? and is_active = true", email).Exists(c)
 	return exists, err
 }
 
-func (r *Repository) update(item *models.User) (err error) {
-	_, err = r.db().NewUpdate().Model(item).
+func (r *Repository) Update(c context.Context, item *models.User) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).
 		OmitZero().
 		ExcludeColumn("password", "is_active"). // all columns except col1
 		Where("id = ?", item.ID).
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) upsert(item *models.User) (err error) {
-	_, err = r.db().NewInsert().On("conflict (email) do update").Model(item).
+func (r *Repository) Upsert(c context.Context, item *models.User) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (email) do update").Model(item).
 		Set("role_id = EXCLUDED.role_id").
 		Set("password = EXCLUDED.password").
 		Set("is_active = EXCLUDED.is_active").
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) upsertEmail(item *models.User) (err error) {
-	_, err = r.db().NewInsert().On("conflict (email) DO UPDATE").
+func (r *Repository) UpsertEmail(c context.Context, item *models.User) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (email) DO UPDATE").
 		Set("phone = EXCLUDED.phone").
 		Model(item).
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) addToUser(values map[string]interface{}, table string) error {
-	_, err := r.db().NewInsert().Model(&values).TableExpr(table).Exec(r.ctx)
+func (r *Repository) AddToUser(c context.Context, values map[string]interface{}, table string) error {
+	_, err := r.helper.DB.IDB(c).NewInsert().Model(&values).TableExpr(table).Exec(c)
 	return err
 }
 
-func (r *Repository) removeFromUser(values map[string]interface{}, table string) error {
-	q := r.db().NewDelete().Table(table)
+func (r *Repository) RemoveFromUser(c context.Context, values map[string]interface{}, table string) error {
+	q := r.helper.DB.IDB(c).NewDelete().Table(table)
 	for key, value := range values {
 		q = q.Where("? = ?", bun.Ident(key), value)
 	}
-	_, err := q.Exec(r.ctx)
+	_, err := q.Exec(c)
 	return err
 }
 
-func (r *Repository) dropUUID(item *models.User) (err error) {
-	_, err = r.db().NewUpdate().
+func (r *Repository) DropUUID(c context.Context, item *models.User) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().
 		Model(item).
 		Set("uuid = uuid_generate_v4()").
 		Where("id = ?", item.ID).
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) updatePassword(item *models.User) (err error) {
-	_, err = r.db().NewUpdate().
+func (r *Repository) UpdatePassword(c context.Context, item *models.User) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().
 		Model(item).
 		Set("password = ?", item.Password).
 		Set("is_active = true").
 		Where("id = ?", item.ID).
-		Exec(r.ctx)
+		Exec(c)
 	return err
+}
+func (r *Repository) GetByUserAccountID(c context.Context, id string) (*models.User, error) {
+	item := models.User{}
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
+		Where("?TableAlias.user_account_id = ?", id).
+		Scan(c)
+	return &item, err
 }

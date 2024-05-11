@@ -7,7 +7,7 @@ import (
 )
 
 // Init func
-func Init(r *gin.RouterGroup, h handler.IHandler) {
+func Init(r *gin.RouterGroup, h *handler.Handler) {
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
 	r.GET("/get-by-email/:email", h.GetByEmail)

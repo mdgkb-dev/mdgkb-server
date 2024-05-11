@@ -9,13 +9,12 @@ import (
 )
 
 func (s *Service) Create(c context.Context, item *models.Question) error {
-	usersService := users.CreateService(s.helper)
-	err := usersService.UpsertEmail(item.User)
+	err := users.S.UpsertEmail(context.TODO(), item.User)
 	if err != nil {
 		return err
 	}
 
-	item.User, err = usersService.Get(item.User.ID.UUID.String())
+	item.User, err = users.S.Get(context.TODO(), item.User.ID.UUID.String())
 	if err != nil {
 		return err
 	}

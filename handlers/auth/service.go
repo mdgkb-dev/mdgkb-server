@@ -1,18 +1,22 @@
 package auth
 
 import (
-	"errors"
+	"context"
 	"fmt"
 
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
+	"github.com/pro-assistance/pro-assister/handlers/auth"
 )
 
-func (s *Service) Register(item *models.User) (t *models.TokensWithUser, err error) {
-	err = item.GenerateHashPassword()
+func (s *Service) Register(c context.Context, item *models.User) (t *models.TokensWithUser, err error) {
+	duplicate := false
+	item.UserAccountID, duplicate, err = auth.S.Register(c, item.Email, item.Password)
+	if duplicate {
+		return nil, nil
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +27,7 @@ func (s *Service) Register(item *models.User) (t *models.TokensWithUser, err err
 	item.Role = role
 	item.RoleID = role.ID
 	item.IsActive = true
-	err = users.CreateService(s.helper).Upsert(item)
+	err = users.S.Upsert(c, item)
 	if err != nil {
 		return nil, err
 	}
@@ -36,27 +40,25 @@ func (s *Service) Register(item *models.User) (t *models.TokensWithUser, err err
 	return t, err
 }
 
-func (s *Service) Login(item *models.Login, skipPassword bool) (t *models.TokensWithUser, err error) {
-	findedUser, err := users.CreateService(s.helper).GetByEmail(item.Email)
-	fmt.Println(findedUser)
+func (s *Service) Login(c context.Context, email string, password string) (t *models.TokensWithUser, err error) {
+	userAccountID, err, errServer := auth.S.Login(c, email, password)
+	fmt.Println(errServer)
 	if err != nil {
 		return nil, err
 	}
-	if !findedUser.CompareWithHashPassword(item.Password) && !skipPassword {
-		return nil, errors.New("wrong login or password")
-	}
-	fmt.Println(findedUser)
-	token, err := s.helper.Token.CreateToken(findedUser)
+	user, err := users.S.GetByUserAccountID(c, userAccountID.UUID.String())
 	if err != nil {
 		return nil, err
 	}
-	t = &models.TokensWithUser{}
-	t.Init(token, *findedUser)
-	return t, err
+	ts, err := s.helper.Token.CreateToken(user)
+	if err != nil {
+		return nil, err
+	}
+	return &models.TokensWithUser{Tokens: ts, User: *user}, nil
 }
 
-func (s *Service) FindUserByEmail(email string) (*models.User, error) {
-	findedUser, err := users.CreateService(s.helper).GetByEmail(email)
+func (s *Service) FindUserByEmail(c context.Context, email string) (*models.User, error) {
+	findedUser, err := users.S.GetByEmail(c, email)
 	if err != nil {
 		return nil, err
 	}
@@ -64,11 +66,11 @@ func (s *Service) FindUserByEmail(email string) (*models.User, error) {
 }
 
 func (s *Service) GetUserByID(id string) (*models.User, error) {
-	return users.CreateService(s.helper).Get(id)
+	return users.S.Get(context.TODO(), id)
 }
 
 func (s *Service) DropUUID(item *models.User) error {
-	return users.CreateService(s.helper).DropUUID(item)
+	return users.S.DropUUID(context.TODO(), item)
 }
 
 func (s *Service) UpdatePassword(item *models.User) error {
@@ -77,51 +79,74 @@ func (s *Service) UpdatePassword(item *models.User) error {
 		return err
 	}
 	item.IsActive = true
-	return users.CreateService(s.helper).UpdatePassword(item)
+	return users.S.UpdatePassword(context.TODO(), item)
 }
 
-func (s *Service) UpsertManyPathPermissions(paths models.PathPermissions) error {
-	if len(paths) == 0 {
-		return nil
-	}
-	err := s.repository.upsertManyPathPermissions(paths)
+func (s *Service) RestorePassword(c context.Context, email string) error {
+	fmt.Println(email, "email")
+	userAccount, err := auth.R.GetByEmail(c, email)
 	if err != nil {
 		return err
 	}
 
-	if len(paths.GetPathPermissionsRolesForDelete()) > 0 {
-		err = s.repository.deleteManyPathPermissionsRoles(paths.GetPathPermissionsRolesForDelete())
-		if err != nil {
-			return err
-		}
-	}
-	if len(paths.GetPathPermissionsRoles()) > 0 {
-		err = s.repository.upsertManyPathPermissionsRoles(paths.GetPathPermissionsRoles())
-		if err != nil {
-			return err
-		}
+	emailStruct := struct {
+		RestoreLink string
+		Host        string
+	}{
+		s.helper.HTTP.GetRestorePasswordURL(userAccount.ID.UUID.String(), userAccount.UUID.String()),
+		s.helper.HTTP.Host,
 	}
 
+	mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/passwordRestore.gohtml")
+	if err != nil {
+		return err
+	}
+	err = s.helper.Email.SendEmail([]string{userAccount.Email}, "Восстановление пароля для сайта Просодействие", mail)
+	fmt.Println(err, emailStruct)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-func (s *Service) GetAllPathPermissions() (models.PathPermissions, error) {
-	return s.repository.getAllPathPermissions()
-}
-
-func (s *Service) GetAllPathPermissionsAdmin() (models.PathPermissionsWithCount, error) {
-	return s.repository.getAllPathPermissionsAdmin()
-}
-
-func (s *Service) CheckPathPermissions(path string, roleID string) error {
-	return s.repository.checkPathPermissions(path, roleID)
-}
-
-func (s *Service) GetPathPermissionsByRoleID(id string) (models.PathPermissions, error) {
-	return s.repository.getPathPermissionsByRoleID(id)
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
-}
+//
+// func (s *Service) UpsertManyPathPermissions(paths models.PathPermissions) error {
+// 	if len(paths) == 0 {
+// 		return nil
+// 	}
+// 	err := s.repository.upsertManyPathPermissions(paths)
+// 	if err != nil {
+// 		return err
+// 	}
+//
+// 	if len(paths.GetPathPermissionsRolesForDelete()) > 0 {
+// 		err = s.repository.deleteManyPathPermissionsRoles(paths.GetPathPermissionsRolesForDelete())
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+// 	if len(paths.GetPathPermissionsRoles()) > 0 {
+// 		err = s.repository.upsertManyPathPermissionsRoles(paths.GetPathPermissionsRoles())
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+//
+// 	return nil
+// }
+//
+// func (s *Service) GetAllPathPermissions() (models.PathPermissions, error) {
+// 	return s.repository.getAllPathPermissions()
+// }
+//
+// func (s *Service) GetAllPathPermissionsAdmin() (models.PathPermissionsWithCount, error) {
+// 	return s.repository.getAllPathPermissionsAdmin()
+// }
+//
+// func (s *Service) CheckPathPermissions(path string, roleID string) error {
+// 	return s.repository.checkPathPermissions(path, roleID)
+// }
+//
+// func (s *Service) GetPathPermissionsByRoleID(id string) (models.PathPermissions, error) {
+// 	return s.repository.getPathPermissionsByRoleID(id)
+// }

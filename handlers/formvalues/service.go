@@ -1,6 +1,7 @@
 package formvalues
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/chats"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/fieldsvalues"
@@ -14,13 +15,12 @@ import (
 )
 
 func (s *Service) Upsert(item *models.FormValue) error {
-	usersService := users.CreateService(s.helper)
-	err := usersService.UpsertEmail(item.User)
+	err := users.S.UpsertEmail(context.TODO(), item.User)
 	if err != nil {
 		return err
 	}
 
-	item.User, err = usersService.Get(item.User.ID.UUID.String())
+	item.User, err = users.S.Get(context.TODO(), item.User.ID.UUID.String())
 	if err != nil {
 		return err
 	}

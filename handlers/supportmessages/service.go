@@ -1,6 +1,7 @@
 package supportmessages
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
@@ -9,13 +10,12 @@ import (
 )
 
 func (s *Service) Create(item *models.SupportMessage) error {
-	usersService := users.CreateService(s.helper)
-	err := usersService.UpsertEmail(item.User)
+	err := users.S.UpsertEmail(context.TODO(), item.User)
 	if err != nil {
 		return err
 	}
 
-	item.User, err = usersService.Get(item.User.ID.UUID.String())
+	item.User, err = users.S.Get(context.TODO(), item.User.ID.UUID.String())
 	if err != nil {
 		return err
 	}

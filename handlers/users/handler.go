@@ -12,11 +12,7 @@ import (
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
-	err := h.service.setQueryFilter(c)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	items, err := h.service.GetAll()
+	items, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -24,7 +20,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	item, err := h.service.Get(c.Param("id"))
+	item, err := S.Get(c.Request.Context(), c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -32,7 +28,7 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) GetByEmail(c *gin.Context) {
-	item, err := h.service.EmailExists(c.Param("email"))
+	item, err := S.EmailExists(c.Request.Context(), c.Param("email"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -45,11 +41,11 @@ func (h *Handler) Update(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	err = F.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Update(&item)
+	err = S.Update(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -62,11 +58,11 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	err = F.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Create(&item)
+	err = S.Create(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -98,7 +94,7 @@ func (h *Handler) AddToUser(c *gin.Context) {
 		domainCol: domainID,
 		"user_id": userID,
 	}
-	item := h.service.AddToUser(values, table)
+	item := S.AddToUser(c.Request.Context(), values, table)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -120,7 +116,7 @@ func (h *Handler) RemoveFromUser(c *gin.Context) {
 		// domainCol: domainID,
 		"user_id": userID,
 	}
-	item := h.service.RemoveFromUser(values, table)
+	item := S.RemoveFromUser(c.Request.Context(), values, table)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

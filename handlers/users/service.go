@@ -1,16 +1,15 @@
 package users
 
 import (
+	"context"
 	"fmt"
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.User) error {
+func (s *Service) Create(c context.Context, item *models.User) error {
 	err := item.GenerateHashPassword()
 	if err != nil {
 		return err
@@ -21,7 +20,7 @@ func (s *Service) Create(item *models.User) error {
 	}
 	item.IsActive = true
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -38,7 +37,7 @@ func (s *Service) Create(item *models.User) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.User) error {
+func (s *Service) Update(c context.Context, item *models.User) error {
 	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
@@ -48,7 +47,7 @@ func (s *Service) Update(item *models.User) error {
 	//if err != nil {
 	//	return err
 	//}
-	err = s.repository.update(item)
+	err = R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -65,7 +64,7 @@ func (s *Service) Update(item *models.User) error {
 	return nil
 }
 
-func (s *Service) Upsert(item *models.User) error {
+func (s *Service) Upsert(c context.Context, item *models.User) error {
 	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
@@ -75,7 +74,7 @@ func (s *Service) Upsert(item *models.User) error {
 	//if err != nil {
 	//	return err
 	//}
-	err = s.repository.upsert(item)
+	err = R.Upsert(c, item)
 	if err != nil {
 		return err
 	}
@@ -92,73 +91,76 @@ func (s *Service) Upsert(item *models.User) error {
 	return nil
 }
 
-func (s *Service) UpsertEmail(item *models.User) error {
+func (s *Service) UpsertEmail(c context.Context, item *models.User) error {
 	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.upsertEmail(item)
+	err = R.UpsertEmail(c, item)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) GetAll() (models.UsersWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.UsersWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id string) (*models.User, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id string) (*models.User, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) GetByEmail(email string) (*models.User, error) {
-	item, err := s.repository.getByEmail(email)
+func (s *Service) GetByEmail(c context.Context, email string) (*models.User, error) {
+	item, err := R.GetByEmail(c, email)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) EmailExists(email string) (bool, error) {
-	item, err := s.repository.emailExists(email)
+func (s *Service) EmailExists(c context.Context, email string) (bool, error) {
+	item, err := R.EmailExists(c, email)
 	if err != nil {
 		return item, err
 	}
 	return item, nil
 }
 
-func (s *Service) AddToUser(values map[string]interface{}, table string) error {
-	err := s.repository.addToUser(values, table)
+func (s *Service) AddToUser(c context.Context, values map[string]interface{}, table string) error {
+	err := R.AddToUser(c, values, table)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) RemoveFromUser(values map[string]interface{}, table string) error {
-	err := s.repository.removeFromUser(values, table)
+func (s *Service) RemoveFromUser(c context.Context, values map[string]interface{}, table string) error {
+	err := R.RemoveFromUser(c, values, table)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) DropUUID(item *models.User) error {
-	return s.repository.dropUUID(item)
+func (s *Service) DropUUID(c context.Context, item *models.User) error {
+	return R.DropUUID(c, item)
 }
 
-func (s *Service) UpdatePassword(item *models.User) error {
-	return s.repository.updatePassword(item)
+func (s *Service) UpdatePassword(c context.Context, item *models.User) error {
+	return R.UpdatePassword(c, item)
 }
 
-func (s *Service) SetAccessLink(item *models.User) error {
-	findedUser, err := s.repository.getByEmail(item.Email)
+func (s *Service) GetByUserAccountID(c context.Context, id string) (*models.User, error) {
+	return R.GetByUserAccountID(c, id)
+}
+func (s *Service) SetAccessLink(c context.Context, item *models.User) error {
+	findedUser, err := R.GetByEmail(c, item.Email)
 	if err != nil {
 		return err
 	}
@@ -171,7 +173,7 @@ func (s *Service) SetAccessLink(item *models.User) error {
 	}
 	item.Role = role
 	item.RoleID = role.ID
-	err = s.repository.update(item)
+	err = R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -185,9 +187,4 @@ func (s *Service) SetAccessLink(item *models.User) error {
 		return err
 	}
 	return nil
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
 }
