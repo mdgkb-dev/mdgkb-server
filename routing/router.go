@@ -286,7 +286,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	chatMessagesRouter.Init(chatmessages.CreateHandler(helper), api)
 	dishesGroupsRouter.Init(api.Group("/dishes-groups"), dishesgroups.CreateHandler(helper))
 	dishesSamplesRouter.Init(api.Group("/dishes-samples"), dishessamples.CreateHandler(helper))
-	dailyMenusRouter.Init(api, ws, dailymenus.CreateHandler(helper))
+
+	dailymenus.Init(helper)
+	dailyMenusRouter.Init(api, ws, dailymenus.H)
+
 	metaRouter.Init(meta.CreateHandler(helper), api, ws)
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))

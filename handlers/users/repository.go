@@ -174,6 +174,7 @@ func (r *Repository) UpdatePassword(c context.Context, item *models.User) (err e
 func (r *Repository) GetByUserAccountID(c context.Context, id string) (*models.User, error) {
 	item := models.User{}
 	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
+		Relation("Role").
 		Where("?TableAlias.user_account_id = ?", id).
 		Scan(c)
 	return &item, err

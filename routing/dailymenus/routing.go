@@ -7,13 +7,14 @@ import (
 )
 
 // Init func
-func Init(api *gin.RouterGroup, ws *gin.RouterGroup, h handler.IHandler) {
+func Init(api *gin.RouterGroup, ws *gin.RouterGroup, h *handler.Handler) {
 	path := "/daily-menus"
 	r := api.Group(path)
 	r.GET("", h.GetAll)
 	r.GET("/today-menu", h.GetTodayMenu)
 	r.GET("/:id", h.Get)
 	r.POST("/pdf", h.PDF)
+	r.POST("/ftsp", h.FTSP)
 	r.POST("", h.Create)
 	r.DELETE("/:id", h.Delete)
 	r.PUT("/many", h.UpdateAll)

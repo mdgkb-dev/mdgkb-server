@@ -1,22 +1,21 @@
 package dailymenus
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/dailymenuitems"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.DailyMenu) error {
-	err := s.repository.create(item)
+func (s *Service) Create(c context.Context, item *models.DailyMenu) error {
+	err := R.Create(c, item)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Update(item *models.DailyMenu) error {
-	err := s.repository.update(item)
+func (s *Service) Update(c context.Context, item *models.DailyMenu) error {
+	err := R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -28,31 +27,26 @@ func (s *Service) Update(item *models.DailyMenu) error {
 	return nil
 }
 
-func (s *Service) UpdateAll(items models.DailyMenus) error {
-	err := s.repository.updateAll(items)
+func (s *Service) UpdateAll(c context.Context, items models.DailyMenus) error {
+	err := R.UpdateAll(c, items)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) GetAll() (models.DailyMenus, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.DailyMenus, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(slug string) (*models.DailyMenu, error) {
-	return s.repository.get(slug)
+func (s *Service) Get(c context.Context, slug string) (*models.DailyMenu, error) {
+	return R.Get(c, slug)
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
-}
-
-func (s *Service) GetTodayActive() (*models.DailyMenu, error) {
-	return s.repository.getTodayActive()
+func (s *Service) GetTodayActive(c context.Context) (*models.DailyMenu, error) {
+	return R.GetTodayActive(c)
 }
