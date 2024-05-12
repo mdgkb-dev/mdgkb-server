@@ -2,114 +2,97 @@ package news
 
 import (
 	"context"
-	"fmt"
-	"time"
 
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/exportmodels"
 
-	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 	//_ "github.com/go-pg/pg/v10/orm"
 )
 
-func (r *Repository) DB() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) SetQueryFilter(c *gin.Context, item models.FTSPQuery) (err error) {
-	r.FTSP = item.FTSP
-	return nil
-}
-
-func (r *Repository) create(news *models.News) (err error) {
-	_, err = r.DB().NewInsert().Model(news).Exec(r.ctx)
+func (r *Repository) Create(c context.Context, news *models.News) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(news).Exec(c)
 	return err
 }
 
-func (r *Repository) update(news *models.News) (err error) {
-	_, err = r.DB().NewUpdate().Model(news).Where("id = ?", news.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, news *models.News) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(news).Where("id = ?", news.ID).Exec(c)
 	return err
 }
 
-func (r *Repository) createLike(item *models.NewsLike) error {
-	_, err := r.DB().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) CreateLike(c context.Context, item *models.NewsLike) error {
+	_, err := r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) addTag(item *models.NewsToTag) error {
-	_, err := r.DB().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) AddTag(c context.Context, item *models.NewsToTag) error {
+	_, err := r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) removeTag(item *models.NewsToTag) error {
-	_, err := r.DB().NewDelete().Model(&models.NewsToTag{}).Where("news_id = ? AND tag_id = ?", item.NewsID, item.TagID).Exec(r.ctx)
+func (r *Repository) RemoveTag(c context.Context, item *models.NewsToTag) error {
+	_, err := r.helper.DB.IDB(c).NewDelete().Model(&models.NewsToTag{}).Where("news_id = ? AND tag_id = ?", item.NewsID, item.TagID).Exec(c)
 	return err
 }
 
-func (r *Repository) createComment(item *models.NewsComment) error {
-	_, err := r.DB().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) CreateComment(c context.Context, item *models.NewsComment) error {
+	_, err := r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) updateComment(item *models.NewsComment) error {
-	_, err := r.DB().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) UpdateComment(c context.Context, item *models.NewsComment) error {
+	_, err := r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
 	return err
 }
 
-func (r *Repository) removeComment(id string) error {
-	_, err := r.DB().NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(r.ctx)
+func (r *Repository) RemoveComment(c context.Context, id string) error {
+	_, err := r.helper.DB.IDB(c).NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(c)
 	return err
 }
 
-func (r *Repository) getAll(c context.Context, ftsp bool) (items models.NewsWithCount, err error) {
+func (r *Repository) GetAll(c context.Context) (items models.NewsWithCount, err error) {
 	items.News = make([]*models.News, 0)
-	query := r.DB().NewSelect().Model(&items.News).
+	query := r.helper.DB.IDB(c).NewSelect().Model(&items.News).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
 		Relation("PreviewImage").
 		Relation("NewsLikes").
 		Relation("NewsViews")
-	if ftsp {
-		fmt.Println("filter")
-		f := r.helper.SQL.ExtractFTSP(c)
-		fmt.Println(f)
-		r.helper.SQL.HandleFTSPQuery(c, query)
-	}
-	fmt.Println(time.Now())
-	items.Count, err = query.ScanAndCount(r.ctx)
+
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
+	items.Count, err = query.ScanAndCount(c)
 	return items, err
 }
 
-func (r *Repository) getMain() (items models.NewsWithCount, err error) {
+func (r *Repository) GetMain(c context.Context) (items models.NewsWithCount, err error) {
 	items.News = make([]*models.News, 0)
-	query := r.DB().NewSelect().Model(&items.News).
+	query := r.helper.DB.IDB(c).NewSelect().Model(&items.News).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
 		Relation("PreviewImage").
 		Relation("NewsLikes").
 		Relation("NewsViews").
 		Where("news_view.main = ?", true)
-	items.Count, err = query.ScanAndCount(r.ctx)
+	items.Count, err = query.ScanAndCount(c)
 	return items, err
 }
 
-func (r *Repository) getSubMain() (items models.NewsWithCount, err error) {
+func (r *Repository) GetSubMain(c context.Context) (items models.NewsWithCount, err error) {
 	items.News = make([]*models.News, 0)
-	query := r.DB().NewSelect().Model(&items.News).
+	query := r.helper.DB.IDB(c).NewSelect().Model(&items.News).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
 		Relation("PreviewImage").
 		Relation("NewsLikes").
 		Relation("NewsViews").
 		Where("news_view.sub_main = ?", true)
-	items.Count, err = query.ScanAndCount(r.ctx)
+	items.Count, err = query.ScanAndCount(c)
 	return items, err
 }
 
-func (r *Repository) getBySlug(slug string) (*models.News, error) {
+func (r *Repository) GetBySlug(c context.Context, slug string) (*models.News, error) {
 	item := models.News{}
-	err := r.DB().NewSelect().Model(&item).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("NewsToCategories.Category").
 		Relation("NewsToTags.Tag").
 		Relation("PreviewImage").
@@ -131,49 +114,45 @@ func (r *Repository) getBySlug(slug string) (*models.News, error) {
 		Relation("NewsDoctors.Doctor.Employee.Human").
 		Relation("NewsDoctors.Doctor.Employee.Human.PhotoMini").
 		Relation("NewsDoctors.Doctor.Employee.Regalias").
-		Where("news_view.id = ?", slug).Scan(r.ctx)
+		Where("news_view.id = ?", slug).Scan(c)
 	return &item, err
 }
 
-func (r *Repository) getNewsComments(id string) (*models.NewsComments, error) {
+func (r *Repository) GetNewsComments(c context.Context, id string) (*models.NewsComments, error) {
 	items := models.NewsComments{}
-	err := r.DB().NewSelect().Model(&items).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&items).
 		Relation("Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
 		}).
 		Relation("Comment.User.Human").
-		Where("news_comments.news_id = ?", id).Scan(r.ctx)
+		Where("news_comments.news_id = ?", id).Scan(c)
 	return &items, err
 }
 
-func (r *Repository) delete(id string) (err error) {
-	_, err = r.DB().NewDelete().Model(&models.News{}).Where("id = ?", id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.News{}).Where("id = ?", id).Exec(c)
 	return err
 }
 
-func (r *Repository) deleteLike(id string) (err error) {
-	_, err = r.DB().NewDelete().Model(&models.NewsLike{}).Where("id = ?", id).Exec(r.ctx)
+func (r *Repository) DeleteLike(c context.Context, id string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.NewsLike{}).Where("id = ?", id).Exec(c)
 	return err
 }
 
-func (r *Repository) createViewOfNews(newsView *models.NewsView) (err error) {
-	_, err = r.DB().NewInsert().Model(newsView).On("CONFLICT (ip_address, news_id) DO NOTHING").Exec(r.ctx)
+func (r *Repository) CreateViewOfNews(c context.Context, newsView *models.NewsView) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(newsView).On("CONFLICT (ip_address, news_id) DO NOTHING").Exec(c)
 	return err
 }
 
-func (r *Repository) setQueryFilter() (err error) {
-	return nil
-}
-
-func (r *Repository) GetSuggestionNews(id string) ([]*models.News, error) {
+func (r *Repository) GetSuggestionNews(c context.Context, id string) ([]*models.News, error) {
 	items := make([]*models.News, 0)
-	generalNewsQuery := r.DB().NewSelect().
+	generalNewsQuery := r.helper.DB.IDB(c).NewSelect().
 		ColumnExpr("news_view.id as news_id, news_to_tags.tag_id as tag_id").
 		Model((*models.News)(nil)).
 		Join("join news_to_tags on news_to_tags.news_id = news_view.id").
 		Where("?TableAlias.id =? ", id)
 
-	err := r.DB().NewSelect().
+	err := r.helper.DB.IDB(c).NewSelect().
 		With("gen_news", generalNewsQuery).
 		Model(&items).
 		ColumnExpr("news_view.id, news_view.title, news_view.published_on,views_count, count(news_to_tags.id) as tag_count ").
@@ -182,13 +161,13 @@ func (r *Repository) GetSuggestionNews(id string) ([]*models.News, error) {
 		Group("news_view.id", "news_to_tags.tag_id", "news_view.title", "news_view.published_on", "views_count").
 		Order("tag_count desc", "views_count", "published_on desc").
 		Limit(4).
-		Scan(r.ctx)
+		Scan(c)
 	return items, err
 }
 
-func (r *Repository) GetAggregateViews(opt *exportmodels.NewsView) (models.ChartDataSets, error) {
+func (r *Repository) GetAggregateViews(c context.Context, opt *exportmodels.NewsView) (models.ChartDataSets, error) {
 	items := make(models.ChartDataSets, 0)
-	query := r.DB().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		ColumnExpr(opt.GetColExpr()).
 		TableExpr("news n").
 		Join("join news_views nv on n.id = nv.news_id and nv.created_at is not null").
@@ -198,6 +177,6 @@ func (r *Repository) GetAggregateViews(opt *exportmodels.NewsView) (models.Chart
 		query.Where("n.id in (?)", bun.In(opt.IDPool))
 	}
 
-	err := query.Scan(r.ctx, &items)
+	err := query.Scan(c, &items)
 	return items, err
 }

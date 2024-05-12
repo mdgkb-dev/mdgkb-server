@@ -31,7 +31,7 @@ func (h *Handler) Data(c *gin.Context) {
 		return
 	}
 	fmt.Println(opts)
-	items, err := news.NewRepository(h.helper).GetAggregateViews(&newsExport)
+	items, err := news.S.GetAggregateViews(c.Request.Context(), &newsExport)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

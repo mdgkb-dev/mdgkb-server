@@ -16,7 +16,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.News) error {
+func (s *Service) Create(c context.Context, item *models.News) error {
 	err := fileinfos.CreateService(s.helper).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
@@ -27,7 +27,7 @@ func (s *Service) Create(item *models.News) error {
 	}
 	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
-	err = s.Repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -56,84 +56,84 @@ func (s *Service) Create(item *models.News) error {
 	return err
 }
 
-func (s *Service) GetAll(c context.Context, ftsp bool) (models.NewsWithCount, error) {
-	return s.Repository.getAll(c, ftsp)
+func (s *Service) GetAll(c context.Context) (models.NewsWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) GetMain() (models.NewsWithCount, error) {
-	return s.Repository.getMain()
+func (s *Service) GetMain(c context.Context) (models.NewsWithCount, error) {
+	return R.GetMain(c)
 }
 
-func (s *Service) GetSubMain() (models.NewsWithCount, error) {
-	return s.Repository.getSubMain()
+func (s *Service) GetSubMain(c context.Context) (models.NewsWithCount, error) {
+	return R.GetSubMain(c)
 }
 
-func (s *Service) RemoveTag(item *models.NewsToTag) error {
-	return s.Repository.removeTag(item)
+func (s *Service) RemoveTag(c context.Context, item *models.NewsToTag) error {
+	return R.RemoveTag(c, item)
 }
 
-func (s *Service) AddTag(item *models.NewsToTag) error {
-	return s.Repository.removeTag(item)
+func (s *Service) AddTag(c context.Context, item *models.NewsToTag) error {
+	return R.RemoveTag(c, item)
 }
 
-func (s *Service) CreateLike(item *models.NewsLike) error {
-	return s.Repository.createLike(item)
+func (s *Service) CreateLike(c context.Context, item *models.NewsLike) error {
+	return R.CreateLike(c, item)
 }
 
-func (s *Service) CreateComment(item *models.NewsComment) error {
+func (s *Service) CreateComment(c context.Context, item *models.NewsComment) error {
 	commentsService := comments.S
 	err := commentsService.UpsertOne(context.TODO(), item.Comment)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	return s.Repository.createComment(item)
+	return R.CreateComment(c, item)
 }
 
-func (s *Service) UpdateComment(item *models.NewsComment) error {
+func (s *Service) UpdateComment(c context.Context, item *models.NewsComment) error {
 	commentsService := comments.S
 	err := commentsService.UpdateOne(context.TODO(), item.Comment)
 	if err != nil {
 		return err
 	}
 	item.SetForeignKeys()
-	return s.Repository.updateComment(item)
+	return R.UpdateComment(c, item)
 }
 
-func (s *Service) CreateViewOfNews(item *models.NewsView) error {
-	return s.Repository.createViewOfNews(item)
+func (s *Service) CreateViewOfNews(c context.Context, item *models.NewsView) error {
+	return R.CreateViewOfNews(c, item)
 }
 
-func (s *Service) RemoveComment(id string) error {
-	return s.Repository.removeComment(id)
+func (s *Service) RemoveComment(c context.Context, id string) error {
+	return R.RemoveComment(c, id)
 }
 
-func (s *Service) DeleteLike(id string) error {
-	return s.Repository.deleteLike(id)
+func (s *Service) DeleteLike(c context.Context, id string) error {
+	return R.DeleteLike(c, id)
 }
 
-func (s *Service) GetBySlug(c *gin.Context, slug string) (*models.News, error) {
-	item, err := s.Repository.getBySlug(slug)
+func (s *Service) GetBySlug(c context.Context, slug string) (*models.News, error) {
+	item, err := R.GetBySlug(c, slug)
 	if err != nil {
 		return nil, err
 	}
 	item.ViewsCount = len(item.NewsViews)
 
-	g := &models.GeoIP{}
-	country, city := g.GetByIP(c.ClientIP())
+	// g := &models.GeoIP{}
+	// country, city := g.GetByIP(c.ClientIP())
 
-	newsView := models.NewsView{IPAddress: c.ClientIP(), NewsID: item.ID, Country: country, City: city}
-	err = s.CreateViewOfNews(&newsView)
-	if err != nil {
-		return nil, err
-	}
-	if newsView.ID.Valid {
-		item.ViewsCount++
-	}
+	// newsView := models.NewsView{IPAddress: c.ClientIP(), NewsID: item.ID, Country: country, City: city}
+	// err = s.CreateViewOfNews(&newsView)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// if newsView.ID.Valid {
+	// 	item.ViewsCount++
+	// }
 	return item, nil
 }
 
-func (s *Service) Update(item *models.News) error {
+func (s *Service) Update(c context.Context, item *models.News) error {
 	err := fileinfos.CreateService(s.helper).UpsertMany(item.GetFileInfos())
 	if err != nil {
 		return err
@@ -143,7 +143,7 @@ func (s *Service) Update(item *models.News) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.Repository.update(item)
+	err = R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -192,22 +192,18 @@ func (s *Service) Update(item *models.News) error {
 	return err
 }
 
-func (s *Service) Delete(id string) error {
-	return s.Repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) SetQueryFilter(c *gin.Context, item models.FTSPQuery) error {
-	return s.Repository.SetQueryFilter(c, item)
+func (s *Service) GetSuggestionNews(c context.Context, id string) ([]*models.News, error) {
+	return R.GetSuggestionNews(c, id)
 }
 
-func (s *Service) GetSuggestionNews(id string) ([]*models.News, error) {
-	return s.Repository.GetSuggestionNews(id)
-}
-
-func (s *Service) GetAggregateViews(opts *exportmodels.NewsView) (models.ChartDataSets, error) {
-	return s.Repository.GetAggregateViews(opts)
+func (s *Service) GetAggregateViews(c context.Context, opts *exportmodels.NewsView) (models.ChartDataSets, error) {
+	return R.GetAggregateViews(c, opts)
 }
 
 func (s *Service) GetNewsComments(c *gin.Context, id string) (*models.NewsComments, error) {
-	return s.Repository.getNewsComments(id)
+	return R.GetNewsComments(c, id)
 }

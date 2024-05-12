@@ -191,7 +191,8 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	comments.Init(helper)
 	commentsRouter.Init(api.Group("/comments"), comments.H)
 
-	newsRouter.Init(api.Group("/news"), news.CreateHandler(helper))
+	news.Init(helper)
+	newsRouter.Init(api.Group("/news"), news.H)
 	sideOrganizationsRouter.Init(api.Group("/side-organizations"), sideorganizations.CreateHandler(helper))
 	tagsRouter.Init(api.Group("/tags"), tags.CreateHandler(helper))
 

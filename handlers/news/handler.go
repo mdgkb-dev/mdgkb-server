@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) FTSP(c *gin.Context) {
-	data, err := h.service.GetAll(c.Request.Context(), true)
+	data, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -21,11 +21,11 @@ func (h *Handler) Create(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	err = F.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Create(&item)
+	err = S.Create(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -38,7 +38,7 @@ func (h *Handler) RemoveTag(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.RemoveTag(&item)
+	err = S.RemoveTag(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -51,7 +51,7 @@ func (h *Handler) AddTag(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.AddTag(&item)
+	err = S.AddTag(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -65,7 +65,7 @@ func (h *Handler) CreateLike(c *gin.Context) {
 		return
 	}
 
-	err = h.service.CreateLike(&item)
+	err = S.CreateLike(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -74,11 +74,7 @@ func (h *Handler) CreateLike(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	news, err := h.service.GetAll(c.Request.Context(), false)
+	news, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -89,11 +85,7 @@ func (h *Handler) GetAll(c *gin.Context) {
 }
 
 func (h *Handler) GetMain(c *gin.Context) {
-	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	news, err := h.service.GetMain()
+	news, err := S.GetMain(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -104,11 +96,7 @@ func (h *Handler) GetMain(c *gin.Context) {
 }
 
 func (h *Handler) GetSubMain(c *gin.Context) {
-	err := h.service.SetQueryFilter(c, models.FTSPQuery{})
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	news, err := h.service.GetSubMain()
+	news, err := S.GetSubMain(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -124,11 +112,11 @@ func (h *Handler) Update(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.filesService.Upload(c, &item, files)
+	err = F.Upload(c, &item, files)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Update(&item)
+	err = S.Update(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -136,7 +124,7 @@ func (h *Handler) Update(c *gin.Context) {
 }
 
 func (h *Handler) Delete(c *gin.Context) {
-	err := h.service.Delete(c.Param("id"))
+	err := S.Delete(c.Request.Context(), c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -150,7 +138,7 @@ func (h *Handler) CreateComment(c *gin.Context) {
 		return
 	}
 
-	err = h.service.CreateComment(&item)
+	err = S.CreateComment(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -164,7 +152,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.UpdateComment(&item)
+	err = S.UpdateComment(c.Request.Context(), &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -172,7 +160,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 }
 
 func (h *Handler) RemoveComment(c *gin.Context) {
-	err := h.service.RemoveComment(c.Param("id"))
+	err := S.RemoveComment(c.Request.Context(), c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -180,7 +168,7 @@ func (h *Handler) RemoveComment(c *gin.Context) {
 }
 
 func (h *Handler) DeleteLike(c *gin.Context) {
-	err := h.service.DeleteLike(c.Param("id"))
+	err := S.DeleteLike(c.Request.Context(), c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -188,7 +176,7 @@ func (h *Handler) DeleteLike(c *gin.Context) {
 }
 
 func (h *Handler) GetBySLug(c *gin.Context) {
-	item, err := h.service.GetBySlug(c, c.Param("slug"))
+	item, err := S.GetBySlug(c.Request.Context(), c.Param("slug"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -196,7 +184,7 @@ func (h *Handler) GetBySLug(c *gin.Context) {
 }
 
 func (h *Handler) GetNewsComments(c *gin.Context) {
-	item, err := h.service.GetNewsComments(c, c.Param("id"))
+	item, err := S.GetNewsComments(c, c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -204,7 +192,7 @@ func (h *Handler) GetNewsComments(c *gin.Context) {
 }
 
 func (h *Handler) GetSuggestionNews(c *gin.Context) {
-	items, err := h.service.GetSuggestionNews(c.Param("id"))
+	items, err := S.GetSuggestionNews(c.Request.Context(), c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

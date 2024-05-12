@@ -28,6 +28,7 @@ func (r *Repository) GetAll(c context.Context) (item models.DivisionsWithCount, 
 		Relation("TreatDirection").
 		Relation("Chief.Employee.Human")
 
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
 	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }
