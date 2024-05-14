@@ -12,16 +12,16 @@ func (r *Repository) db() *bun.DB {
 	return r.helper.DB.DB
 }
 
-func (r *Repository) getAll(userID *uuid.UUID) (models.DonorRules, error) {
+func (r *Repository) getAll() (models.DonorRules, error) {
 	items := make(models.DonorRules, 0)
 	q := r.db().NewSelect().
 		Model(&items).
 		Relation("Image")
-	if userID != nil {
-		q = q.Relation("DonorRulesUsers", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Where("user_id = ?", userID)
-		})
-	}
+	// if userID != nil {
+	// 	q = q.Relation("DonorRulesUsers", func(q *bun.SelectQuery) *bun.SelectQuery {
+	// 		return q.Where("user_id = ?", userID)
+	// 	})
+	// }
 	err := q.Order("donor_rules.donor_rule_order").
 		Scan(r.ctx)
 	return items, err

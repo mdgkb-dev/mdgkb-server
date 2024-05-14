@@ -20,9 +20,8 @@ func (r *Repository) GetAll(c context.Context) (item models.VacanciesWithCount, 
 		Relation("FormPattern").
 		Relation("VacancyDuties").
 		Relation("VacancyRequirements").
-		// Relation("ContactInfo").
-		// Relation("ContactInfo.Emails").
-		// Relation("ContactInfo.TelephoneNumbers").
+		Relation("Contact.Emails").
+		Relation("Contact.Phones").
 		Relation("ContactDoctor.Employee.Human").
 		Relation("VacancyResponses.FormValue")
 
@@ -43,9 +42,8 @@ func (r *Repository) Get(c context.Context, id *string) (*models.Vacancy, error)
 		Relation("VacancyRequirements", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("vacancy_requirements.vacancy_requirement_order")
 		}).
-		// Relation("ContactInfo").
-		// Relation("ContactInfo.Emails").
-		// Relation("ContactInfo.TelephoneNumbers").
+		Relation("Contact.Emails").
+		Relation("Contact.Phones").
 		Relation("ContactDoctor.Employee.Human").
 		Relation("VacancyResponses.FormValue.User.Human").
 		Relation("VacancyResponses.FormValue.Fields.File").

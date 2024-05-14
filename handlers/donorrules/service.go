@@ -3,12 +3,10 @@ package donorrules
 import (
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/google/uuid"
 )
 
-func (s *Service) GetAll(userID *uuid.UUID) (models.DonorRules, error) {
-	return s.repository.getAll(userID)
+func (s *Service) GetAll() (models.DonorRules, error) {
+	return s.repository.getAll()
 }
 
 func (s *Service) UpsertMany(items RulesWithDeleted) error {

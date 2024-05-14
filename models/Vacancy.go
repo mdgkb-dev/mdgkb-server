@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	baseModels "github.com/pro-assistance/pro-assister/models"
 	"github.com/uptrace/bun"
 )
 
@@ -32,8 +33,8 @@ type Vacancy struct {
 	Division   *Division     `bun:"rel:belongs-to" json:"division"`
 	DivisionID uuid.NullUUID `bun:"type:uuid,nullzero,default:NULL" json:"divisionId,omitempty"`
 
-	ContactInfo   *ContactInfo  `bun:"rel:belongs-to" json:"contactInfo"`
-	ContactInfoID uuid.NullUUID `bun:"type:uuid" json:"contactInfoId"`
+	Contact   *baseModels.Contact `bun:"rel:belongs-to" json:"contact"`
+	ContactID uuid.NullUUID       `bun:"type:uuid" json:"contactId"`
 
 	ContactDoctor   *Doctor       `bun:"rel:belongs-to" json:"contactDoctor"`
 	ContactDoctorID uuid.NullUUID `bun:"type:uuid" json:"contactDoctorId"`

@@ -13,12 +13,12 @@ import (
 )
 
 func (h *Handler) GetAll(c *gin.Context) {
-	id, _ := h.helper.Token.ExtractTokenMetadata(c.Request, middleware.ClaimUserID)
+	// id, _ := h.helper.Token.ExtractTokenMetadata(c.Request, middleware.ClaimUserID)
 	//if h.helper.HTTP.HandleError(c, err, http.StatusUnauthorized) {
 	//	return
 	//}
-	uid := uuid.MustParse(id)
-	items, err := h.service.GetAll(&uid)
+	// uid := uuid.MustParse(id)
+	items, err := h.service.GetAll()
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

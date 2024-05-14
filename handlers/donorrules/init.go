@@ -20,7 +20,7 @@ type IHandler interface {
 }
 
 type IService interface {
-	GetAll(*uuid.UUID) (models.DonorRules, error)
+	GetAll() (models.DonorRules, error)
 	UpsertMany(RulesWithDeleted) error
 	AddToUser(*models.DonorRuleUser) error
 	DeleteFromUser(*models.DonorRuleUser) error
@@ -28,7 +28,7 @@ type IService interface {
 
 type IRepository interface {
 	db() *bun.DB
-	getAll(*uuid.UUID) (models.DonorRules, error)
+	getAll() (models.DonorRules, error)
 	upsertMany(models.DonorRules) error
 	deleteMany([]uuid.UUID) error
 	addToUser(*models.DonorRuleUser) error

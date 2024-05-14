@@ -30,8 +30,8 @@ func (r *Repository) Get(c context.Context, id *string) (*models.ResidencyApplic
 		Relation("ResidencyCourse.ResidencyCoursesSpecializations.Specialization").
 		Relation("ResidencyCourse.FormPattern.Fields.File").
 		Relation("ResidencyCourse.FormPattern.Fields.ValueType").
-		Relation("FormValue.User.Human.ContactInfo").
-		Relation("FormValue.User.Human.ContactInfo.AddressInfo").
+		Relation("FormValue.User.Human.Contact").
+		Relation("FormValue.User.Human.Contact.Address").
 		Relation("FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
 		}).
