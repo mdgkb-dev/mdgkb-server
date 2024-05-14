@@ -47,21 +47,21 @@ func (s *Service) Get(c context.Context, id string) (*models.Question, error) {
 }
 
 func (s *Service) Update(c context.Context, item *models.Question) error {
-	emailStruct := struct {
-		Question *models.Question
-		Host     string
-	}{
-		item,
-		s.helper.HTTP.Host,
-	}
-	mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/questionAnswer.gohtml")
-	if err != nil {
-		return err
-	}
-	err = s.helper.Email.SendEmail([]string{item.User.Email}, "Ответ на Ваш вопрос на сайте МДГКБ", mail)
-	if err != nil {
-		return err
-	}
+	// emailStruct := struct {
+	// 	Question *models.Question
+	// 	Host     string
+	// }{
+	// 	item,
+	// 	s.helper.HTTP.Host,
+	// }
+	// mail, err := s.helper.Templater.ParseTemplate(emailStruct, "email/questionAnswer.gohtml")
+	// if err != nil {
+	// 	return err
+	// }
+	// err = s.helper.Email.SendEmail([]string{item.User.Email}, "Ответ на Ваш вопрос на сайте МДГКБ", mail)
+	// if err != nil {
+	// 	return err
+	// }
 
 	return R.Update(c, item)
 }
