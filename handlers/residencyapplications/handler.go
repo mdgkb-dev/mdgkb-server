@@ -55,7 +55,6 @@ func (h *Handler) TypeExists(c *gin.Context) {
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.ResidencyApplication
-
 	files, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return

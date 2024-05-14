@@ -24,6 +24,19 @@ func (h *Handler) GetAllMain(c *gin.Context) {
 	c.JSON(http.StatusOK, comments)
 }
 
+func (h *Handler) Create(c *gin.Context) {
+	var item models.Comment
+	_, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	err = S.Create(c.Request.Context(), &item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
+}
+
 func (h *Handler) FTSP(c *gin.Context) {
 	data, err := S.GetAll(c.Request.Context())
 	if h.helper.HTTP.HandleError(c, err) {
@@ -34,7 +47,7 @@ func (h *Handler) FTSP(c *gin.Context) {
 
 func (h *Handler) UpdateOne(c *gin.Context) {
 	var item models.Comment
-	err := c.Bind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -47,7 +60,7 @@ func (h *Handler) UpdateOne(c *gin.Context) {
 
 func (h *Handler) UpsertOne(c *gin.Context) {
 	var item models.Comment
-	err := c.Bind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

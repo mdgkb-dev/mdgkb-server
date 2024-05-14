@@ -33,6 +33,11 @@ func (r *Repository) UpsertMany(c context.Context, items models.Comments) (err e
 	return err
 }
 
+func (r *Repository) Create(c context.Context, item *models.Comment) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(&item).Exec(c)
+	return err
+}
+
 func (r *Repository) Get(c context.Context, id uuid.NullUUID) (item models.Comment, err error) {
 	err = r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("NewsComment.News").

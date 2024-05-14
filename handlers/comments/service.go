@@ -22,6 +22,10 @@ func (s *Service) CreateMany(c context.Context, items models.Comments) error {
 	return nil
 }
 
+func (s *Service) Create(c context.Context, item *models.Comment) error {
+	return R.Create(c, item)
+}
+
 func (s *Service) DeleteMany(c context.Context, idPool []string) error {
 	if len(idPool) == 0 {
 		return nil
