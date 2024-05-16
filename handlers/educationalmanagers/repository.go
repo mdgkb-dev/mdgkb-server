@@ -1,55 +1,41 @@
 package educationalmanagers
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
-
-	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) setQueryFilter(c *gin.Context) (err error) {
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *Repository) getAll() (models.EducationalManagers, error) {
+func (r *Repository) GetAll(c context.Context) (models.EducationalManagers, error) {
 	items := make(models.EducationalManagers, 0)
-	query := r.db().NewSelect().
+	query := r.helper.DB.IDB(c).NewSelect().
 		Model(&items).
 		Relation("Doctor.Employee.Human.PhotoMini").
-		Relation("Doctor.Employee.Human.ContactInfo.Emails").
-		Relation("Doctor.Employee.Human.ContactInfo.TelephoneNumbers")
+		Relation("Doctor.Employee.Human.Contact.Emails").
+		Relation("Doctor.Employee.Human.Contact.Phones")
 
-	err := query.Scan(r.ctx)
+	err := query.Scan(c)
 	return items, err
 }
 
-func (r *Repository) get(id *string) (*models.EducationalManager, error) {
+func (r *Repository) Get(c context.Context, id string) (*models.EducationalManager, error) {
 	item := models.EducationalManager{}
-	err := r.db().NewSelect().Model(&item).
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("Doctor.Employee.Human").
-		Where("educational_managers.id = ?", *id).Scan(r.ctx)
+		Where("educational_managers.id = ?", id).Scan(c)
 	return &item, err
 }
 
-func (r *Repository) create(item *models.EducationalManager) (err error) {
-	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) Create(c context.Context, item *models.EducationalManager) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) delete(id *string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.EducationalManager{}).Where("id = ?", *id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.EducationalManager{}).Where("id = ?", id).Exec(c)
 	return err
 }
 
-func (r *Repository) update(item *models.EducationalManager) (err error) {
-	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, item *models.EducationalManager) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
 	return err
 }

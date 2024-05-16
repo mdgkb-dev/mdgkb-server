@@ -1,44 +1,38 @@
 package educationalmanagers
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) GetAll() (models.EducationalManagers, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.EducationalManagers, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id *string) (*models.EducationalManager, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id string) (*models.EducationalManager, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Create(item *models.EducationalManager) error {
-	err := s.repository.create(item)
+func (s *Service) Create(c context.Context, item *models.EducationalManager) error {
+	err := R.Create(c, item)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Update(item *models.EducationalManager) error {
-	err := s.repository.update(item)
+func (s *Service) Update(c context.Context, item *models.EducationalManager) error {
+	err := R.Update(c, item)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }

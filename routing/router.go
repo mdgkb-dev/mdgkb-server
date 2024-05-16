@@ -263,7 +263,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 
 	postgraduateApplicationsRouter.Init(api.Group("/postgraduate-applications"), postgraduateapplications.CreateHandler(helper))
 	teachersRouter.Init(api.Group("/teachers"), teachers.CreateHandler(helper))
-	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalmanagers.CreateHandler(helper))
+
+	educationalmanagers.Init(helper)
+	educationalManagersRouter.Init(api.Group("/educational-managers"), educationalmanagers.H)
+
 	appointmentsRouter.Init(api.Group("/appointments"), appointments.CreateHandler(helper))
 	childrenRouter.Init(api.Group("/children"), children.CreateHandler(helper))
 	gatesRouter.Init(api.Group("/gates"), gates.CreateHandler(helper))
