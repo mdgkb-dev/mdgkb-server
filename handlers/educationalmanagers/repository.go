@@ -13,6 +13,7 @@ func (r *Repository) GetAll(c context.Context) (models.EducationalManagers, erro
 		Relation("Doctor.Employee.Human.Contact.Emails").
 		Relation("Doctor.Employee.Human.Contact.Phones")
 
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
 	err := query.Scan(c)
 	return items, err
 }
