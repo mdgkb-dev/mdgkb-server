@@ -32,7 +32,7 @@ func (r *Repository) GetAll(c context.Context) (item models.ResidencyCoursesWith
 	return item, err
 }
 
-func (r *Repository) Get(c context.Context) (*models.ResidencyCourse, error) {
+func (r *Repository) Get(c context.Context, id string) (*models.ResidencyCourse, error) {
 	item := models.ResidencyCourse{}
 	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("MainTeacher.Human.PhotoMini").
@@ -53,7 +53,7 @@ func (r *Repository) Get(c context.Context) (*models.ResidencyCourse, error) {
 		Relation("ResidencyCoursePracticePlaceGroups.ResidencyCoursePracticePlaces.Division").
 		Relation("StartYear").
 		Relation("EndYear").
-		// Where("?TableAlias.? = ?", bun.Safe(r..Col), r..Value).
+		Where("?TableAlias.id = ?", id).
 		Scan(c)
 	return &item, err
 }

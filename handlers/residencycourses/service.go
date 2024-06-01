@@ -12,8 +12,8 @@ func (s *Service) GetAll(c context.Context) (models.ResidencyCoursesWithCount, e
 	return R.GetAll(c)
 }
 
-func (s *Service) Get(c context.Context) (*models.ResidencyCourse, error) {
-	item, err := R.Get(c)
+func (s *Service) Get(c context.Context, id string) (*models.ResidencyCourse, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
