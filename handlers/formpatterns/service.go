@@ -11,8 +11,8 @@ func (s *Service) GetAll(c context.Context) (models.FormPatterns, error) {
 	return R.GetAll(c)
 }
 
-func (s *Service) Get(c context.Context) (*models.FormPattern, error) {
-	item, err := R.Get(c)
+func (s *Service) Get(c context.Context, id string) (*models.FormPattern, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}

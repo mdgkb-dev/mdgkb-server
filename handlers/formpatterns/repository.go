@@ -18,7 +18,7 @@ func (r *Repository) GetAll(c context.Context) (models.FormPatterns, error) {
 	return items, err
 }
 
-func (r *Repository) Get(c context.Context) (*models.FormPattern, error) {
+func (r *Repository) Get(c context.Context, id string) (*models.FormPattern, error) {
 	item := models.FormPattern{}
 	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
@@ -30,7 +30,7 @@ func (r *Repository) Get(c context.Context) (*models.FormPattern, error) {
 		Relation("DefaultFormStatus").
 		Relation("PersonalDataAgreement").
 		Relation("Fields.MaskTokens").
-		// Where("form_patterns.? = ?", bun.Safe(r..Col), r..Value).
+		Where("?TableAlias.id = ?", id).
 		Scan(c)
 
 	return &item, err
