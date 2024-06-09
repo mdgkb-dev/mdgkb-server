@@ -106,5 +106,6 @@ func (item *Human) SetFilePath(fileID *string) *string {
 }
 
 func (item *Human) GetFullAddress() string {
-	return item.Contact.Address.GetFullAddress()
+	// return item.Contact.Address.GetFullAddress()
+	return item.Address
 }

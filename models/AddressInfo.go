@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -29,5 +27,6 @@ type AddressInfo struct {
 type AddressInfos []*AddressInfo
 
 func (item *AddressInfo) GetFullAddress() string {
-	return fmt.Sprintf("%d, %s, %s, %s, %s", item.Zip, item.Region, item.City, item.Street, item.Building)
+	// return fmt.Sprintf("%d, %s, %s, %s, %s", item.Zip, item.Region, item.City, item.Street, item.Building)
+	return ""
 }

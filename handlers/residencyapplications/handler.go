@@ -112,7 +112,10 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) FillApplicationTemplate(c *gin.Context) {
 	var item models.ResidencyApplication
-	err := c.Bind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
 	t1 := item.FormValue.User.Human.DateBirth.Add(time.Hour * 3)
 	item.FormValue.User.Human.DateBirth = &t1
 	item.FormValue.NormalizeDateFields()

@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	"mdgkb/mdgkb-server/models"
 
 	//_ "github.com/go-pg/pg/v10/orm"
@@ -66,13 +67,13 @@ func (r *Repository) Get(c context.Context, id string) (*models.User, error) {
 		Relation("VacancyResponses.FormValue.FieldValues.Field.ValueType").
 		Relation("VacancyResponses.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
 		Relation("VacancyResponses.FormValue.User").
-		//Relation("FormValues.User").
-		//Relation("FormValues.FormValueFiles.File").
-		//Relation("FormValues.FieldValues.Field").
-		//Relation("FormValues.FieldValues.File").
-		//Relation("FormValues.Fields.File").
-		//Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
-		//Relation("FormValues.DpoApplication.NmoCourse"). // TODO: исправить столбец в базе, когда будут заявки
+		// Relation("FormValues.User").
+		// Relation("FormValues.FormValueFiles.File").
+		// Relation("FormValues.FieldValues.Field").
+		// Relation("FormValues.FieldValues.File").
+		// Relation("FormValues.Fields.File").
+		// Relation("FormValues.FormStatus.FormStatusToFormStatuses.ChildFormStatus.Icon").
+		// Relation("FormValues.DpoApplication.NmoCourse"). // TODO: исправить столбец в базе, когда будут заявки
 		// Relation("FormValues.PostgraduateApplication.PostgraduateCourse", func(query *bun.SelectQuery) *bun.SelectQuery {
 		// 	return query.ExcludeColumn("questions_file_id")
 		// }).
@@ -92,7 +93,7 @@ func (r *Repository) GetByEmail(c context.Context, id string) (*models.User, err
 	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("Human.Photo").
 		Relation("Human.Contact.Address").
-		//Relation("Questions").
+		// Relation("Questions").
 		Relation("DonorRulesUsers.DonorRule.Image").
 		Relation("DonorRulesUsers.DonorRule.DonorRulesUsers").
 		Relation("Children.Human").
@@ -171,10 +172,12 @@ func (r *Repository) UpdatePassword(c context.Context, item *models.User) (err e
 		Exec(c)
 	return err
 }
+
 func (r *Repository) GetByUserAccountID(c context.Context, id string) (*models.User, error) {
 	item := models.User{}
 	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
 		Relation("Role").
+		Relation("Human").
 		Where("?TableAlias.user_account_id = ?", id).
 		Scan(c)
 	return &item, err
