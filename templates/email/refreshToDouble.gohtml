@@ -1,0 +1,16 @@
+{{ template "_header"}}
+<tr>
+    <td colspan=4>
+        <p style="margin:50px 30px 0 30px; text-align:center; font-size:14px; line-height:30px; color:#343E5C;letter-spacing:1px">
+            <b>Уважаемый клиент! Была попытка зарегистрировать аккаунт с Вашим email</b>
+        </p>
+        <p style="margin:0 30px 50px 30px; text-align:left; font-size:12px; line-height:14px; color:#343E5C;letter-spacing:1px">
+Аккаунт с Вашим email уже существует. Если это были вы, для восстановления пароля пройдите по ссылке.<br>
+            <b>{{.RestoreLink }} </b>.<br>
+            <br>
+            <br>
+            Если регистрировались не вы - игнорируйте это сообщщение
+        </p>
+    </td>
+</tr>
+{{ template "_footer"}}
