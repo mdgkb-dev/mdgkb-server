@@ -61,6 +61,10 @@ type User struct {
 
 type Users []*User
 
+func (i *User) InitHuman() {
+	i.Human = &Human{}
+}
+
 func (i *User) GenerateHashPassword() error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(i.Password), bcrypt.DefaultCost)
 	if err != nil {

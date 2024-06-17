@@ -3,6 +3,7 @@ package users
 import (
 	"context"
 	"fmt"
+
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/roles"
@@ -65,6 +66,7 @@ func (s *Service) Update(c context.Context, item *models.User) error {
 }
 
 func (s *Service) Upsert(c context.Context, item *models.User) error {
+	item.Human = &models.Human{}
 	err := human.CreateService(s.helper).Upsert(item.Human)
 	if err != nil {
 		return err
@@ -159,6 +161,7 @@ func (s *Service) UpdatePassword(c context.Context, item *models.User) error {
 func (s *Service) GetByUserAccountID(c context.Context, id string) (*models.User, error) {
 	return R.GetByUserAccountID(c, id)
 }
+
 func (s *Service) SetAccessLink(c context.Context, item *models.User) error {
 	findedUser, err := R.GetByEmail(c, item.Email)
 	if err != nil {

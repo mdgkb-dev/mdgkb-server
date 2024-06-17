@@ -128,6 +128,7 @@ func (r *Repository) Upsert(c context.Context, item *models.User) (err error) {
 		Set("role_id = EXCLUDED.role_id").
 		Set("password = EXCLUDED.password").
 		Set("is_active = EXCLUDED.is_active").
+		Set("user_account_id = EXCLUDED.user_account_id").
 		Exec(c)
 	return err
 }

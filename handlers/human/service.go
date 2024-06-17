@@ -37,11 +37,11 @@ func (s *Service) Update(item *models.Human) error {
 	if err != nil {
 		return err
 	}
-	p := models.FileInfo(*item.PhotoMini)
-	err = fileinfos.CreateService(s.helper).Upsert(&p)
-	if err != nil {
-		return err
-	}
+	// p := models.FileInfo(*item.PhotoMini)
+	// err = fileinfos.CreateService(s.helper).Upsert(&p)
+	// if err != nil {
+	// 	return err
+	// }
 	// err = contactinfo.CreateService(s.helper).Upsert(item.ContactInfo)
 	// if err != nil {
 	// 	return err
@@ -82,11 +82,11 @@ func (s *Service) Upsert(item *models.Human) error {
 	if err != nil {
 		return err
 	}
-	p := models.FileInfo(*item.PhotoMini)
-	err = fileinfos.CreateService(s.helper).Upsert(&p)
-	if err != nil {
-		return err
-	}
+	// p := models.FileInfo(*item.PhotoMini)
+	// err = fileinfos.CreateService(s.helper).Upsert(&p)
+	// if err != nil {
+	// 	return err
+	// }
 	item.SetForeignKeys()
 	item.Slug = s.helper.Util.MakeSlug(item.GetFullName(), true)
 	return s.repository.upsert(item)

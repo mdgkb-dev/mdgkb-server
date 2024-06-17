@@ -44,12 +44,15 @@ type Human struct {
 type Humans []*Human
 
 func (item *Human) SetForeignKeys() {
-	item.ContactID = item.Contact.ID
-	item.PhotoID = item.Photo.ID
-
-	if item.PhotoMini != nil {
-		item.PhotoMiniID = item.PhotoMini.ID
+	if item.Contact != nil {
+		item.ContactID = item.Contact.ID
 	}
+	if item.Photo != nil {
+		item.PhotoID = item.Photo.ID
+	}
+	// if item.PhotoMini != nil {
+	// 	item.PhotoMiniID = item.PhotoMini.ID
+	// }
 }
 
 func (items Humans) SetForeignKeys() {
@@ -87,8 +90,8 @@ func (items Humans) GetFileInfos() FileInfos {
 
 	for _, item := range items {
 		itemsForGet = append(itemsForGet, item.Photo)
-		p := FileInfo(*item.PhotoMini)
-		itemsForGet = append(itemsForGet, &p)
+		// p := FileInfo(*item.PhotoMini)
+		// itemsForGet = append(itemsForGet, &p)
 	}
 	return itemsForGet
 }
@@ -98,10 +101,10 @@ func (item *Human) SetFilePath(fileID *string) *string {
 		item.Photo.FileSystemPath = uploader.BuildPath(fileID)
 		return &item.Photo.FileSystemPath
 	}
-	if item.PhotoMini.ID.UUID.String() == *fileID {
-		item.PhotoMini.FileSystemPath = uploader.BuildPath(fileID)
-		return &item.PhotoMini.FileSystemPath
-	}
+	// if item.PhotoMini.ID.UUID.String() == *fileID {
+	// 	item.PhotoMini.FileSystemPath = uploader.BuildPath(fileID)
+	// 	return &item.PhotoMini.FileSystemPath
+	// }
 	return nil
 }
 

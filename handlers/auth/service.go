@@ -14,6 +14,8 @@ import (
 func (s *Service) Register(c context.Context, item *models.User) (t *models.TokensWithUser, err error) {
 	duplicate := false
 	item.UserAccountID, duplicate, err = auth.S.Register(c, item.Email, item.Password)
+	item.Email = ""
+	item.Password = ""
 	if duplicate {
 		return nil, nil
 	}
@@ -42,7 +44,7 @@ func (s *Service) Register(c context.Context, item *models.User) (t *models.Toke
 
 func (s *Service) Login(c context.Context, email string, password string) (t *models.TokensWithUser, err error) {
 	userAccountID, err, errServer := auth.S.Login(c, email, password)
-	fmt.Println(errServer)
+	fmt.Println(userAccountID, errServer)
 	if err != nil {
 		return nil, err
 	}
