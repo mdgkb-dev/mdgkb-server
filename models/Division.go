@@ -14,6 +14,9 @@ type Division struct {
 	Name          string        `json:"name"`
 	Info          string        `json:"info"`
 
+	Department   *Department   `bun:"rel:belongs-to" json:"department"`
+	DepartmentID uuid.NullUUID `bun:"type:uuid" json:"departmentId"`
+
 	Contact   *baseModels.Contact `bun:"rel:belongs-to" json:"contact"`
 	ContactID uuid.NullUUID       `bun:"type:uuid" json:"contactId"`
 
