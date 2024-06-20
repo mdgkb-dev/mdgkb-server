@@ -2,28 +2,28 @@ package divisions
 
 import (
 	"context"
+
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisionimages"
 	"mdgkb/mdgkb-server/handlers/divisionvideos"
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
 	"mdgkb/mdgkb-server/handlers/schedules"
-	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/handlers/visitingrulesgroups"
 	"mdgkb/mdgkb-server/models"
 )
 
 func (s *Service) Create(c context.Context, item *models.Division) error {
-	timetableService := timetables.CreateService(s.helper)
-	err := timetableService.Create(item.Timetable)
-	if err != nil {
-		return err
-	}
+	// timetableService := timetables.CreateService(s.helper)
+	// err := timetableService.Create(item.Timetable)
+	// if err != nil {
+	// 	return err
+	// }
 	schedulesService := schedules.CreateService(s.helper)
-	err = schedulesService.Create(item.Schedule)
+	err := schedulesService.Create(item.Schedule)
 	if err != nil {
 		return err
 	}
-	item.Slug = s.helper.Util.MakeSlug(item.Name, true)
+	// item.Slug = s.helper.Util.MakeSlug(item.Name, true)
 
 	// contactInfoService := contactinfo.CreateService(s.helper)
 	// err = contactInfoService.Create(item.ContactInfo)
@@ -62,14 +62,14 @@ func (s *Service) Create(c context.Context, item *models.Division) error {
 }
 
 func (s *Service) Update(c context.Context, item *models.Division) error {
-	timetableService := timetables.CreateService(s.helper)
-	err := timetableService.Upsert(item.Timetable)
-	if err != nil {
-		return err
-	}
+	// timetableService := timetables.CreateService(s.helper)
+	// err := timetableService.Upsert(item.Timetable)
+	// if err != nil {
+	// 	return err
+	// }
 
 	schedulesService := schedules.CreateService(s.helper)
-	err = schedulesService.Upsert(item.Schedule)
+	err := schedulesService.Upsert(item.Schedule)
 	if err != nil {
 		return err
 	}
