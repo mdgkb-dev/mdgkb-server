@@ -2,6 +2,7 @@ package residencycourses
 
 import (
 	"context"
+
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -14,6 +15,7 @@ func (r *Repository) GetAll(c context.Context) (item models.ResidencyCoursesWith
 		Relation("MainTeacher.Human").
 		Relation("ResidencyCoursesSpecializations.Specialization").
 		Relation("ResidencyApplications.FormValue.User.Human").
+		Relation("ResidencyApplications.FormValue.User.UserAccount").
 		Relation("ResidencyApplications.FormValue.FieldValues.File").
 		Relation("ResidencyApplications.FormValue.FieldValues.Field").
 		Relation("ResidencyApplications.FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").

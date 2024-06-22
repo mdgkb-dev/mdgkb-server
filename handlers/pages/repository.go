@@ -16,6 +16,7 @@ func (r *Repository) Create(c context.Context, item *models.Page) (err error) {
 func (r *Repository) GetAll(c context.Context) (item models.PagesWithCount, err error) {
 	item.Pages = make(models.Pages, 0)
 	query := r.helper.DB.IDB(c).NewSelect().Model(&item.Pages)
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
 	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }

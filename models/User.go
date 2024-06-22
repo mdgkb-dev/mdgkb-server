@@ -6,6 +6,7 @@ import (
 	"github.com/pro-assistance/pro-assister/middleware"
 
 	"github.com/google/uuid"
+	baseModels "github.com/pro-assistance/pro-assister/models"
 	"github.com/uptrace/bun"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -56,7 +57,8 @@ type User struct {
 	DailyMenuOrdersForDelete []uuid.UUID     `bun:"-" json:"dailyMenuOrdersForDelete"`
 
 	// FormValues FormValues `bun:"rel:has-many" json:"formValues"`
-	UserAccountID uuid.NullUUID `bun:"type:uuid" json:"-"`
+	UserAccountID uuid.NullUUID           `bun:"type:uuid" json:"-"`
+	UserAccount   *baseModels.UserAccount `bun:"rel:belongs-to" json:"userAccount"`
 }
 
 type Users []*User

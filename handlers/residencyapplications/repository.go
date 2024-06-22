@@ -2,6 +2,7 @@ package residencyapplications
 
 import (
 	"context"
+
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -16,7 +17,8 @@ func (r *Repository) GetAll(c context.Context) (item models.ResidencyApplication
 		Relation("ResidencyApplicationPointsAchievements.PointsAchievement").
 		Relation("FormValue.FieldValues.Field").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus").
-		Relation("FormValue.User.Human")
+		Relation("FormValue.User.Human").
+		Relation("FormValue.User.UserAccount")
 
 	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
 	item.Count, err = query.ScanAndCount(c)
@@ -31,6 +33,7 @@ func (r *Repository) Get(c context.Context, id *string) (*models.ResidencyApplic
 		Relation("ResidencyCourse.FormPattern.Fields.File").
 		Relation("ResidencyCourse.FormPattern.Fields.ValueType").
 		Relation("FormValue.User.Human.Contact").
+		Relation("FormValue.User.UserAccount").
 		Relation("FormValue.User.Human.Contact.Address").
 		Relation("FormValue.Fields", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("fields.field_order")
