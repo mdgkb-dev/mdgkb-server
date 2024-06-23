@@ -76,16 +76,10 @@ func (s *Service) DropUUID(item *models.User) error {
 }
 
 func (s *Service) UpdatePassword(item *models.User) error {
-	err := item.GenerateHashPassword()
-	if err != nil {
-		return err
-	}
-	item.IsActive = true
-	return users.S.UpdatePassword(context.TODO(), item)
+	return auth.S.UpdatePassword(context.TODO(), item.ID.UUID.String(), item.Password)
 }
 
 func (s *Service) RestorePassword(c context.Context, email string) error {
-	fmt.Println(email, "email")
 	userAccount, err := auth.R.GetByEmail(c, email)
 	if err != nil {
 		return err
@@ -103,8 +97,7 @@ func (s *Service) RestorePassword(c context.Context, email string) error {
 	if err != nil {
 		return err
 	}
-	err = s.helper.Email.SendEmail([]string{userAccount.Email}, "Восстановление пароля для сайта Просодействие", mail)
-	fmt.Println(err, emailStruct)
+	err = s.helper.Email.SendEmail([]string{userAccount.Email}, "Восстановление пароля", mail)
 	if err != nil {
 		return err
 	}

@@ -14,6 +14,7 @@ func Init(r *gin.RouterGroup, h *handler.Handler) {
 	// r.POST("/refresh-token", h.RefreshToken)
 	r.POST("/logout", h.Logout)
 	r.POST("/restore-password", h.RestorePassword)
+	r.PUT("/password-change", h.RefreshPassword)
 	// r.PUT("/refresh-password", h.RefreshPassword)
 	// r.GET("/check-uuid/:user-id/:uuid", h.CheckUUID)
 	// r.POST("/check-path-permissions", h.CheckPathPermissions)
@@ -22,5 +23,5 @@ func Init(r *gin.RouterGroup, h *handler.Handler) {
 	// r.GET("/path-permissions", h.GetAllPathPermissions)
 	// r.PUT("/path-permissions", h.SavePathPermissions)
 	// r.GET("/path-permissions/:roleId", h.GetPathPermissionsByRoleID)
-	//r.GET("/logout", handler.Logout)
+	// r.GET("/logout", handler.Logout)
 }

@@ -35,7 +35,6 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 	fmt.Println(res)
 	c.JSON(http.StatusOK, res)
-
 }
 
 // func (h *Handler) LoginAs(c *gin.Context) {
@@ -70,39 +69,38 @@ type refreshToken struct {
 	UserID       string `json:"userId"`
 }
 
-// func (h *Handler) RefreshToken(c *gin.Context) {
-// 	t := refreshToken{}
-// 	err := c.Bind(&t)
-// 	if h.helper.HTTP.HandleError(c, err) {
-// 		return
-// 	}
-// 	//userId, err := h.helper.Token.ExtractTokenMetadata(c.Request, "user_id")
-// 	//if h.helper.HTTP.HandleError(c, err) {
-// 	//	return
-// 	//}
-// 	user, err := users.CreateService(h.helper).Get(t.UserID)
-// 	if h.helper.HTTP.HandleError(c, err) {
-// 		return
-// 	}
-// 	tokens, err := h.helper.Token.RefreshToken(t.RefreshToken, user)
-// 	if h.helper.HTTP.HandleError(c, err) {
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, tokens)
-// }
-//
-// func (h *Handler) RefreshPassword(c *gin.Context) {
-// 	var item models.User
-// 	err := c.Bind(&item)
-// 	if h.helper.HTTP.HandleError(c, err) {
-// 		return
-// 	}
-// 	err = h.service.UpdatePassword(&item)
-// 	if h.helper.HTTP.HandleError(c, err) {
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, nil)
-// }
+//	func (h *Handler) RefreshToken(c *gin.Context) {
+//		t := refreshToken{}
+//		err := c.Bind(&t)
+//		if h.helper.HTTP.HandleError(c, err) {
+//			return
+//		}
+//		//userId, err := h.helper.Token.ExtractTokenMetadata(c.Request, "user_id")
+//		//if h.helper.HTTP.HandleError(c, err) {
+//		//	return
+//		//}
+//		user, err := users.CreateService(h.helper).Get(t.UserID)
+//		if h.helper.HTTP.HandleError(c, err) {
+//			return
+//		}
+//		tokens, err := h.helper.Token.RefreshToken(t.RefreshToken, user)
+//		if h.helper.HTTP.HandleError(c, err) {
+//			return
+//		}
+//		c.JSON(http.StatusOK, tokens)
+//	}
+func (h *Handler) RefreshPassword(c *gin.Context) {
+	var item models.User
+	_, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	err = S.UpdatePassword(&item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, nil)
+}
 
 func (h *Handler) RestorePassword(c *gin.Context) {
 	var item baseModels.UserAccount
