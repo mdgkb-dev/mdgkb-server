@@ -42,7 +42,7 @@ func (r *Repository) Get(c context.Context, slug string) (*models.Doctor, error)
 	err := r.helper.DB.IDB(c).NewSelect().Model(&item).Where("doctors_view.slug = ?", slug).
 		Relation("Employee.Human.Photo").
 		Relation("Employee.Human.PhotoMini").
-		Relation("DoctorsDivisions.Division.Timetable.TimetableDays.Weekday").
+		// Relation("DoctorsDivisions.Division.Timetable.TimetableDays.Weekday").
 		Relation("Employee.Regalias").
 		Relation("Employee.Experiences").
 		Relation("Position").
