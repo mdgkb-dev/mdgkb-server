@@ -48,8 +48,8 @@ func (r *Repository) Get(c context.Context) (*models.Division, error) {
 		}).
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("Timetable.TimetableDays.Weekday").
-		Relation("HospitalizationContactInfo.Emails").
-		Relation("HospitalizationContactInfo.TelephoneNumbers").
+		// Relation("HospitalizationContactInfo.Emails").
+		// Relation("HospitalizationContactInfo.TelephoneNumbers").
 		Relation("Contact.Emails").
 		Relation("Contact.PostAddresses").
 		Relation("Contact.Phones").
