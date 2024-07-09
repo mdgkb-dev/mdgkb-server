@@ -2,7 +2,6 @@ package doctors
 
 import (
 	"context"
-
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
@@ -54,10 +53,10 @@ func (r *Repository) Get(c context.Context, slug string) (*models.Doctor, error)
 		Relation("Employee.Educations").
 		Relation("Employee.Certifications").
 		Relation("Employee.Accreditations").
-		Relation("DoctorComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
+		Relation("Comments", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("published_on DESC")
 		}).
-		Relation("DoctorComments.Comment.User.Human").
+		Relation("Comments.User.Human").
 		Relation("NewsDoctors.News").
 		// Relation("EducationalAcademic").
 		Relation("Employee.TeachingActivities").

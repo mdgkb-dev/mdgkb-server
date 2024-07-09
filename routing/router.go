@@ -1,6 +1,7 @@
 package routing
 
 import (
+	"mdgkb/mdgkb-server/handlers/appointmenstypes"
 	"mdgkb/mdgkb-server/handlers/appointments"
 	"mdgkb/mdgkb-server/handlers/auth"
 	"mdgkb/mdgkb-server/handlers/banners"
@@ -76,6 +77,7 @@ import (
 	"mdgkb/mdgkb-server/handlers/visitingrules"
 	"mdgkb/mdgkb-server/handlers/visitsapplications"
 	appointmentsRouter "mdgkb/mdgkb-server/routing/appointments"
+	appointmentstypesRouter "mdgkb/mdgkb-server/routing/appointmentstypes"
 	authRouter "mdgkb/mdgkb-server/routing/auth"
 	bannersRouter "mdgkb/mdgkb-server/routing/banners"
 	buildingsRouter "mdgkb/mdgkb-server/routing/buildings"
@@ -187,6 +189,7 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	divisionsRouter.Init(api.Group("/divisions"), divisions.H)
 
 	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(helper))
+	appointmentstypesRouter.Init(api.Group("/appointments-types"), appointmenstypes.CreateHandler(helper))
 
 	comments.Init(helper)
 	commentsRouter.Init(api.Group("/comments"), comments.H)

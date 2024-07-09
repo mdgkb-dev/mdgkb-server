@@ -47,7 +47,8 @@ type Division struct {
 	DivisionImagesForDelete []string       `bun:"-" json:"divisionImagesForDelete"`
 	DivisionImagesNames     []string       `bun:"-" json:"divisionImagesNames"`
 
-	DivisionComments             DivisionComments    `bun:"rel:has-many" json:"divisionComments"`
+	Comments Comments `bun:"rel:has-many,join:id=item_id" json:"comments"`
+
 	VisitingRulesGroups          VisitingRulesGroups `bun:"rel:has-many" json:"visitingRulesGroups"`
 	VisitingRulesGroupsForDelete []uuid.UUID         `bun:"-" json:"visitingRulesGroupsForDelete"`
 

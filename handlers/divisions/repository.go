@@ -33,7 +33,7 @@ func (r *Repository) GetAll(c context.Context) (item models.DivisionsWithCount, 
 	return item, err
 }
 
-func (r *Repository) Get(c context.Context) (*models.Division, error) {
+func (r *Repository) Get(c context.Context, id string) (*models.Division, error) {
 	item := models.Division{}
 	err := r.helper.DB.IDB(c).NewSelect().
 		Model(&item).
@@ -43,9 +43,10 @@ func (r *Repository) Get(c context.Context) (*models.Division, error) {
 		Relation("DivisionImages.FileInfo").
 		Relation("DivisionVideos").
 		Relation("DivisionPaidServices.PaidService").
-		Relation("DivisionComments.Comment.User.Human", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
+		Relation("Comments", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Order("published_on DESC")
 		}).
+		Relation("Comments.User.Human").
 		Relation("Timetable.TimetableDays.BreakPeriods").
 		Relation("Timetable.TimetableDays.Weekday").
 		// Relation("HospitalizationContactInfo.Emails").
@@ -70,7 +71,7 @@ func (r *Repository) Get(c context.Context) (*models.Division, error) {
 		Relation("VisitingRulesGroups.VisitingRules", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("visiting_rules.rule_order")
 		}).
-		// Where("divisions_view.? = ?", bun.Safe(r..Col), r..Value).
+		Where("divisions_view.id = ?", id).
 		Scan(c)
 
 	return &item, err

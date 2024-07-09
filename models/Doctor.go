@@ -25,7 +25,8 @@ type Doctor struct {
 	MedicalProfileID uuid.NullUUID   `bun:"type:uuid" json:"medicalProfileId"`
 	Order            int             `bun:"item_order" json:"order"`
 
-	DoctorComments            DoctorComments   `bun:"rel:has-many" json:"doctorComments"`
+	Comments Comments `bun:"rel:has-many,join:id=item_id" json:"comments"`
+
 	NewsDoctors               NewsDoctors      `bun:"rel:has-many" json:"newsDoctors"`
 	DoctorsDivisions          DoctorsDivisions `bun:"rel:has-many" json:"doctorsDivisions"`
 	DoctorsDivisionsForDelete []uuid.UUID      `bun:"-" json:"doctorsDivisionsForDelete"`

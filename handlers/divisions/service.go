@@ -2,7 +2,6 @@ package divisions
 
 import (
 	"context"
-
 	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisionimages"
 	"mdgkb/mdgkb-server/handlers/divisionvideos"
@@ -126,8 +125,8 @@ func (s *Service) GetAll(c context.Context) (models.DivisionsWithCount, error) {
 	return R.GetAll(c)
 }
 
-func (s *Service) Get(c context.Context) (*models.Division, error) {
-	item, err := R.Get(c)
+func (s *Service) Get(c context.Context, id string) (*models.Division, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
