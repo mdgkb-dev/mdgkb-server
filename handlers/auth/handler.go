@@ -2,9 +2,8 @@ package auth
 
 import (
 	"fmt"
-	"net/http"
-
 	"mdgkb/mdgkb-server/models"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	baseModels "github.com/pro-assistance/pro-assister/models"
@@ -37,18 +36,19 @@ func (h *Handler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-// func (h *Handler) LoginAs(c *gin.Context) {
-// 	var item models.Login
-// 	err := c.Bind(&item)
-// 	if h.helper.HTTP.HandleError(c, err) {
-// 		return
-// 	}
-// 	res, err := h.service.Login(&item, true)
-// 	if h.helper.HTTP.HandleError(c, err) {
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, res)
-// }
+func (h *Handler) LoginAs(c *gin.Context) {
+	var item models.Login
+	_, err := h.helper.HTTP.GetForm(c, &item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	fmt.Println(item.Email)
+	res, err := S.LoginAs(c.Request.Context(), item.Email)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, res)
+}
 
 func (h *Handler) Logout(c *gin.Context) {
 	//_, err := h.helper.Token.ExtractTokenMetadata(c.Request)

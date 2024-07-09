@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"fmt"
-
 	"mdgkb/mdgkb-server/handlers/roles"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
@@ -49,6 +48,24 @@ func (s *Service) Login(c context.Context, email string, password string) (t *mo
 		return nil, err
 	}
 	user, err := users.S.GetByUserAccountID(c, userAccountID.UUID.String())
+	if err != nil {
+		return nil, err
+	}
+	ts, err := s.helper.Token.CreateToken(user)
+	if err != nil {
+		return nil, err
+	}
+	return &models.TokensWithUser{Tokens: ts, User: *user}, nil
+}
+
+func (s *Service) LoginAs(c context.Context, email string) (t *models.TokensWithUser, err error) {
+	userAccountID, err := R.GetAccountByEmail(c, email)
+	fmt.Println(userAccountID, err)
+	if err != nil {
+		return nil, err
+	}
+	user, err := users.S.GetByUserAccountID(c, userAccountID.ID.UUID.String())
+	fmt.Println(user, err)
 	if err != nil {
 		return nil, err
 	}

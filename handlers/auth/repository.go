@@ -6,6 +6,7 @@ import (
 
 	// _ "github.com/go-pg/pg/v10/orm"
 	"github.com/google/uuid"
+	baseModels "github.com/pro-assistance/pro-assister/models"
 	"github.com/uptrace/bun"
 )
 
@@ -85,4 +86,12 @@ func (r *Repository) GetPathPermissionsByRoleID(c context.Context, id string) (m
 		// Where("path_permissions.path_permissions_roles.role_id = ?", id).
 		Scan(c)
 	return items, err
+}
+
+func (r *Repository) GetAccountByEmail(c context.Context, email string) (*baseModels.UserAccount, error) {
+	item := baseModels.UserAccount{}
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).
+		Where("?TableAlias.email = ?", email).
+		Scan(c)
+	return &item, err
 }

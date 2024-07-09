@@ -31,9 +31,11 @@ type DoesLoginExist struct {
 var (
 	H *Handler
 	S *Service
+	R *Repository
 )
 
 func Init(h *helper.Helper) {
 	H = &Handler{helper: h}
 	S = &Service{helper: h}
+	R = &Repository{helper: h}
 }
