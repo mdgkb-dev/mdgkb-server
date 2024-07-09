@@ -40,9 +40,9 @@ func (r *Repository) Create(c context.Context, item *models.Comment) (err error)
 
 func (r *Repository) Get(c context.Context, id uuid.NullUUID) (item models.Comment, err error) {
 	err = r.helper.DB.IDB(c).NewSelect().Model(&item).
-		Relation("NewsComment.News").
-		Relation("DoctorComment.Doctor.Employee.Human").
-		Relation("DivisionComment.Division").
+		// Relation("NewsComment.News").
+		// Relation("DoctorComment.Doctor.Employee.Human").
+		// Relation("DivisionComment.Division").
 		Relation("User.Human").
 		Where("comments.id = ?", id).Scan(c)
 
@@ -52,9 +52,9 @@ func (r *Repository) Get(c context.Context, id uuid.NullUUID) (item models.Comme
 func (r *Repository) GetAll(c context.Context) (item models.CommentsWithCount, err error) {
 	item.Comments = make(models.Comments, 0)
 	query := r.helper.DB.IDB(c).NewSelect().Model(&item.Comments).
-		Relation("NewsComment.News").
-		Relation("DoctorComment.Doctor.Employee.Human").
-		Relation("DivisionComment.Division").
+		// Relation("NewsComment.News").
+		// Relation("DoctorComment.Doctor.Employee.Human").
+		// Relation("DivisionComment.Division").
 		Relation("User.Human")
 
 	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)

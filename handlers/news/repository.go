@@ -2,7 +2,6 @@ package news
 
 import (
 	"context"
-
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/exportmodels"
 
@@ -102,10 +101,10 @@ func (r *Repository) GetBySlug(c context.Context, slug string) (*models.News, er
 		Relation("Event.Form.Fields.ValueType").
 		Relation("Event.EventApplications.FieldValues").
 		Relation("Event.EventApplications.User").
-		// Relation("NewsComments.Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
-		// 	return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
-		// }).
-		// Relation("NewsComments.Comment.User.Human").
+		Relation("Comments", func(q *bun.SelectQuery) *bun.SelectQuery {
+			return q.Where("comments.mod_checked = true").Order("comments.published_on DESC")
+		}).
+		Relation("Comments.User.Human").
 		Relation("NewsImages", func(q *bun.SelectQuery) *bun.SelectQuery {
 			return q.Order("news_images.news_image_order")
 		}).

@@ -45,7 +45,7 @@ type News struct {
 	NewsDivisionsForDelete []uuid.UUID      `bun:"-" json:"newsDoctorsForDeleteForDelete,omitempty"`
 	NewsViews              NewsViews        `bun:"rel:has-many" json:"newsViews,omitempty"`
 	NewsLikes              NewsLikes        `bun:"rel:has-many" json:"newsLikes,omitempty"`
-	NewsComments           NewsComments     `bun:"rel:has-many" json:"newsComments,omitempty"`
+	Comments               Comments         `bun:"rel:has-many,join:id=item_id" json:"comments"`
 	NewsImages             NewsImages       `bun:"rel:has-many" json:"newsImages,omitempty"`
 	TagCount               uint             `bun:",scanonly" json:"tagCount,omitempty"`
 }
@@ -87,9 +87,9 @@ func (item *News) SetIDForChildren() {
 	for i := range item.NewsLikes {
 		item.NewsLikes[i].NewsID = item.ID
 	}
-	for i := range item.NewsComments {
-		item.NewsComments[i].NewsID = item.ID
-	}
+	// for i := range item.NewsComments {
+	// 	item.NewsComments[i].NewsID = item.ID
+	// }
 	for i := range item.NewsImages {
 		item.NewsImages[i].NewsID = item.ID
 	}
