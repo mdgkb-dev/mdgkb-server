@@ -131,42 +131,6 @@ func (h *Handler) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func (h *Handler) CreateComment(c *gin.Context) {
-	var item models.NewsComment
-	err := c.ShouldBind(&item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-
-	err = S.CreateComment(c.Request.Context(), &item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-
-	c.JSON(http.StatusOK, item)
-}
-
-func (h *Handler) UpdateComment(c *gin.Context) {
-	var item models.NewsComment
-	err := c.Bind(&item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	err = S.UpdateComment(c.Request.Context(), &item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	c.JSON(http.StatusOK, item)
-}
-
-func (h *Handler) RemoveComment(c *gin.Context) {
-	err := S.RemoveComment(c.Request.Context(), c.Param("id"))
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{})
-}
-
 func (h *Handler) DeleteLike(c *gin.Context) {
 	err := S.DeleteLike(c.Request.Context(), c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
@@ -177,14 +141,6 @@ func (h *Handler) DeleteLike(c *gin.Context) {
 
 func (h *Handler) GetBySLug(c *gin.Context) {
 	item, err := S.GetBySlug(c.Request.Context(), c.Param("slug"))
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	c.JSON(http.StatusOK, item)
-}
-
-func (h *Handler) GetNewsComments(c *gin.Context) {
-	item, err := S.GetNewsComments(c, c.Param("id"))
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

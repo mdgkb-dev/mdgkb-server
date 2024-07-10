@@ -219,7 +219,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	vacancyResponsesRouter.Init(api.Group("/vacancy-responses"), vacancyresponses.H)
 
 	pageSectionsRouter.Init(api.Group("/page-sections"), pagesections.CreateHandler(helper))
-	faqRouter.Init(api.Group("/faqs"), faqs.CreateHandler(helper))
+
+	faqs.Init(helper)
+	faqRouter.Init(api.Group("/faqs"), faqs.H)
+
 	visitingRulesRouter.Init(api.Group("/visiting-rules"), visitingrules.CreateHandler(helper))
 	newsSlidesRouter.Init(api.Group("/news-slides"), newsslides.CreateHandler(helper))
 
@@ -297,7 +300,9 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	dailymenus.Init(helper)
 	dailyMenusRouter.Init(api, ws, dailymenus.H)
 
-	metaRouter.Init(meta.CreateHandler(helper), api, ws)
+	meta.Init(helper)
+	metaRouter.Init(meta.H, api, ws)
+
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
 	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))
 	dailyMenuOrdersRouter.Init(api.Group("/daily-menu-orders"), dailymenuorders.CreateHandler(helper))

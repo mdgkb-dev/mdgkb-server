@@ -79,26 +79,6 @@ func (r *Repository) Delete(c context.Context, id string) (err error) {
 	return err
 }
 
-func (r *Repository) Update(c context.Context, item *models.Doctor) (err error) {
-	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
-	return err
-}
-
-func (r *Repository) CreateComment(c context.Context, item *models.DoctorComment) error {
-	_, err := r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
-	return err
-}
-
-func (r *Repository) UpdateComment(c context.Context, item *models.DoctorComment) error {
-	_, err := r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
-	return err
-}
-
-func (r *Repository) RemoveComment(c context.Context, id string) error {
-	_, err := r.helper.DB.IDB(c).NewDelete().Model(&models.DoctorComment{}).Where("id = ?", id).Exec(c)
-	return err
-}
-
 func (r *Repository) UpsertMany(c context.Context, items models.Doctors) (err error) {
 	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").

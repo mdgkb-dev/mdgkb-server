@@ -2,7 +2,6 @@ package pages
 
 import (
 	"context"
-
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/uptrace/bun"
@@ -44,7 +43,6 @@ func (r *Repository) Get(c context.Context, id *string) (*models.Page, error) {
 		Relation("Contact.PostAddresses").
 		Relation("Contact.Phones").
 		Relation("Contact.Websites").
-		Relation("PageComments.Comment").
 		Relation("Role").
 		Where("id = ?", *id).Scan(c)
 	return &item, err
@@ -78,7 +76,6 @@ func (r *Repository) GetBySlug(c context.Context, slug *string) (*models.Page, e
 		Relation("PageSideMenus.PageSections.PageSectionDocuments.Scan").
 		Relation("PageSideMenus.PageSections.PageSectionImages").
 		Relation("PageImages.FileInfo").
-		Relation("PageComments.Comment").
 		Relation("Contact").
 		Relation("Contact.Emails").
 		Relation("Contact.PostAddresses").

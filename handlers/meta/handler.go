@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
-
 	"mdgkb/mdgkb-server/models"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -17,7 +16,7 @@ import (
 
 func (h *Handler) GetCount(c *gin.Context) {
 	table := c.Param("table")
-	items, err := h.service.GetCount(&table)
+	items, err := S.GetCount(&table)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -33,7 +32,7 @@ func (h *Handler) GetSocial(c *gin.Context) {
 }
 
 func (h *Handler) GetApplicationsCounts(c *gin.Context) {
-	items, err := h.service.GetApplicationsCounts()
+	items, err := S.GetApplicationsCounts()
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -50,7 +49,7 @@ func (h *Handler) GetOptions(c *gin.Context) {
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	items, err := h.service.GetOptions(&optionModel)
+	items, err := S.GetOptions(&optionModel)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -74,7 +73,7 @@ func (h *Handler) GetWeb(c *gin.Context) {
 	for {
 		_, m, err := ws.ReadMessage()
 		if err == nil && string(m) == "ping" {
-			items, err := h.service.GetApplicationsCounts()
+			items, err := S.GetApplicationsCounts()
 			if err != nil {
 				fmt.Printf("error sending message: %s\n", err.Error())
 			}
@@ -132,4 +131,17 @@ func (h *Handler) GetAddress(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, res.Result[1:])
+}
+
+func (h *Handler) SearchMain(c *gin.Context) {
+	var item models.SearchModel
+	err := json.Unmarshal([]byte(c.Query("searchModel")), &item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	err = S.SearchMain(c.Request.Context(), &item)
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, item)
 }

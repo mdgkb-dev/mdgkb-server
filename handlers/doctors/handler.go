@@ -1,9 +1,8 @@
 package doctors
 
 import (
-	"net/http"
-
 	"mdgkb/mdgkb-server/models"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -81,42 +80,6 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{})
-}
-
-func (h *Handler) CreateComment(c *gin.Context) {
-	var item models.DoctorComment
-	err := c.ShouldBind(&item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-
-	err = S.CreateComment(c.Request.Context(), &item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-
-	c.JSON(http.StatusOK, item)
-}
-
-func (h *Handler) UpdateComment(c *gin.Context) {
-	var item models.DoctorComment
-	err := c.Bind(&item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	err = S.UpdateComment(c.Request.Context(), &item)
-	if h.helper.HTTP.HandleError(c, err) {
-		return
-	}
-	c.JSON(http.StatusOK, item)
-}
-
-func (h *Handler) RemoveComment(c *gin.Context) {
-	err := S.RemoveComment(c.Request.Context(), c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
-	}
 	c.JSON(http.StatusOK, gin.H{})
 }
 

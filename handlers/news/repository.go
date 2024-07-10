@@ -34,21 +34,6 @@ func (r *Repository) RemoveTag(c context.Context, item *models.NewsToTag) error 
 	return err
 }
 
-func (r *Repository) CreateComment(c context.Context, item *models.NewsComment) error {
-	_, err := r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
-	return err
-}
-
-func (r *Repository) UpdateComment(c context.Context, item *models.NewsComment) error {
-	_, err := r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
-	return err
-}
-
-func (r *Repository) RemoveComment(c context.Context, id string) error {
-	_, err := r.helper.DB.IDB(c).NewDelete().Model(&models.NewsComment{}).Where("id = ?", id).Exec(c)
-	return err
-}
-
 func (r *Repository) GetAll(c context.Context) (items models.NewsWithCount, err error) {
 	items.News = make([]*models.News, 0)
 	query := r.helper.DB.IDB(c).NewSelect().Model(&items.News).
@@ -115,17 +100,6 @@ func (r *Repository) GetBySlug(c context.Context, slug string) (*models.News, er
 		Relation("NewsDoctors.Doctor.Employee.Regalias").
 		Where("news_view.id = ?", slug).Scan(c)
 	return &item, err
-}
-
-func (r *Repository) GetNewsComments(c context.Context, id string) (*models.NewsComments, error) {
-	items := models.NewsComments{}
-	err := r.helper.DB.IDB(c).NewSelect().Model(&items).
-		Relation("Comment", func(q *bun.SelectQuery) *bun.SelectQuery {
-			return q.Where("comment.mod_checked = true").Order("comment.published_on DESC")
-		}).
-		Relation("Comment.User.Human").
-		Where("news_comments.news_id = ?", id).Scan(c)
-	return &items, err
 }
 
 func (r *Repository) Delete(c context.Context, id string) (err error) {

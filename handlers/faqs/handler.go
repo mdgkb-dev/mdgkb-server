@@ -1,6 +1,7 @@
 package faqs
 
 import (
+	"fmt"
 	"mdgkb/mdgkb-server/models"
 	"net/http"
 
@@ -9,11 +10,11 @@ import (
 
 func (h *Handler) Create(c *gin.Context) {
 	var item models.Faq
-	err := c.Bind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Create(&item)
+	err = S.Create(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -21,16 +22,24 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) GetAll(c *gin.Context) {
-	items, err := h.service.GetAll()
+	items, err := S.GetAll(c)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
 }
 
+func (h *Handler) FTSP(c *gin.Context) {
+	data, err := S.GetAll(c.Request.Context())
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data, FTSP: *h.helper.SQL.ExtractFTSP(c.Request.Context())})
+}
+
 func (h *Handler) Get(c *gin.Context) {
 	id := c.Param("id")
-	item, err := h.service.Get(id)
+	item, err := S.Get(c, id)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -39,7 +48,7 @@ func (h *Handler) Get(c *gin.Context) {
 
 func (h *Handler) Delete(c *gin.Context) {
 	id := c.Param("id")
-	err := h.service.Delete(id)
+	err := S.Delete(c, id)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -47,12 +56,13 @@ func (h *Handler) Delete(c *gin.Context) {
 }
 
 func (h *Handler) UpdateMany(c *gin.Context) {
-	var items models.FaqsWithDelete
-	err := c.Bind(&items)
+	fmt.Println("UPS1")
+	var items models.Faqs
+	_, err := h.helper.HTTP.GetForm(c, &items)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.UpsertMany(items)
+	err = S.UpsertMany(c, items)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
@@ -60,12 +70,13 @@ func (h *Handler) UpdateMany(c *gin.Context) {
 }
 
 func (h *Handler) Update(c *gin.Context) {
+	fmt.Println("UPS2")
 	var item models.Faq
-	err := c.ShouldBind(&item)
+	_, err := h.helper.HTTP.GetForm(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}
-	err = h.service.Update(&item)
+	err = S.Update(c, &item)
 	if h.helper.HTTP.HandleError(c, err) {
 		return
 	}

@@ -2,7 +2,6 @@ package divisions
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/divisionimages"
 	"mdgkb/mdgkb-server/handlers/divisionvideos"
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
@@ -135,28 +134,6 @@ func (s *Service) Get(c context.Context, id string) (*models.Division, error) {
 
 func (s *Service) Delete(c context.Context, id string) error {
 	return R.Delete(c, id)
-}
-
-func (s *Service) CreateComment(c context.Context, item *models.DivisionComment) error {
-	err := comments.S.UpsertOne(context.TODO(), item.Comment)
-	if err != nil {
-		return err
-	}
-	item.SetForeignKeys()
-	return R.CreateComment(c, item)
-}
-
-func (s *Service) UpdateComment(c context.Context, item *models.DivisionComment) error {
-	err := comments.S.UpdateOne(context.TODO(), item.Comment)
-	if err != nil {
-		return err
-	}
-	item.SetForeignKeys()
-	return R.UpdateComment(c, item)
-}
-
-func (s *Service) RemoveComment(c context.Context, id string) error {
-	return R.RemoveComment(c, id)
 }
 
 func (s *Service) GetBySearch(c context.Context, search string) (models.Divisions, error) {

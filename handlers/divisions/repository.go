@@ -87,21 +87,6 @@ func (r *Repository) Update(c context.Context, item *models.Division) (err error
 	return err
 }
 
-func (r *Repository) CreateComment(c context.Context, item *models.DivisionComment) error {
-	_, err := r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
-	return err
-}
-
-func (r *Repository) UpdateComment(c context.Context, item *models.DivisionComment) error {
-	_, err := r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
-	return err
-}
-
-func (r *Repository) RemoveComment(c context.Context, id string) error {
-	_, err := r.helper.DB.IDB(c).NewDelete().Model(&models.DivisionComment{}).Where("id = ?", id).Exec(c)
-	return err
-}
-
 func (r *Repository) GetBySearch(c context.Context, search string) (models.Divisions, error) {
 	items := make(models.Divisions, 0)
 

@@ -24,7 +24,7 @@ func (s *Service) Create(item *models.SupportMessage) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.helper).SendApplicationsCounts()
+	err = meta.S.SendApplicationsCounts()
 	if err != nil {
 		return err
 	}

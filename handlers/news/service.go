@@ -2,7 +2,6 @@ package news
 
 import (
 	"context"
-	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/events"
 	"mdgkb/mdgkb-server/handlers/fileinfos"
 	"mdgkb/mdgkb-server/handlers/newsdivisions"
@@ -12,8 +11,6 @@ import (
 	"mdgkb/mdgkb-server/handlers/newstotags"
 	"mdgkb/mdgkb-server/models"
 	"mdgkb/mdgkb-server/models/exportmodels"
-
-	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Create(c context.Context, item *models.News) error {
@@ -80,32 +77,8 @@ func (s *Service) CreateLike(c context.Context, item *models.NewsLike) error {
 	return R.CreateLike(c, item)
 }
 
-func (s *Service) CreateComment(c context.Context, item *models.NewsComment) error {
-	commentsService := comments.S
-	err := commentsService.UpsertOne(context.TODO(), item.Comment)
-	if err != nil {
-		return err
-	}
-	item.SetForeignKeys()
-	return R.CreateComment(c, item)
-}
-
-func (s *Service) UpdateComment(c context.Context, item *models.NewsComment) error {
-	commentsService := comments.S
-	err := commentsService.UpdateOne(context.TODO(), item.Comment)
-	if err != nil {
-		return err
-	}
-	item.SetForeignKeys()
-	return R.UpdateComment(c, item)
-}
-
 func (s *Service) CreateViewOfNews(c context.Context, item *models.NewsView) error {
 	return R.CreateViewOfNews(c, item)
-}
-
-func (s *Service) RemoveComment(c context.Context, id string) error {
-	return R.RemoveComment(c, id)
 }
 
 func (s *Service) DeleteLike(c context.Context, id string) error {
@@ -202,8 +175,4 @@ func (s *Service) GetSuggestionNews(c context.Context, id string) ([]*models.New
 
 func (s *Service) GetAggregateViews(c context.Context, opts *exportmodels.NewsView) (models.ChartDataSets, error) {
 	return R.GetAggregateViews(c, opts)
-}
-
-func (s *Service) GetNewsComments(c *gin.Context, id string) (*models.NewsComments, error) {
-	return R.GetNewsComments(c, id)
 }

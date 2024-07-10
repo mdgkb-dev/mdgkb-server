@@ -1,6 +1,7 @@
 package faqs
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
 
 	"github.com/google/uuid"
@@ -8,51 +9,47 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *Repository) db() *bun.DB {
-	return r.helper.DB.DB
-}
-
-func (r *Repository) create(item *models.Faq) (err error) {
-	_, err = r.db().NewInsert().Model(item).Exec(r.ctx)
+func (r *Repository) Create(c context.Context, item *models.Faq) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().Model(item).Exec(c)
 	return err
 }
 
-func (r *Repository) getAll() (models.Faqs, error) {
+func (r *Repository) GetAll(c context.Context) (models.Faqs, error) {
 	items := make(models.Faqs, 0)
-	err := r.db().NewSelect().Model(&items).Scan(r.ctx)
+	err := r.helper.DB.IDB(c).NewSelect().Model(&items).Scan(c)
 	return items, err
 }
 
-func (r *Repository) get(id string) (*models.Faq, error) {
+func (r *Repository) Get(c context.Context, id string) (*models.Faq, error) {
 	item := models.Faq{}
-	err := r.db().NewSelect().Model(&item).Where("id = ?", id).Scan(r.ctx)
+	err := r.helper.DB.IDB(c).NewSelect().Model(&item).Where("id = ?", id).Scan(c)
 	return &item, err
 }
 
-func (r *Repository) delete(id string) (err error) {
-	_, err = r.db().NewDelete().Model(&models.Faq{}).Where("id = ?", id).Exec(r.ctx)
+func (r *Repository) Delete(c context.Context, id string) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().Model(&models.Faq{}).Where("id = ?", id).Exec(c)
 	return err
 }
 
-func (r *Repository) upsertMany(items models.Faqs) (err error) {
-	_, err = r.db().NewInsert().On("conflict (id) do update").
+func (r *Repository) UpsertMany(c context.Context, items models.Faqs) (err error) {
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) do update").
 		Set("id = EXCLUDED.id").
 		Set("question = EXCLUDED.question").
 		Set("answer = EXCLUDED.answer").
 		Model(&items).
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) deleteMany(idPool []uuid.UUID) (err error) {
-	_, err = r.db().NewDelete().
+func (r *Repository) DeleteMany(c context.Context, idPool []uuid.UUID) (err error) {
+	_, err = r.helper.DB.IDB(c).NewDelete().
 		Model((*models.Faq)(nil)).
 		Where("id IN (?)", bun.In(idPool)).
-		Exec(r.ctx)
+		Exec(c)
 	return err
 }
 
-func (r *Repository) update(item *models.Faq) (err error) {
-	_, err = r.db().NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
+func (r *Repository) Update(c context.Context, item *models.Faq) (err error) {
+	_, err = r.helper.DB.IDB(c).NewUpdate().Model(item).Where("id = ?", item.ID).Exec(c)
 	return err
 }

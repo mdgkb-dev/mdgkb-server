@@ -2,7 +2,6 @@ package pages
 
 import (
 	"context"
-
 	"mdgkb/mdgkb-server/handlers/pageimages"
 	"mdgkb/mdgkb-server/handlers/pagesdocuments"
 	"mdgkb/mdgkb-server/handlers/pagesidemenus"
@@ -42,11 +41,6 @@ func (s *Service) Create(c context.Context, item *models.Page) error {
 		return err
 	}
 	return nil
-	//pagesCommentsService := .CreateService(s.helper)
-	//err = pagesCommentsService.CreateMany(item.PageComments)
-	//if err != nil {
-	//	return err
-	//}
 }
 
 func (s *Service) GetAll(c context.Context) (models.PagesWithCount, error) {

@@ -15,7 +15,7 @@ func (s *Service) CreateMany(c context.Context, items models.Comments) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.helper).SendApplicationsCounts()
+	err = meta.S.SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func (s *Service) UpdateOne(c context.Context, item *models.Comment) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.helper).SendApplicationsCounts()
+	err = meta.S.SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func (s *Service) UpsertOne(c context.Context, item *models.Comment) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.helper).SendApplicationsCounts()
+	err = meta.S.SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (s *Service) UpsertOne(c context.Context, item *models.Comment) error {
 		return err
 	}
 	s.helper.Broker.SendEvent("comment-create", newComment)
-	err = meta.CreateService(s.helper).SendApplicationsCounts()
+	err = meta.S.SendApplicationsCounts()
 	if err != nil {
 		return err
 	}

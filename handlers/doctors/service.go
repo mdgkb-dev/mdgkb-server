@@ -2,8 +2,6 @@ package doctors
 
 import (
 	"context"
-
-	"mdgkb/mdgkb-server/handlers/comments"
 	"mdgkb/mdgkb-server/handlers/doctorpaidservices"
 	"mdgkb/mdgkb-server/handlers/doctorsdivisions"
 	"mdgkb/mdgkb-server/handlers/human"
@@ -98,30 +96,6 @@ func (s *Service) GetByDivisionID(c context.Context, divisionID string) (models.
 
 func (s *Service) Delete(c context.Context, id string) error {
 	return R.Delete(c, id)
-}
-
-func (s *Service) CreateComment(c context.Context, item *models.DoctorComment) error {
-	commentsService := comments.S
-	err := commentsService.UpsertOne(context.TODO(), item.Comment)
-	if err != nil {
-		return err
-	}
-	item.SetForeignKeys()
-	return R.CreateComment(c, item)
-}
-
-func (s *Service) UpdateComment(c context.Context, item *models.DoctorComment) error {
-	commentsService := comments.S
-	err := commentsService.UpdateOne(context.TODO(), item.Comment)
-	if err != nil {
-		return err
-	}
-	item.SetForeignKeys()
-	return R.UpdateComment(c, item)
-}
-
-func (s *Service) RemoveComment(c context.Context, id string) error {
-	return R.RemoveComment(c, id)
 }
 
 func (s *Service) UpsertMany(c context.Context, items models.Doctors) error {

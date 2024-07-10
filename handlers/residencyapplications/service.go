@@ -61,7 +61,7 @@ func (s *Service) Create(c context.Context, item *models.ResidencyApplication) e
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.helper).SendApplicationsCounts()
+	err = meta.S.SendApplicationsCounts()
 	if err != nil {
 		return err
 	}

@@ -32,9 +32,6 @@ type Page struct {
 	PageSections          PageSections `bun:"rel:has-many" json:"pageSections"`
 	PageSectionsForDelete []string     `bun:"-" json:"pageSectionsForDelete"`
 
-	PageComments          PageComments `bun:"rel:has-many" json:"pageComments"`
-	PageCommentsForDelete []string     `bun:"-" json:"pageCommentsForDelete"`
-
 	PageDocuments          PageDocuments `bun:"rel:has-many" json:"pageDocuments"`
 	PageDocumentsForDelete []string      `bun:"-" json:"pageDocumentsForDelete"`
 
@@ -59,11 +56,6 @@ func (item *Page) SetForeignKeys() {
 }
 
 func (item *Page) SetIDForChildren() {
-	if len(item.PageComments) > 0 {
-		for i := range item.PageComments {
-			item.PageComments[i].PageID = item.ID
-		}
-	}
 	for i := range item.PageDocuments {
 		item.PageDocuments[i].PageID = item.ID
 	}

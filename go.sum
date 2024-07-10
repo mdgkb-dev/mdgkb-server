@@ -304,6 +304,10 @@ github.com/pro-assistance/pro-assister v1.0.30 h1:M9dr9Z39SR3Pipo6FODzoq8Dc5iyZW
 github.com/pro-assistance/pro-assister v1.0.30/go.mod h1:NJusx0muglctZVPTw+QUUPO3e1/pQuRCMiIZQNLNMow=
 github.com/pro-assistance/pro-assister v1.0.31 h1:Nu6PGwvooms9n8HcjlsOmoK/WtUhRllkOCemyjV4VQU=
 github.com/pro-assistance/pro-assister v1.0.31/go.mod h1:NJusx0muglctZVPTw+QUUPO3e1/pQuRCMiIZQNLNMow=
+github.com/pro-assistance/pro-assister v1.0.32 h1:s5UcbAgIX3jFbVeFgi98EFK6nG8tQ5BzwkP1VqXGDRw=
+github.com/pro-assistance/pro-assister v1.0.32/go.mod h1:NJusx0muglctZVPTw+QUUPO3e1/pQuRCMiIZQNLNMow=
+github.com/pro-assistance/pro-assister v1.0.33 h1:+gGLdGeg+/uAx9NTb9+scnAjCy5x5boP6dkLjyIXVdg=
+github.com/pro-assistance/pro-assister v1.0.33/go.mod h1:NJusx0muglctZVPTw+QUUPO3e1/pQuRCMiIZQNLNMow=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5 h1:mZHayPoR0lNmnHyvtYjDeq0zlVHn9K/ZXoy17ylucdo=
 github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5/go.mod h1:GEXHk5HgEKCvEIIrSpFI3ozzG5xOKA2DVlEX/gGnewM=

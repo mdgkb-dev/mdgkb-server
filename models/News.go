@@ -87,9 +87,6 @@ func (item *News) SetIDForChildren() {
 	for i := range item.NewsLikes {
 		item.NewsLikes[i].NewsID = item.ID
 	}
-	// for i := range item.NewsComments {
-	// 	item.NewsComments[i].NewsID = item.ID
-	// }
 	for i := range item.NewsImages {
 		item.NewsImages[i].NewsID = item.ID
 	}

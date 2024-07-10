@@ -38,7 +38,7 @@ func (s *Service) Create(item *models.PostgraduateApplication) error {
 	if err != nil {
 		return err
 	}
-	err = meta.CreateService(s.helper).SendApplicationsCounts()
+	err = meta.S.SendApplicationsCounts()
 	if err != nil {
 		return err
 	}
