@@ -14,6 +14,7 @@ type Comment struct {
 	UserID        uuid.NullUUID `bun:"type:uuid" json:"userId"`
 
 	ItemID uuid.NullUUID `bun:"type:uuid" json:"itemId"`
+	Domen  string        `json:"domen"`
 
 	Text       string `json:"text"`
 	ModChecked bool   `json:"modChecked"`
