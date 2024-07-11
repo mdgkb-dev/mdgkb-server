@@ -15,11 +15,11 @@ import (
 )
 
 func (s *Service) Upsert(item *models.FormValue) error {
-	err := users.S.UpsertEmail(context.TODO(), item.User)
-	if err != nil {
-		return err
-	}
-
+	// err := users.S.UpsertEmail(context.TODO(), item.User)
+	// if err != nil {
+	// 	return err
+	// }
+	var err error
 	item.User, err = users.S.Get(context.TODO(), item.User.ID.UUID.String())
 	if err != nil {
 		return err
