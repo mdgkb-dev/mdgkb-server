@@ -2,7 +2,6 @@ package users
 
 import (
 	"context"
-
 	"mdgkb/mdgkb-server/models"
 
 	//_ "github.com/go-pg/pg/v10/orm"
