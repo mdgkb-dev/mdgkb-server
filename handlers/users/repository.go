@@ -123,7 +123,7 @@ func (r *Repository) Update(c context.Context, item *models.User) (err error) {
 }
 
 func (r *Repository) Upsert(c context.Context, item *models.User) (err error) {
-	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (email) do update").Model(item).
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) do update").Model(item).
 		Set("role_id = EXCLUDED.role_id").
 		Set("password = EXCLUDED.password").
 		Set("is_active = EXCLUDED.is_active").
@@ -133,7 +133,7 @@ func (r *Repository) Upsert(c context.Context, item *models.User) (err error) {
 }
 
 func (r *Repository) UpsertEmail(c context.Context, item *models.User) (err error) {
-	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (email) DO UPDATE").
+	_, err = r.helper.DB.IDB(c).NewInsert().On("conflict (id) DO UPDATE").
 		Set("phone = EXCLUDED.phone").
 		Model(item).
 		Exec(c)

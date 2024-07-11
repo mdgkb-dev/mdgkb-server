@@ -38,8 +38,7 @@ func (s *Service) Create(c context.Context, item *models.User) error {
 }
 
 func (s *Service) Update(c context.Context, item *models.User) error {
-	fmt.Println(item.Human)
-	err := human.CreateService(s.helper).Create(item.Human)
+	err := human.CreateService(s.helper).Update(item.Human)
 	if err != nil {
 		return err
 	}
