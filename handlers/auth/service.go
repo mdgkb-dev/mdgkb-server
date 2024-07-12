@@ -11,23 +11,35 @@ import (
 )
 
 func (s *Service) Register(c context.Context, item *models.User) (t *models.TokensWithUser, err error) {
+	fmt.Println("register", item)
 	duplicate := false
 	item.UserAccountID, duplicate, err = auth.S.Register(c, item.Email, item.Password)
 	item.Email = ""
 	item.Password = ""
+	fmt.Println("1")
 	if duplicate {
 		return nil, nil
 	}
+	fmt.Println("2")
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("3")
 	role, err := roles.CreateService(s.helper).GetDefaultRole()
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("4")
 	item.Role = role
 	item.RoleID = role.ID
 	item.IsActive = true
+
+	item.Human = &models.Human{}
+	// item.Human.ID.UUID = uuid.New()
+	item.Human.ID = item.UserAccountID
+	item.HumanID = item.Human.ID
+	item.ID = item.UserAccountID
+	fmt.Println("HumanID", item.Human.ID)
 	err = users.S.Upsert(c, item)
 	if err != nil {
 		return nil, err

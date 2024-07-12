@@ -3,7 +3,6 @@ package users
 import (
 	"context"
 	"fmt"
-
 	"mdgkb/mdgkb-server/handlers/children"
 	"mdgkb/mdgkb-server/handlers/human"
 	"mdgkb/mdgkb-server/handlers/roles"
@@ -39,7 +38,7 @@ func (s *Service) Create(c context.Context, item *models.User) error {
 }
 
 func (s *Service) Update(c context.Context, item *models.User) error {
-	err := human.CreateService(s.helper).Upsert(item.Human)
+	err := human.CreateService(s.helper).Update(item.Human)
 	if err != nil {
 		return err
 	}
@@ -66,17 +65,18 @@ func (s *Service) Update(c context.Context, item *models.User) error {
 }
 
 func (s *Service) Upsert(c context.Context, item *models.User) error {
-	item.Human = &models.Human{}
-	err := human.CreateService(s.helper).Upsert(item.Human)
+	fmt.Println("ItemID1", item.ID, item.HumanID, item.Human)
+	err := human.CreateService(s.helper).Create(item.Human)
 	if err != nil {
 		return err
 	}
-	item.SetForeignKeys()
+	// item.SetForeignKeys()
 	//item.UUID.UUID, err = uuid.NewUUID()
 	//if err != nil {
 	//	return err
 	//}
-	err = R.Upsert(c, item)
+	fmt.Println("ItemID2", item.ID, item.HumanID, item.Human)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}

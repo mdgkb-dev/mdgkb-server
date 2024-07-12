@@ -19,7 +19,6 @@ func (s *Service) Upsert(item *models.FormValue) error {
 	if err != nil {
 		return err
 	}
-
 	item.User, err = users.S.Get(context.TODO(), item.User.ID.UUID.String())
 	if err != nil {
 		return err
