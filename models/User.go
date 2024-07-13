@@ -63,6 +63,11 @@ type User struct {
 
 type Users []*User
 
+type UsersWithCount struct {
+	Users Users `json:"items"`
+	Count int   `json:"count"`
+}
+
 func (i *User) InitHuman() {
 	i.Human = &Human{}
 }

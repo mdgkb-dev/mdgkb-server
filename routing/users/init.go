@@ -10,6 +10,7 @@ import (
 func Init(r *gin.RouterGroup, h *handler.Handler) {
 	r.GET("/", h.GetAll)
 	r.GET("/:id", h.Get)
+	r.POST("/ftsp", h.FTSP)
 	r.GET("/get-by-email/:email", h.GetByEmail)
 	r.PUT("/:id", h.Update)
 	r.POST("", h.Create)

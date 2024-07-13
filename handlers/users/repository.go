@@ -15,6 +15,7 @@ func (r *Repository) GetAll(c context.Context) (item models.UsersWithCount, err 
 		Relation("Human").
 		Relation("Role")
 
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
 	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }

@@ -2,9 +2,8 @@ package users
 
 import (
 	"fmt"
-	"net/http"
-
 	"mdgkb/mdgkb-server/models"
+	"net/http"
 
 	"github.com/pro-assistance/pro-assister/middleware"
 
@@ -25,6 +24,14 @@ func (h *Handler) Get(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, item)
+}
+
+func (h *Handler) FTSP(c *gin.Context) {
+	data, err := S.GetAll(c.Request.Context())
+	if h.helper.HTTP.HandleError(c, err) {
+		return
+	}
+	c.JSON(http.StatusOK, models.FTSPAnswer{Data: data, FTSP: *h.helper.SQL.ExtractFTSP(c.Request.Context())})
 }
 
 func (h *Handler) GetByEmail(c *gin.Context) {
