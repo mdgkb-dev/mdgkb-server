@@ -1,16 +1,16 @@
 package heads
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/contactinfo"
 	"mdgkb/mdgkb-server/handlers/departments"
 	"mdgkb/mdgkb-server/handlers/timetables"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
-func (s *Service) Create(item *models.Head) error {
+func (s *Service) Create(c context.Context, item *models.Head) error {
 	if item == nil {
 		return nil
 	}
@@ -23,7 +23,7 @@ func (s *Service) Create(item *models.Head) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.upsert(item)
+	err = R.Upsert(c, item)
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func (s *Service) Create(item *models.Head) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.Head) error {
+func (s *Service) Update(c context.Context, item *models.Head) error {
 	if item == nil {
 		return nil
 	}
@@ -49,7 +49,7 @@ func (s *Service) Update(item *models.Head) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.upsert(item)
+	err = R.Upsert(c, item)
 	if err != nil {
 		return err
 	}
@@ -68,33 +68,29 @@ func (s *Service) Update(item *models.Head) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Heads, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.Heads, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id string) (*models.Head, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id string) (*models.Head, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) setQueryFilter(c *gin.Context) error {
-	return s.repository.setQueryFilter(c)
+func (s *Service) UpdateAll(c context.Context, items models.Heads) error {
+	return R.UpdateAll(c, items)
 }
 
-func (s *Service) UpdateAll(items models.Heads) error {
-	return s.repository.updateAll(items)
-}
-
-func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+func (s *Service) DeleteMany(c context.Context, idPool []uuid.UUID) error {
 	if len(idPool) == 0 {
 		return nil
 	}
-	return s.repository.deleteMany(idPool)
+	return R.DeleteMany(c, idPool)
 }

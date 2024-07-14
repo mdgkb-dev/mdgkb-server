@@ -28,7 +28,7 @@ func (s *Service) Create(c context.Context, item *models.Employee) error {
 	}
 	item.SetIDForChildren()
 
-	err = heads.CreateService(s.helper).Create(item.Head)
+	err = heads.S.Create(c, item.Head)
 	if err != nil {
 		return err
 	}
@@ -84,12 +84,11 @@ func (s *Service) Update(c context.Context, item *models.Employee) error {
 	}
 	item.SetIDForChildren()
 
-	headsService := heads.CreateService(s.helper)
-	err = headsService.Update(item.Head)
+	err = heads.S.Update(c, item.Head)
 	if err != nil {
 		return err
 	}
-	err = headsService.DeleteMany(item.HeadsForDelete)
+	err = heads.S.DeleteMany(c, item.HeadsForDelete)
 	if err != nil {
 		return err
 	}

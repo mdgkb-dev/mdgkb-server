@@ -188,7 +188,8 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	divisions.Init(helper)
 	divisionsRouter.Init(api.Group("/divisions"), divisions.H)
 
-	headsRouter.Init(api.Group("/heads"), heads.CreateHandler(helper))
+	heads.Init(helper)
+	headsRouter.Init(api.Group("/heads"), heads.H)
 	appointmentstypesRouter.Init(api.Group("/appointments-types"), appointmenstypes.CreateHandler(helper))
 
 	comments.Init(helper)
