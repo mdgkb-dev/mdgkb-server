@@ -2,7 +2,6 @@ package employees
 
 import (
 	"context"
-
 	"mdgkb/mdgkb-server/handlers/accreditations"
 	"mdgkb/mdgkb-server/handlers/certificates"
 	"mdgkb/mdgkb-server/handlers/certifications"
@@ -37,7 +36,7 @@ func (s *Service) Create(c context.Context, item *models.Employee) error {
 	if err != nil {
 		return err
 	}
-	err = educationalacademics.CreateService(s.helper).Create(item.EducationalAcademic)
+	err = educationalacademics.S.Create(context.TODO(), item.EducationalAcademic)
 	if err != nil {
 		return err
 	}
@@ -104,12 +103,12 @@ func (s *Service) Update(c context.Context, item *models.Employee) error {
 		return err
 	}
 
-	educationalAcademicsService := educationalacademics.CreateService(s.helper)
-	err = educationalAcademicsService.Update(item.EducationalAcademic)
+	educationalAcademicsService := educationalacademics.S
+	err = educationalAcademicsService.Update(context.TODO(), item.EducationalAcademic)
 	if err != nil {
 		return err
 	}
-	err = educationalAcademicsService.DeleteMany(item.EducationalAcademicsForDelete)
+	err = educationalAcademicsService.DeleteMany(context.TODO(), item.EducationalAcademicsForDelete)
 	if err != nil {
 		return err
 	}

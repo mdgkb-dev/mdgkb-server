@@ -256,7 +256,9 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 
 	nmoCoursesRouter.Init(api.Group("/nmo-courses"), nmocourses.CreateHandler(helper))
 	dpoApplicationsRouter.Init(api.Group("/dpo-applications"), dpoapplications.CreateHandler(helper))
-	educationalAcademicsRouter.Init(api.Group("/educational-academics"), educationalacademics.CreateHandler(helper))
+
+	educationalacademics.Init(helper)
+	educationalAcademicsRouter.Init(api.Group("/educational-academics"), educationalacademics.H)
 
 	residencyapplications.Init(helper)
 	residencyApplicationsRouter.Init(api.Group("/residency-applications"), residencyapplications.H)

@@ -1,59 +1,54 @@
 package educationalacademics
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/models"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
-func (s *Service) GetAll() (models.EducationalAcademics, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.EducationalAcademics, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id string) (*models.EducationalAcademic, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id string) (*models.EducationalAcademic, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Create(item *models.EducationalAcademic) error {
-	err := s.repository.create(item)
+func (s *Service) Create(c context.Context, item *models.EducationalAcademic) error {
+	err := R.Create(c, item)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Update(item *models.EducationalAcademic) error {
+func (s *Service) Update(c context.Context, item *models.EducationalAcademic) error {
 	if item == nil {
 		return nil
 	}
-	err := s.repository.upsert(item)
+	err := R.Upsert(c, item)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) UpdateAll(c context.Context, items models.EducationalAcademics) error {
+	return R.UpdateAll(c, items)
 }
 
-func (s *Service) UpdateAll(items models.EducationalAcademics) error {
-	return s.repository.updateAll(items)
-}
-
-func (s *Service) DeleteMany(idPool []uuid.UUID) error {
+func (s *Service) DeleteMany(c context.Context, idPool []uuid.UUID) error {
 	if len(idPool) == 0 {
 		return nil
 	}
-	return s.repository.deleteMany(idPool)
+	return R.DeleteMany(c, idPool)
 }
