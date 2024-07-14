@@ -209,7 +209,9 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	pages.Init(helper)
 	pagesRouter.Init(api.Group("/pages"), pages.H)
 
-	projectsRouter.Init(api.Group("/projects"), projects.CreateHandler(helper))
+	projects.Init(helper)
+	projectsRouter.Init(api.Group("/projects"), projects.H)
+
 	entrancesRouter.Init(api.Group("/entrances"), entrances.CreateHandler(helper))
 
 	vacancies.Init(helper)

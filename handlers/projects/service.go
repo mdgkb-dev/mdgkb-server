@@ -1,13 +1,14 @@
 package projects
 
 import (
+	"context"
 	"mdgkb/mdgkb-server/handlers/projectitems"
 	"mdgkb/mdgkb-server/models"
 )
 
-func (s *Service) Create(item *models.Project) error {
+func (s *Service) Create(c context.Context, item *models.Project) error {
 	item.Slug = s.helper.Util.MakeSlug(item.Title, true)
-	err := s.repository.create(item)
+	err := R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -20,8 +21,8 @@ func (s *Service) Create(item *models.Project) error {
 	return nil
 }
 
-func (s *Service) Update(item *models.Project) error {
-	err := s.repository.update(item)
+func (s *Service) Update(c context.Context, item *models.Project) error {
+	err := R.Update(c, item)
 	if err != nil {
 		return err
 	}
@@ -38,24 +39,24 @@ func (s *Service) Update(item *models.Project) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.Projects, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.Projects, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id *string) (*models.Project, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id string) (*models.Project, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Delete(id *string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) GetBySlug(slug *string) (*models.Project, error) {
-	item, err := s.repository.getBySlug(slug)
+func (s *Service) GetBySlug(c context.Context, slug string) (*models.Project, error) {
+	item, err := R.GetBySlug(c, slug)
 	if err != nil {
 		return nil, err
 	}
