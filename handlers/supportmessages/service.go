@@ -5,11 +5,9 @@ import (
 	"mdgkb/mdgkb-server/handlers/meta"
 	"mdgkb/mdgkb-server/handlers/users"
 	"mdgkb/mdgkb-server/models"
-
-	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) Create(item *models.SupportMessage) error {
+func (s *Service) Create(c context.Context, item *models.SupportMessage) error {
 	err := users.S.UpsertEmail(context.TODO(), item.User)
 	if err != nil {
 		return err
@@ -20,7 +18,7 @@ func (s *Service) Create(item *models.SupportMessage) error {
 		return err
 	}
 	item.SetForeignKeys()
-	err = s.repository.create(item)
+	err = R.Create(c, item)
 	if err != nil {
 		return err
 	}
@@ -31,19 +29,19 @@ func (s *Service) Create(item *models.SupportMessage) error {
 	return nil
 }
 
-func (s *Service) GetAll() (models.SupportMessagesWithCount, error) {
-	return s.repository.getAll()
+func (s *Service) GetAll(c context.Context) (models.SupportMessagesWithCount, error) {
+	return R.GetAll(c)
 }
 
-func (s *Service) Get(id string) (*models.SupportMessage, error) {
-	item, err := s.repository.get(id)
+func (s *Service) Get(c context.Context, id string) (*models.SupportMessage, error) {
+	item, err := R.Get(c, id)
 	if err != nil {
 		return nil, err
 	}
 	return item, nil
 }
 
-func (s *Service) Update(item *models.SupportMessage) error {
+func (s *Service) Update(c context.Context, item *models.SupportMessage) error {
 	emailStruct := struct {
 		SupportMessage *models.SupportMessage
 		Host           string
@@ -60,18 +58,13 @@ func (s *Service) Update(item *models.SupportMessage) error {
 		return err
 	}
 
-	return s.repository.update(item)
+	return R.Update(c, item)
 }
 
-func (s *Service) Delete(id string) error {
-	return s.repository.delete(id)
+func (s *Service) Delete(c context.Context, id string) error {
+	return R.Delete(c, id)
 }
 
-func (s *Service) ChangeNewStatus(id string, isNew bool) error {
-	return s.repository.changeNewStatus(id, isNew)
-}
-
-func (s *Service) setQueryFilter(c *gin.Context) (err error) {
-	err = s.repository.setQueryFilter(c)
-	return err
+func (s *Service) ChangeNewStatus(c context.Context, id string, isNew bool) error {
+	return R.ChangeNewStatus(c, id, isNew)
 }

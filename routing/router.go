@@ -309,7 +309,10 @@ func Init(r *gin.Engine, helper *helperPack.Helper) {
 	metaRouter.Init(meta.H, api, ws)
 
 	dailyMenuItemsRouter.Init(api.Group("/daily-menu-items"), dailymenuitems.CreateHandler(helper))
-	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.CreateHandler(helper))
+
+	supportmessages.Init(helper)
+	supportMessagesRouter.Init(api.Group("/support-messages"), supportmessages.H)
+
 	dailyMenuOrdersRouter.Init(api.Group("/daily-menu-orders"), dailymenuorders.CreateHandler(helper))
 	mapnodesRouter.Init(api.Group("/map-nodes"), mapnodes.CreateHandler(helper))
 	maproutesRouter.Init(api.Group("/map-routes"), maproutes.CreateHandler(helper))

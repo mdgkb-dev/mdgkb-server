@@ -14,6 +14,8 @@ func (r *Repository) GetAll(c context.Context) (item models.VisitsApplicationsWi
 		Relation("FormValue.User.Human").
 		Relation("Visits").
 		Relation("FormValue.FormStatus.FormStatusToFormStatuses.ChildFormStatus")
+
+	r.helper.SQL.ExtractFTSP(c).HandleQuery(query)
 	item.Count, err = query.ScanAndCount(c)
 	return item, err
 }

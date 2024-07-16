@@ -17,6 +17,10 @@ type SupportMessage struct {
 	IsNew         bool          `json:"isNew"`
 }
 
+type SupportMessagesWithCount struct {
+	SupportMessages SupportMessages `json:"items"`
+	Count           int             `json:"count"`
+}
 type SupportMessages []*SupportMessage
 
 func (item *SupportMessage) SetForeignKeys() {
